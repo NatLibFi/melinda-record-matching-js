@@ -83,13 +83,22 @@ export function bibStandardIdentifiers(record) {
   function toIdentifiers({tag, subfields}) {
     if (tag === '022') {
       return subfields
-        .filter(({code}) => ['a', 'z', 'y'].includes(code))
+        .filter(createFilter(['a', 'z', 'y']))
         .map(({value}) => value);
     }
 
     return subfields
-      .filter(({code}) => ['a', 'z'].includes(code))
+      .filter(createFilter)
       .map(({value}) => value);
+
+
+    function createFilter(codes) {
+      return ({code, value}) => {
+        if (codes.includes(code)) {
+          return value && (/[A-z0-9\-]+/u).test(value); // eslint-disable-line no-useless-escape
+        }
+      };
+    }
   }
 
   function toPairs(results, identifier) {

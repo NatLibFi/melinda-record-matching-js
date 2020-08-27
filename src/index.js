@@ -74,8 +74,8 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
         const [candidate] = records;
 
         if (candidate) {
-          const {match, propability} = detect(record, candidate);
-          return match ? {propability, candidate} : iterateRecords(records.slice(1));
+          const {match, probability} = detect(record, candidate);
+          return match ? {probability, candidate} : iterateRecords(records.slice(1));
         }
       }
     }

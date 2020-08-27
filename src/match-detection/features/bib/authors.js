@@ -5,6 +5,7 @@ export default ({nameTreshold = 5} = {}) => ({
   extract: record => record.get(/^(?<def>100|700)$/u)
     .map(({subfields}) => {
       return subfields
+        .filter(({code, value}) => code && value)
         .filter(({code}) => ['a', '0'].includes(code))
         .map(toObj)
         .reduce((acc, v) => ({...acc, ...v}), {});

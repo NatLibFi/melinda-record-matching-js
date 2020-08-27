@@ -34,6 +34,8 @@ import generateQueryList from './query-list';
 
 export {searchTypes} from './query-list';
 
+export class CandidateSearchError extends Error {}
+
 export default ({record, searchSpec, url, maxRecordsPerRequest = '50'}) => {
   MarcRecord.setValidationOptions({subfieldValues: false});
 
@@ -47,7 +49,7 @@ export default ({record, searchSpec, url, maxRecordsPerRequest = '50'}) => {
 
 
   if (queryList.length === 0) { // eslint-disable-line functional/no-conditional-statement
-    throw new Error('Generated query list contains no queries');
+    throw new CandidateSearchError(`Generated query list contains no queries`);
   }
 
   return async ({queryOffset = 0, resultSetOffset = 1}) => {
@@ -72,7 +74,9 @@ export default ({record, searchSpec, url, maxRecordsPerRequest = '50'}) => {
         debug(`Searching for candidates with query: ${query} (Offset ${resultSetOffset})`);
 
         client.searchRetrieve(query, {startRecord: resultSetOffset})
-          .on('error', reject)
+          .on('error', err => {
+            reject(new CandidateSearchError(`SRU error for query: ${query}: ${err}`));
+          })
           .on('end', async nextOffset => {
             try {
               const records = await Promise.all(promises);
