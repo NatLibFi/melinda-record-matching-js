@@ -95,7 +95,7 @@ export default ({record, searchSpec, url, maxRecordsPerRequest = '50'}) => {
             async function handleRecord() {
               try {
                 const foundRecordMarc = await MARCXML.from(foundRecord);
-                const foundRecordId = getRecordId(foundRecord);
+                const foundRecordId = getRecordId(foundRecordMarc);
 
                 if (inputRecordId === foundRecordId) {
                   debug(`Input and candidate are the same record per 001. Discarding candidate`);
