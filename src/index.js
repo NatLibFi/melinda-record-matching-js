@@ -71,9 +71,10 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
       }
 
       function iterateRecords(records) {
-        const [{record: candidateRecord, id: candidateId}] = records;
+        const [candidate] = records;
 
         if (candidate) {
+          const [{record: candidateRecord, id: candidateId}] = candidate;
           const {match, probability} = detect(record, candidateRecord);
 
           if (match) {
@@ -83,10 +84,10 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
                 id: candidateId,
                 record: candidateRecord
               }
-            }; 
+            };
           }
 
-          return iterateRecords(records.slice(1));          
+          return iterateRecords(records.slice(1));
         }
       }
     }
