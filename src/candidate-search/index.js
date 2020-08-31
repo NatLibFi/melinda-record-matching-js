@@ -40,13 +40,13 @@ export default ({record, searchSpec, url, maxRecordsPerRequest = '50'}) => {
   MarcRecord.setValidationOptions({subfieldValues: false});
 
   const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search');
+  const inputRecordId = getRecordId(record);
   const queryList = generateQueryList(record, searchSpec);
   const client = createClient({
     url, maxRecordsPerRequest,
     version: '2.0',
     retrieveAll: false
   });
-
 
   if (queryList.length === 0) { // eslint-disable-line functional/no-conditional-statement
     throw new CandidateSearchError(`Generated query list contains no queries`);
@@ -95,31 +95,25 @@ export default ({record, searchSpec, url, maxRecordsPerRequest = '50'}) => {
             async function handleRecord() {
               try {
                 const foundRecordMarc = await MARCXML.from(foundRecord);
+                const foundRecordId = getId(foundRecord);
 
-                if (hasSameId(foundRecordMarc)) {
+                if (inputRecordId === foundRecordId) {
                   debug(`Input and candidate are the same record per 001. Discarding candidate`);
                   return;
                 }
 
-                return foundRecordMarc;
+                return {record: foundRecordMarc, id: foundRecordId};
               } catch (err) {
                 reject(new Error(`Failed converting record: ${err}, record: ${foundRecord}`));
-              }
-
-
-              function hasSameId(foundRecord) {
-                const inputId = getId(record);
-                const candidateId = getId(foundRecord);
-                return inputId === candidateId;
-
-                function getId(record) {
-                  const [field] = record.get(/^001$/u);
-                  return field?.value;
-                }
               }
             }
           });
       });
     }
   };
+
+  function getId(record) {
+    const [field] = record.get(/^001$/u);
+    return field?.value;
+  }
 };

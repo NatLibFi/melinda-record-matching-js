@@ -71,11 +71,22 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
       }
 
       function iterateRecords(records) {
-        const [candidate] = records;
+        const [{record: candidateRecord, id: candidateId}] = records;
 
         if (candidate) {
-          const {match, probability} = detect(record, candidate);
-          return match ? {probability, candidate} : iterateRecords(records.slice(1));
+          const {match, probability} = detect(record, candidateRecord);
+
+          if (match) {
+            return {
+              probability,
+              candidate: {
+                id: candidateId,
+                record: candidateRecord
+              }
+            }; 
+          }
+
+          return iterateRecords(records.slice(1));          
         }
       }
     }
