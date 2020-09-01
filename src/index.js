@@ -74,7 +74,7 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
         const [candidate] = records;
 
         if (candidate) {
-          const [{record: candidateRecord, id: candidateId}] = candidate;
+          const {record: candidateRecord, id: candidateId} = candidate;
           const {match, probability} = detect(record, candidateRecord);
 
           if (match) {
