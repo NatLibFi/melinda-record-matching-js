@@ -1,0 +1,19 @@
+{
+  "description": "Should extract language from 008",
+  "feature": "language",
+  "type": "extract",
+  "expectedFeatures": ["fin"],
+  "inputRecord": {
+    "leader": "02518cam a2200745zi 4500",
+    "fields": [
+      {
+        "tag": "001",
+        "value": "000019643"
+      },
+      {
+        "tag": "008",
+        "value": "831017s1983    fi ||||||||||||||||bfin||"
+      }
+    ]
+  }
+}

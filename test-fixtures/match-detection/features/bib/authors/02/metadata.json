@@ -1,0 +1,12 @@
+{
+  "description": "Comparison should return points for matching all authors with id",
+  "feature": "authors",
+  "type": "compare",
+  "expectedPoints": 0.2,
+  "featuresA": [
+    { "id": "(FI-ASTERI-N)000068031", "name": "KiviAleksis" }
+  ],
+  "featuresB": [
+    { "id": "(FI-ASTERI-N)000068031", "name": "KiviAleksis" }
+  ]
+}

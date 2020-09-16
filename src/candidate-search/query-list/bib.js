@@ -88,7 +88,7 @@ export function bibStandardIdentifiers(record) {
     }
 
     return subfields
-      .filter(createFilter)
+      .filter(createFilter('a', 'z'))
       .map(({value}) => value);
 
 
@@ -96,7 +96,7 @@ export function bibStandardIdentifiers(record) {
       return ({code, value}) => {
         if (codes.includes(code)) {
           // Standard identifiers should only contain
-          return value && (/[A-z0-9\-]+/u).test(value); // eslint-disable-line no-useless-escape
+          return value && (/[A-Za-z0-9\-]+/u).test(value); // eslint-disable-line no-useless-escape
         }
       };
     }

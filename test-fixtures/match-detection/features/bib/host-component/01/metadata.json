@@ -1,0 +1,15 @@
+{
+  "description": "Should extract host/component type (Host)",
+  "feature": "hostComponent",
+  "type": "extract",
+  "expectedFeatures": ["host"],
+  "inputRecord": {
+    "leader": "02518cam a2200745zi 4500",
+    "fields": [
+      {
+        "tag": "001",
+        "value": "000019643"
+      }
+    ]
+  }
+}

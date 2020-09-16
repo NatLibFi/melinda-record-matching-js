@@ -1,0 +1,39 @@
+{
+  "description": "Should throw because of a SRU error",
+  "expectedSearchError": "SRU error for query: dc.title=\"\\^foobar\\*\": Error: Masking character not supported",
+  "factoryOptions": {
+    "searchSpec": ["bibTitle"],
+    "record": {
+      "leader": "02518cam a2200745zi 4500",
+      "fields": [
+        {
+          "tag": "001",
+          "value": "000019640"
+        },
+        {
+          "tag": "245",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "foo."
+            },
+            {
+              "code": "b",
+              "value": "bar  "
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "searchOptions": {},
+  "requests": [
+    {
+      "method": "get",
+      "url": "/?operation=searchRetrieve&query=dc.title%3D%22%5Efoobar*%22&startRecord=1&version=2.0&maximumRecords=1",
+      "status": 200
+    }
+  ]
+}

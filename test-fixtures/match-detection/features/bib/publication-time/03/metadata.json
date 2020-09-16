@@ -1,0 +1,8 @@
+{
+  "description": "Comparison should return points for matching publication times",
+  "feature": "publicationTime",
+  "type": "compare",
+  "expectedPoints": 0.1,
+  "featuresA": ["1983"],
+  "featuresB": ["1983"]
+}

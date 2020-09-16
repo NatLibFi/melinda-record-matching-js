@@ -1,0 +1,15 @@
+{
+  "description": "Should extract bibliographic level",
+  "feature": "bibliographicLevel",
+  "type": "extract",
+  "expectedFeatures": ["m"],
+  "inputRecord": {
+    "leader": "02518cam a2200745zi 4500",
+    "fields": [
+      {
+        "tag": "001",
+        "value": "000019643"
+      }
+    ]
+  }
+}

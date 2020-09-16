@@ -1,0 +1,76 @@
+{
+  "description": "Should extract authors",
+  "feature": "authors",
+  "type": "extract",
+  "expectedFeatures": [
+    { "id": "(FI-ASTERI-N)000068031", "name": "KiviAleksis" },
+    { "name": "SchmidtGustav" },
+    { "name": "KelletatAndreasF" }
+  ],
+  "inputRecord": {
+    "leader": "02518cam a2200745zi 4500",
+    "fields": [
+      {
+        "tag": "001",
+        "value": "000019643"
+      },
+      {
+        "tag": "100",
+        "ind1": "1",
+        "ind2": " ",
+        "subfields": [
+          {
+            "code": "a",
+            "value": "Kivi, Aleksis,"
+          },
+          {
+            "code": "d",
+            "value": "1834-1872,"
+          },
+          {
+            "code": "e",
+            "value": "kirjoittaja."
+          },
+          {
+            "code": "0",
+            "value": "(FI-ASTERI-N)000068031"
+          }
+        ]
+      },
+      {
+        "tag": "700",
+        "ind1": "1",
+        "ind2": " ",
+        "subfields": [
+          {
+            "code": "a",
+            "value": "Schmidt, Gustav,"
+          },
+          {
+            "code": "e",
+            "value": "kääntäjä."
+          }
+        ]
+      },
+      {
+        "tag": "700",
+        "ind1": "1",
+        "ind2": " ",
+        "subfields": [
+          {
+            "code": "a",
+            "value": "Kelletat, Andreas F.,"
+          },
+          {
+            "code": "d",
+            "value": "1954-"
+          },
+          {
+            "code": "e",
+            "value": "kääntäjä."
+          }
+        ]
+      }
+    ]
+  }
+}

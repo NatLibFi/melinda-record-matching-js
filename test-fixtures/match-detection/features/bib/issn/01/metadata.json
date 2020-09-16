@@ -1,0 +1,30 @@
+{
+  "description": "Should extract ISSN identifiers",
+  "feature": "issn",
+  "type": "extract",
+  "expectedFeatures": [
+    {
+      "code": "a", "value": "20493630"
+    }
+  ],
+  "inputRecord": {
+    "leader": "02518cam a2200745zi 4500",
+    "fields": [
+      {
+        "tag": "001",
+        "value": "000019643"
+      },
+      {
+        "tag": "022",
+        "ind1": " ",
+        "ind2": " ",
+        "subfields": [
+          {
+            "code": "a",
+            "value": "2049-3630"
+          }
+        ]
+      }
+    ]
+  }
+}

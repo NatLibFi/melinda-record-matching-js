@@ -36,7 +36,7 @@ export {searchTypes} from './query-list';
 
 export class CandidateSearchError extends Error {}
 
-export default ({record, searchSpec, url, maxRecordsPerRequest = '50'}) => {
+export default ({record, searchSpec, url, maxRecordsPerRequest = 50}) => {
   MarcRecord.setValidationOptions({subfieldValues: false});
 
   const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search');
@@ -94,7 +94,7 @@ export default ({record, searchSpec, url, maxRecordsPerRequest = '50'}) => {
 
             async function handleRecord() {
               try {
-                const foundRecordMarc = await MARCXML.from(foundRecord);
+                const foundRecordMarc = await MARCXML.from(foundRecord, {subfieldValues: false});
                 const foundRecordId = getRecordId(foundRecordMarc);
 
                 if (inputRecordId === foundRecordId) {
@@ -104,7 +104,7 @@ export default ({record, searchSpec, url, maxRecordsPerRequest = '50'}) => {
 
                 return {record: foundRecordMarc, id: foundRecordId};
               } catch (err) {
-                reject(new Error(`Failed converting record: ${err}, record: ${foundRecord}`));
+                throw new Error(`Failed converting record: ${err}, record: ${foundRecord}`);
               }
             }
           });

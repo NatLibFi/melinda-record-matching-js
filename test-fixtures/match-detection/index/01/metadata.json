@@ -1,0 +1,16 @@
+{
+  "description": "Should detect a match",
+  "options": {
+    "strategy": {
+      "type": "bib",
+      "features": [
+        "title",
+        "isbn"
+      ]
+    }
+  },
+  "expectedResults": {
+    "match": true,
+    "propability": 1.0
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "description": "Should extract other standard identifiers",
+  "feature": "otherStandardIdentifier",
+  "type": "extract",
+  "expectedFeatures": [
+    {
+      "code": "a", "value": "9780449906200"
+    }
+  ],
+  "inputRecord": {
+    "leader": "02518cam a2200745zi 4500",
+    "fields": [
+      {
+        "tag": "001",
+        "value": "000019643"
+      },
+      {
+        "tag": "024",
+        "ind1": "3",
+        "ind2": "0",
+        "subfields": [
+          {
+            "code": "a",
+            "value": "9780449906200"
+          }
+        ]
+      }
+    ]
+  }
+}

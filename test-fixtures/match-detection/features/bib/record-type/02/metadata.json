@@ -1,0 +1,15 @@
+{
+  "description": "Should extract record type (Empty leader)",
+  "feature": "recordType",
+  "type": "extract",
+  "expectedFeatures": [],
+  "inputRecord": {
+    "leader": "",
+    "fields": [
+      {
+        "tag": "001",
+        "value": "000019643"
+      }
+    ]
+  }
+}
