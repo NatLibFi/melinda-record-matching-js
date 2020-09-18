@@ -45,7 +45,12 @@ async function callback({getFixture, factoryOptions, searchOptions, expectedFact
   const url = 'http://foo.bar';
 
   if (expectedFactoryError) {
-    expect(() => createSearchInterface({...formatFactoryOptions(), url})).to.throw(CandidateSearchError, new RegExp(expectedFactoryError, 'u'));
+    if (expectedFactoryError.isCandidateSearchError) {
+      expect(() => createSearchInterface({...formatFactoryOptions(), url})).to.throw(CandidateSearchError, new RegExp(expectedFactoryError, 'u'));
+      return;
+    }
+
+    expect(() => createSearchInterface({...formatFactoryOptions(), url})).to.throw(new RegExp(expectedFactoryError, 'u'));
     return;
   }
 

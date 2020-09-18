@@ -1,5 +1,5 @@
 {
-  "description": "Should not detect a match",
+  "description": "Should not detect a match (Minimum treshold not reached)",
   "options": {
     "strategy": {
       "type": "bib",
@@ -11,6 +11,6 @@
   },
   "expectedResults": {
     "match": false,
-    "propability": 0.5
+    "propability": 0
   }
 }

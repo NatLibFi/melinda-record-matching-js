@@ -1,0 +1,30 @@
+{
+  "description": "Should find matches",
+  "options": {
+    "search": {
+      "searchSpec": ["bibStandardIdentifiers"],
+      "url": "http://foo.bar"
+    },
+    "detection": {
+      "strategy": {
+        "type": "bib",
+        "features": [
+          "title",
+          "isbn"
+        ]
+      }
+    }
+  },
+  "requests": [
+    {
+      "method": "get",
+      "url": "/?operation=searchRetrieve&query=dc.identifier%3D978-952-62-2477-0&startRecord=1&version=2.0&maximumRecords=1",
+      "status": 200
+    },
+    {
+      "method": "get",
+      "url": "/?operation=searchRetrieve&query=dc.identifier%3D978-952-62-2477-0&startRecord=2&version=2.0&maximumRecords=1",
+      "status": 200
+    }
+  ]
+}

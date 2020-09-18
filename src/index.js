@@ -55,7 +55,7 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
             return newMatches;
           }
 
-          return maxCandidatesRetrieved() ? matches : iterate(state, matches, candidateCount + records.length);
+          return maxCandidatesRetrieved() ? newMatches : iterate(state, newMatches, candidateCount + records.length);
         }
 
         return maxCandidatesRetrieved() ? matches : iterate(state, matches, candidateCount + records.length);
@@ -75,11 +75,11 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
 
         if (candidate) {
           const {record: candidateRecord, id: candidateId} = candidate;
-          const {match, probability} = detect(record, candidateRecord);
+          const {match, propability} = detect(record, candidateRecord);
 
           if (match) {
             return {
-              probability,
+              propability,
               candidate: {
                 id: candidateId,
                 record: candidateRecord

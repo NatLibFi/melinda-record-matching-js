@@ -86,7 +86,6 @@ export function bibStandardIdentifiers(record) {
         .filter(createFilter(['a', 'z', 'y']))
         .map(({value}) => value);
     }
-
     return subfields
       .filter(createFilter('a', 'z'))
       .map(({value}) => value);

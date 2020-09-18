@@ -6,25 +6,32 @@
       "value": "000019643"
     },
     {
-      "tag": "100",
+      "tag": "020",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "978-952-62-2477-0"
+        },
+        {
+          "code": "q",
+          "value": "PDF"
+        }
+      ]
+    },
+    {
+      "tag": "245",
       "ind1": "1",
       "ind2": " ",
       "subfields": [
         {
           "code": "a",
-          "value": "Kivi, Aleksis,"
+          "value": "foo."
         },
         {
-          "code": "d",
-          "value": "1834-1872,"
-        },
-        {
-          "code": "e",
-          "value": "kirjoittaja."
-        },
-        {
-          "code": "0",
-          "value": "(FI-ASTERI-N)000068031"
+          "code": "b",
+          "value": "bar"
         }
       ]
     }

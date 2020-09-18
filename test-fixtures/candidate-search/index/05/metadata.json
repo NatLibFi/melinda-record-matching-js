@@ -1,11 +1,10 @@
 {
-  "description": "Should throw an error because queries could not be generated",
+  "description": "Should throw because of unknown search type",
   "expectedFactoryError": {
-    "isCandidateSearchError": true,
-    "message": "^Generated query list contains no queries$"
+    "message": "^Error: Unknown search type: foobar$"
   },
   "factoryOptions": {
-    "searchSpec": ["bibStandardIdentifiers"],
+    "searchSpec": ["foobar"],
     "record": {
       "leader": "02518cam a2200745zi 4500",
       "fields": [
@@ -31,5 +30,6 @@
       ]
     }
   },
+  "searchOptions": {},
   "requests": []
 }
