@@ -1,0 +1,12 @@
+{
+  "description": "Comparison should return points for matching standard identifiers",
+  "feature": "isbn",
+  "type": "compare",
+  "expectedPoints": 0.75,
+  "featuresA": [
+    { "code": "a", "value": "20493630" }
+  ],
+  "featuresB": [
+    { "code": "a", "value": "20493630" }
+  ]
+}

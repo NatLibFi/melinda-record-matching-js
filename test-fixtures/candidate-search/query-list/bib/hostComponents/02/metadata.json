@@ -1,0 +1,14 @@
+{
+  "description": "Should generate host record query (No 773)",
+  "type": "bibHostComponents",
+  "expectedQuery": [],
+  "inputRecord": {
+    "leader": "02518cam a2200745zi 4500",
+    "fields": [
+      {
+        "tag": "001",
+        "value": "000019643"
+      }
+    ]
+  }
+}

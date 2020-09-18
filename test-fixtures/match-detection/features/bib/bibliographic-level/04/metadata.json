@@ -1,0 +1,8 @@
+{
+  "description": "Comparison should return points for non-matching bibliographic levels",
+  "feature": "bibliographicLevel",
+  "type": "compare",
+  "expectedPoints": -0.2,
+  "featuresA": ["a"],
+  "featuresB": ["m"]
+}

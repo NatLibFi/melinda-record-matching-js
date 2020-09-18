@@ -1,0 +1,8 @@
+{
+  "description": "Comparison should return points for non-matching record types",
+  "feature": "recordType",
+  "type": "compare",
+  "expectedPoints": -0.5,
+  "featuresA": ["a"],
+  "featuresB": ["m"]
+}

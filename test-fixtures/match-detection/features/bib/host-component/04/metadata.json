@@ -1,0 +1,8 @@
+{
+  "description": "Comparison should return points for non-matching host/component type",
+  "feature": "hostComponent",
+  "type": "compare",
+  "expectedPoints": -1.0,
+  "featuresA": ["host"],
+  "featuresB": ["component"]
+}

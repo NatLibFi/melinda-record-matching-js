@@ -1,0 +1,16 @@
+{
+  "description": "Should not detect a match (Minimum treshold not reached)",
+  "options": {
+    "strategy": {
+      "type": "bib",
+      "features": [
+        "title",
+        "isbn"
+      ]
+    }
+  },
+  "expectedResults": {
+    "match": false,
+    "propability": 0
+  }
+}

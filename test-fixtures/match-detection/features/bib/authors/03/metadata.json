@@ -1,0 +1,18 @@
+{
+  "description": "Comparison should return points for matching all authors with id (Over the maximum limit)",
+  "feature": "authors",
+  "type": "compare",
+  "expectedPoints": 0.3,
+  "featuresA": [
+    { "id": "(FI-ASTERI-N)000068031", "name": "KiviAleksis" },
+    { "id": "(FI-ASTERI-N)000068032", "name": "KiviAleksis" },
+    { "id": "(FI-ASTERI-N)000068033", "name": "KiviAleksis" },
+    { "id": "(FI-ASTERI-N)000068034", "name": "KiviAleksis" }
+  ],
+  "featuresB": [
+    { "id": "(FI-ASTERI-N)000068031", "name": "KiviAleksis" },
+    { "id": "(FI-ASTERI-N)000068032", "name": "KiviAleksis" },
+    { "id": "(FI-ASTERI-N)000068033", "name": "KiviAleksis" },
+    { "id": "(FI-ASTERI-N)000068034", "name": "KiviAleksis" }
+  ]
+}

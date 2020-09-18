@@ -1,0 +1,12 @@
+{
+  "description": "Comparison should return points for matching ISBN identifiers",
+  "feature": "isbn",
+  "type": "compare",
+  "expectedPoints": 0.75,
+  "featuresA": [
+    { "code": "a", "value": "9789526224770" }
+  ],
+  "featuresB": [
+    { "code": "a", "value": "9789526224770" }
+  ]
+}

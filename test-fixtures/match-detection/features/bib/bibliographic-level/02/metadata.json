@@ -1,0 +1,15 @@
+{
+  "description": "Should extract bibliographic level (Empty leader]",
+  "feature": "bibliographicLevel",
+  "type": "extract",
+  "expectedFeatures": [],
+  "inputRecord": {
+    "leader": "",
+    "fields": [
+      {
+        "tag": "001",
+        "value": "000019643"
+      }
+    ]
+  }
+}
