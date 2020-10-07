@@ -83,7 +83,7 @@ export function bibStandardIdentifiers(record) {
   function toIdentifiers({tag, subfields}) {
     if (tag === '022') {
       return subfields
-        .filter(createFilter(['a', 'z', 'y']))
+        .filter(createFilter('a', 'z', 'y'))
         .map(({value}) => value);
     }
     return subfields
@@ -91,11 +91,11 @@ export function bibStandardIdentifiers(record) {
       .map(({value}) => value);
 
 
-    function createFilter(codes) {
+    function createFilter(...codes) {
       return ({code, value}) => {
         if (codes.includes(code)) {
-          // Standard identifiers should only contain
-          return value && (/[A-Za-z0-9\-]+/u).test(value); // eslint-disable-line no-useless-escape
+          // Standard identifiers should only contain letters, numbers and dashes
+          return value && (/^[A-Za-z0-9\-]+$/u).test(value); // eslint-disable-line no-useless-escape
         }
       };
     }
