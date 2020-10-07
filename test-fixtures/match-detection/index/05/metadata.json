@@ -1,0 +1,24 @@
+{
+  "description": "Should detect a match (All features)",
+  "options": {
+    "strategy": {
+      "type": "bib",
+      "features": [
+        "hostComponent",
+        "isbn",
+        "issn",
+        "otherStandardIdentifier",
+        "title",
+        "authors",
+        "recordType",
+        "publicationTime",
+        "language",
+        "bibliographicLevel"
+      ]
+    }
+  },
+  "expectedResults": {
+    "match": true,
+    "probability": 1.0
+  }
+}

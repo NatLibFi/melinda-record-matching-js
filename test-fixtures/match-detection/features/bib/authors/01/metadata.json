@@ -3,9 +3,9 @@
   "feature": "authors",
   "type": "extract",
   "expectedFeatures": [
-    { "id": "(FI-ASTERI-N)000068031", "name": "KiviAleksis" },
-    { "name": "SchmidtGustav" },
-    { "name": "KelletatAndreasF" }
+    { "id": "(FI-ASTERI-N)000068031", "name": "kivialeksis" },
+    { "name": "schmidtgustav" },
+    { "name": "kelletatandreasf" }
   ],
   "inputRecord": {
     "leader": "02518cam a2200745zi 4500",

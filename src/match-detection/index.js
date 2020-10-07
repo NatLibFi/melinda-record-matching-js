@@ -32,9 +32,9 @@ import * as features from './features';
 export {features};
 
 export default ({strategy, treshold = 0.9}) => (recordA, recordB) => {
-  const minPropabilityQuantifier = 0.5;
+  const minProbabilityQuantifier = 0.5;
 
-  const debug = createDebugLogger('@natlibfi/melinda-record-matching:duplicate-detection');
+  const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection');
   const featuresA = extractFeatures(recordA);
   const featuresB = extractFeatures(recordB);
 
@@ -44,18 +44,18 @@ export default ({strategy, treshold = 0.9}) => (recordA, recordB) => {
   const featurePairs = generateFeaturePairs();
   const similarityVector = generateSimilarityVector();
 
-  if (similarityVector.some(v => v >= minPropabilityQuantifier)) {
-    const propability = calculatePropability();
-    debug(`propability: ${propability} (Treshold: ${treshold})`);
-    return {match: propability >= treshold, propability};
+  if (similarityVector.some(v => v >= minProbabilityQuantifier)) {
+    const probability = calculateprobability();
+    debug(`probability: ${probability} (Treshold: ${treshold})`);
+    return {match: probability >= treshold, probability};
   }
 
-  debug('No feature yielded minimum propability amount of points');
-  return {match: false, propability: 0.0};
+  debug(`No feature yielded minimum probability amount of points (${minProbabilityQuantifier})`);
+  return {match: false, probability: 0.0};
 
-  function calculatePropability() {
-    const propability = similarityVector.reduce((acc, v) => acc + v, 0.0);
-    return propability > 1.0 ? 1.0 : propability;
+  function calculateprobability() {
+    const probability = similarityVector.reduce((acc, v) => acc + v, 0.0);
+    return probability > 1.0 ? 1.0 : probability;
   }
 
   function extractFeatures(record) {
