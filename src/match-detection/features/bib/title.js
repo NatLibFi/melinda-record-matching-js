@@ -26,6 +26,7 @@
 *
 */
 
+import createDebugLogger from 'debug';
 import {LevenshteinDistance as leven} from 'natural';
 
 export default ({treshold = 10} = {}) => ({
@@ -34,7 +35,7 @@ export default ({treshold = 10} = {}) => ({
     const title = getTitle();
 
     if (title) {
-      return [title.replace(/[^\w\p{Alphabetic}]/gu, '').trim()];
+      return [title.replace(/[^\p{Letter}\p{Number}]/gu, '').toLowerCase()];
     }
 
     return [];
@@ -51,6 +52,7 @@ export default ({treshold = 10} = {}) => ({
     }
   },
   compare: (a, b) => {
+    const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection:features/bib/title');
     const distance = leven(a[0], b[0]);
 
     if (distance === 0) {
@@ -59,6 +61,8 @@ export default ({treshold = 10} = {}) => ({
 
     const maxLength = getMaxLength();
     const percentage = distance / maxLength * 100;
+
+    debug(`'${a}' vs '${b}': Max length = ${maxLength}, distance = ${distance}, percentage = ${percentage}`);
 
     if (percentage <= treshold) {
       return 0.3;

@@ -11,6 +11,6 @@
   },
   "expectedResults": {
     "match": false,
-    "propability": 0.5
+    "probability": 0.5
   }
 }

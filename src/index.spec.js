@@ -69,8 +69,8 @@ async function callback({getFixture, options}) {
   }
 
   function formatResults() {
-    return matches.map(({candidate, propability}) => ({
-      propability,
+    return matches.map(({candidate, probability}) => ({
+      probability,
       candidate: {
         id: candidate.id,
         record: candidate.record.toObject()
