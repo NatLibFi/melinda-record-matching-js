@@ -34,12 +34,16 @@ export {candidateSearch, matchDetection};
 
 export default ({detection: detectionOptions, search: searchOptions, maxMatches = 1, maxCandidates = 25}) => {
   const debug = createDebugLogger('@natlibfi/melinda-record-matching:index');
+  debug(`DetectionOptions: ${JSON.stringify(detectionOptions)}`);
+  debug(`SearchOptions: ${JSON.stringify(searchOptions)}`);
+  debug(`MaxMatches: ${maxMatches}, MaxCandidates: ${maxCandidates}`);
   const detect = createDetectionInterface(detectionOptions);
 
   return record => {
     const search = createSearchInterface({...searchOptions, record});
     return iterate();
 
+    // eslint-disable-next-line max-statements
     async function iterate(initialState = {}, matches = [], candidateCount = 0) {
       const {records, ...state} = await search(initialState);
 
@@ -52,6 +56,7 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
           const newMatches = matches.concat(matchResult);
 
           if (newMatches.length === maxMatches) {
+            debug(`Found ${maxMatches}`);
             return newMatches;
           }
 
@@ -65,7 +70,7 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
 
       function maxCandidatesRetrieved() {
         if (candidateCount + records.length > maxCandidates) {
-          debug(`Stopped searching because maximum number of candidates have been retrieved`);
+          debug(`Stopped searching because maximum number of candidates ${maxCandidates} have been retrieved`);
           return true;
         }
       }
