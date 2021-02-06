@@ -1,5 +1,5 @@
 {
-  "description": "Should generate title query (ISSN)",
+  "description": "Should generate standard identifer query (ISSN)",
   "type": "bibStandardIdentifiers",
   "expectedQuery": ["dc.identifier=2049-3630"],
   "inputRecord": {
