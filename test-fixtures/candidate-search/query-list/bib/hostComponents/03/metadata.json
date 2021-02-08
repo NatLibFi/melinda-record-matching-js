@@ -1,42 +1,29 @@
 {
-  "description": "Should generate host record query (realistic f773)",
+  "description": "Should generate host record query (FIN01)",
   "type": "bibHostComponents",
-  "expectedQuery": ["melinda.partsofhost=015657151"],
+  "expectedQuery": ["melinda.partsofhost=12345"],
   "inputRecord": {
     "leader": "02518cam a2200745zi 4500",
     "fields": [
       {
         "tag": "001",
-        "value": "095657151"
+        "value": "000019643"
       },
       {
         "tag": "773",
-        "ind1": "0",
+        "ind1": " ",
         "ind2": " ",
         "subfields": [
           {
-            "code": "7",
-            "value": "nnjm"
+            "code": "a",
+            "value": "foobar"
           },
           {
             "code": "w",
-            "value": "(FI-MELINDA)015657151"
-          },
-          {
-            "code": "t",
-            "value": "No sitä sattuu. -"
-          },
-          {
-            "code": "h",
-            "value": "1 äänilevy. -"
-          },
-          {
-            "code": "o",
-            "value": "Blue master special SPEL347"
+            "value": "(FIN01)12345"
           }
         ]
       }
-
     ]
   }
 }
