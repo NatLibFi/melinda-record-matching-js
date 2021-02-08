@@ -40,7 +40,7 @@ export function bibHostComponents(record) {
       if (value && (/^\(FI-MELINDA\)/u).test(value)) {
         return value.replace(/^\(FI-MELINDA\)/u, '');
       }
-      
+
       if (value && (/^\(FIN01\)/u).test(value)) {
         return value.replace(/^\(FIN01\)/u, '');
       }
