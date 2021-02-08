@@ -48,6 +48,7 @@ export default ({record, searchSpec, url, maxRecordsPerRequest = 50}) => {
     retrieveAll: false
   });
 
+  debug(`Generated queryList ${JSON.stringify(queryList)}`);
   if (queryList.length === 0) { // eslint-disable-line functional/no-conditional-statement
     throw new CandidateSearchError(`Generated query list contains no queries`);
   }
@@ -96,6 +97,7 @@ export default ({record, searchSpec, url, maxRecordsPerRequest = 50}) => {
               try {
                 const foundRecordMarc = await MARCXML.from(foundRecord, {subfieldValues: false});
                 const foundRecordId = getRecordId(foundRecordMarc);
+                debug(`Input: ${inputRecordId} - candidate: ${foundRecordId}`);
 
                 if (inputRecordId === foundRecordId) {
                   debug(`Input and candidate are the same record per 001. Discarding candidate`);
