@@ -53,6 +53,7 @@ export default ({record, searchSpec, url, maxRecordsPerRequest = 50}) => {
     throw new CandidateSearchError(`Generated query list contains no queries`);
   }
 
+  // eslint-disable-next-line max-statements
   return async ({queryOffset = 0, resultSetOffset = 1}) => {
     const query = queryList[queryOffset];
 
@@ -64,11 +65,11 @@ export default ({record, searchSpec, url, maxRecordsPerRequest = 50}) => {
         return {records, queryOffset, resultSetOffset: nextOffset, queriesLeft: queryList.length - (queryOffset + 1)};
       }
       debug(`Query ${queryOffset} ${query} done, moving to next query. (${queryList.length - (queryOffset + 1)} queries left)`);
-      return {records, queryOffset: queryOffset + 1};
+      return {records, queryOffset: queryOffset + 1, queriesLeft: queryList.length - (queryOffset + 1)};
     }
 
     debug(`All ${queryList.length} queries done, there's no query for ${queryOffset}`);
-    return {records: [], queriesLeft: queryList.length - (queryOffset + 1)};
+    return {records: []};
 
     function retrieveRecords() {
       return new Promise((resolve, reject) => {

@@ -40,6 +40,7 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
     const search = createSearchInterface({...searchOptions, record});
     return iterate();
 
+    // eslint-disable-next-line max-statements
     async function iterate(initialState = {}, matches = [], candidateCount = 0) {
       const {records, ...state} = await search(initialState);
 

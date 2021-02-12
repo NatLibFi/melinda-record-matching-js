@@ -41,6 +41,7 @@ generateTests({
   }
 });
 
+// eslint-disable-next-line max-statements
 async function callback({getFixture, factoryOptions, searchOptions, expectedFactoryError, expectedSearchError}) {
   const url = 'http://foo.bar';
 
@@ -65,6 +66,7 @@ async function callback({getFixture, factoryOptions, searchOptions, expectedFact
     };
   }
 
+  // eslint-disable-next-line max-statements
   async function iterate({searchOptions, count = 1}) {
     const expectedResults = getFixture(`expectedResults${count}.json`);
 
@@ -91,6 +93,7 @@ async function callback({getFixture, factoryOptions, searchOptions, expectedFact
     }
 
     function formatResults(results) {
+      console.log(results); //eslint-disable-line
       return {
         ...results,
         records: results.records.map(({record, id}) => ({id, record: record.toObject()}))
