@@ -93,7 +93,7 @@ async function callback({getFixture, factoryOptions, searchOptions, expectedFact
     }
 
     function formatResults(results) {
-      console.log(results); //eslint-disable-line
+      // console.log(results); //eslint-disable-line
       return {
         ...results,
         records: results.records.map(({record, id}) => ({id, record: record.toObject()}))
