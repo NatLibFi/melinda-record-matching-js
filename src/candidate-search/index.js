@@ -48,10 +48,12 @@ export default ({record, searchSpec, url, maxRecordsPerRequest = 50}) => {
     retrieveAll: false
   });
 
+  debug(`Generated queryList ${JSON.stringify(queryList)}`);
   if (queryList.length === 0) { // eslint-disable-line functional/no-conditional-statement
     throw new CandidateSearchError(`Generated query list contains no queries`);
   }
 
+  // eslint-disable-next-line max-statements
   return async ({queryOffset = 0, resultSetOffset = 1}) => {
     const query = queryList[queryOffset];
 
@@ -59,12 +61,14 @@ export default ({record, searchSpec, url, maxRecordsPerRequest = 50}) => {
       const {records, nextOffset} = await retrieveRecords();
 
       if (typeof nextOffset === 'number') {
-        return {records, queryOffset, resultSetOffset: nextOffset};
+        debug(`Running next search for query ${queryOffset} ${query}`);
+        return {records, queryOffset, resultSetOffset: nextOffset, queriesLeft: queryList.length - (queryOffset + 1)};
       }
-
-      return {records, queryOffset: queryOffset + 1};
+      debug(`Query ${queryOffset} ${query} done, moving to next query. (${queryList.length - (queryOffset + 1)} queries left)`);
+      return {records, queryOffset: queryOffset + 1, queriesLeft: queryList.length - (queryOffset + 1)};
     }
 
+    debug(`All ${queryList.length} queries done, there's no query for ${queryOffset}`);
     return {records: []};
 
     function retrieveRecords() {

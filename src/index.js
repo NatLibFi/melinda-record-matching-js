@@ -40,10 +40,11 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
     const search = createSearchInterface({...searchOptions, record});
     return iterate();
 
+    // eslint-disable-next-line max-statements
     async function iterate(initialState = {}, matches = [], candidateCount = 0) {
       const {records, ...state} = await search(initialState);
 
-      if (records.length > 0) {
+      if (records.length > 0 || state.queriesLeft > 0) {
         debug(`Checking ${records.length} candidates for matches`);
 
         const matchResult = iterateRecords(records);
@@ -61,6 +62,7 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
         return maxCandidatesRetrieved() ? matches : iterate(state, matches, candidateCount + records.length);
       }
 
+      debug(`No (more) candidate records to check, matches: ${matches.length}`);
       return matches;
 
       function maxCandidatesRetrieved() {
