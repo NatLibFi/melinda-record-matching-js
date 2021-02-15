@@ -28,7 +28,8 @@
 */
 import createDebugLogger from 'debug';
 
-// bibHostComponents returns host id from the first subfield $w of first field f773
+// bibHostComponents returns host id from the first subfield $w of first field f773, see test-fixtures 04 and 05
+// bibHostComponents should search all 773 $ws for possible host id, but what should it do in case of multiple host ids?
 export function bibHostComponents(record) {
   const id = getHostId();
   return id ? [`melinda.partsofhost=${id}`] : [];
