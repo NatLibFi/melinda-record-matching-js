@@ -26,6 +26,7 @@
 * for the JavaScript code in this file.
 *
 */
+import createDebugLogger from 'debug';
 
 export function bibHostComponents(record) {
   const id = getHostId();
@@ -76,8 +77,13 @@ export function bibTitle(record) {
   }
 }
 
-// Aleph supports only two queries with or -operator
+// Aleph supports only two queries with or -operator (This is not true,)
+// eslint-disable-next-line max-statements
 export function bibStandardIdentifiers(record) {
+  const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:query:bibStandardIdentifiers');
+
+  debug(`Creating queries for standard identifiers`);
+
   const fields = record.get(/^(?<def>020|022|024)$/u);
   const identifiers = fields.map(toIdentifiers);
   const pairs = identifiers.reduce(toPairs, []);
@@ -87,29 +93,42 @@ export function bibStandardIdentifiers(record) {
   function toIdentifiers({tag, subfields}) {
     if (tag === '022') {
       return subfields
-        .filter(createFilter('a', 'z', 'y'))
+        .filter(createFilterIsbnIssn('a', 'z', 'y'))
+        .map(({value}) => value);
+    }
+    if (tag === '020') {
+      return subfields
+        .filter(createFilterIsbnIssn('a', 'z'))
         .map(({value}) => value);
     }
     return subfields
       .filter(createFilter('a', 'z'))
       .map(({value}) => value);
 
-
+    function createFilterIsbnIssn(...codes) {
+      return ({code, value}) => {
+        if (codes.includes(code)) {
+          // Standard identifiers ISBN and ISSN should only contain letters, numbers and dashes
+          return value && (/^[A-Za-z0-9\-]+$/u).test(value); // eslint-disable-line no-useless-escape
+        }
+      };
+    }
     function createFilter(...codes) {
       return ({code, value}) => {
         if (codes.includes(code)) {
-          // Standard identifiers should only contain letters, numbers and dashes
-          return value && (/^[A-Za-z0-9\-]+$/u).test(value); // eslint-disable-line no-useless-escape
+          return value;
         }
       };
     }
   }
 
   function toPairs(results, identifier) {
+
     const [tail] = results.slice(-1);
 
     if (tail) {
       if (tail.length === 2) {
+
         return results.concat([[identifier]]);
       }
 
