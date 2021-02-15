@@ -41,9 +41,11 @@ generateTests({
   callback: ({type, inputRecord, expectedQuery, enabled = true}) => {
     const generate = generators[type];
     const record = new MarcRecord(inputRecord, {subfieldValues: false});
+
     if (!enabled) {
       return;
     }
+
     expect(generate(record)).to.eql(expectedQuery);
   }
 });

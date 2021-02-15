@@ -36,6 +36,7 @@ export function bibHostComponents(record) {
     const [field] = record.get(/^773$/u);
 
     if (field) {
+
       const {value} = field.subfields.find(({code}) => code === 'w') || {};
 
       if (value && (/^\(FI-MELINDA\)/u).test(value)) {
@@ -53,6 +54,7 @@ export function bibTitle(record) {
   const title = getTitle();
 
   if (title) {
+
     const formatted = title
       .replace(/[^\w\s\p{Alphabetic}]/gu, '')
       .trim()
@@ -80,8 +82,8 @@ export function bibTitle(record) {
 // Aleph supports only two queries with or -operator (This is not true,)
 // eslint-disable-next-line max-statements
 export function bibStandardIdentifiers(record) {
-  const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:query:bibStandardIdentifiers');
 
+  const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:query:bibStandardIdentifiers');
   debug(`Creating queries for standard identifiers`);
 
   const fields = record.get(/^(?<def>020|022|024)$/u);
@@ -91,22 +93,26 @@ export function bibStandardIdentifiers(record) {
   return pairs.map(([a, b]) => b ? `dc.identifier=${a} or dc.identifier=${b}` : `dc.identifier=${a}`);
 
   function toIdentifiers({tag, subfields}) {
+
     if (tag === '022') {
       return subfields
         .filter(createFilterIsbnIssn('a', 'z', 'y'))
         .map(({value}) => value);
     }
+
     if (tag === '020') {
       return subfields
         .filter(createFilterIsbnIssn('a', 'z'))
         .map(({value}) => value);
     }
+
     return subfields
       .filter(createFilter('a', 'z'))
       .map(({value}) => value);
 
     function createFilterIsbnIssn(...codes) {
       return ({code, value}) => {
+
         if (codes.includes(code)) {
           // Standard identifiers ISBN and ISSN should only contain letters, numbers and dashes
           return value && (/^[A-Za-z0-9\-]+$/u).test(value); // eslint-disable-line no-useless-escape
@@ -115,6 +121,7 @@ export function bibStandardIdentifiers(record) {
     }
     function createFilter(...codes) {
       return ({code, value}) => {
+
         if (codes.includes(code)) {
           return value;
         }
@@ -127,6 +134,7 @@ export function bibStandardIdentifiers(record) {
     const [tail] = results.slice(-1);
 
     if (tail) {
+
       if (tail.length === 2) {
 
         return results.concat([[identifier]]);
