@@ -36,7 +36,6 @@ export function bibHostComponents(record) {
     const [field] = record.get(/^773$/u);
 
     if (field) {
-
       const {value} = field.subfields.find(({code}) => code === 'w') || {};
 
       if (value && (/^\(FI-MELINDA\)/u).test(value)) {
@@ -54,7 +53,6 @@ export function bibTitle(record) {
   const title = getTitle();
 
   if (title) {
-
     const formatted = title
       .replace(/[^\w\s\p{Alphabetic}]/gu, '')
       .trim()
@@ -119,6 +117,7 @@ export function bibStandardIdentifiers(record) {
         }
       };
     }
+
     function createFilter(...codes) {
       return ({code, value}) => {
 
@@ -134,9 +133,7 @@ export function bibStandardIdentifiers(record) {
     const [tail] = results.slice(-1);
 
     if (tail) {
-
       if (tail.length === 2) {
-
         return results.concat([[identifier]]);
       }
 
