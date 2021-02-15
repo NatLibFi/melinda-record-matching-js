@@ -28,6 +28,7 @@
 */
 import createDebugLogger from 'debug';
 
+// bibHostComponents returns host id from the first subfield $w of first field f773
 export function bibHostComponents(record) {
   const id = getHostId();
   return id ? [`melinda.partsofhost=${id}`] : [];
@@ -45,7 +46,10 @@ export function bibHostComponents(record) {
       if (value && (/^\(FIN01\)/u).test(value)) {
         return value.replace(/^\(FIN01\)/u, '');
       }
+
+      return false;
     }
+    return false;
   }
 }
 
@@ -74,6 +78,7 @@ export function bibTitle(record) {
         .map(({value}) => value)
         .join('');
     }
+    return false;
   }
 }
 
