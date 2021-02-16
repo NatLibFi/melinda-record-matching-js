@@ -26,15 +26,25 @@
 *
 */
 
-export {default as hostComponent} from './host-component';
-export {default as isbn} from './isbn';
-export {default as issn} from './issn';
-export {default as otherStandardIdentifier} from './other-standard-identifier';
-export {default as title} from './title';
-export {default as authors} from './authors';
-export {default as recordType} from './record-type';
-export {default as publicationTime} from './publication-time';
-export {default as language} from './language';
-export {default as bibliographicLevel} from './bibliographic-level';
-export {default as kvId} from './kv-id';
-export {default as melindaId} from './melinda-id';
+import createInterface from './source-identifier-factory';
+
+
+// SID $c <source-id> $b <source-id-source>
+// SID $c 123456 $b helka
+// SID $c VER2722372 $b FI-KV
+
+/* {
+    "tag": "SID",
+    "subfields": [
+        { "code": "c", "value": "VER2722372" },
+        { "code": "b", "value": "FI-KV" }
+    ],
+    "ind1": " ",
+    "ind2": " "
+}
+*/
+
+export default () => {
+  const {extract, compare} = createInterface({sourceValue: 'FI-KV', subfieldCodes: ['c']});
+  return {extract, compare, name: 'kv-id'};
+};

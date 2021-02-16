@@ -1,0 +1,12 @@
+{
+  "description": "Comparison should return points for matching kv-ids",
+  "feature": "kvId",
+  "type": "compare",
+  "expectedPoints": 1.0,
+  "featuresA": [
+    { "code": "c", "value": "978000" }
+  ],
+  "featuresB": [
+    { "code": "c", "value": "978000" }
+  ]
+}

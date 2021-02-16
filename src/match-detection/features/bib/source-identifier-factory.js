@@ -26,15 +26,36 @@
 *
 */
 
-export {default as hostComponent} from './host-component';
-export {default as isbn} from './isbn';
-export {default as issn} from './issn';
-export {default as otherStandardIdentifier} from './other-standard-identifier';
-export {default as title} from './title';
-export {default as authors} from './authors';
-export {default as recordType} from './record-type';
-export {default as publicationTime} from './publication-time';
-export {default as language} from './language';
-export {default as bibliographicLevel} from './bibliographic-level';
-export {default as kvId} from './kv-id';
-export {default as melindaId} from './melinda-id';
+export default ({sourceValue, subfieldCodes}) => {
+  return {extract, compare};
+
+  function extract(record) {
+    const [field] = record.getFields('SID', [{code: 'b', value: sourceValue}]);
+
+    // Note: This extracts feature only from first SID-field that has $b matching to source value.
+    // Records should have only one SID per source.
+
+    if (field) {
+      return field.subfields
+        .filter(({code}) => subfieldCodes.includes(code));
+    }
+
+    return [];
+  }
+
+  function compare(a, b) {
+    if (a.length === 0 || b.length === 0) {
+      return 0;
+    }
+
+    if (a[0].value === b[0].value) {
+      return 1;
+    }
+
+    if (a[0].value !== b[0].value) {
+      return -1;
+    }
+
+    return 0;
+  }
+};

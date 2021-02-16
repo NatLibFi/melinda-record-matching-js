@@ -1,0 +1,48 @@
+{
+    "description": "Should extract kv-id for first SID $b match",
+    "feature": "kvId",
+    "type": "extract",
+    "expectedFeatures": [  {
+        "code": "c",
+        "value": "978000001"
+    }],
+    "inputRecord": {
+        "leader": "02518cam a2200745zi 4500",
+        "fields": [
+            {
+                "tag": "001",
+                "value": "000019643"
+            },
+            {
+                "tag": "SID",
+                "ind1": " ",
+                "ind2": " ",
+                "subfields": [
+                    {
+                        "code": "c",
+                        "value": "978000001"
+                    },
+                    {
+                        "code": "b",
+                        "value": "FI-KV"
+                    }
+                ]
+            },
+            {
+                "tag": "SID",
+                "ind1": " ",
+                "ind2": " ",
+                "subfields": [
+                    {
+                        "code": "c",
+                        "value": "(toka SID)978000001"
+                    },
+                    {
+                        "code": "b",
+                        "value": "FI-KV"
+                    }
+                ]
+            }
+        ]
+    }
+}

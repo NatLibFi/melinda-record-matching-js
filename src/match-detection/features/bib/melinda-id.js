@@ -26,15 +26,15 @@
 *
 */
 
-export {default as hostComponent} from './host-component';
-export {default as isbn} from './isbn';
-export {default as issn} from './issn';
-export {default as otherStandardIdentifier} from './other-standard-identifier';
-export {default as title} from './title';
-export {default as authors} from './authors';
-export {default as recordType} from './record-type';
-export {default as publicationTime} from './publication-time';
-export {default as language} from './language';
-export {default as bibliographicLevel} from './bibliographic-level';
-export {default as kvId} from './kv-id';
-export {default as melindaId} from './melinda-id';
+import createInterface from './melinda-identifier-factory';
+
+// 003+001 FI-MELINDA <melinda-id>
+// 035 $a (FI-MELINDA)<melinda-id>
+// 035 $z (FI-MELINDA)<melinda-id>
+// 035 $a FCC<melinda-id>
+// 035 $z FCC<melinda-id>
+
+export default () => {
+  const {extract, compare} = createInterface();
+  return {extract, compare, name: 'melinda-id'};
+};

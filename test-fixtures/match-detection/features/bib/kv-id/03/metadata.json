@@ -1,0 +1,35 @@
+{
+    "description": "Should extract exact non-normalized value for KV-id",
+    "feature": "kvId",
+    "type": "extract",
+    "expectedFeatures": [
+        {
+            "code": "c",
+            "value": "(Blaa) 978-000-000"
+        }
+    ],
+    "inputRecord": {
+        "leader": "02518cam a2200745zi 4500",
+        "fields": [
+            {
+                "tag": "001",
+                "value": "000019643"
+            },
+            {
+                "tag": "SID",
+                "ind1": " ",
+                "ind2": " ",
+                "subfields": [
+                    {
+                        "code": "c",
+                        "value": "(Blaa) 978-000-000"
+                    },
+                    {
+                        "code": "b",
+                        "value": "FI-KV"
+                    }
+                ]
+            }
+        ]
+    }
+}
