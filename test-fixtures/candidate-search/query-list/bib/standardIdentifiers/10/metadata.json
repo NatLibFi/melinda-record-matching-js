@@ -1,5 +1,5 @@
 {
-  "description": "Should not generate 'undefined' standard identifier query (ISSN with colon)",
+  "description": "Should not generate standard identifier query if there are no valid fields",
   "enabled": true,
   "type": "bibStandardIdentifiers",
   "expectedQuery": [],
@@ -11,13 +11,13 @@
         "value": "000019643"
       },
       {
-        "tag": "022",
+        "tag": "822",
         "ind1": " ",
         "ind2": " ",
         "subfields": [
           {
             "code": "a",
-            "value": "2049:3630"
+            "value": "foobar"
           }
         ]
       }

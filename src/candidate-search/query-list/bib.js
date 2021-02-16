@@ -83,7 +83,6 @@ export function bibTitle(record) {
   }
 }
 
-// Aleph supports only two queries with or -operator (This is not true,)
 // eslint-disable-next-line max-statements
 export function bibStandardIdentifiers(record) {
 
@@ -91,10 +90,36 @@ export function bibStandardIdentifiers(record) {
   debug(`Creating queries for standard identifiers`);
 
   const fields = record.get(/^(?<def>020|022|024)$/u);
-  const identifiers = fields.map(toIdentifiers);
-  const pairs = identifiers.reduce(toPairs, []);
+  const identifiers = [].concat(...fields.map(toIdentifiers));
+  const uniqueIdentifiers = [...new Set(identifiers)];
 
-  return pairs.map(([a, b]) => b ? `dc.identifier=${a} or dc.identifier=${b}` : `dc.identifier=${a}`);
+  debug(`Identifiers (${identifiers.length}): ${JSON.stringify(identifiers)}`);
+  debug(`Standard identifier fields: ${JSON.stringify(fields)}`);
+  debug(`Unique identifiers (${uniqueIdentifiers.length}): ${JSON.stringify(uniqueIdentifiers)}`);
+
+  if (uniqueIdentifiers.length < 1) {
+    return [];
+  }
+
+  return toQueries(uniqueIdentifiers);
+
+  function toQueries(identifiers) {
+    // Aleph supports only two queries with or -operator (This is not actually true)
+    const pairs = toPairs(identifiers);
+    const queries = pairs.map(([a, b]) => b ? `dc.identifier=${a} or dc.identifier=${b}` : `dc.identifier=${a}`);
+
+    debug(`Pairs (${pairs.length}): ${JSON.stringify(pairs)}`);
+    debug(`Queries (${queries.length}): ${JSON.stringify(queries)}`);
+
+    return queries;
+
+    function toPairs(array) {
+      if (array.length === 0) {
+        return [];
+      }
+      return [array.slice(0, 2)].concat(toPairs(array.slice(2), 2));
+    }
+  }
 
   function toIdentifiers({tag, subfields}) {
     const issnIsbnReqExp = (/^[A-Za-z0-9-]+$/u);
@@ -114,21 +139,5 @@ export function bibStandardIdentifiers(record) {
     return subfields
       .filter(sub => ['a', 'z'].includes(sub.code) && sub.value !== undefined)
       .map(({value}) => value);
-  }
-
-  function toPairs(results, identifier) {
-
-    const [tail] = results.slice(-1);
-
-    if (tail) {
-      if (tail.length === 2) {
-        return results.concat([[identifier]]);
-      }
-
-      const head = results.slice(0, -1);
-      return head.concat([tail.concat(identifier)]);
-    }
-
-    return results.concat([identifier]);
   }
 }

@@ -1,6 +1,6 @@
 {
-  "description": "DISABLED: Should not generate standard identifier query from identifier value including not allowed characters (ISSN)",
-  "enabled": false,
+  "description": "Should not generate standard identifier query from identifier value including not allowed characters (ISSN)",
+  "enabled": true,
   "type": "bibStandardIdentifiers",
   "expectedQuery": [],
   "inputRecord": {
