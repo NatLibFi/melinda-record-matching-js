@@ -53,12 +53,28 @@ export default () => {
       ...record.getFields('035', [{code: 'z', value: /^FCC\d{9}$/u}]).map(field => clearPrefixFcc(field))
     ];
 */
+
+    /* return subfields
+        .filter(sub => ['a', 'z', 'y'].includes(sub.code) && issnIsbnReqExp.test(sub.value) && sub.value !== undefined)
+        .map(({value}) => value);
+*/
+
     // eslint-disable-next-line no-unused-vars
     const f035s = record.getFields('035');
     const f035Subfields = f035s.map(field => field.subfields.filter(subfield => subfield.code === 'a'));
     //  const f035MelindaIds = record.getFields('035', [{code: 'a', value: /^\(FI-MELINDA\)\d{9}$/u}]);
-    const f035MelindaIds = record.getFields('035').map(field => field.subfields);
+    const f035MelindaIds = f035s.map(toMelindaIds);
 
+    function toMelindaIds({subfields}) {
+      const melindaIdRegExp1 = /^\(FI-MELINDA\)(?<id>\d{9})$/u;
+      const melindaIdRegExp2 = /^FCC(?<id>\d{9})$/u;
+
+      return subfields
+        .filter(sub => ['a', 'z'].includes(sub.code))
+        .filter(sub => melindaIdRegExp1.test(sub.value) || melindaIdRegExp2.test(sub.value))
+        .map(({value}) => value);
+
+    }
 
     // eslint-disable-next-line no-console
     console.log(`Fields: ${JSON.stringify(f035s)}`);
