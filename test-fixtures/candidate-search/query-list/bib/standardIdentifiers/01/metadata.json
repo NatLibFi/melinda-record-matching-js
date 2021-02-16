@@ -1,5 +1,5 @@
 {
-  "description": "Should generate title query",
+  "description": "Should generate standard identifier query (ISBN)",
   "type": "bibStandardIdentifiers",
   "expectedQuery": [
     "dc.identifier=951-772-249-4 or dc.identifier=951-8915-60-1",

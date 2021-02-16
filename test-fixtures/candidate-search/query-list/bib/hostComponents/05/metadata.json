@@ -1,0 +1,45 @@
+{
+  "description": "DISABLED: Should generate host record query (several f773)",
+  "enabled": false,
+  "type": "bibHostComponents",
+  "expectedQuery": ["melinda.partsofhost=12345"],
+  "inputRecord": {
+    "leader": "02518cam a2200745zi 4500",
+    "fields": [
+      {
+        "tag": "001",
+        "value": "000019643"
+      },
+      {
+        "tag": "773",
+        "ind1": " ",
+        "ind2": " ",
+        "subfields": [
+          {
+            "code": "a",
+            "value": "foobar"
+          },
+          {
+            "code": "w",
+            "value": "(VIOLA)9999912345"
+          }
+        ]
+      },
+      {
+        "tag": "773",
+        "ind1": " ",
+        "ind2": " ",
+        "subfields": [
+          {
+            "code": "a",
+            "value": "foobar"
+          },
+          {
+            "code": "w",
+            "value": "(FIN01)12345"
+          }
+        ]
+      }
+    ]
+  }
+}

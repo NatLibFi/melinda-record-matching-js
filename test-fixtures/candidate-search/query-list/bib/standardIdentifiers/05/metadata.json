@@ -1,0 +1,37 @@
+{
+  "description": "DISABLED: Should generate standard identifier query (ISBN, f020 with several subfields $z)",
+  "enabled": false,
+  "type": "bibStandardIdentifiers",
+  "expectedQuery": [
+    "dc.identifier=951-772-249-4 or dc.identifier=951-772-249-X",
+    "dc.identifier=9999-772-249-4"
+  ],
+  "inputRecord": {
+    "leader": "02518cam a2200745zi 4500",
+    "fields": [
+      {
+        "tag": "001",
+        "value": "000019643"
+      },
+      {
+        "tag": "020",
+        "ind1": " ",
+        "ind2": " ",
+        "subfields": [
+          {
+            "code": "a",
+            "value": "951-772-249-4"
+          },
+          {
+            "code": "z",
+            "value": "951-772-249-X"
+          },
+          {
+            "code": "z",
+            "value": "9999-772-249-4"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,7 +1,7 @@
 {
-  "description": "Should generate standard identifier query (ISSN)",
+  "description": "Should generate standard identifier query from f024 (URN)",
   "type": "bibStandardIdentifiers",
-  "expectedQuery": ["dc.identifier=2049-3630"],
+  "expectedQuery": ["dc.identifier=URN:NBN:fi-fe202002216161"],
   "inputRecord": {
     "leader": "02518cam a2200745zi 4500",
     "fields": [
@@ -10,13 +10,17 @@
         "value": "000019643"
       },
       {
-        "tag": "022",
-        "ind1": " ",
+        "tag": "024",
+        "ind1": "7",
         "ind2": " ",
         "subfields": [
           {
             "code": "a",
-            "value": "2049-3630"
+            "value": "URN:NBN:fi-fe202002216161"
+          },
+          {
+            "code": "2",
+            "value": "urn"
           }
         ]
       }

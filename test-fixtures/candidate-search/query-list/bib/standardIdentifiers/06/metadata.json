@@ -1,5 +1,6 @@
 {
-  "description": "Should generate standard identifier query (ISSN)",
+  "description": "DISABLED: Should not generate 'undefined' standard identifier query (ISSN with colon)",
+  "enabled": false,
   "type": "bibStandardIdentifiers",
   "expectedQuery": ["dc.identifier=2049-3630"],
   "inputRecord": {
@@ -16,7 +17,7 @@
         "subfields": [
           {
             "code": "a",
-            "value": "2049-3630"
+            "value": "2049:3630"
           }
         ]
       }

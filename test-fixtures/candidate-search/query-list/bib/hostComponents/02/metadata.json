@@ -1,5 +1,5 @@
 {
-  "description": "Should generate host record query (No 773)",
+  "description": "Should not generate host record query (No 773)",
   "type": "bibHostComponents",
   "expectedQuery": [],
   "inputRecord": {

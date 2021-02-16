@@ -26,7 +26,10 @@
 * for the JavaScript code in this file.
 *
 */
+import createDebugLogger from 'debug';
 
+// bibHostComponents returns host id from the first subfield $w of first field f773, see test-fixtures 04 and 05
+// bibHostComponents should search all 773 $ws for possible host id, but what should it do in case of multiple host ids?
 export function bibHostComponents(record) {
   const id = getHostId();
   return id ? [`melinda.partsofhost=${id}`] : [];
@@ -44,7 +47,10 @@ export function bibHostComponents(record) {
       if (value && (/^\(FIN01\)/u).test(value)) {
         return value.replace(/^\(FIN01\)/u, '');
       }
+
+      return false;
     }
+    return false;
   }
 }
 
@@ -73,11 +79,17 @@ export function bibTitle(record) {
         .map(({value}) => value)
         .join('');
     }
+    return false;
   }
 }
 
-// Aleph supports only two queries with or -operator
+// Aleph supports only two queries with or -operator (This is not true,)
+// eslint-disable-next-line max-statements
 export function bibStandardIdentifiers(record) {
+
+  const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:query:bibStandardIdentifiers');
+  debug(`Creating queries for standard identifiers`);
+
   const fields = record.get(/^(?<def>020|022|024)$/u);
   const identifiers = fields.map(toIdentifiers);
   const pairs = identifiers.reduce(toPairs, []);
@@ -85,27 +97,27 @@ export function bibStandardIdentifiers(record) {
   return pairs.map(([a, b]) => b ? `dc.identifier=${a} or dc.identifier=${b}` : `dc.identifier=${a}`);
 
   function toIdentifiers({tag, subfields}) {
+    const issnIsbnReqExp = (/^[A-Za-z0-9-]+$/u);
+
     if (tag === '022') {
       return subfields
-        .filter(createFilter('a', 'z', 'y'))
+        .filter(sub => ['a', 'z', 'y'].includes(sub.code) && issnIsbnReqExp.test(sub.value) && sub.value !== undefined)
         .map(({value}) => value);
     }
-    return subfields
-      .filter(createFilter('a', 'z'))
-      .map(({value}) => value);
 
-
-    function createFilter(...codes) {
-      return ({code, value}) => {
-        if (codes.includes(code)) {
-          // Standard identifiers should only contain letters, numbers and dashes
-          return value && (/^[A-Za-z0-9\-]+$/u).test(value); // eslint-disable-line no-useless-escape
-        }
-      };
+    if (tag === '020') {
+      return subfields
+        .filter(sub => ['a', 'z'].includes(sub.code) && issnIsbnReqExp.test(sub.value) && sub.value !== undefined)
+        .map(({value}) => value);
     }
+
+    return subfields
+      .filter(sub => ['a', 'z'].includes(sub.code) && sub.value !== undefined)
+      .map(({value}) => value);
   }
 
   function toPairs(results, identifier) {
+
     const [tail] = results.slice(-1);
 
     if (tail) {

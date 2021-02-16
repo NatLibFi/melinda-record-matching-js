@@ -1,7 +1,8 @@
 {
-  "description": "Should generate standard identifier query (ISSN)",
+  "description": "DISABLED: Should not generate standard identifier query from identifier value including not allowed characters (ISSN)",
+  "enabled": false,
   "type": "bibStandardIdentifiers",
-  "expectedQuery": ["dc.identifier=2049-3630"],
+  "expectedQuery": [],
   "inputRecord": {
     "leader": "02518cam a2200745zi 4500",
     "fields": [
@@ -16,7 +17,7 @@
         "subfields": [
           {
             "code": "a",
-            "value": "2049-3630"
+            "value": "  :204 9-3630??"
           }
         ]
       }
