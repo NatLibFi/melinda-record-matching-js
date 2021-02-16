@@ -1,0 +1,26 @@
+{
+  "description": "DISABLED: Should not generate standard identifier query from identifier value including not allowed characters (ISSN)",
+  "enabled": false,
+  "type": "bibStandardIdentifiers",
+  "expectedQuery": [],
+  "inputRecord": {
+    "leader": "02518cam a2200745zi 4500",
+    "fields": [
+      {
+        "tag": "001",
+        "value": "000019643"
+      },
+      {
+        "tag": "022",
+        "ind1": " ",
+        "ind2": " ",
+        "subfields": [
+          {
+            "code": "a",
+            "value": "  :204 9-3630??"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -97,41 +97,23 @@ export function bibStandardIdentifiers(record) {
   return pairs.map(([a, b]) => b ? `dc.identifier=${a} or dc.identifier=${b}` : `dc.identifier=${a}`);
 
   function toIdentifiers({tag, subfields}) {
+    const issnIsbnReqExp = (/^[A-Za-z0-9-]+$/u);
 
     if (tag === '022') {
       return subfields
-        .filter(createFilterIsbnIssn('a', 'z', 'y'))
+        .filter(sub => ['a', 'z', 'y'].includes(sub.code) && issnIsbnReqExp.test(sub.value) && sub.value !== undefined)
         .map(({value}) => value);
     }
 
     if (tag === '020') {
       return subfields
-        .filter(createFilterIsbnIssn('a', 'z'))
+        .filter(sub => ['a', 'z'].includes(sub.code) && issnIsbnReqExp.test(sub.value) && sub.value !== undefined)
         .map(({value}) => value);
     }
 
     return subfields
-      .filter(createFilter('a', 'z'))
+      .filter(sub => ['a', 'z'].includes(sub.code) && sub.value !== undefined)
       .map(({value}) => value);
-
-    function createFilterIsbnIssn(...codes) {
-      return ({code, value}) => {
-
-        if (codes.includes(code)) {
-          // Standard identifiers ISBN and ISSN should only contain letters, numbers and dashes
-          return value && (/^[A-Za-z0-9\-]+$/u).test(value); // eslint-disable-line no-useless-escape
-        }
-      };
-    }
-
-    function createFilter(...codes) {
-      return ({code, value}) => {
-
-        if (codes.includes(code)) {
-          return value;
-        }
-      };
-    }
   }
 
   function toPairs(results, identifier) {
