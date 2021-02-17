@@ -1,5 +1,5 @@
 {
-  "description": "DISABLED: Should not generate queries for non valid identifiers (only punctuation+whitespace)",
+  "description": "Should not generate queries for non valid identifiers (only punctuation+whitespace)",
   "enabled": true,
   "type": "bibStandardIdentifiers",
   "expectedQuery": [
