@@ -1,6 +1,5 @@
 {
   "description": "Should not generate queries for non valid identifiers (only punctuation+whitespace)",
-  "enabled": true,
   "type": "bibStandardIdentifiers",
   "expectedQuery": [
     "dc.identifier=951-772-249-4"

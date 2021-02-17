@@ -1,6 +1,5 @@
 {
   "description": "Should generate queries only for unique identifiers",
-  "enabled": true,
   "type": "bibStandardIdentifiers",
   "expectedQuery": [
     "dc.identifier=951-772-249-4 or dc.identifier=951-772-249-X"

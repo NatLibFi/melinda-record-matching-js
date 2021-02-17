@@ -1,6 +1,5 @@
 {
   "description": "Should not generate 'undefined' standard identifier query (ISSN with colon)",
-  "enabled": true,
   "type": "bibStandardIdentifiers",
   "expectedQuery": [],
   "inputRecord": {

@@ -1,6 +1,5 @@
 {
   "description": "Should not generate standard identifier query from identifier value that includes just whitespace (ISSN)",
-  "enabled": true,
   "type": "bibStandardIdentifiers",
   "expectedQuery": [],
   "inputRecord": {

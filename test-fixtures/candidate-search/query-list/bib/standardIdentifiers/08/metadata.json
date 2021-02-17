@@ -1,6 +1,5 @@
 {
   "description": "Should not generate queries from fields with no valid subfields",
-  "enabled": true,
   "type": "bibStandardIdentifiers",
   "expectedQuery": [],
   "inputRecord": {
