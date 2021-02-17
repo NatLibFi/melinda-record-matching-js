@@ -38,7 +38,13 @@ generateTests({
   fixura: {
     reader: READERS.JSON
   },
-  callback: ({feature, options, type, ...expectations}) => {
+  // eslint-disable-next-line max-statements
+  callback: ({enabled = true, feature, options, type, ...expectations}) => {
+
+    if (!enabled) {
+      return;
+    }
+
     if (type === 'extract') {
       const {expectedFeatures, inputRecord} = expectations;
       const record = new MarcRecord(inputRecord, {subfieldValues: false});
