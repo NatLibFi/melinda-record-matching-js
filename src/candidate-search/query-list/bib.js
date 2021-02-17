@@ -123,6 +123,7 @@ export function bibStandardIdentifiers(record) {
 
   function toIdentifiers({tag, subfields}) {
     const issnIsbnReqExp = (/^[A-Za-z0-9-]+$/u);
+    const otherIdReqExp = (/^[A-Za-z0-9-:]+$/u);
 
     if (tag === '022') {
       return subfields
@@ -137,7 +138,7 @@ export function bibStandardIdentifiers(record) {
     }
 
     return subfields
-      .filter(sub => ['a', 'z'].includes(sub.code) && sub.value !== undefined)
+      .filter(sub => ['a', 'z'].includes(sub.code) && otherIdReqExp.test(sub.value) && sub.value !== undefined)
       .map(({value}) => value);
   }
 }
