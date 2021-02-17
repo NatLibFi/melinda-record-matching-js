@@ -87,17 +87,19 @@ export function bibTitle(record) {
 export function bibStandardIdentifiers(record) {
 
   const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:query:bibStandardIdentifiers');
+  const debugData = debug.extend('data');
   debug(`Creating queries for standard identifiers`);
 
   const fields = record.get(/^(?<def>020|022|024)$/u);
   const identifiers = [].concat(...fields.map(toIdentifiers));
   const uniqueIdentifiers = [...new Set(identifiers)];
 
-  debug(`Identifiers (${identifiers.length}): ${JSON.stringify(identifiers)}`);
-  debug(`Standard identifier fields: ${JSON.stringify(fields)}`);
-  debug(`Unique identifiers (${uniqueIdentifiers.length}): ${JSON.stringify(uniqueIdentifiers)}`);
+  debugData(`Standard identifier fields: ${JSON.stringify(fields)}`);
+  debugData(`Identifiers (${identifiers.length}): ${JSON.stringify(identifiers)}`);
+  debugData(`Unique identifiers (${uniqueIdentifiers.length}): ${JSON.stringify(uniqueIdentifiers)}`);
 
   if (uniqueIdentifiers.length < 1) {
+    debug(`No identifiers found, no queries created.`);
     return [];
   }
 
@@ -108,8 +110,8 @@ export function bibStandardIdentifiers(record) {
     const pairs = toPairs(identifiers);
     const queries = pairs.map(([a, b]) => b ? `dc.identifier=${a} or dc.identifier=${b}` : `dc.identifier=${a}`);
 
-    debug(`Pairs (${pairs.length}): ${JSON.stringify(pairs)}`);
-    debug(`Queries (${queries.length}): ${JSON.stringify(queries)}`);
+    debugData(`Pairs (${pairs.length}): ${JSON.stringify(pairs)}`);
+    debugData(`Queries (${queries.length}): ${JSON.stringify(queries)}`);
 
     return queries;
 
