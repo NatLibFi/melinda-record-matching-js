@@ -42,8 +42,12 @@ generateTests({
 });
 
 // eslint-disable-next-line max-statements
-async function callback({getFixture, factoryOptions, searchOptions, expectedFactoryError, expectedSearchError}) {
+async function callback({getFixture, factoryOptions, searchOptions, expectedFactoryError, expectedSearchError, enabled = true}) {
   const url = 'http://foo.bar';
+
+  if (!enabled) {
+    return;
+  }
 
   if (expectedFactoryError) {
     if (expectedFactoryError.isCandidateSearchError) {

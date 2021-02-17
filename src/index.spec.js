@@ -41,7 +41,12 @@ generateTests({
   }
 });
 
-async function callback({getFixture, options}) {
+async function callback({getFixture, options, enabled = true}) {
+
+  if (!enabled) {
+    return;
+  }
+
   const record = new MarcRecord(getFixture('inputRecord.json'), {subfieldValues: false});
   const expectedMatches = getFixture('expectedMatches.json');
 

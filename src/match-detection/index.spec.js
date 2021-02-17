@@ -40,7 +40,12 @@ generateTests({
   fixura: {
     reader: READERS.JSON
   },
-  callback: ({getFixture, options, expectedResults}) => {
+  callback: ({getFixture, options, expectedResults, enabled = true}) => {
+
+    if (!enabled) {
+      return;
+    }
+
     const detect = createDetectionInterface(formatOptions());
     const recordA = new MarcRecord(getFixture('recordA.json'));
     const recordB = new MarcRecord(getFixture('recordB.json'));
