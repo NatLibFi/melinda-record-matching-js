@@ -1,5 +1,5 @@
 {
-  "description": "Should not generate 'undefined' standard identifier query (ISSN with colon)",
+  "description": "Should not generate queries from fields with no valid subfields",
   "type": "bibStandardIdentifiers",
   "expectedQuery": [],
   "inputRecord": {
@@ -15,8 +15,8 @@
         "ind2": " ",
         "subfields": [
           {
-            "code": "a",
-            "value": "2049:3630"
+            "code": "e",
+            "value": "2049-3630"
           }
         ]
       }

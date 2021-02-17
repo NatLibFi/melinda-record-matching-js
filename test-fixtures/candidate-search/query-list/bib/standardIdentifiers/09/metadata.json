@@ -1,5 +1,5 @@
 {
-  "description": "Should not generate 'undefined' standard identifier query (ISSN with colon)",
+  "description": "Should not generate standard identifier query from identifier value that includes just whitespace (ISSN)",
   "type": "bibStandardIdentifiers",
   "expectedQuery": [],
   "inputRecord": {
@@ -16,7 +16,7 @@
         "subfields": [
           {
             "code": "a",
-            "value": "2049:3630"
+            "value": " "
           }
         ]
       }
