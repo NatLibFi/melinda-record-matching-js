@@ -1,0 +1,67 @@
+{
+  "description": "Should deduplicate extracted Melinda-IDs",
+  "feature": "melindaId",
+  "type": "extract",
+  "expectedFeatures": {
+    "isMelindaRecord": true,
+    "f001": "000019643",
+    "f035MelindaIds": [
+      "121234567",
+      "221234567",
+      "321234567",
+      "201234567",
+      "301234567"
+    ]
+  },
+  "inputRecord": {
+    "leader": "02518cam a2200745zi 4500",
+    "fields": [
+      {
+        "tag": "001",
+        "value": "000019643"
+      },
+      {
+        "tag": "003",
+        "value": "FI-MELINDA"
+      },
+      {
+        "tag": "035",
+        "ind1": " ",
+        "ind2": " ",
+        "subfields": [
+          {
+            "code": "a",
+            "value": "FCC121234567"
+          },
+          {
+            "code": "z",
+            "value": "(FI-MELINDA)221234567"
+          },
+          {
+            "code": "z",
+            "value": "FCC321234567"
+          }
+        ]
+      },
+      {
+        "tag": "035",
+        "ind1": " ",
+        "ind2": " ",
+        "subfields": [
+          {
+            "code": "a",
+            "value": "(FI-MELINDA)121234567"
+          },
+          {
+            "code": "z",
+            "value": "FCC201234567"
+          },
+          {
+            "code": "z",
+            "value": "FCC301234567"
+          }
+        ]
+      }
+    ]
+  }
+}

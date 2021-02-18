@@ -1,10 +1,10 @@
 {
-    "description": "Should extract (old) Melinda-ID from f035 $z with FCC-prefix",
+    "description": "Should not extract ids that are misformatted",
     "feature": "melindaId",
     "type": "extract",
     "expectedFeatures": 
       {
-        "isMelindaRecord": true, "f001": "000019643", "f035MelindaIds": ["001234567"]
+        "isMelindaRecord": true, "f001": "000019643", "f035MelindaIds": []
       }
     ,
     "inputRecord": {
@@ -25,11 +25,23 @@
           "subfields": [
             {
               "code": "z",
-              "value": "FCC001234567"
+              "value": "(FCC)001234567"
             },
             {
-              "code": "9",
-              "value": "FCC001234568"
+              "code": "z",
+              "value": "FI-MELINDA001234567"
+            },
+            {
+              "code": "z",
+              "value": "FCC123"
+            },
+            {
+              "code": "z",
+              "value": "(FI-MELINDA)134567890000"
+            },
+            {
+              "code": "z",
+              "value": "001234567"
             }
           ]
         }

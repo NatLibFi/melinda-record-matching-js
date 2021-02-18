@@ -27,6 +27,8 @@
 *
 */
 
+import createDebugLogger from 'debug';
+
 // 003+001 FI-MELINDA <melinda-id>
 // 035 $a (FI-MELINDA)<melinda-id>
 // 035 $z (FI-MELINDA)<melinda-id>
@@ -35,75 +37,55 @@
 // melinda-id = 001234567
 
 export default () => {
+
+  const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection:features/bib/melinda-id');
+  const debugData = debug.extend('data');
+
   return {extract, compare};
 
-  // record.getFields('245', [{code: 'a', value: 'foo'}]);
-
-  // eslint-disable-next-line max-statements
   function extract(record) {
 
     const isMelindaRecord = record.get('003').some(f003 => f003.value === 'FI-MELINDA');
     const [f001] = record.get('001').map(field => field.value);
-
-    /*
-    const f035MelindaIds = [
-      ...record.getFields('035', [{code: 'a', value: /^\(FI-MELINDA\)\d{9}$/u}]).map(field => clearPrefixFiMelinda(field)),
-      ...record.getFields('035', [{code: 'z', value: /^\(FI-MELINDA\)\d{9}$/u}]).map(field => clearPrefixFiMelinda(field)),
-      ...record.getFields('035', [{code: 'a', value: /^FCC\d{9}$/u}]).map(field => clearPrefixFcc(field)),
-      ...record.getFields('035', [{code: 'z', value: /^FCC\d{9}$/u}]).map(field => clearPrefixFcc(field))
-    ];
-*/
-
-    /* return subfields
-        .filter(sub => ['a', 'z', 'y'].includes(sub.code) && issnIsbnReqExp.test(sub.value) && sub.value !== undefined)
-        .map(({value}) => value);
-*/
-
-    // eslint-disable-next-line no-unused-vars
-    const f035s = record.getFields('035');
-    const f035Subfields = f035s.map(field => field.subfields.filter(subfield => subfield.code === 'a'));
-    //  const f035MelindaIds = record.getFields('035', [{code: 'a', value: /^\(FI-MELINDA\)\d{9}$/u}]);
-    const f035MelindaIds = f035s.map(toMelindaIds);
-
-    function toMelindaIds({subfields}) {
-      const melindaIdRegExp1 = /^\(FI-MELINDA\)(?<id>\d{9})$/u;
-      const melindaIdRegExp2 = /^FCC(?<id>\d{9})$/u;
-
-      return subfields
-        .filter(sub => ['a', 'z'].includes(sub.code))
-        .filter(sub => melindaIdRegExp1.test(sub.value) || melindaIdRegExp2.test(sub.value))
-        .map(({value}) => value);
-
-    }
-
-    // eslint-disable-next-line no-console
-    console.log(`Fields: ${JSON.stringify(f035s)}`);
-
-    // eslint-disable-next-line no-console
-    console.log(`Subfields: ${JSON.stringify(f035Subfields)}`);
-
-
-    // eslint-disable-next-line no-console
-    console.log(`Ids: ${JSON.stringify(f035MelindaIds)}`);
+    const f035MelindaIds = getMelindaIds(record);
 
     if (
       isMelindaRecord === undefined &&
       f001 === undefined &&
       f035MelindaIds.length < 1) {
+
+      debug(`No Melinda-IDs found`);
       return [];
     }
 
     return {isMelindaRecord, f001, f035MelindaIds};
 
-    // eslint-disable-next-line no-unused-vars
-    function clearPrefixFiMelinda(field) {
-      return field.subfields.filter(subfield => (subfield.code === 'a' && (/^\(FI-MELINDA\)/u).test(subfield.value)) || (subfield.code === 'z' && (/^\(FI-MELINDA\)/u).test(subfield.value)))
-        .map(subfield => subfield.value.replace('(FI-MELINDA)', ''));
+    function getMelindaIds(record) {
+      const f035s = record.getFields('035');
+
+      if (f035s.length < 1) {
+        debug(`No f035s found.`);
+        return [];
+      }
+
+      const allF035MelindaIds = [].concat(...f035s.map(toMelindaIds));
+      const f035MelindaIds = [...new Set(allF035MelindaIds)];
+
+      debugData(`Fields (${f035s.length}): ${JSON.stringify(f035s)}`);
+      debugData(`Ids (${allF035MelindaIds.length}): ${JSON.stringify(allF035MelindaIds)}`);
+      debugData(`Unique ids (${f035MelindaIds.length}): ${JSON.stringify(f035MelindaIds)}`);
+
+      return f035MelindaIds;
     }
-    // eslint-disable-next-line no-unused-vars
-    function clearPrefixFcc(field) {
-      return field.subfields.filter(subfield => (subfield.code === 'a' && (/^FCC/u).test(subfield.value)) || (subfield.code === 'z' && (/^FCC/u).test(subfield.value)))
-        .map(subfield => subfield.value.replace('FCC', ''));
+
+    function toMelindaIds({subfields}) {
+      const melindaIdRegExp = /^(?<prefix>\(FI-MELINDA\)|FCC)(?<id>\d{9})$/u;
+
+      return subfields
+        .filter(sub => ['a', 'z'].includes(sub.code))
+        .filter(sub => melindaIdRegExp.test(sub.value))
+        .map(({value}) => value.replace(melindaIdRegExp, '$<id>'));
+
     }
   }
 

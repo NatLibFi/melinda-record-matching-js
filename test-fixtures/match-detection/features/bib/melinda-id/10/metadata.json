@@ -1,10 +1,10 @@
 {
-    "description": "Should extract (non-)Melinda-ID from f001 and Melinda-recordness (false) from f003",
+    "description": "Should extract (old) Melinda-ID from f035 $z with FCC-prefix",
     "feature": "melindaId",
     "type": "extract",
     "expectedFeatures": 
       {
-        "isMelindaRecord": false, "f001": "000019643", "f035MelindaIds": []
+        "isMelindaRecord": true, "f001": "000019643", "f035MelindaIds": ["001234567"]
       }
     ,
     "inputRecord": {
@@ -16,20 +16,16 @@
         },
         {
           "tag": "003",
-          "value": "not-fi-melinda"
+          "value": "FI-MELINDA"
         },
         {
-          "tag": "SID",
+          "tag": "035",
           "ind1": " ",
           "ind2": " ",
           "subfields": [
             {
-              "code": "c",
-              "value": "978000"
-            },
-            {
-              "code": "b",
-              "value": "FI-KV"
+              "code": "z",
+              "value": "FCC001234567"
             }
           ]
         }
