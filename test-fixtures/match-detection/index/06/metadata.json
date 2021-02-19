@@ -1,5 +1,5 @@
 {
-  "description": "Should detect a match (All features for content match)",
+  "description": "Should not detect a match (All features for content match)",
   "options": {
     "strategy": {
       "type": "bib",
@@ -18,7 +18,7 @@
     }
   },
   "expectedResults": {
-    "match": true,
-    "probability": 1.0
+    "match": false,
+    "probability": 0.75
   }
 }

@@ -33,14 +33,25 @@
       ]
     },
     {
-      "tag": "035",
+      "tag": "SID",
       "ind1": " ",
       "ind2": " ",
       "subfields": [
         {
-          "code": "a",
-          "value": "(FI-MELINDA)015290020"
+          "code": "c",
+          "value": "9999999"
         },
+        {
+          "code": "b",
+          "value": "FI-KV"
+        }
+      ]
+    },
+    {
+      "tag": "035",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
         {
           "code": "a",
           "value": "(FI-MELINDA)016661494"

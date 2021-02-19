@@ -1,5 +1,5 @@
 {
-  "description": "Should detect a match (All features for ID match)",
+  "description": "Should not detect a match (All features for ID match)",
   "options": {
     "strategy": {
       "type": "bib",
@@ -10,7 +10,7 @@
     }
   },
   "expectedResults": {
-    "match": true,
-    "probability": 1
+    "match": false,
+    "probability": 0
   }
 }

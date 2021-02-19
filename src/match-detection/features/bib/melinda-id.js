@@ -28,12 +28,6 @@
 
 import createInterface from './melinda-identifier-factory';
 
-// 003+001 FI-MELINDA <melinda-id>
-// 035 $a (FI-MELINDA)<melinda-id>
-// 035 $z (FI-MELINDA)<melinda-id>
-// 035 $a FCC<melinda-id>
-// 035 $z FCC<melinda-id>
-
 export default () => {
   const {extract, compare} = createInterface();
   return {extract, compare, name: 'melinda-id'};

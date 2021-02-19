@@ -1,4 +1,3 @@
-/* eslint-disable no-extra-parens */
 /**
 *
 * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -55,7 +54,7 @@ export default () => {
       f035MelindaIds.length < 1) {
 
       debug(`No Melinda-IDs found`);
-      return [];
+      return {};
     }
 
     return {isMelindaRecord, f001, f035MelindaIds};
@@ -89,25 +88,33 @@ export default () => {
     }
   }
 
+  // eslint-disable-next-line max-statements
   function compare(a, b) {
 
-    if (a.isMelindaRecord && b.isMelindaRecord && a.f001 === b.f001) {
+    if (a.isMelindaRecord && b.isMelindaRecord &&
+        a.f001 === b.f001) {
+      debugData(`Melinda record's A f001 ${a.f001} matches Melinda record's B f001 ${a.f001}`);
       return 1;
     }
 
-    if (a.isMelindaRecord && b.f035MelindaIds.some(id => id === a.f001)) {
+    if (a.isMelindaRecord && typeof b.f035MelindaIds !== 'undefined' &&
+        b.f035MelindaIds.some(id => id === a.f001)) {
+      debugData(`Melinda record's A f001 ${a.f001} matches record B f035 ${JSON.stringify(b.f035MelindaIds)}`);
       return 1;
     }
 
-    if (b.isMelindaRecord && a.f035MelindaIds.some(id => id === b.f001)) {
+    if (b.isMelindaRecord && typeof a.f035MelindaIds !== 'undefined' &&
+        a.f035MelindaIds.some(id => id === b.f001)) {
+      debugData(`Melinda record's B f001 ${b.f001} matches record A f035 ${JSON.stringify(a.f035MelindaIds)}`);
       return 1;
     }
 
-    if (a.f035MelindaIds.some(idA => b.f035MelindaIds.some(idB => idB === idA))) {
+    if (typeof a.f035MelindaIds !== 'undefined' && typeof b.f035MelindaIds !== 'undefined' &&
+         a.f035MelindaIds.some(idA => b.f035MelindaIds.some(idB => idB === idA))) {
+      debugData(`Record A f035 ${JSON.stringify(a.f035MelindaIds)} matches record B f035 ${JSON.stringify(b.f035MelindaIds)}`);
       return 1;
     }
-
+    debug(`No matching Melinda-IDs.`);
     return 0;
-
   }
 };
