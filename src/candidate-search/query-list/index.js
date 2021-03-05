@@ -32,7 +32,8 @@ export const searchTypes = {
   bib: {
     standardIdentifiers: 'bibStandardIdentifiers',
     hostComponents: 'bibHostComponents',
-    title: 'bibTitle'
+    title: 'bibTitle',
+    melindaId: 'bibMelindaIds'
   }
 };
 

@@ -27,6 +27,44 @@
 *
 */
 import createDebugLogger from 'debug';
+import {getMelindaIds} from '../../matching-commons';
+
+
+export function bibMelindaIds(record) {
+  const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:query:bibMelindaIds');
+  const debugData = debug.extend('data');
+  debug(`Creating queries for MelindaIds`);
+
+  const melindaIds = getMelindaIds(record);
+
+  debugData(`Unique identifiers (${melindaIds.length}): ${JSON.stringify(melindaIds)}`);
+
+  if (melindaIds.length < 1) {
+    debug(`No identifiers found, no queries created.`);
+    return [];
+  }
+
+  return toQueries(melindaIds);
+
+  function toQueries(identifiers) {
+    // Aleph supports only two queries with or -operator (This is not actually true)
+    const pairs = toPairs(identifiers);
+    const queries = pairs.map(([a, b]) => b ? `melinda.melindaid=${a} or melinda.melindaid=${b}` : `melinda.melindaid=${a}`);
+
+    debugData(`Pairs (${pairs.length}): ${JSON.stringify(pairs)}`);
+    debugData(`Queries (${queries.length}): ${JSON.stringify(queries)}`);
+
+    return queries;
+
+    function toPairs(array) {
+      if (array.length === 0) {
+        return [];
+      }
+      return [array.slice(0, 2)].concat(toPairs(array.slice(2), 2));
+    }
+  }
+}
+
 
 // bibHostComponents returns host id from the first subfield $w of first field f773, see test-fixtures 04 and 05
 // bibHostComponents should search all 773 $ws for possible host id, but what should it do in case of multiple host ids?

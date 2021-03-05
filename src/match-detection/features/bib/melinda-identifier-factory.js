@@ -27,7 +27,7 @@
 */
 
 import createDebugLogger from 'debug';
-import getMelindaIds from '../../../matching-commons';
+import {getMelindaIds} from '../../../matching-commons';
 
 // 003+001 FI-MELINDA <melinda-id>
 // 035 $a (FI-MELINDA)<melinda-id>
