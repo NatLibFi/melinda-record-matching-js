@@ -25,8 +25,13 @@
 * for the JavaScript code in this file.
 *
 */
+import createDebugLogger from 'debug';
 
 export default ({sourceValue, subfieldCodes}) => {
+
+  const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection:features/bib/kv-id');
+  const debugData = debug.extend('data');
+
   return {extract, compare};
 
   function extract(record) {
@@ -36,23 +41,28 @@ export default ({sourceValue, subfieldCodes}) => {
     // Records should have only one SID per source.
 
     if (field) {
+      debugData(`SID field for source ${sourceValue}: ${JSON.stringify(field)}`);
       return field.subfields
         .filter(({code}) => subfieldCodes.includes(code));
     }
 
+    debugData(`No SID field for source ${sourceValue} found.`);
     return [];
   }
 
   function compare(a, b) {
     if (a.length === 0 || b.length === 0) {
+      debugData(`No SIDs to compare for source ${sourceValue}.`);
       return 0;
     }
 
     if (a[0].value === b[0].value) {
+      debugData(`SIDs match for source ${sourceValue}.`);
       return 1;
     }
 
     if (a[0].value !== b[0].value) {
+      debugData(`SIDs mismatch for source ${sourceValue}.`);
       return -1;
     }
 
