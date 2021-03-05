@@ -1,5 +1,5 @@
 {
-  "description": "Should not detect a match (All features for ID match)",
+  "description": "Should not detect a match (All features for ID match, SID mismatch)",
   "options": {
     "strategy": {
       "type": "bib",
