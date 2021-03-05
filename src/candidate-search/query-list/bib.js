@@ -27,15 +27,20 @@
 *
 */
 import createDebugLogger from 'debug';
-import {getMelindaIds} from '../../matching-commons';
+import {getMelindaIdsF035} from '../../matching-commons';
 
 
 export function bibMelindaIds(record) {
+  // Melinda's SRU-index melinda.melindaid includes f001 controlnumbers and old Melinda-IDs from f035z's for all non-deleted Melinda-records
+
   const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:query:bibMelindaIds');
   const debugData = debug.extend('data');
   debug(`Creating queries for MelindaIds`);
 
-  const melindaIds = getMelindaIds(record);
+  // Note: Melinda-ID's for search queries are created just from records f035a's and f035z's
+  // Both (FI-MELINDA)- and FCC-prefixed forms are found
+  // f001 controlnumber is not currently included, even if record's f003 is FI-MELINDA
+  const melindaIds = getMelindaIdsF035(record);
 
   debugData(`Unique identifiers (${melindaIds.length}): ${JSON.stringify(melindaIds)}`);
 

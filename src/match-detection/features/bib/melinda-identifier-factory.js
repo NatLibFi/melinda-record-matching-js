@@ -27,7 +27,7 @@
 */
 
 import createDebugLogger from 'debug';
-import {getMelindaIds} from '../../../matching-commons';
+import {getMelindaIdsF035} from '../../../matching-commons';
 
 // 003+001 FI-MELINDA <melinda-id>
 // 035 $a (FI-MELINDA)<melinda-id>
@@ -47,7 +47,7 @@ export default () => {
 
     const isMelindaRecord = record.get('003').some(f003 => f003.value === 'FI-MELINDA');
     const [f001] = record.get('001').map(field => field.value);
-    const f035MelindaIds = getMelindaIds(record);
+    const f035MelindaIds = getMelindaIdsF035(record);
 
     if (
       isMelindaRecord === undefined &&

@@ -29,7 +29,7 @@
 import createDebugLogger from 'debug';
 
 // eslint-disable-next-line max-statements
-export function getMelindaIds(record) {
+export function getMelindaIdsF035(record) {
 
   const debug = createDebugLogger('@natlibfi/melinda-record-matching:melinda-id');
   const debugData = debug.extend('data');
