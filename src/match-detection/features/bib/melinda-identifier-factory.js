@@ -27,6 +27,7 @@
 */
 
 import createDebugLogger from 'debug';
+import getMelindaIds from '../../../matching-commons';
 
 // 003+001 FI-MELINDA <melinda-id>
 // 035 $a (FI-MELINDA)<melinda-id>
@@ -59,33 +60,6 @@ export default () => {
 
     return {isMelindaRecord, f001, f035MelindaIds};
 
-    function getMelindaIds(record) {
-      const f035s = record.getFields('035');
-
-      if (f035s.length < 1) {
-        debug(`No f035s found.`);
-        return [];
-      }
-
-      const allF035MelindaIds = [].concat(...f035s.map(toMelindaIds));
-      const f035MelindaIds = [...new Set(allF035MelindaIds)];
-
-      debugData(`Fields (${f035s.length}): ${JSON.stringify(f035s)}`);
-      debugData(`Ids (${allF035MelindaIds.length}): ${JSON.stringify(allF035MelindaIds)}`);
-      debugData(`Unique ids (${f035MelindaIds.length}): ${JSON.stringify(f035MelindaIds)}`);
-
-      return f035MelindaIds;
-    }
-
-    function toMelindaIds({subfields}) {
-      const melindaIdRegExp = /^(?<prefix>\(FI-MELINDA\)|FCC)(?<id>\d{9})$/u;
-
-      return subfields
-        .filter(sub => ['a', 'z'].includes(sub.code))
-        .filter(sub => melindaIdRegExp.test(sub.value))
-        .map(({value}) => value.replace(melindaIdRegExp, '$<id>'));
-
-    }
   }
 
   // eslint-disable-next-line max-statements
