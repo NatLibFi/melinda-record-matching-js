@@ -29,6 +29,112 @@
 import createDebugLogger from 'debug';
 import {getMelindaIdsF035} from '../../matching-commons';
 
+export function bibSourceIds(record) {
+
+  /* Melinda's SRU-index melinda.sourceid includes source IDs from SID fields in Melinda records
+     SID-fields in Melinda have sf $c with local id and sf $b with a code for the local db:
+
+     SID__ $c 123457 $b helka
+     SID__ $c (ANDL100020)1077305 $b sata
+     SID__ $c VER999999 $ FI-KV
+
+    In melinda.sourceid -index case is kept, sourceprefixes in brackets and hyphens are normalized away:
+
+    1234567helka
+    1077305sata
+    VER999999FIKV
+
+    Note: All Melinda records that have a matching records in a local db do NOT have SID for that local records,
+          existence of a SID field depends on how the record has been added to Melinda and how it has been handled
+          afterwards. SIDs are also not reliably maintained. A record might or might not have a SID for a local db
+          after the matching record is removed from the local db.
+
+   */
+
+
+  const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:query:source-ids');
+  const debugData = debug.extend('data');
+  debug(`Creating queries for sourceid's`);
+
+  const fSids = record.get('SID');
+  debugData(`SID-fields (${fSids.length}): ${JSON.stringify(fSids)}`);
+
+  return fSids.length > 0 ? toSidQueries(fSids) : [];
+
+  function toSidQueries(fSids) {
+    debug(`Creating actual queries for sourceid's`);
+
+    const sidStrings = getSidStrings(fSids);
+    const sidQueries = createSidQueries(sidStrings);
+
+    return sidQueries;
+
+    function createSidQueries (sidStrings) {
+      // eslint-disable-next-line no-warning-comments
+      // TODO: create melinda.sourceid=sidString query strings for every sidString
+      return sidStrings;
+    }
+
+    function getSidStrings(fSids) {
+      debug(`Getting Sid strings from SID fields`);
+
+      const sidStrings = fSids.map(toSidString);
+      return sidStrings;
+
+      function toSidString(field) {
+        debug(`Getting string from a field`);
+
+        return validateSidFieldSubfieldCounts(field) ? createSidString(field) : '';
+
+        function createSidString(field) {
+          debug(`Creating string from a field`);
+          const [sfC] = getSubfieldValues(field, 'c');
+          const [sfB] = getSubfieldValues(field, 'b');
+
+          const cleanedSfC = removeSourcePrefix(normalizeSidSubfieldValue(sfC));
+          const cleanedSfB = normalizeSidSubfieldValue(sfB);
+
+          debugData(`${JSON.stringify(sfC)} + ${JSON.stringify(sfB)}`);
+          return cleanedSfC.concat(cleanedSfB);
+        }
+
+        function validateSidFieldSubfieldCounts(field) {
+          // Valid SID-fields have just one $c and one $b
+          debug(`Validating SID field ${JSON.stringify(field)}`);
+          const countC = countSubfields(field, 'c');
+          const countB = countSubfields(field, 'b');
+          debugData(`Found ${countC} sf $cs and ${countB} sf $bs `);
+
+          return countC === 1 && countB === 1;
+        }
+
+        function getSubfieldValues(field, subfieldCode) {
+          debugData(`Get subfield(s) $${subfieldCode} from ${JSON.stringify(field)}`);
+          return field.subfields.filter(({code}) => code === subfieldCode).map(({value}) => value);
+        }
+
+        function countSubfields(field, subfieldCode) {
+          debug(`Counting subfields ${subfieldCode}`);
+          return field.subfields.filter(({code}) => code === subfieldCode).length;
+        }
+
+        function removeSourcePrefix(subfieldValue) {
+          const sourcePrefixRegex = (/^(?<sourcePrefix>\([A-Za-z0-9-]+\))(?<id>.+)$/u);
+          const normalizedValue = subfieldValue.replace(sourcePrefixRegex, '$<id>');
+          debugData(`Normalized ${subfieldValue} to ${normalizedValue}`);
+          return normalizedValue;
+        }
+
+        function normalizeSidSubfieldValue(subfieldValue) {
+          debugData(`Normalizing ${subfieldValue}`);
+          const normalizeAwayRegex = (/[- ]/u);
+          return subfieldValue.replace(normalizeAwayRegex, '');
+        }
+
+      }
+    }
+  }
+}
 
 export function bibMelindaIds(record) {
   // Melinda's SRU-index melinda.melindaid includes f001 controlnumbers and old Melinda-IDs from f035z's for all non-deleted Melinda-records
