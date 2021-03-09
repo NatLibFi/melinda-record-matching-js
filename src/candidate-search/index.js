@@ -118,6 +118,6 @@ export default ({record, searchSpec, url, maxRecordsPerRequest = 50}) => {
 
   function getRecordId(record) {
     const [field] = record.get(/^001$/u);
-    return field.value;
+    return field ? field.value : '';
   }
 };
