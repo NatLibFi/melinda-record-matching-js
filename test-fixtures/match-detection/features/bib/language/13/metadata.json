@@ -1,5 +1,5 @@
 {
-  "description": "Should extract language from 041 (||| in 008)",
+  "description": "Should extract language from f041 d",
   "feature": "language",
   "type": "extract",
   "expectedFeatures": ["fin"],
@@ -20,7 +20,7 @@
         "ind2": " ",
         "subfields": [
           {
-            "code": "a",
+            "code": "d",
             "value": "fin"
           }
         ]
