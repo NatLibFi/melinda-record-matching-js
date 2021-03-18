@@ -26,6 +26,11 @@
 *
 */
 
+import createDebugLogger from 'debug';
+
+const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection:features:standard-identifiers');
+const debugData = debug.extend('data');
+
 export default ({pattern, subfieldCodes}) => {
   return {extract, compare};
 
@@ -43,6 +48,7 @@ export default ({pattern, subfieldCodes}) => {
 
   function compare(a, b) {
     if (a.length === 0 || b.length === 0) {
+      debugData(`No standardidentifiers to compare`);
       return 0;
     }
 
