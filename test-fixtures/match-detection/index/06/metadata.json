@@ -1,0 +1,15 @@
+{
+  "description": "Do not match for languge comparing if there are no language fields",
+  "options": {
+    "strategy": {
+      "type": "bib",
+      "features": [
+        "language"
+      ]
+    }
+  },
+  "expectedResults": {
+    "match": false,
+    "probability": 0
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "description": "Should not extract language from 041 if the language code is not MARC 21 (ind2 is not ' ') ",
+  "feature": "language",
+  "type": "extract",
+  "expectedFeatures": [
+    "swe"
+  ],
+  "inputRecord": {
+    "leader": "02518cam a2200745zi 4500",
+    "fields": [
+      {
+        "tag": "001",
+        "value": "000019643"
+      },
+      {
+        "tag": "008",
+        "value": "831017s1983    fi ||||||||||||||||b|||||"
+      },
+      {
+        "tag": "041",
+        "ind1": "0",
+        "ind2": "7",
+        "subfields": [
+          {
+            "code": "a",
+            "value": "foob"
+          },
+          {
+            "code": "2",
+            "value": "bar"
+          }
+        ]
+      },
+      {
+        "tag": "041",
+        "ind1": "0",
+        "ind2": " ",
+        "subfields": [
+          {
+            "code": "d",
+            "value": "swe"
+          }
+        ]
+      }
+    ]
+  }
+}

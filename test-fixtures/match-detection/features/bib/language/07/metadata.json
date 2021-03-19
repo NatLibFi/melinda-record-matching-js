@@ -1,0 +1,8 @@
+{
+  "description": "Comparison should not return points for missing language in both",
+  "feature": "language",
+  "type": "compare",
+  "expectedPoints": 0,
+  "featuresA": [],
+  "featuresB": []
+}

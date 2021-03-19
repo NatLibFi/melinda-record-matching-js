@@ -1,0 +1,994 @@
+{
+  "leader": "04580cam a2201081 i 4500",
+  "fields": [
+    {
+      "tag": "001",
+      "value": "015291307"
+    },
+    {
+      "tag": "003",
+      "value": "FI-MELINDA"
+    },
+    {
+      "tag": "005",
+      "value": "20200304163640.0"
+    },
+    {
+      "tag": "020",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "978-952-289-525-7"
+        },
+        {
+          "code": "q",
+          "value": "sidottu"
+        }
+      ]
+    },
+    {
+      "tag": "024",
+      "ind1": "3",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "9789522895257"
+        }
+      ]
+    },
+    {
+      "tag": "035",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "(FI-MELINDA)015291307"
+        }
+      ]
+    },
+    {
+      "tag": "040",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "FI-BTJ"
+        },
+        {
+          "code": "b",
+          "value": "fin"
+        },
+        {
+          "code": "e",
+          "value": "rda"
+        },
+        {
+          "code": "d",
+          "value": "FI-NL"
+        },
+        {
+          "code": "d",
+          "value": "FI-Piki"
+        }
+      ]
+    },
+    {
+      "tag": "042",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "finb"
+        }
+      ]
+    },
+    {
+      "tag": "080",
+      "ind1": "1",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "929 Tranberg"
+        },
+        {
+          "code": "2",
+          "value": "1974/fin/fennica"
+        },
+        {
+          "code": "9",
+          "value": "FENNI<KEEP>"
+        }
+      ]
+    },
+    {
+      "tag": "080",
+      "ind1": "1",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "343"
+        },
+        {
+          "code": "2",
+          "value": "1974/fin/fennica"
+        },
+        {
+          "code": "9",
+          "value": "FENNI<KEEP>"
+        }
+      ]
+    },
+    {
+      "tag": "084",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "99.1"
+        },
+        {
+          "code": "2",
+          "value": "ykl"
+        },
+        {
+          "code": "9",
+          "value": "FENNI<KEEP>"
+        }
+      ]
+    },
+    {
+      "tag": "084",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "30.1609"
+        },
+        {
+          "code": "2",
+          "value": "ykl"
+        },
+        {
+          "code": "9",
+          "value": "FENNI<KEEP>"
+        }
+      ]
+    },
+    {
+      "tag": "100",
+      "ind1": "1",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "Tranberg, Janne,"
+        },
+        {
+          "code": "d",
+          "value": "1974-"
+        },
+        {
+          "code": "e",
+          "value": "kirjoittaja."
+        },
+        {
+          "code": "0",
+          "value": "(FI-ASTERI-N)000197393"
+        }
+      ]
+    },
+    {
+      "tag": "245",
+      "ind1": "1",
+      "ind2": "0",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "Wanted :"
+        },
+        {
+          "code": "b",
+          "value": "Suomen etsityimmän rikollisen tarina /"
+        },
+        {
+          "code": "c",
+          "value": "Janne \"Nacci\" Tranberg ; (toim.) Pekka Lehtinen."
+        }
+      ]
+    },
+    {
+      "tag": "246",
+      "ind1": "3",
+      "ind2": "0",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "Suomen etsityimmän rikollisen tarina"
+        }
+      ]
+    },
+    {
+      "tag": "264",
+      "ind1": " ",
+      "ind2": "1",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "Helsinki :"
+        },
+        {
+          "code": "b",
+          "value": "Crime Time,"
+        },
+        {
+          "code": "c",
+          "value": "[2019]"
+        }
+      ]
+    },
+    {
+      "tag": "264",
+      "ind1": " ",
+      "ind2": "3",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "EU"
+        }
+      ]
+    },
+    {
+      "tag": "264",
+      "ind1": " ",
+      "ind2": "4",
+      "subfields": [
+        {
+          "code": "c",
+          "value": "©2019"
+        }
+      ]
+    },
+    {
+      "tag": "300",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "268 sivua, 8 numeroimatonta kuvasivua :"
+        },
+        {
+          "code": "b",
+          "value": "kuvitettu ;"
+        },
+        {
+          "code": "c",
+          "value": "22 cm"
+        }
+      ]
+    },
+    {
+      "tag": "336",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "teksti"
+        },
+        {
+          "code": "b",
+          "value": "txt"
+        },
+        {
+          "code": "2",
+          "value": "rdacontent"
+        }
+      ]
+    },
+    {
+      "tag": "337",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "käytettävissä ilman laitetta"
+        },
+        {
+          "code": "b",
+          "value": "n"
+        },
+        {
+          "code": "2",
+          "value": "rdamedia"
+        }
+      ]
+    },
+    {
+      "tag": "338",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "nide"
+        },
+        {
+          "code": "b",
+          "value": "nc"
+        },
+        {
+          "code": "2",
+          "value": "rdacarrier"
+        }
+      ]
+    },
+    {
+      "tag": "600",
+      "ind1": "1",
+      "ind2": "4",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "Tranberg, Janne,"
+        },
+        {
+          "code": "d",
+          "value": "1974-"
+        },
+        {
+          "code": "0",
+          "value": "(FI-ASTERI-N)000197393"
+        },
+        {
+          "code": "9",
+          "value": "FENNI<KEEP>"
+        }
+      ]
+    },
+    {
+      "tag": "650",
+      "ind1": " ",
+      "ind2": "7",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "rikolliset"
+        },
+        {
+          "code": "2",
+          "value": "yso/fin"
+        },
+        {
+          "code": "0",
+          "value": "http://www.yso.fi/onto/yso/p24974"
+        },
+        {
+          "code": "9",
+          "value": "FENNI<KEEP>"
+        }
+      ]
+    },
+    {
+      "tag": "650",
+      "ind1": " ",
+      "ind2": "7",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "moottoripyöräjengit"
+        },
+        {
+          "code": "2",
+          "value": "yso/fin"
+        },
+        {
+          "code": "0",
+          "value": "http://www.yso.fi/onto/yso/p4520"
+        },
+        {
+          "code": "9",
+          "value": "FENNI<KEEP>"
+        }
+      ]
+    },
+    {
+      "tag": "650",
+      "ind1": " ",
+      "ind2": "7",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "rikollisuus"
+        },
+        {
+          "code": "2",
+          "value": "yso/fin"
+        },
+        {
+          "code": "0",
+          "value": "http://www.yso.fi/onto/yso/p11490"
+        },
+        {
+          "code": "9",
+          "value": "FENNI<KEEP>"
+        }
+      ]
+    },
+    {
+      "tag": "650",
+      "ind1": " ",
+      "ind2": "7",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "pako"
+        },
+        {
+          "code": "2",
+          "value": "yso/fin"
+        },
+        {
+          "code": "0",
+          "value": "http://www.yso.fi/onto/yso/p12270"
+        },
+        {
+          "code": "9",
+          "value": "FENNI<KEEP>"
+        }
+      ]
+    },
+    {
+      "tag": "650",
+      "ind1": " ",
+      "ind2": "7",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "järjestäytynyt rikollisuus"
+        },
+        {
+          "code": "2",
+          "value": "yso/fin"
+        },
+        {
+          "code": "0",
+          "value": "http://www.yso.fi/onto/yso/p14921"
+        },
+        {
+          "code": "9",
+          "value": "FENNI<KEEP>"
+        }
+      ]
+    },
+    {
+      "tag": "650",
+      "ind1": " ",
+      "ind2": "7",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "historia"
+        },
+        {
+          "code": "2",
+          "value": "yso/fin"
+        },
+        {
+          "code": "0",
+          "value": "http://www.yso.fi/onto/yso/p1780"
+        },
+        {
+          "code": "9",
+          "value": "FENNI<KEEP>"
+        }
+      ]
+    },
+    {
+      "tag": "650",
+      "ind1": " ",
+      "ind2": "7",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "brottslingar"
+        },
+        {
+          "code": "2",
+          "value": "yso/swe"
+        },
+        {
+          "code": "0",
+          "value": "http://www.yso.fi/onto/yso/p24974"
+        }
+      ]
+    },
+    {
+      "tag": "650",
+      "ind1": " ",
+      "ind2": "7",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "mc-gäng"
+        },
+        {
+          "code": "2",
+          "value": "yso/swe"
+        },
+        {
+          "code": "0",
+          "value": "http://www.yso.fi/onto/yso/p4520"
+        }
+      ]
+    },
+    {
+      "tag": "650",
+      "ind1": " ",
+      "ind2": "7",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "brottslighet"
+        },
+        {
+          "code": "2",
+          "value": "yso/swe"
+        },
+        {
+          "code": "0",
+          "value": "http://www.yso.fi/onto/yso/p11490"
+        }
+      ]
+    },
+    {
+      "tag": "650",
+      "ind1": " ",
+      "ind2": "7",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "flykt"
+        },
+        {
+          "code": "2",
+          "value": "yso/swe"
+        },
+        {
+          "code": "0",
+          "value": "http://www.yso.fi/onto/yso/p12270"
+        }
+      ]
+    },
+    {
+      "tag": "650",
+      "ind1": " ",
+      "ind2": "7",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "organiserad brottslighet"
+        },
+        {
+          "code": "2",
+          "value": "yso/swe"
+        },
+        {
+          "code": "0",
+          "value": "http://www.yso.fi/onto/yso/p14921"
+        }
+      ]
+    },
+    {
+      "tag": "650",
+      "ind1": " ",
+      "ind2": "7",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "historia"
+        },
+        {
+          "code": "2",
+          "value": "yso/swe"
+        },
+        {
+          "code": "0",
+          "value": "http://www.yso.fi/onto/yso/p1780"
+        }
+      ]
+    },
+    {
+      "tag": "651",
+      "ind1": " ",
+      "ind2": "7",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "Suomi"
+        },
+        {
+          "code": "2",
+          "value": "yso/fin"
+        },
+        {
+          "code": "0",
+          "value": "http://www.yso.fi/onto/yso/p94426"
+        },
+        {
+          "code": "9",
+          "value": "FENNI<KEEP>"
+        }
+      ]
+    },
+    {
+      "tag": "651",
+      "ind1": " ",
+      "ind2": "7",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "Finland"
+        },
+        {
+          "code": "2",
+          "value": "yso/swe"
+        },
+        {
+          "code": "0",
+          "value": "http://www.yso.fi/onto/yso/p94426"
+        }
+      ]
+    },
+    {
+      "tag": "655",
+      "ind1": " ",
+      "ind2": "7",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "muistelmat"
+        },
+        {
+          "code": "2",
+          "value": "slm/fin"
+        },
+        {
+          "code": "0",
+          "value": "http://urn.fi/URN:NBN:fi:au:slm:s286"
+        },
+        {
+          "code": "9",
+          "value": "FENNI<KEEP>"
+        }
+      ]
+    },
+    {
+      "tag": "700",
+      "ind1": "1",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "Lehtinen, Pekka,"
+        },
+        {
+          "code": "e",
+          "value": "toimittaja."
+        }
+      ]
+    },
+    {
+      "tag": "856",
+      "ind1": "4",
+      "ind2": "2",
+      "subfields": [
+        {
+          "code": "q",
+          "value": "image/jpeg"
+        },
+        {
+          "code": "u",
+          "value": "http://data.kirjavalitys.fi/data/servlets/ProductRequestServlet?action=getimage&ISBN=9789522895257"
+        },
+        {
+          "code": "y",
+          "value": "Kansikuva"
+        }
+      ]
+    },
+    {
+      "tag": "856",
+      "ind1": "4",
+      "ind2": "2",
+      "subfields": [
+        {
+          "code": "q",
+          "value": "text/html"
+        },
+        {
+          "code": "u",
+          "value": "http://data.kirjavalitys.fi/data/servlets/ProductRequestServlet?action=showreferat&ISBN=9789522895257"
+        },
+        {
+          "code": "y",
+          "value": "Kuvaus"
+        }
+      ]
+    },
+    {
+      "tag": "SID",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "c",
+          "value": "(ANDL100013)1743160"
+        },
+        {
+          "code": "b",
+          "value": "ander"
+        }
+      ]
+    },
+    {
+      "tag": "SID",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "c",
+          "value": "(ANDL100001)3828719"
+        },
+        {
+          "code": "b",
+          "value": "vaski"
+        }
+      ]
+    },
+    {
+      "tag": "SID",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "c",
+          "value": "(ANDL100026)1381704"
+        },
+        {
+          "code": "b",
+          "value": "kuopi"
+        }
+      ]
+    },
+    {
+      "tag": "SID",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "c",
+          "value": "(ANDL100007)2464906"
+        },
+        {
+          "code": "b",
+          "value": "eepos"
+        }
+      ]
+    },
+    {
+      "tag": "SID",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "c",
+          "value": "(ANDL100006)2954164"
+        },
+        {
+          "code": "b",
+          "value": "keski"
+        }
+      ]
+    },
+    {
+      "tag": "SID",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "c",
+          "value": "(ANDL100008)4330003"
+        },
+        {
+          "code": "b",
+          "value": "piki"
+        }
+      ]
+    },
+    {
+      "tag": "LOW",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "OULA"
+        }
+      ]
+    },
+    {
+      "tag": "LOW",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "FENNI"
+        }
+      ]
+    },
+    {
+      "tag": "LOW",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "ANDER"
+        }
+      ]
+    },
+    {
+      "tag": "LOW",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "VASKI"
+        }
+      ]
+    },
+    {
+      "tag": "LOW",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "KUOPI"
+        }
+      ]
+    },
+    {
+      "tag": "LOW",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "EEPOS"
+        }
+      ]
+    },
+    {
+      "tag": "LOW",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "KESKI"
+        }
+      ]
+    },
+    {
+      "tag": "LOW",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "PIKI"
+        }
+      ]
+    },
+    {
+      "tag": "LOW",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "FIKKA"
+        }
+      ]
+    },
+    {
+      "tag": "LOW",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "VOLTE"
+        }
+      ]
+    },
+    {
+      "tag": "LOW",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "KOAMK"
+        }
+      ]
+    },
+    {
+      "tag": "LOW",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "TATI"
+        }
+      ]
+    },
+    {
+      "tag": "900",
+      "ind1": "1",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "Tranberg, Janne \"Nacci\""
+        },
+        {
+          "code": "y",
+          "value": "Tranberg, Janne"
+        }
+      ]
+    },
+    {
+      "tag": "901",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "MU20190509"
+        },
+        {
+          "code": "5",
+          "value": "FENNI"
+        }
+      ]
+    },
+    {
+      "tag": "908",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "fi"
+        }
+      ]
+    }
+  ]
+}

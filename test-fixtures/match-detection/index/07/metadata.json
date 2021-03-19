@@ -1,0 +1,15 @@
+{
+  "description": "Do not match for isbn comparing if there are no isbn fields",
+  "options": {
+    "strategy": {
+      "type": "bib",
+      "features": [
+        "isbn"
+      ]
+    }
+  },
+  "expectedResults": {
+    "match": false,
+    "probability": 0
+  }
+}
