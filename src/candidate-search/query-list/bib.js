@@ -27,7 +27,7 @@
 *
 */
 import createDebugLogger from 'debug';
-import {getMelindaIdsF035} from '../../matching-commons';
+import {getMelindaIdsF035, toQueries} from '../../matching-commons';
 
 export function bibSourceIds(record) {
 
@@ -65,32 +65,15 @@ export function bibSourceIds(record) {
     debug(`Creating actual queries for sourceid's`);
 
     const sidStrings = getSidStrings(fSids);
-    const sidQueries = createSidQueries(sidStrings);
+
+    if (sidStrings.length < 1) {
+      debug(`No identifiers found, no queries created.`);
+      return [];
+    }
+
+    const sidQueries = toQueries(sidStrings, 'melinda.sourceid');
 
     return sidQueries;
-
-    function createSidQueries(sidStrings) {
-
-      if (sidStrings.length < 1) {
-        return [];
-      }
-
-      // Aleph supports only two queries with or -operator (This is not actually true)
-      const pairs = toPairs(sidStrings);
-      const queries = pairs.map(([a, b]) => b ? `melinda.sourceid=${a} or melinda.sourceid=${b}` : `melinda.sourceid=${a}`);
-
-      debugData(`Pairs (${pairs.length}): ${JSON.stringify(pairs)}`);
-      debugData(`Queries (${queries.length}): ${JSON.stringify(queries)}`);
-
-      return queries;
-
-      function toPairs(array) {
-        if (array.length === 0) {
-          return [];
-        }
-        return [array.slice(0, 2)].concat(toPairs(array.slice(2), 2));
-      }
-    }
 
     function getSidStrings(fSids) {
       debug(`Getting Sid strings from SID fields`);
@@ -173,25 +156,7 @@ export function bibMelindaIds(record) {
     return [];
   }
 
-  return toQueries(melindaIds);
-
-  function toQueries(identifiers) {
-    // Aleph supports only two queries with or -operator (This is not actually true)
-    const pairs = toPairs(identifiers);
-    const queries = pairs.map(([a, b]) => b ? `melinda.melindaid=${a} or melinda.melindaid=${b}` : `melinda.melindaid=${a}`);
-
-    debugData(`Pairs (${pairs.length}): ${JSON.stringify(pairs)}`);
-    debugData(`Queries (${queries.length}): ${JSON.stringify(queries)}`);
-
-    return queries;
-
-    function toPairs(array) {
-      if (array.length === 0) {
-        return [];
-      }
-      return [array.slice(0, 2)].concat(toPairs(array.slice(2), 2));
-    }
-  }
+  return toQueries(melindaIds, 'melinda.melindaid');
 }
 
 
@@ -270,25 +235,7 @@ export function bibStandardIdentifiers(record) {
     return [];
   }
 
-  return toQueries(uniqueIdentifiers);
-
-  function toQueries(identifiers) {
-    // Aleph supports only two queries with or -operator (This is not actually true)
-    const pairs = toPairs(identifiers);
-    const queries = pairs.map(([a, b]) => b ? `dc.identifier=${a} or dc.identifier=${b}` : `dc.identifier=${a}`);
-
-    debugData(`Pairs (${pairs.length}): ${JSON.stringify(pairs)}`);
-    debugData(`Queries (${queries.length}): ${JSON.stringify(queries)}`);
-
-    return queries;
-
-    function toPairs(array) {
-      if (array.length === 0) {
-        return [];
-      }
-      return [array.slice(0, 2)].concat(toPairs(array.slice(2), 2));
-    }
-  }
+  return toQueries(uniqueIdentifiers, 'dc.identifier');
 
   function toIdentifiers({tag, subfields}) {
     const issnIsbnReqExp = (/^[A-Za-z0-9-]+$/u);
