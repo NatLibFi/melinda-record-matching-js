@@ -1,10 +1,8 @@
 {
-  "description": "Should generate standard identifier query (several fields with several subfields)",
+  "description": "Should not generate queries for non valid identifiers (only punctuation+whitespace)",
   "type": "bibStandardIdentifiers",
   "expectedQuery": [
-    "dc.identifier=951-772-249-4 or dc.identifier=951-772-249-X",
-    "dc.identifier=9999-772-249-4 or dc.identifier=951-772-249-5",
-    "dc.identifier=959-772-249-X"
+    "dc.identifier=951-772-249-4"
   ],
   "inputRecord": {
     "leader": "02518cam a2200745zi 4500",
@@ -24,27 +22,23 @@
           },
           {
             "code": "z",
-            "value": "951-772-249-X"
-          },
-          {
-            "code": "z",
-            "value": "9999-772-249-4"
+            "value": " :,,-\".."
           }
         ]
       },
       {
-        "tag": "020",
+        "tag": "024",
         "ind1": " ",
         "ind2": " ",
         "subfields": [
           {
             "code": "a",
-            "value": "951-772-249-5"
+            "value": " ---..\"_;;;"
           },
           {
-            "code": "z",
-            "value": "959-772-249-X"
-          }
+            "code": "a",
+            "value": ";; URN:1234"
+          }          
         ]
       }
     ]

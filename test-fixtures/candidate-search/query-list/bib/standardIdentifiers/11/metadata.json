@@ -3,8 +3,7 @@
   "type": "bibStandardIdentifiers",
   "expectedQuery": [
     "dc.identifier=951-772-249-4 or dc.identifier=951-772-249-X",
-    "dc.identifier=9999-772-249-4 or dc.identifier=951-772-249-5",
-    "dc.identifier=959-772-249-X"
+    "dc.identifier=9999-772-249-4"
   ],
   "inputRecord": {
     "leader": "02518cam a2200745zi 4500",
@@ -29,21 +28,6 @@
           {
             "code": "z",
             "value": "9999-772-249-4"
-          }
-        ]
-      },
-      {
-        "tag": "020",
-        "ind1": " ",
-        "ind2": " ",
-        "subfields": [
-          {
-            "code": "a",
-            "value": "951-772-249-5"
-          },
-          {
-            "code": "z",
-            "value": "959-772-249-X"
           }
         ]
       }

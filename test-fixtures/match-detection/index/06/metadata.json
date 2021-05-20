@@ -1,24 +1,15 @@
 {
-  "description": "Should not detect a match (All features for content match)",
+  "description": "Do not match for languge comparing if there are no language fields",
   "options": {
     "strategy": {
       "type": "bib",
       "features": [
-        "hostComponent",
-        "isbn",
-        "issn",
-        "otherStandardIdentifier",
-        "title",
-        "authors",
-        "recordType",
-        "publicationTime",
-        "language",
-        "bibliographicLevel"
+        "language"
       ]
     }
   },
   "expectedResults": {
     "match": false,
-    "probability": 0.75
+    "probability": 0
   }
 }

@@ -1,11 +1,10 @@
 {
-  "description": "Should not detect a match (All features for ID match, SID mismatch)",
+  "description": "Do not match for isbn comparing if there are no isbn fields",
   "options": {
     "strategy": {
       "type": "bib",
       "features": [
-        "melindaId",
-        "kvId"
+        "isbn"
       ]
     }
   },

@@ -1,54 +1,9 @@
 {
-  "leader": "02315nam a22005414i 4500",
+  "leader": "00000nam a22004334i 4500",
   "fields": [
     {
-      "tag": "003",
-      "value": "FI-MELINDA"
-    },
-    {
-      "tag": "008",
-      "value": "201007t20202020fi ||||       |0| f fin c"
-    },
-    {
-      "tag": "020",
-      "ind1": " ",
-      "ind2": " ",
-      "subfields": [
-        {
-          "code": "a",
-          "value": "978-951-1-33251-0"
-        },
-        {
-          "code": "q",
-          "value": "sidottu"
-        }
-      ]
-    },
-    {
-      "tag": "SID",
-      "ind1": " ",
-      "ind2": " ",
-      "subfields": [
-        {
-          "code": "c",
-          "value": "123456"
-        },
-        {
-          "code": "b",
-          "value": "FI-KV"
-        }
-      ]
-    },
-    {
-      "tag": "035",
-      "ind1": " ",
-      "ind2": " ",
-      "subfields": [
-        {
-          "code": "a",
-          "value": "(FI-MELINDA)016661494"
-        }
-      ]
+      "tag": "005",
+      "value": "20190509080750.7"
     },
     {
       "tag": "040",
@@ -73,14 +28,18 @@
         }
       ]
     },
-    {
-      "tag": "041",
-      "ind1": "0",
+      {
+      "tag": "080",
+      "ind1": "1",
       "ind2": " ",
       "subfields": [
         {
           "code": "a",
-          "value": "fin"
+          "value": "929 Tranberg"
+        },
+        {
+          "code": "2",
+          "value": "1974/fin/fennica"
         }
       ]
     },
@@ -91,11 +50,7 @@
       "subfields": [
         {
           "code": "a",
-          "value": "894.541"
-        },
-        {
-          "code": "x",
-          "value": "-3"
+          "value": "343"
         },
         {
           "code": "2",
@@ -105,12 +60,12 @@
     },
     {
       "tag": "084",
-      "ind1": "9",
+      "ind1": " ",
       "ind2": " ",
       "subfields": [
         {
           "code": "a",
-          "value": "Jännitys"
+          "value": "30.1609"
         },
         {
           "code": "2",
@@ -125,7 +80,7 @@
       "subfields": [
         {
           "code": "a",
-          "value": "84.2"
+          "value": "99.1"
         },
         {
           "code": "2",
@@ -140,7 +95,7 @@
       "subfields": [
         {
           "code": "a",
-          "value": "Nuotio, Eppu,"
+          "value": "Tranberg, Janne,"
         },
         {
           "code": "e",
@@ -155,11 +110,26 @@
       "subfields": [
         {
           "code": "a",
-          "value": "Elämänlanka /"
+          "value": "Wanted :"
+        },
+        {
+          "code": "b",
+          "value": "Suomen etsityimmän rikollisen tarina /"
         },
         {
           "code": "c",
-          "value": "Eppu Nuotio."
+          "value": "Janne \"Nacci\" Tranberg ; (toim.) Pekka Lehtinen."
+        }
+      ]
+    },
+    {
+      "tag": "246",
+      "ind1": "3",
+      "ind2": "0",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "Suomen etsityimmän rikollisen tarina"
         }
       ]
     },
@@ -170,30 +140,15 @@
       "subfields": [
         {
           "code": "a",
-          "value": "Helsingissä :"
+          "value": "Helsinki :"
         },
         {
           "code": "b",
-          "value": "Kustannusosakeyhtiö Otava,"
+          "value": "Crime Time,"
         },
         {
           "code": "c",
-          "value": "[2020]"
-        }
-      ]
-    },
-    {
-      "tag": "264",
-      "ind1": " ",
-      "ind2": "3",
-      "subfields": [
-        {
-          "code": "a",
-          "value": "Keuruu :"
-        },
-        {
-          "code": "b",
-          "value": "Otava Kirjapaino"
+          "value": "[2019]"
         }
       ]
     },
@@ -204,7 +159,7 @@
       "subfields": [
         {
           "code": "c",
-          "value": "©2020"
+          "value": "©2019"
         }
       ]
     },
@@ -215,11 +170,15 @@
       "subfields": [
         {
           "code": "a",
-          "value": "285 sivua ;"
+          "value": "268 sivua, 8 numeroimatonta kuvasivua :"
+        },
+        {
+          "code": "b",
+          "value": "kuvitettu ;"
         },
         {
           "code": "c",
-          "value": "21 cm"
+          "value": "22 cm"
         }
       ]
     },
@@ -281,17 +240,6 @@
       ]
     },
     {
-      "tag": "490",
-      "ind1": "0",
-      "ind2": " ",
-      "subfields": [
-        {
-          "code": "a",
-          "value": "Ellen Lähteen tutkimuksia"
-        }
-      ]
-    },
-    {
       "tag": "546",
       "ind1": " ",
       "ind2": " ",
@@ -309,201 +257,7 @@
       "subfields": [
         {
           "code": "a",
-          "value": "Lähde, Ellen"
-        },
-        {
-          "code": "c",
-          "value": "(fiktiivinen hahmo)"
-        }
-      ]
-    },
-    {
-      "tag": "650",
-      "ind1": " ",
-      "ind2": "7",
-      "subfields": [
-        {
-          "code": "a",
-          "value": "matkat"
-        },
-        {
-          "code": "2",
-          "value": "kauno/fin"
-        },
-        {
-          "code": "0",
-          "value": "http://www.yso.fi/onto/kauno/p3013"
-        }
-      ]
-    },
-    {
-      "tag": "650",
-      "ind1": " ",
-      "ind2": "7",
-      "subfields": [
-        {
-          "code": "a",
-          "value": "elokuva-ala"
-        },
-        {
-          "code": "2",
-          "value": "kauno/fin"
-        },
-        {
-          "code": "0",
-          "value": "http://www.yso.fi/onto/koko/p16692"
-        }
-      ]
-    },
-    {
-      "tag": "650",
-      "ind1": " ",
-      "ind2": "7",
-      "subfields": [
-        {
-          "code": "a",
-          "value": "julkisuuden henkilöt"
-        },
-        {
-          "code": "2",
-          "value": "kauno/fin"
-        },
-        {
-          "code": "0",
-          "value": "http://www.yso.fi/onto/kauno/p1549"
-        }
-      ]
-    },
-    {
-      "tag": "650",
-      "ind1": " ",
-      "ind2": "7",
-      "subfields": [
-        {
-          "code": "a",
-          "value": "rakkaussuhde"
-        },
-        {
-          "code": "2",
-          "value": "kauno/fin"
-        },
-        {
-          "code": "0",
-          "value": "http://www.yso.fi/onto/kauno/p2284"
-        }
-      ]
-    },
-    {
-      "tag": "650",
-      "ind1": " ",
-      "ind2": "7",
-      "subfields": [
-        {
-          "code": "a",
-          "value": "salaisuudet"
-        },
-        {
-          "code": "2",
-          "value": "kauno/fin"
-        },
-        {
-          "code": "0",
-          "value": "http://www.yso.fi/onto/kauno/p2619"
-        }
-      ]
-    },
-    {
-      "tag": "650",
-      "ind1": " ",
-      "ind2": "7",
-      "subfields": [
-        {
-          "code": "a",
-          "value": "murha"
-        },
-        {
-          "code": "2",
-          "value": "kauno/fin"
-        },
-        {
-          "code": "0",
-          "value": "http://www.yso.fi/onto/kauno/p3941"
-        }
-      ]
-    },
-    {
-      "tag": "650",
-      "ind1": " ",
-      "ind2": "7",
-      "subfields": [
-        {
-          "code": "a",
-          "value": "salapoliisit"
-        },
-        {
-          "code": "2",
-          "value": "kauno/fin"
-        },
-        {
-          "code": "0",
-          "value": "http://www.yso.fi/onto/kauno/p1082"
-        }
-      ]
-    },
-    {
-      "tag": "650",
-      "ind1": " ",
-      "ind2": "7",
-      "subfields": [
-        {
-          "code": "a",
-          "value": "naiset"
-        },
-        {
-          "code": "2",
-          "value": "kauno/fin"
-        },
-        {
-          "code": "0",
-          "value": "http://www.yso.fi/onto/kauno/p3043"
-        }
-      ]
-    },
-    {
-      "tag": "651",
-      "ind1": " ",
-      "ind2": "7",
-      "subfields": [
-        {
-          "code": "a",
-          "value": "Berliini"
-        },
-        {
-          "code": "2",
-          "value": "yso/fin"
-        },
-        {
-          "code": "0",
-          "value": "http://www.yso.fi/onto/yso/p105612"
-        }
-      ]
-    },
-    {
-      "tag": "651",
-      "ind1": " ",
-      "ind2": "7",
-      "subfields": [
-        {
-          "code": "a",
-          "value": "Saksa"
-        },
-        {
-          "code": "2",
-          "value": "yso/fin"
-        },
-        {
-          "code": "0",
-          "value": "http://www.yso.fi/onto/yso/p105087"
+          "value": "Tranberg, Janne."
         }
       ]
     },
@@ -514,106 +268,26 @@
       "subfields": [
         {
           "code": "a",
-          "value": "jännityskirjallisuus"
+          "value": "muistelmat"
         },
         {
           "code": "2",
           "value": "slm/fin"
-        },
-        {
-          "code": "0",
-          "value": "http://urn.fi/URN:NBN:fi:au:slm:s382"
         }
       ]
     },
     {
-      "tag": "655",
-      "ind1": " ",
-      "ind2": "7",
+      "tag": "700",
+      "ind1": "1",
+      "ind2": " ",
       "subfields": [
         {
           "code": "a",
-          "value": "salapoliisikirjallisuus"
+          "value": "Lehtinen, Pekka,"
         },
         {
-          "code": "2",
-          "value": "slm/fin"
-        },
-        {
-          "code": "0",
-          "value": "http://urn.fi/URN:NBN:fi:au:slm:s287"
-        }
-      ]
-    },
-    {
-      "tag": "655",
-      "ind1": " ",
-      "ind2": "7",
-      "subfields": [
-        {
-          "code": "a",
-          "value": "sarjakertomukset"
-        },
-        {
-          "code": "2",
-          "value": "slm/fin"
-        },
-        {
-          "code": "0",
-          "value": "http://urn.fi/URN:NBN:fi:au:slm:s555"
-        }
-      ]
-    },
-    {
-      "tag": "655",
-      "ind1": " ",
-      "ind2": "7",
-      "subfields": [
-        {
-          "code": "a",
-          "value": "romaanit"
-        },
-        {
-          "code": "2",
-          "value": "slm/fin"
-        },
-        {
-          "code": "0",
-          "value": "http://urn.fi/URN:NBN:fi:au:slm:s518"
-        }
-      ]
-    },
-    {
-      "tag": "655",
-      "ind1": " ",
-      "ind2": "7",
-      "subfields": [
-        {
-          "code": "a",
-          "value": "kaunokirjallisuus"
-        },
-        {
-          "code": "2",
-          "value": "slm/fin"
-        },
-        {
-          "code": "0",
-          "value": "http://urn.fi/URN:NBN:fi:au:slm:s975"
-        }
-      ]
-    },
-    {
-      "tag": "655",
-      "ind1": " ",
-      "ind2": "7",
-      "subfields": [
-        {
-          "code": "a",
-          "value": "suomenkielinen kirjallisuus"
-        },
-        {
-          "code": "2",
-          "value": "local"
+          "code": "e",
+          "value": "toimittaja."
         }
       ]
     },
@@ -628,18 +302,18 @@
         },
         {
           "code": "z",
-          "value": "9789511333685"
+          "value": "9789522895387"
         }
       ]
     },
     {
       "tag": "856",
-      "ind1": "4",
-      "ind2": "1",
+      "ind1": "0",
+      "ind2": "8",
       "subfields": [
         {
           "code": "u",
-          "value": "https://www.ellibslibrary.com/helmet/9789511333685"
+          "value": "https://www.ellibslibrary.com/helmet/9789522895387"
         },
         {
           "code": "y",
@@ -649,18 +323,18 @@
     },
     {
       "tag": "SID",
-      "ind1": " ",
-      "ind2": " ",
       "subfields": [
         {
           "code": "c",
-          "value": "2372022"
+          "value": "2373358"
         },
         {
           "code": "b",
           "value": "helme"
         }
-      ]
+      ],
+      "ind1": " ",
+      "ind2": " "
     }
   ]
 }
