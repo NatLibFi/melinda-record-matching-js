@@ -69,16 +69,34 @@ export function bibSourceIds(record) {
 
     return sidQueries;
 
-    function createSidQueries (sidStrings) {
-      // eslint-disable-next-line no-warning-comments
-      // TODO: create melinda.sourceid=sidString query strings for every sidString
-      return sidStrings;
+    function createSidQueries(sidStrings) {
+
+      if (sidStrings.length < 1) {
+        return [];
+      }
+
+      // Aleph supports only two queries with or -operator (This is not actually true)
+      const pairs = toPairs(sidStrings);
+      const queries = pairs.map(([a, b]) => b ? `melinda.sourceid=${a} or melinda.sourceid=${b}` : `melinda.sourceid=${a}`);
+
+      debugData(`Pairs (${pairs.length}): ${JSON.stringify(pairs)}`);
+      debugData(`Queries (${queries.length}): ${JSON.stringify(queries)}`);
+
+      return queries;
+
+      function toPairs(array) {
+        if (array.length === 0) {
+          return [];
+        }
+        return [array.slice(0, 2)].concat(toPairs(array.slice(2), 2));
+      }
     }
 
     function getSidStrings(fSids) {
       debug(`Getting Sid strings from SID fields`);
 
-      const sidStrings = fSids.map(toSidString);
+      // Map SID fields to valid sidStrings, filter out empty strings
+      const sidStrings = fSids.map(toSidString).filter(nonEmptySid => nonEmptySid);
       return sidStrings;
 
       function toSidString(field) {

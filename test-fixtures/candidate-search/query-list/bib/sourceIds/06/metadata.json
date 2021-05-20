@@ -1,8 +1,8 @@
 {
-  "description": "Do not create sourceId query if there's no valid SID (wrong subfield)",
+  "description": "Should normalize hyphens out of source string (fSID $b)",
   "enabled": true,
   "type": "bibSourceIds",
-  "expectedQuery": [],
+  "expectedQuery": ["melinda.sourceid=VER999999FIKV"],
   "inputRecord": {
     "leader": "02518cam a2200745zi 4500",
     "fields": [
@@ -16,12 +16,12 @@
         "ind2": " ",
         "subfields": [
           {
-            "code": "d",
-            "value": "9999999"
+            "code": "c",
+            "value": "VER999999"
           },
           {
             "code": "b",
-            "value": "testi"
+            "value": "FI-KV"
           }
         ]
       }

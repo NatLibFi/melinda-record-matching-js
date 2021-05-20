@@ -1,7 +1,7 @@
 {
   "description": "Should not generate Sourceid query, if there are no SID fields",
   "type": "bibSourceIds",
-  "expectedQuery": ["blaa"],
+  "expectedQuery": [],
   "inputRecord": {
     "leader": "02518cam a2200745zi 4500",
     "fields": [

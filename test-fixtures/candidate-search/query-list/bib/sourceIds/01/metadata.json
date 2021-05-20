@@ -1,7 +1,7 @@
 {
-  "description": "Should generate souce id query (one valid SID field)",
+  "description": "Should generate source id query (one valid SID field)",
   "type": "bibSourceIds",
-  "expectedQuery": ["melinda.sourceid=1234567helka"],
+  "expectedQuery": ["melinda.sourceid=9999999helka"],
   "inputRecord": {
     "leader": "02518cam a2200745zi 4500",
     "fields": [

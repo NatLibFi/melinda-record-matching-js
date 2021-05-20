@@ -1,8 +1,8 @@
 {
-  "description": "Do not create sourceId query if there's no valid SID (wrong subfield)",
+  "description": "Should normalize source prefix out of source-ID string",
   "enabled": true,
   "type": "bibSourceIds",
-  "expectedQuery": [],
+  "expectedQuery": ["melinda.sourceid=1077305sata"],
   "inputRecord": {
     "leader": "02518cam a2200745zi 4500",
     "fields": [
@@ -16,12 +16,12 @@
         "ind2": " ",
         "subfields": [
           {
-            "code": "d",
-            "value": "9999999"
+            "code": "c",
+            "value": "(ANDL100020)1077305"
           },
           {
             "code": "b",
-            "value": "testi"
+            "value": "sata"
           }
         ]
       }
