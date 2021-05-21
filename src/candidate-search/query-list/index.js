@@ -33,7 +33,8 @@ export const searchTypes = {
     standardIdentifiers: 'bibStandardIdentifiers',
     hostComponents: 'bibHostComponents',
     title: 'bibTitle',
-    melindaId: 'bibMelindaIds'
+    melindaId: 'bibMelindaIds',
+    sourceIds: 'bibSourceIds'
   }
 };
 
