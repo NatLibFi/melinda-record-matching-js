@@ -27,7 +27,8 @@
 *
 */
 import createDebugLogger from 'debug';
-import {getMelindaIdsF035, toQueries} from '../../matching-commons';
+import {toQueries} from '../candidate-search-utils';
+import {getMelindaIdsF035} from '../../matching-utils';
 
 export function bibSourceIds(record) {
 

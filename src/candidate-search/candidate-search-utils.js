@@ -28,46 +28,6 @@
 
 import createDebugLogger from 'debug';
 
-// eslint-disable-next-line max-statements
-export function getMelindaIdsF035(record) {
-
-  const debug = createDebugLogger('@natlibfi/melinda-record-matching:melinda-id');
-  const debugData = debug.extend('data');
-
-  const f035s = record.getFields('035');
-
-  if (f035s.length < 1) {
-    debug(`No f035s found.`);
-    return [];
-  }
-
-  const allF035MelindaIds = [].concat(...f035s.map(toMelindaIds));
-  const f035MelindaIds = [...new Set(allF035MelindaIds)];
-
-  debugData(`Fields (${f035s.length}): ${JSON.stringify(f035s)}`);
-  debugData(`Ids (${allF035MelindaIds.length}): ${JSON.stringify(allF035MelindaIds)}`);
-  debugData(`Unique ids (${f035MelindaIds.length}): ${JSON.stringify(f035MelindaIds)}`);
-
-  return f035MelindaIds;
-
-  function toMelindaIds({subfields}) {
-    const melindaIdRegExp = /^(?<prefix>\(FI-MELINDA\)|FCC)(?<id>\d{9})$/u;
-
-    return subfields
-      .filter(sub => ['a', 'z'].includes(sub.code))
-      .filter(sub => melindaIdRegExp.test(sub.value))
-      .map(({value}) => value.replace(melindaIdRegExp, '$<id>'));
-
-  }
-}
-
-export function toPairs(array) {
-  if (array.length === 0) {
-    return [];
-  }
-  return [array.slice(0, 2)].concat(toPairs(array.slice(2), 2));
-}
-
 export function toQueries(identifiers, queryString) {
 
   const debug = createDebugLogger('@natlibfi/melinda-record-matching:toQueries');
@@ -81,4 +41,11 @@ export function toQueries(identifiers, queryString) {
   debugData(`Queries (${queries.length}): ${JSON.stringify(queries)}`);
 
   return queries;
+}
+
+function toPairs(array) {
+  if (array.length === 0) {
+    return [];
+  }
+  return [array.slice(0, 2)].concat(toPairs(array.slice(2), 2));
 }
