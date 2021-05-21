@@ -5,7 +5,7 @@
       "type": "bib",
       "features": [
         "melindaId",
-        "kvId"
+        "allSourceIds"
       ]
     }
   },
