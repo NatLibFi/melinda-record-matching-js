@@ -28,6 +28,9 @@
 
 import createDebugLogger from 'debug';
 
+const debug = createDebugLogger('@natlibfi/melinda-record-matching:utils');
+const debugData = debug.extend('data');
+
 // eslint-disable-next-line max-statements
 export function getMelindaIdsF035(record) {
 
@@ -60,3 +63,24 @@ export function getMelindaIdsF035(record) {
 
   }
 }
+
+export function validateSidFieldSubfieldCounts(field) {
+  // Valid SID-fields have just one $c and one $b
+  debugData(`Validating SID field ${JSON.stringify(field)}`);
+  const countC = countSubfields(field, 'c');
+  const countB = countSubfields(field, 'b');
+  debug(`Found ${countC} sf $cs and ${countB} sf $bs. IsValid: ${countC === 1 && countB === 1}`);
+
+  return countC === 1 && countB === 1;
+}
+
+function countSubfields(field, subfieldCode) {
+  // debug(`Counting subfields ${subfieldCode}`);
+  return field.subfields.filter(({code}) => code === subfieldCode).length;
+}
+
+export function getSubfieldValues(field, subfieldCode) {
+  debugData(`Get subfield(s) $${subfieldCode} from ${JSON.stringify(field)}`);
+  return field.subfields.filter(({code}) => code === subfieldCode).map(({value}) => value);
+}
+

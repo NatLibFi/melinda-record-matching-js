@@ -1,0 +1,8 @@
+{
+  "description": "Comparison should return minus points for source ID mismatch, even if there's also a match for the same source ID",
+  "feature": "allSourceIds",
+  "type": "compare",
+  "expectedPoints": -1,
+  "featuresA": [{"sourceDb":"helka","sourceId":"999999"},{"sourceDb":"sata","sourceId":"(ANDL100020)1077305"}],
+  "featuresB": [{"sourceDb":"testi","sourceId":"1111"}, {"sourceDb":"helka","sourceId":"999999"},{"sourceDb":"sata","sourceId":"(NO-MATCH)1077305"},{"sourceDb":"sata","sourceId":"(ANDL100020)1077305"}]
+}

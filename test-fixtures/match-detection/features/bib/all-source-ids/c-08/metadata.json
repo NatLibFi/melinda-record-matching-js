@@ -1,0 +1,8 @@
+{
+  "description": "Comparison should return zero points if there are no source db matches",
+  "feature": "allSourceIds",
+  "type": "compare",
+  "expectedPoints": 0,
+  "featuresA": [{"sourceDb":"helka","sourceId":"999999"},{"sourceDb":"sata","sourceId":"(ANDL100020)1077305"}],
+  "featuresB": [{"sourceDb":"testi","sourceId":"999999"},{"sourceDb":"eepos","sourceId":"(ANDL100020)1077305"}]
+}

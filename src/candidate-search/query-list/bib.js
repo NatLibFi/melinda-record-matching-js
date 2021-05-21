@@ -28,7 +28,8 @@
 */
 import createDebugLogger from 'debug';
 import {toQueries} from '../candidate-search-utils';
-import {getMelindaIdsF035} from '../../matching-utils';
+import {getMelindaIdsF035, validateSidFieldSubfieldCounts, getSubfieldValues} from '../../matching-utils';
+
 
 export function bibSourceIds(record) {
 
@@ -98,26 +99,6 @@ export function bibSourceIds(record) {
 
           debugData(`${JSON.stringify(sfC)} + ${JSON.stringify(sfB)}`);
           return cleanedSfC.concat(cleanedSfB);
-        }
-
-        function validateSidFieldSubfieldCounts(field) {
-          // Valid SID-fields have just one $c and one $b
-          debug(`Validating SID field ${JSON.stringify(field)}`);
-          const countC = countSubfields(field, 'c');
-          const countB = countSubfields(field, 'b');
-          debugData(`Found ${countC} sf $cs and ${countB} sf $bs `);
-
-          return countC === 1 && countB === 1;
-        }
-
-        function getSubfieldValues(field, subfieldCode) {
-          debugData(`Get subfield(s) $${subfieldCode} from ${JSON.stringify(field)}`);
-          return field.subfields.filter(({code}) => code === subfieldCode).map(({value}) => value);
-        }
-
-        function countSubfields(field, subfieldCode) {
-          debug(`Counting subfields ${subfieldCode}`);
-          return field.subfields.filter(({code}) => code === subfieldCode).length;
         }
 
         function removeSourcePrefix(subfieldValue) {

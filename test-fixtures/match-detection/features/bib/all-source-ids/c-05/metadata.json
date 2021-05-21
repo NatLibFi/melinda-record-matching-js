@@ -1,0 +1,8 @@
+{
+  "description": "Comparison should return zero points, if there are no matches (no SIDs in A)",
+  "feature": "allSourceIds",
+  "type": "compare",
+  "expectedPoints": 0,
+  "featuresA": [],
+  "featuresB": [{"sourceDb":"testi","sourceId":"1111"}, {"sourceDb":"helka","sourceId":"999999"},{"sourceDb":"sata","sourceId":"(NO-MATCH)1077305"},{"sourceDb":"sata","sourceId":"(ANDL100020)1077305"}]
+}
