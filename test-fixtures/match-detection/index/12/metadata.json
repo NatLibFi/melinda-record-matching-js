@@ -1,0 +1,26 @@
+{
+  "description": "Should not detect a match, SID mismatch (All features for both ID and content match)",
+  "options": {
+    "strategy": {
+      "type": "bib",
+      "features": [
+        "melindaId",
+        "allSourceIds",
+        "hostComponent",
+        "isbn",
+        "issn",
+        "otherStandardIdentifier",
+        "title",
+        "authors",
+        "recordType",
+        "publicationTime",
+        "language",
+        "bibliographicLevel"
+      ]
+    }
+  },
+  "expectedResults": {
+    "match": false,
+    "probability": 0.85
+  }
+}
