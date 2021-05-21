@@ -32,82 +32,84 @@ import generateTests from '@natlibfi/fixugen-http-client';
 import {MarcRecord} from '@natlibfi/marc-record';
 import createSearchInterface, {CandidateSearchError} from '.';
 
-generateTests({
-  callback,
-  path: [__dirname, '..', '..', 'test-fixtures', 'candidate-search', 'index'],
-  recurse: false,
-  fixura: {
-    reader: READERS.JSON
-  }
-});
+describe('candidate-search', () => {
+  generateTests({
+    callback,
+    path: [__dirname, '..', '..', 'test-fixtures', 'candidate-search', 'index'],
+    recurse: false,
+    fixura: {
+      reader: READERS.JSON
+    }
+  });
 
-// eslint-disable-next-line max-statements
-async function callback({getFixture, factoryOptions, searchOptions, expectedFactoryError, expectedSearchError, enabled = true}) {
-  const url = 'http://foo.bar';
+  // eslint-disable-next-line max-statements
+  async function callback({getFixture, factoryOptions, searchOptions, expectedFactoryError, expectedSearchError, enabled = true}) {
+    const url = 'http://foo.bar';
 
-  if (!enabled) {
-    return;
-  }
-
-  if (expectedFactoryError) {
-    if (expectedFactoryError.isCandidateSearchError) {
-      expect(() => createSearchInterface({...formatFactoryOptions(), url})).to.throw(CandidateSearchError, new RegExp(expectedFactoryError, 'u'));
+    if (!enabled) {
       return;
     }
 
-    expect(() => createSearchInterface({...formatFactoryOptions(), url})).to.throw(new RegExp(expectedFactoryError, 'u'));
-    return;
-  }
-
-  const search = createSearchInterface({...formatFactoryOptions(), url});
-  await iterate({searchOptions});
-
-  function formatFactoryOptions() {
-    return {
-      ...factoryOptions,
-      maxRecordsPerRequest: 1,
-      record: new MarcRecord(factoryOptions.record, {subfieldValues: false})
-    };
-  }
-
-  // eslint-disable-next-line max-statements
-  async function iterate({searchOptions, count = 1}) {
-    const expectedResults = getFixture(`expectedResults${count}.json`);
-
-    if (expectedSearchError) { // eslint-disable-line functional/no-conditional-statement
-      try {
-        await search(searchOptions);
-        throw new Error('Expected an error');
-      } catch (err) {
-        expect(err).to.be.an('error');
-        expect(err.message).to.match(new RegExp(expectedSearchError, 'u'));
+    if (expectedFactoryError) {
+      if (expectedFactoryError.isCandidateSearchError) {
+        expect(() => createSearchInterface({...formatFactoryOptions(), url})).to.throw(CandidateSearchError, new RegExp(expectedFactoryError, 'u'));
         return;
       }
+
+      expect(() => createSearchInterface({...formatFactoryOptions(), url})).to.throw(new RegExp(expectedFactoryError, 'u'));
+      return;
     }
 
-    const results = await search(searchOptions);
+    const search = createSearchInterface({...formatFactoryOptions(), url});
+    await iterate({searchOptions});
 
-    expect(formatResults(results)).to.eql(expectedResults);
-
-    if (results.records.length > 0) {
-      return iterate({
-        searchOptions: resultsToOptions(results),
-        count: count + 1
-      });
-    }
-
-    function formatResults(results) {
-      // console.log(results); //eslint-disable-line
+    function formatFactoryOptions() {
       return {
-        ...results,
-        records: results.records.map(({record, id}) => ({id, record: record.toObject()}))
+        ...factoryOptions,
+        maxRecordsPerRequest: 1,
+        record: new MarcRecord(factoryOptions.record, {subfieldValues: false})
       };
     }
 
-    function resultsToOptions(results) {
-      return Object.entries(results)
-        .filter(([k]) => k === 'records' === false)
-        .reduce((acc, [k, v]) => ({...acc, [k]: v}), {});
+    // eslint-disable-next-line max-statements
+    async function iterate({searchOptions, count = 1}) {
+      const expectedResults = getFixture(`expectedResults${count}.json`);
+
+      if (expectedSearchError) { // eslint-disable-line functional/no-conditional-statement
+        try {
+          await search(searchOptions);
+          throw new Error('Expected an error');
+        } catch (err) {
+          expect(err).to.be.an('error');
+          expect(err.message).to.match(new RegExp(expectedSearchError, 'u'));
+          return;
+        }
+      }
+
+      const results = await search(searchOptions);
+
+      expect(formatResults(results)).to.eql(expectedResults);
+
+      if (results.records.length > 0) {
+        return iterate({
+          searchOptions: resultsToOptions(results),
+          count: count + 1
+        });
+      }
+
+      function formatResults(results) {
+        // console.log(results); //eslint-disable-line
+        return {
+          ...results,
+          records: results.records.map(({record, id}) => ({id, record: record.toObject()}))
+        };
+      }
+
+      function resultsToOptions(results) {
+        return Object.entries(results)
+          .filter(([k]) => k === 'records' === false)
+          .reduce((acc, [k, v]) => ({...acc, [k]: v}), {});
+      }
     }
   }
-}
+});

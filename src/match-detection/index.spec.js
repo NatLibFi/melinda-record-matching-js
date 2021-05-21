@@ -33,33 +33,35 @@ import {MarcRecord} from '@natlibfi/marc-record';
 import * as features from './features';
 import createDetectionInterface from '.';
 
-generateTests({
-  path: [__dirname, '..', '..', 'test-fixtures', 'match-detection', 'index'],
-  useMetadataFile: true,
-  recurse: false,
-  fixura: {
-    reader: READERS.JSON
-  },
-  callback: ({getFixture, options, expectedResults, enabled = true}) => {
+describe('match-detection', () => {
+  generateTests({
+    path: [__dirname, '..', '..', 'test-fixtures', 'match-detection', 'index'],
+    useMetadataFile: true,
+    recurse: false,
+    fixura: {
+      reader: READERS.JSON
+    },
+    callback: ({getFixture, options, expectedResults, enabled = true}) => {
 
-    if (!enabled) {
-      return;
+      if (!enabled) {
+        return;
+      }
+
+      const detect = createDetectionInterface(formatOptions());
+      const recordA = new MarcRecord(getFixture('recordA.json'));
+      const recordB = new MarcRecord(getFixture('recordB.json'));
+      const results = detect(recordA, recordB);
+
+      expect(results).to.eql(expectedResults);
+
+      function formatOptions() {
+        const contextFeatures = features[options.strategy.type];
+
+        return {
+          ...options,
+          strategy: options.strategy.features.map(v => contextFeatures[v]())
+        };
+      }
     }
-
-    const detect = createDetectionInterface(formatOptions());
-    const recordA = new MarcRecord(getFixture('recordA.json'));
-    const recordB = new MarcRecord(getFixture('recordB.json'));
-    const results = detect(recordA, recordB);
-
-    expect(results).to.eql(expectedResults);
-
-    function formatOptions() {
-      const contextFeatures = features[options.strategy.type];
-
-      return {
-        ...options,
-        strategy: options.strategy.features.map(v => contextFeatures[v]())
-      };
-    }
-  }
+  });
 });
