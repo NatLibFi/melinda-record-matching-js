@@ -107,7 +107,7 @@ describe('candidate-search', () => {
 
       function resultsToOptions(results) {
         return Object.entries(results)
-          .filter(([k]) => k === 'records' === false)
+          .filter(([k]) => k === 'records' === false) // If key is 'records' return false
           .reduce((acc, [k, v]) => ({...acc, [k]: v}), {});
       }
     }
