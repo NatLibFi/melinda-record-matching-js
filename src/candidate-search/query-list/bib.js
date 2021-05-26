@@ -27,6 +27,120 @@
 *
 */
 import createDebugLogger from 'debug';
+import {toQueries} from '../candidate-search-utils';
+import {getMelindaIdsF035, validateSidFieldSubfieldCounts, getSubfieldValues} from '../../matching-utils';
+
+
+export function bibSourceIds(record) {
+
+  /* Melinda's SRU-index melinda.sourceid includes source IDs from SID fields in Melinda records
+     SID-fields in Melinda have sf $c with local id and sf $b with a code for the local db:
+
+     SID__ $c 123457 $b helka
+     SID__ $c (ANDL100020)1077305 $b sata
+     SID__ $c VER999999 $ FI-KV
+
+    In melinda.sourceid -index case is kept, sourceprefixes in brackets and hyphens are normalized away:
+
+    1234567helka
+    1077305sata
+    VER999999FIKV
+
+    Note: All Melinda records that have a matching records in a local db do NOT have SID for that local records,
+          existence of a SID field depends on how the record has been added to Melinda and how it has been handled
+          afterwards. SIDs are also not reliably maintained. A record might or might not have a SID for a local db
+          after the matching record is removed from the local db.
+
+   */
+
+
+  const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:query:source-ids');
+  const debugData = debug.extend('data');
+  debug(`Creating queries for sourceid's`);
+
+  const fSids = record.get('SID');
+  debugData(`SID-fields (${fSids.length}): ${JSON.stringify(fSids)}`);
+
+  return fSids.length > 0 ? toSidQueries(fSids) : [];
+
+  function toSidQueries(fSids) {
+    debug(`Creating actual queries for sourceid's`);
+
+    const sidStrings = getSidStrings(fSids);
+
+    if (sidStrings.length < 1) {
+      debug(`No identifiers found, no queries created.`);
+      return [];
+    }
+
+    const sidQueries = toQueries(sidStrings, 'melinda.sourceid');
+
+    return sidQueries;
+
+    function getSidStrings(fSids) {
+      debug(`Getting Sid strings from SID fields`);
+
+      // Map SID fields to valid sidStrings, filter out empty strings
+      const sidStrings = fSids.map(toSidString).filter(nonEmptySid => nonEmptySid);
+      return sidStrings;
+
+      function toSidString(field) {
+        debug(`Getting string from a field`);
+
+        return validateSidFieldSubfieldCounts(field) ? createSidString(field) : '';
+
+        function createSidString(field) {
+          debug(`Creating string from a field`);
+          const [sfC] = getSubfieldValues(field, 'c');
+          const [sfB] = getSubfieldValues(field, 'b');
+
+          const cleanedSfC = removeSourcePrefix(normalizeSidSubfieldValue(sfC));
+          const cleanedSfB = normalizeSidSubfieldValue(sfB);
+
+          debugData(`${JSON.stringify(sfC)} + ${JSON.stringify(sfB)}`);
+          return cleanedSfC.concat(cleanedSfB);
+        }
+
+        function removeSourcePrefix(subfieldValue) {
+          const sourcePrefixRegex = (/^(?<sourcePrefix>\([A-Za-z0-9-]+\))(?<id>.+)$/u);
+          const normalizedValue = subfieldValue.replace(sourcePrefixRegex, '$<id>');
+          debugData(`Normalized ${subfieldValue} to ${normalizedValue}`);
+          return normalizedValue;
+        }
+
+        function normalizeSidSubfieldValue(subfieldValue) {
+          debugData(`Normalizing ${subfieldValue}`);
+          const normalizeAwayRegex = (/[- ]/u);
+          return subfieldValue.replace(normalizeAwayRegex, '');
+        }
+
+      }
+    }
+  }
+}
+
+export function bibMelindaIds(record) {
+  // Melinda's SRU-index melinda.melindaid includes f001 controlnumbers and old Melinda-IDs from f035z's for all non-deleted Melinda-records
+
+  const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:query:bibMelindaIds');
+  const debugData = debug.extend('data');
+  debug(`Creating queries for MelindaIds`);
+
+  // Note: Melinda-ID's for search queries are created just from records f035a's and f035z's
+  // Both (FI-MELINDA)- and FCC-prefixed forms are found
+  // f001 controlnumber is not currently included, even if record's f003 is FI-MELINDA
+  const melindaIds = getMelindaIdsF035(record);
+
+  debugData(`Unique identifiers (${melindaIds.length}): ${JSON.stringify(melindaIds)}`);
+
+  if (melindaIds.length < 1) {
+    debug(`No identifiers found, no queries created.`);
+    return [];
+  }
+
+  return toQueries(melindaIds, 'melinda.melindaid');
+}
+
 
 // bibHostComponents returns host id from the first subfield $w of first field f773, see test-fixtures 04 and 05
 // bibHostComponents should search all 773 $ws for possible host id, but what should it do in case of multiple host ids?
@@ -103,25 +217,7 @@ export function bibStandardIdentifiers(record) {
     return [];
   }
 
-  return toQueries(uniqueIdentifiers);
-
-  function toQueries(identifiers) {
-    // Aleph supports only two queries with or -operator (This is not actually true)
-    const pairs = toPairs(identifiers);
-    const queries = pairs.map(([a, b]) => b ? `dc.identifier=${a} or dc.identifier=${b}` : `dc.identifier=${a}`);
-
-    debugData(`Pairs (${pairs.length}): ${JSON.stringify(pairs)}`);
-    debugData(`Queries (${queries.length}): ${JSON.stringify(queries)}`);
-
-    return queries;
-
-    function toPairs(array) {
-      if (array.length === 0) {
-        return [];
-      }
-      return [array.slice(0, 2)].concat(toPairs(array.slice(2), 2));
-    }
-  }
+  return toQueries(uniqueIdentifiers, 'dc.identifier');
 
   function toIdentifiers({tag, subfields}) {
     const issnIsbnReqExp = (/^[A-Za-z0-9-]+$/u);

@@ -1,0 +1,26 @@
+{
+  "description": "Should detect a match (All features for both ID and content match)",
+  "options": {
+    "strategy": {
+      "type": "bib",
+      "features": [
+        "melindaId",
+        "allSourceIds",
+        "hostComponent",
+        "isbn",
+        "issn",
+        "otherStandardIdentifier",
+        "title",
+        "authors",
+        "recordType",
+        "publicationTime",
+        "language",
+        "bibliographicLevel"
+      ]
+    }
+  },
+  "expectedResults": {
+    "match": true,
+    "probability": 1
+  }
+}

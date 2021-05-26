@@ -1,5 +1,5 @@
 {
-  "description": "Should detect a match (All features)",
+  "description": "Should detect a match (All features for content match)",
   "options": {
     "strategy": {
       "type": "bib",

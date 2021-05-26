@@ -1,0 +1,8 @@
+{
+  "description": "Comparison should return zero points if there's no match (no SIDs in A or B)",
+  "feature": "allSourceIds",
+  "type": "compare",
+  "expectedPoints": 0,
+  "featuresA": [],
+  "featuresB": []
+}

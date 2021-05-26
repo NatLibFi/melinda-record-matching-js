@@ -32,49 +32,56 @@ import generateTests from '@natlibfi/fixugen-http-client';
 import {MarcRecord} from '@natlibfi/marc-record';
 import createMatchInterface, {matchDetection} from '.';
 
-generateTests({
-  callback,
-  path: [__dirname, '..', 'test-fixtures', 'index'],
-  recurse: false,
-  fixura: {
-    reader: READERS.JSON
+describe('INDEX', () => {
+  generateTests({
+    callback,
+    path: [__dirname, '..', 'test-fixtures', 'index'],
+    recurse: false,
+    fixura: {
+      reader: READERS.JSON
+    }
+  });
+
+  async function callback({getFixture, options, enabled = true}) {
+
+    if (!enabled) {
+      return;
+    }
+
+    const record = new MarcRecord(getFixture('inputRecord.json'), {subfieldValues: false});
+    const expectedMatches = getFixture('expectedMatches.json');
+
+    const match = createMatchInterface(formatOptions());
+    const matches = await match(record);
+
+    expect(formatResults()).to.eql(expectedMatches);
+
+    function formatOptions() {
+      const contextFeatures = matchDetection.features[options.detection.strategy.type];
+
+      return {
+        ...options,
+        search: {
+          ...options.search,
+          maxRecordsPerRequest: 1
+        },
+        detection: {
+          ...options.detect,
+          strategy: options.detection.strategy.features.map(v => contextFeatures[v]())
+        },
+        maxMatches: 2,
+        maxCandidates: 1
+      };
+    }
+
+    function formatResults() {
+      return matches.map(({candidate, probability}) => ({
+        probability,
+        candidate: {
+          id: candidate.id,
+          record: candidate.record.toObject()
+        }
+      }));
+    }
   }
 });
-
-async function callback({getFixture, options}) {
-  const record = new MarcRecord(getFixture('inputRecord.json'), {subfieldValues: false});
-  const expectedMatches = getFixture('expectedMatches.json');
-
-  const match = createMatchInterface(formatOptions());
-  const matches = await match(record);
-
-  expect(formatResults()).to.eql(expectedMatches);
-
-  function formatOptions() {
-    const contextFeatures = matchDetection.features[options.detection.strategy.type];
-
-    return {
-      ...options,
-      search: {
-        ...options.search,
-        maxRecordsPerRequest: 1
-      },
-      detection: {
-        ...options.detect,
-        strategy: options.detection.strategy.features.map(v => contextFeatures[v]())
-      },
-      maxMatches: 2,
-      maxCandidates: 1
-    };
-  }
-
-  function formatResults() {
-    return matches.map(({candidate, probability}) => ({
-      probability,
-      candidate: {
-        id: candidate.id,
-        record: candidate.record.toObject()
-      }
-    }));
-  }
-}

@@ -1,0 +1,8 @@
+{
+  "description": "Comparison should return points for source ID match when there are no mismatches",
+  "feature": "allSourceIds",
+  "type": "compare",
+  "expectedPoints": 1,
+  "featuresA": [{"sourceDb":"helka","sourceId":"999999"}],
+  "featuresB": [{"sourceDb":"testi","sourceId":"1111"}, {"sourceDb":"helka","sourceId":"999999"}]
+}

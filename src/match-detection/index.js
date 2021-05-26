@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /**
 *
 * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -31,15 +32,17 @@ import * as features from './features';
 
 export {features};
 
+// eslint-disable-next-line max-statements
 export default ({strategy, treshold = 0.9}) => (recordA, recordB) => {
   const minProbabilityQuantifier = 0.5;
 
   const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection');
+  const debugData = debug.extend('data');
   const featuresA = extractFeatures(recordA);
   const featuresB = extractFeatures(recordB);
 
-  debug(`Features (a): ${JSON.stringify(featuresA)}`);
-  debug(`Features (b): ${JSON.stringify(featuresB)}`);
+  debugData(`Features (a): ${JSON.stringify(featuresA)}`);
+  debugData(`Features (b): ${JSON.stringify(featuresB)}`);
 
   const featurePairs = generateFeaturePairs();
   const similarityVector = generateSimilarityVector();
@@ -50,7 +53,7 @@ export default ({strategy, treshold = 0.9}) => (recordA, recordB) => {
     return {match: probability >= treshold, probability};
   }
 
-  debug(`No feature yielded minimum probability amount of points (${minProbabilityQuantifier})`);
+  debugData(`No feature yielded minimum probability amount of points (${minProbabilityQuantifier})`);
   return {match: false, probability: 0.0};
 
   function calculateprobability() {
@@ -69,7 +72,7 @@ export default ({strategy, treshold = 0.9}) => (recordA, recordB) => {
       return {name, points};
     });
 
-    debug(`Points: ${JSON.stringify(compared)}`);
+    debugData(`Points: ${JSON.stringify(compared)}`);
     return compared.map(({points}) => points);
   }
 

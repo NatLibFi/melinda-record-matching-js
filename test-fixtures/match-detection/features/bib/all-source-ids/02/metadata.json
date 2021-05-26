@@ -1,0 +1,73 @@
+{
+    "description": "Should extract several SIDs.",
+    "feature": "allSourceIds",
+    "type": "extract",
+    "expectedFeatures": [
+        {
+            "sourceDb": "FI-KV",
+            "sourceId": "VER978000"
+        },
+        {
+            "sourceDb": "sata",
+            "sourceId": "(ANDL100020)1077305"
+        },
+        {
+            "sourceDb": "helka",
+            "sourceId": "999999"
+        }
+    ],
+    "inputRecord": {
+        "leader": "02518cam a2200745zi 4500",
+        "fields": [
+            {
+                "tag": "001",
+                "value": "000019643"
+            },
+            {
+                "tag": "SID",
+                "ind1": " ",
+                "ind2": " ",
+                "subfields": [
+                    {
+                        "code": "c",
+                        "value": "VER978000"
+                    },
+                    {
+                        "code": "b",
+                        "value": "FI-KV"
+                    }
+                ]
+            },
+            {
+                "tag": "SID",
+                "ind1": " ",
+                "ind2": " ",
+                "subfields": [
+                    {
+                        "code": "c",
+                        "value": "(ANDL100020)1077305"
+                    },
+                    {
+                        "code": "b",
+                        "value": "sata"
+                    }
+                ]
+            },
+            {
+                "tag": "SID",
+                "ind1": " ",
+                "ind2": " ",
+                "subfields": [
+                    {
+                        "code": "c",
+                        "value": "999999"
+                    },
+                    {
+                        "code": "b",
+                        "value": "helka"
+                    }
+                ]
+            }
+        ]
+    }
+}

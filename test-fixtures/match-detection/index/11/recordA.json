@@ -1,0 +1,396 @@
+{
+  "leader": "00000nam a22004334i 4500",
+  "fields": [
+    {
+      "tag": "005",
+      "value": "20190509080750.7"
+    },
+    {
+      "tag": "008",
+      "value": "201007t20192019fi |||| ^     |0| 0afin c"
+    },
+    {
+      "tag": "035",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "(FI-MELINDA)001234567"
+        }
+      ]
+    },
+    {
+      "tag": "SID",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "c",
+          "value": "99999"
+        },
+        {
+          "code": "b",
+          "value": "testi"
+        }
+      ]
+    },
+    {
+      "tag": "020",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "978-952-289-525-7"
+        },
+        {
+          "code": "q",
+          "value": "sidottu"
+        }
+      ]
+    },
+    {
+      "tag": "040",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "FI-BTJ"
+        },
+        {
+          "code": "b",
+          "value": "fin"
+        },
+        {
+          "code": "e",
+          "value": "rda"
+        },
+        {
+          "code": "d",
+          "value": "FI-NL"
+        }
+      ]
+    },
+    {
+      "tag": "041",
+      "ind1": "0",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "fin"
+        }
+      ]
+    },
+    {
+      "tag": "080",
+      "ind1": "1",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "929 Tranberg"
+        },
+        {
+          "code": "2",
+          "value": "1974/fin/fennica"
+        }
+      ]
+    },
+    {
+      "tag": "080",
+      "ind1": "1",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "343"
+        },
+        {
+          "code": "2",
+          "value": "1974/fin/fennica"
+        }
+      ]
+    },
+    {
+      "tag": "084",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "30.1609"
+        },
+        {
+          "code": "2",
+          "value": "ykl"
+        }
+      ]
+    },
+    {
+      "tag": "084",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "99.1"
+        },
+        {
+          "code": "2",
+          "value": "ykl"
+        }
+      ]
+    },
+    {
+      "tag": "100",
+      "ind1": "1",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "Tranberg, Janne,"
+        },
+        {
+          "code": "e",
+          "value": "kirjoittaja."
+        }
+      ]
+    },
+    {
+      "tag": "245",
+      "ind1": "1",
+      "ind2": "0",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "Wanted :"
+        },
+        {
+          "code": "b",
+          "value": "Suomen etsityimmän rikollisen tarina /"
+        },
+        {
+          "code": "c",
+          "value": "Janne \"Nacci\" Tranberg ; (toim.) Pekka Lehtinen."
+        }
+      ]
+    },
+    {
+      "tag": "246",
+      "ind1": "3",
+      "ind2": "0",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "Suomen etsityimmän rikollisen tarina"
+        }
+      ]
+    },
+    {
+      "tag": "264",
+      "ind1": " ",
+      "ind2": "1",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "Helsinki :"
+        },
+        {
+          "code": "b",
+          "value": "Crime Time,"
+        },
+        {
+          "code": "c",
+          "value": "[2019]"
+        }
+      ]
+    },
+    {
+      "tag": "264",
+      "ind1": " ",
+      "ind2": "4",
+      "subfields": [
+        {
+          "code": "c",
+          "value": "©2019"
+        }
+      ]
+    },
+    {
+      "tag": "300",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "268 sivua, 8 numeroimatonta kuvasivua :"
+        },
+        {
+          "code": "b",
+          "value": "kuvitettu ;"
+        },
+        {
+          "code": "c",
+          "value": "22 cm"
+        }
+      ]
+    },
+    {
+      "tag": "336",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "teksti"
+        },
+        {
+          "code": "b",
+          "value": "txt"
+        },
+        {
+          "code": "2",
+          "value": "rdacontent"
+        }
+      ]
+    },
+    {
+      "tag": "337",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "käytettävissä ilman laitetta"
+        },
+        {
+          "code": "b",
+          "value": "n"
+        },
+        {
+          "code": "2",
+          "value": "rdamedia"
+        }
+      ]
+    },
+    {
+      "tag": "338",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "nide"
+        },
+        {
+          "code": "b",
+          "value": "nc"
+        },
+        {
+          "code": "2",
+          "value": "rdacarrier"
+        }
+      ]
+    },
+    {
+      "tag": "546",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "suomi."
+        }
+      ]
+    },
+    {
+      "tag": "600",
+      "ind1": "1",
+      "ind2": "4",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "Tranberg, Janne."
+        }
+      ]
+    },
+    {
+      "tag": "655",
+      "ind1": " ",
+      "ind2": "7",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "muistelmat"
+        },
+        {
+          "code": "2",
+          "value": "slm/fin"
+        }
+      ]
+    },
+    {
+      "tag": "700",
+      "ind1": "1",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "Lehtinen, Pekka,"
+        },
+        {
+          "code": "e",
+          "value": "toimittaja."
+        }
+      ]
+    },
+    {
+      "tag": "776",
+      "ind1": "0",
+      "ind2": "8",
+      "subfields": [
+        {
+          "code": "i",
+          "value": "Verkkoaineisto:"
+        },
+        {
+          "code": "z",
+          "value": "9789522895387"
+        }
+      ]
+    },
+    {
+      "tag": "856",
+      "ind1": "0",
+      "ind2": "8",
+      "subfields": [
+        {
+          "code": "u",
+          "value": "https://www.ellibslibrary.com/helmet/9789522895387"
+        },
+        {
+          "code": "y",
+          "value": "Linkki e-kirjaan"
+        }
+      ]
+    },
+    {
+      "tag": "SID",
+      "subfields": [
+        {
+          "code": "c",
+          "value": "2373358"
+        },
+        {
+          "code": "b",
+          "value": "helme"
+        }
+      ],
+      "ind1": " ",
+      "ind2": " "
+    }
+  ]
+}

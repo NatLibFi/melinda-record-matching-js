@@ -1,0 +1,8 @@
+{
+  "description": "Comparison should return no points for no matches, empty features",
+  "feature": "melindaId",
+  "type": "compare",
+  "expectedPoints": 0,
+  "featuresA": {},
+  "featuresB": {}
+}

@@ -1,0 +1,14 @@
+{
+  "description": "Should not generate Sourceid query, if there are no SID fields",
+  "type": "bibSourceIds",
+  "expectedQuery": [],
+  "inputRecord": {
+    "leader": "02518cam a2200745zi 4500",
+    "fields": [
+      {
+        "tag": "001",
+        "value": "000019643"
+      }
+    ]
+  }
+}

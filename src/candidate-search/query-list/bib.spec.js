@@ -32,20 +32,22 @@ import {expect} from 'chai';
 import {MarcRecord} from '@natlibfi/marc-record';
 import * as generators from './bib';
 
-generateTests({
-  path: [__dirname, '..', '..', '..', 'test-fixtures', 'candidate-search', 'query-list', 'bib'],
-  useMetadataFile: true,
-  fixura: {
-    reader: READERS.JSON
-  },
-  callback: ({type, inputRecord, expectedQuery, enabled = true}) => {
-    const generate = generators[type];
-    const record = new MarcRecord(inputRecord, {subfieldValues: false});
+describe('candidate-search/query-list/bib/', () => {
+  generateTests({
+    path: [__dirname, '..', '..', '..', 'test-fixtures', 'candidate-search', 'query-list', 'bib'],
+    useMetadataFile: true,
+    fixura: {
+      reader: READERS.JSON
+    },
+    callback: ({type, inputRecord, expectedQuery, enabled = true}) => {
+      const generate = generators[type];
+      const record = new MarcRecord(inputRecord, {subfieldValues: false});
 
-    if (!enabled) {
-      return;
+      if (!enabled) {
+        return;
+      }
+
+      expect(generate(record)).to.eql(expectedQuery);
     }
-
-    expect(generate(record)).to.eql(expectedQuery);
-  }
+  });
 });

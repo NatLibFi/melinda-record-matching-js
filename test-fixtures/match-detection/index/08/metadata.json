@@ -1,0 +1,16 @@
+{
+  "description": "Should not detect a match (All features for ID match, Melinda-ID match, SID mismatch)",
+  "options": {
+    "strategy": {
+      "type": "bib",
+      "features": [
+        "melindaId",
+        "allSourceIds"
+      ]
+    }
+  },
+  "expectedResults": {
+    "match": false,
+    "probability": 0
+  }
+}

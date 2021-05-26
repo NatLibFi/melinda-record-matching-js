@@ -1,0 +1,8 @@
+{
+  "description": "Comparison should return points for Melinda-id match between A f001 and B f035",
+  "feature": "melindaId",
+  "type": "compare",
+  "expectedPoints": 1,
+  "featuresA": { "isMelindaRecord": true, "f001": "001234567", "f035MelindaIds": ["002234569","010334567"]},
+  "featuresB": { "isMelindaRecord": false, "f001": "001234567", "f035MelindaIds": ["010334567","001234567"]}
+}

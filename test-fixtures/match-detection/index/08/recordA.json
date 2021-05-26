@@ -1,0 +1,666 @@
+{
+  "leader": "02315nam a22005414i 4500",
+  "fields": [
+    {
+      "tag": "003",
+      "value": "FI-MELINDA"
+    },
+    {
+      "tag": "008",
+      "value": "201007t20202020fi ||||       |0| f fin c"
+    },
+    {
+      "tag": "020",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "978-951-1-33251-0"
+        },
+        {
+          "code": "q",
+          "value": "sidottu"
+        }
+      ]
+    },
+    {
+      "tag": "SID",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "c",
+          "value": "123456"
+        },
+        {
+          "code": "b",
+          "value": "FI-KV"
+        }
+      ]
+    },
+    {
+      "tag": "035",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "(FI-MELINDA)016661494"
+        }
+      ]
+    },
+    {
+      "tag": "040",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "FI-BTJ"
+        },
+        {
+          "code": "b",
+          "value": "fin"
+        },
+        {
+          "code": "e",
+          "value": "rda"
+        },
+        {
+          "code": "d",
+          "value": "FI-NL"
+        }
+      ]
+    },
+    {
+      "tag": "041",
+      "ind1": "0",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "fin"
+        }
+      ]
+    },
+    {
+      "tag": "080",
+      "ind1": "1",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "894.541"
+        },
+        {
+          "code": "x",
+          "value": "-3"
+        },
+        {
+          "code": "2",
+          "value": "1974/fin/fennica"
+        }
+      ]
+    },
+    {
+      "tag": "084",
+      "ind1": "9",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "Jännitys"
+        },
+        {
+          "code": "2",
+          "value": "ykl"
+        }
+      ]
+    },
+    {
+      "tag": "084",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "84.2"
+        },
+        {
+          "code": "2",
+          "value": "ykl"
+        }
+      ]
+    },
+    {
+      "tag": "100",
+      "ind1": "1",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "Nuotio, Eppu,"
+        },
+        {
+          "code": "e",
+          "value": "kirjoittaja."
+        }
+      ]
+    },
+    {
+      "tag": "245",
+      "ind1": "1",
+      "ind2": "0",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "Elämänlanka /"
+        },
+        {
+          "code": "c",
+          "value": "Eppu Nuotio."
+        }
+      ]
+    },
+    {
+      "tag": "264",
+      "ind1": " ",
+      "ind2": "1",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "Helsingissä :"
+        },
+        {
+          "code": "b",
+          "value": "Kustannusosakeyhtiö Otava,"
+        },
+        {
+          "code": "c",
+          "value": "[2020]"
+        }
+      ]
+    },
+    {
+      "tag": "264",
+      "ind1": " ",
+      "ind2": "3",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "Keuruu :"
+        },
+        {
+          "code": "b",
+          "value": "Otava Kirjapaino"
+        }
+      ]
+    },
+    {
+      "tag": "264",
+      "ind1": " ",
+      "ind2": "4",
+      "subfields": [
+        {
+          "code": "c",
+          "value": "©2020"
+        }
+      ]
+    },
+    {
+      "tag": "300",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "285 sivua ;"
+        },
+        {
+          "code": "c",
+          "value": "21 cm"
+        }
+      ]
+    },
+    {
+      "tag": "336",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "teksti"
+        },
+        {
+          "code": "b",
+          "value": "txt"
+        },
+        {
+          "code": "2",
+          "value": "rdacontent"
+        }
+      ]
+    },
+    {
+      "tag": "337",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "käytettävissä ilman laitetta"
+        },
+        {
+          "code": "b",
+          "value": "n"
+        },
+        {
+          "code": "2",
+          "value": "rdamedia"
+        }
+      ]
+    },
+    {
+      "tag": "338",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "nide"
+        },
+        {
+          "code": "b",
+          "value": "nc"
+        },
+        {
+          "code": "2",
+          "value": "rdacarrier"
+        }
+      ]
+    },
+    {
+      "tag": "490",
+      "ind1": "0",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "Ellen Lähteen tutkimuksia"
+        }
+      ]
+    },
+    {
+      "tag": "546",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "suomi."
+        }
+      ]
+    },
+    {
+      "tag": "600",
+      "ind1": "1",
+      "ind2": "4",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "Lähde, Ellen"
+        },
+        {
+          "code": "c",
+          "value": "(fiktiivinen hahmo)"
+        }
+      ]
+    },
+    {
+      "tag": "650",
+      "ind1": " ",
+      "ind2": "7",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "matkat"
+        },
+        {
+          "code": "2",
+          "value": "kauno/fin"
+        },
+        {
+          "code": "0",
+          "value": "http://www.yso.fi/onto/kauno/p3013"
+        }
+      ]
+    },
+    {
+      "tag": "650",
+      "ind1": " ",
+      "ind2": "7",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "elokuva-ala"
+        },
+        {
+          "code": "2",
+          "value": "kauno/fin"
+        },
+        {
+          "code": "0",
+          "value": "http://www.yso.fi/onto/koko/p16692"
+        }
+      ]
+    },
+    {
+      "tag": "650",
+      "ind1": " ",
+      "ind2": "7",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "julkisuuden henkilöt"
+        },
+        {
+          "code": "2",
+          "value": "kauno/fin"
+        },
+        {
+          "code": "0",
+          "value": "http://www.yso.fi/onto/kauno/p1549"
+        }
+      ]
+    },
+    {
+      "tag": "650",
+      "ind1": " ",
+      "ind2": "7",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "rakkaussuhde"
+        },
+        {
+          "code": "2",
+          "value": "kauno/fin"
+        },
+        {
+          "code": "0",
+          "value": "http://www.yso.fi/onto/kauno/p2284"
+        }
+      ]
+    },
+    {
+      "tag": "650",
+      "ind1": " ",
+      "ind2": "7",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "salaisuudet"
+        },
+        {
+          "code": "2",
+          "value": "kauno/fin"
+        },
+        {
+          "code": "0",
+          "value": "http://www.yso.fi/onto/kauno/p2619"
+        }
+      ]
+    },
+    {
+      "tag": "650",
+      "ind1": " ",
+      "ind2": "7",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "murha"
+        },
+        {
+          "code": "2",
+          "value": "kauno/fin"
+        },
+        {
+          "code": "0",
+          "value": "http://www.yso.fi/onto/kauno/p3941"
+        }
+      ]
+    },
+    {
+      "tag": "650",
+      "ind1": " ",
+      "ind2": "7",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "salapoliisit"
+        },
+        {
+          "code": "2",
+          "value": "kauno/fin"
+        },
+        {
+          "code": "0",
+          "value": "http://www.yso.fi/onto/kauno/p1082"
+        }
+      ]
+    },
+    {
+      "tag": "650",
+      "ind1": " ",
+      "ind2": "7",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "naiset"
+        },
+        {
+          "code": "2",
+          "value": "kauno/fin"
+        },
+        {
+          "code": "0",
+          "value": "http://www.yso.fi/onto/kauno/p3043"
+        }
+      ]
+    },
+    {
+      "tag": "651",
+      "ind1": " ",
+      "ind2": "7",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "Berliini"
+        },
+        {
+          "code": "2",
+          "value": "yso/fin"
+        },
+        {
+          "code": "0",
+          "value": "http://www.yso.fi/onto/yso/p105612"
+        }
+      ]
+    },
+    {
+      "tag": "651",
+      "ind1": " ",
+      "ind2": "7",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "Saksa"
+        },
+        {
+          "code": "2",
+          "value": "yso/fin"
+        },
+        {
+          "code": "0",
+          "value": "http://www.yso.fi/onto/yso/p105087"
+        }
+      ]
+    },
+    {
+      "tag": "655",
+      "ind1": " ",
+      "ind2": "7",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "jännityskirjallisuus"
+        },
+        {
+          "code": "2",
+          "value": "slm/fin"
+        },
+        {
+          "code": "0",
+          "value": "http://urn.fi/URN:NBN:fi:au:slm:s382"
+        }
+      ]
+    },
+    {
+      "tag": "655",
+      "ind1": " ",
+      "ind2": "7",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "salapoliisikirjallisuus"
+        },
+        {
+          "code": "2",
+          "value": "slm/fin"
+        },
+        {
+          "code": "0",
+          "value": "http://urn.fi/URN:NBN:fi:au:slm:s287"
+        }
+      ]
+    },
+    {
+      "tag": "655",
+      "ind1": " ",
+      "ind2": "7",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "sarjakertomukset"
+        },
+        {
+          "code": "2",
+          "value": "slm/fin"
+        },
+        {
+          "code": "0",
+          "value": "http://urn.fi/URN:NBN:fi:au:slm:s555"
+        }
+      ]
+    },
+    {
+      "tag": "655",
+      "ind1": " ",
+      "ind2": "7",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "romaanit"
+        },
+        {
+          "code": "2",
+          "value": "slm/fin"
+        },
+        {
+          "code": "0",
+          "value": "http://urn.fi/URN:NBN:fi:au:slm:s518"
+        }
+      ]
+    },
+    {
+      "tag": "655",
+      "ind1": " ",
+      "ind2": "7",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "kaunokirjallisuus"
+        },
+        {
+          "code": "2",
+          "value": "slm/fin"
+        },
+        {
+          "code": "0",
+          "value": "http://urn.fi/URN:NBN:fi:au:slm:s975"
+        }
+      ]
+    },
+    {
+      "tag": "655",
+      "ind1": " ",
+      "ind2": "7",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "suomenkielinen kirjallisuus"
+        },
+        {
+          "code": "2",
+          "value": "local"
+        }
+      ]
+    },
+    {
+      "tag": "776",
+      "ind1": "0",
+      "ind2": "8",
+      "subfields": [
+        {
+          "code": "i",
+          "value": "Verkkoaineisto:"
+        },
+        {
+          "code": "z",
+          "value": "9789511333685"
+        }
+      ]
+    },
+    {
+      "tag": "856",
+      "ind1": "4",
+      "ind2": "1",
+      "subfields": [
+        {
+          "code": "u",
+          "value": "https://www.ellibslibrary.com/helmet/9789511333685"
+        },
+        {
+          "code": "y",
+          "value": "Linkki e-kirjaan"
+        }
+      ]
+    },
+    {
+      "tag": "SID",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "c",
+          "value": "2372022"
+        },
+        {
+          "code": "b",
+          "value": "helme"
+        }
+      ]
+    }
+  ]
+}
