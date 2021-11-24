@@ -39,12 +39,15 @@ export function bibSourceIds(record) {
      SID__ $c 123457 $b helka
      SID__ $c (ANDL100020)1077305 $b sata
      SID__ $c VER999999 $ FI-KV
+     SID__ $c /10024/508126 $ REPO_THESEUS
 
     In melinda.sourceid -index case is kept, sourceprefixes in brackets and hyphens are normalized away:
+    Note: slashes are not normalized away, but a SRU-search-string including slashes needs to be quoted
 
     1234567helka
     1077305sata
     VER999999FIKV
+    /10024/508126REPO_THESEUS
 
     Note: All Melinda records that have a matching records in a local db do NOT have SID for that local records,
           existence of a SID field depends on how the record has been added to Melinda and how it has been handled
@@ -56,6 +59,8 @@ export function bibSourceIds(record) {
 
   const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:query:source-ids');
   const debugData = debug.extend('data');
+  //const debugInfo = debug.extend('info');
+
   debug(`Creating queries for sourceid's`);
 
   const fSids = record.get('SID');
