@@ -1,5 +1,5 @@
 {
-  "description": "Should generate title query (No 245)",
+  "description": "Should generate title query (No 245) - empty query",
   "type": "bibTitle",
   "expectedQuery": [],
   "inputRecord": {

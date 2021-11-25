@@ -1,7 +1,7 @@
 {
-  "description": "Should generate title query",
+  "description": "Should generate title query including the subtitle (punc: =)",
   "type": "bibTitle",
-  "expectedQuery": ["dc.title=\"^foo bar*\""],
+  "expectedQuery": ["dc.title=\"^E 18 ruusut hehkuvat periferio*\""],
   "inputRecord": {
     "leader": "02518cam a2200745zi 4500",
     "fields": [
@@ -16,11 +16,11 @@
         "subfields": [
           {
             "code": "a",
-            "value": "foo :"
+            "value": "E 18 ="
           },
           {
             "code": "b",
-            "value": "bar  "
+            "value": "ruusut hehkuvat periferioissa."
           }
         ]
       }

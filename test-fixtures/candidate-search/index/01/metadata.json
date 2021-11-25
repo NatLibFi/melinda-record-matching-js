@@ -31,12 +31,12 @@
   "requests": [
     {
       "method": "get",
-      "url": "/?operation=searchRetrieve&query=dc.title%3D%22%5Efoobar*%22&startRecord=1&version=2.0&maximumRecords=1",
+      "url": "/?operation=searchRetrieve&query=dc.title%3D%22%5Efoo bar*%22&startRecord=1&version=2.0&maximumRecords=1",
       "status": 200
     },
     {
       "method": "get",
-      "url": "/?operation=searchRetrieve&query=dc.title%3D%22%5Efoobar*%22&startRecord=3&version=2.0&maximumRecords=1",
+      "url": "/?operation=searchRetrieve&query=dc.title%3D%22%5Efoo bar*%22&startRecord=3&version=2.0&maximumRecords=1",
       "status": 200
     }
   ]

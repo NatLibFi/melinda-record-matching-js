@@ -173,12 +173,20 @@ export function bibHostComponents(record) {
   }
 }
 
+// SRU search dc.title with a search phrase starting with ^ maps currently in Melinda to
+// (probably) to *headings* index TIT
+// Headings index TIT drops articles etc. from the start of the title according to the filing indicator
+// Currently filing indicator is not implemented - if the title starts with an article and the Melinda
+// record is correctly catalogued using a filing indicator -> dc.title search won't match
+
 export function bibTitle(record) {
   const title = getTitle();
 
   if (title) {
     const formatted = title
       .replace(/[^\w\s\p{Alphabetic}]/gu, '')
+      // Clean up concurrent spaces from fe. subfield changes
+      .replace(/ +/gu, ' ')
       .trim()
       .slice(0, 30)
       .trim();
@@ -196,7 +204,8 @@ export function bibTitle(record) {
       return field.subfields
         .filter(({code}) => ['a', 'b'].includes(code))
         .map(({value}) => value)
-        .join('');
+        // In Melinda's index subfield separators are indexed as ' '
+        .join(' ');
     }
     return false;
   }
