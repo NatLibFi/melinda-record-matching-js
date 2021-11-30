@@ -1,0 +1,30 @@
+{
+  "description": "DISABLED: Should generate title query from field using a filing indicator",
+  "enabled": false,
+  "type": "bibTitle",
+  "expectedQuery": ["dc.title=\"^hobbit or There and back again*\""],
+  "inputRecord": {
+    "leader": "02518cam a2200745zi 4500",
+    "fields": [
+      {
+        "tag": "001",
+        "value": "000019643"
+      },
+      {
+        "tag": "245",
+        "ind1": "1",
+        "ind2": "4",
+        "subfields": [
+          {
+            "code": "a",
+            "value": "The hobbit, or, There and back again /"
+          },
+          {
+            "code": "c",
+            "value": "J. R. R. Tolkien ; illustrated by Alan Lee."
+          }
+        ]
+      }
+    ]
+  }
+}
