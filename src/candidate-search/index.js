@@ -48,6 +48,7 @@ export default ({record, searchSpec, url, maxRecordsPerRequest = 50}) => {
     retrieveAll: false
   });
 
+  debug(`Searching matches for ${inputRecordId}`);
   debug(`Generated queryList ${JSON.stringify(queryList)}`);
   if (queryList.length === 0) { // eslint-disable-line functional/no-conditional-statement
     throw new CandidateSearchError(`Generated query list contains no queries`);
@@ -101,6 +102,9 @@ export default ({record, searchSpec, url, maxRecordsPerRequest = 50}) => {
                 const foundRecordMarc = await MARCXML.from(foundRecord, {subfieldValues: false});
                 const foundRecordId = getRecordId(foundRecordMarc);
 
+                // This does not work and might cause problems:
+                // Record *should* match itself AND in REST the input record is given id 000000001 always
+                debug(`Checking ${inputRecordId} vs ${foundRecordId}`);
                 if (inputRecordId === foundRecordId) {
                   debug(`Input and candidate are the same record per 001. Discarding candidate`);
                   return;
