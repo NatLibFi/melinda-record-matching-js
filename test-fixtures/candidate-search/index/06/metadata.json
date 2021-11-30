@@ -1,6 +1,6 @@
 {
-  "description": "Should throw because of a SRU error",
-  "expectedSearchError": "SRU SruSearchError for query: dc.title=\"\\^foo bar\\*\": Error: Masking character not supported",
+  "description": "Should throw because of a SRU error (500)",
+  "expectedSearchError": "SRU error for query.*Error: Unexpected response 500: Internal server error",
   "factoryOptions": {
     "searchSpec": ["bibTitle"],
     "record": {
@@ -33,7 +33,7 @@
     {
       "method": "get",
       "url": "/?operation=searchRetrieve&query=dc.title%3D%22%5Efoo+bar*%22&startRecord=1&version=2.0&maximumRecords=1",
-      "status": 200
+      "status": 500
     }
   ]
 }

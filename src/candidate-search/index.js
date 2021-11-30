@@ -27,7 +27,7 @@
 */
 
 import createDebugLogger from 'debug';
-import createClient from '@natlibfi/sru-client';
+import createClient, {SruSearchError} from '@natlibfi/sru-client';
 import {MarcRecord} from '@natlibfi/marc-record';
 import {MARCXML} from '@natlibfi/marc-record-serializers';
 import generateQueryList from './query-list';
@@ -80,6 +80,12 @@ export default ({record, searchSpec, url, maxRecordsPerRequest = 50}) => {
 
         client.searchRetrieve(query, {startRecord: resultSetOffset})
           .on('error', err => {
+            // eslint-disable-next-line functional/no-conditional-statement
+            if (err instanceof SruSearchError) {
+              debug(`SRU SruSearchError for query: ${query}: ${err}`);
+              reject(new CandidateSearchError(`SRU SruSearchError for query: ${query}: ${err}`));
+            }
+            debug(`SRU error for query: ${query}: ${err}`);
             reject(new CandidateSearchError(`SRU error for query: ${query}: ${err}`));
           })
           .on('end', async nextOffset => {
