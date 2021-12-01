@@ -14,7 +14,7 @@
 		"url": "git@github.com:natlibfi/melinda-record-matching-js.git"
 	},
 	"license": "LGPL-3.0+",
-	"version": "2.0.0",
+	"version": "2.0.1-alpha.1",
 	"main": "./dist/index.js",
 	"engines": {
 		"node": ">=14"
@@ -35,10 +35,10 @@
 		"watch:test": "cross-env DEBUG=1 NODE_ENV=test nodemon -w src -w test-fixtures --exec 'npm run test:dev'"
 	},
 	"dependencies": {
-		"@natlibfi/marc-record": "^7.0.0-alpha.1",
+		"@natlibfi/marc-record": "^7.0.0",
 		"@natlibfi/marc-record-serializers": "^8.0.4",
-		"@natlibfi/sru-client": "^4.1.0",
-		"debug": "^4.3.2",
+		"@natlibfi/sru-client": "^5.0.0",
+		"debug": "^4.3.3",
 		"moment": "^2.29.1",
 		"natural": "^5.1.11",
 		"uuid": "^8.3.2",
