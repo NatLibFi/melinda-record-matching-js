@@ -43,23 +43,19 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
     // eslint-disable-next-line max-statements
     async function iterate(initialState = {}, matches = [], candidateCount = 0) {
       const {records, ...state} = await search(initialState);
+      debug(`Current state: ${JSON.stringify(state)}`);
 
       if (records.length > 0 || state.queriesLeft > 0) {
         debug(`Checking ${records.length} candidates for matches`);
 
-        const matchResult = iterateRecords(records);
+        const matchResult = iterateRecords({records, maxMatches, matches});
+        const newMatches = matches.concat(matchResult);
 
-        if (matchResult) {
-          const newMatches = matches.concat(matchResult);
-
-          if (newMatches.length === maxMatches) {
-            return newMatches;
-          }
-
-          return maxCandidatesRetrieved() ? newMatches : iterate(state, newMatches, candidateCount + records.length);
+        if (maxMatchesFound(newMatches, maxMatches)) {
+          return newMatches;
         }
 
-        return maxCandidatesRetrieved() ? matches : iterate(state, matches, candidateCount + records.length);
+        return maxCandidatesRetrieved() ? newMatches : iterate(state, newMatches, candidateCount + records.length);
       }
 
       debug(`No (more) candidate records to check, matches: ${matches.length}`);
@@ -72,26 +68,52 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
         }
       }
 
-      function iterateRecords(records) {
+      // eslint-disable-next-line max-statements
+      function iterateRecords({records, maxMatches, matches, recordMatches = []}) {
         const [candidate] = records;
 
-        if (candidate) {
+        if (candidate && candidateNotInMatches(matches, candidate)) {
           const {record: candidateRecord, id: candidateId} = candidate;
+          debug(`Running matchDetection for record ${candidateId}`);
+
           const {match, probability} = detect(record, candidateRecord);
 
           if (match) {
-            return {
+            const newMatch = {
               probability,
               candidate: {
                 id: candidateId,
                 record: candidateRecord
               }
             };
-          }
+            const newRecordMatches = recordMatches.concat(newMatch);
 
-          return iterateRecords(records.slice(1));
+            if (maxMatchesFound(matches.concat(newRecordMatches), maxMatches)) {
+              return newRecordMatches;
+            }
+
+            return iterateRecords({records: records.slice(1), maxMatches, matches, newRecordMatches});
+          }
+          return iterateRecords({records: records.slice(1), maxMatches, matches, recordMatches});
+        }
+
+        debug('Record set done');
+        return recordMatches;
+      }
+
+      function maxMatchesFound(matches, maxMatches) {
+        if (matches.length >= maxMatches) {
+          debug(`Stopping: maxMatches (${maxMatches}) found.`);
+          return true;
         }
       }
+
+      function candidateNotInMatches(matches, candidate) {
+        // This does not do any checking at the moment
+        debug(`Check here whether record ${candidate.id} is already included in ${matches.length} matches`);
+        return true;
+      }
+
     }
   };
 };

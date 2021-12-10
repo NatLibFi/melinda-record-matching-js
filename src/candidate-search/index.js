@@ -36,6 +36,7 @@ export {searchTypes} from './query-list';
 
 export class CandidateSearchError extends Error {}
 
+// eslint-disable-next-line max-statements
 export default ({record, searchSpec, url, maxRecordsPerRequest = 50}) => {
   MarcRecord.setValidationOptions({subfieldValues: false});
 
