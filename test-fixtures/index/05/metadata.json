@@ -1,11 +1,12 @@
 {
-  "description": "Should find matches",
+  "description": "Should return matchStatus false/maxedQueries, if there are search queries with server maximum results",
   "enabled": true,
   "options": {
     "search": {
       "searchSpec": ["bibStandardIdentifiers"],
       "url": "http://foo.bar",
-      "maxRecordsPerRequest": 1
+      "maxRecordsPerRequest": 1,
+      "serverMaxResult": 1
     },
     "detection": {
       "strategy": {
@@ -16,11 +17,11 @@
         ]
       }
     },
-    "maxMatches": 2,
-    "maxCandidates": 1
+    "maxMatches": 100,
+    "maxCandidates": 100
   },
   "expectedMatchStatus": false,
-  "expectedStopReason": "maxCandidates",
+  "expectedStopReason": "maxedQueries",
   "requests": [
     {
       "method": "get",

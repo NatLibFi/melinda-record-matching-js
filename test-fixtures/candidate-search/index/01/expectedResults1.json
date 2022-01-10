@@ -1,7 +1,13 @@
 {
   "queriesLeft":0,
+  "query": "dc.title=\"^foo bar*\"",
+  "queryCandidateCounter": 1,
+  "queryCounter": 1,
   "queryOffset": 0,
   "resultSetOffset": 3,
+  "searchCounter": 1,
+  "totalRecords": 3,
+  "maxedQueries": [],
   "records":
   [
     {

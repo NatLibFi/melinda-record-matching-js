@@ -1,5 +1,5 @@
 {
-  "description": "Should find matches",
+  "description": "Should return matchQuery for matches/nonMatches when returnQuery is used",
   "enabled": true,
   "options": {
     "search": {
@@ -17,10 +17,12 @@
       }
     },
     "maxMatches": 2,
-    "maxCandidates": 1
+    "maxCandidates": 100,
+    "returnNonMatches": true,
+    "returnQuery": true
   },
-  "expectedMatchStatus": false,
-  "expectedStopReason": "maxCandidates",
+  "expectedMatchStatus": true,
+  "expectedStopReason": "",
   "requests": [
     {
       "method": "get",

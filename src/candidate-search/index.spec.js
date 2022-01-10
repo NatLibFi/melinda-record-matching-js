@@ -31,6 +31,9 @@ import {READERS} from '@natlibfi/fixura';
 import generateTests from '@natlibfi/fixugen-http-client';
 import {MarcRecord} from '@natlibfi/marc-record';
 import createSearchInterface, {CandidateSearchError} from '.';
+import createDebugLogger from 'debug';
+
+const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:test');
 
 describe('candidate-search', () => {
   generateTests({
@@ -64,9 +67,11 @@ describe('candidate-search', () => {
     await iterate({searchOptions});
 
     function formatFactoryOptions() {
+      debug(`Using factoryOptions: ${JSON.stringify(factoryOptions)}`);
       return {
         ...factoryOptions,
-        maxRecordsPerRequest: 1,
+        maxRecordsPerRequest: factoryOptions.maxRecordsPerRequest || 1,
+        maxServerResults: factoryOptions.maxServerResults || undefined,
         record: new MarcRecord(factoryOptions.record, {subfieldValues: false})
       };
     }

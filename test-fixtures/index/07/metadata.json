@@ -1,5 +1,5 @@
 {
-  "description": "Should find matches",
+  "description": "Should return matchStatus false/maxMatches, if matching is stopped because maxMatches has been reached",
   "enabled": true,
   "options": {
     "search": {
@@ -16,11 +16,11 @@
         ]
       }
     },
-    "maxMatches": 2,
-    "maxCandidates": 1
+    "maxMatches": 1,
+    "maxCandidates": 100
   },
   "expectedMatchStatus": false,
-  "expectedStopReason": "maxCandidates",
+  "expectedStopReason": "maxMatches",
   "requests": [
     {
       "method": "get",

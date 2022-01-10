@@ -33,11 +33,16 @@ import * as features from './features';
 export {features};
 
 // eslint-disable-next-line max-statements
-export default ({strategy, treshold = 0.9}) => (recordA, recordB) => {
+export default ({strategy, treshold = 0.9}, returnStrategy = false) => (recordA, recordB) => {
   const minProbabilityQuantifier = 0.5;
 
   const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection');
   const debugData = debug.extend('data');
+
+  debugData(`Strategy: ${JSON.stringify(strategy)}`);
+  debugData(`Treshold: ${JSON.stringify(treshold)}`);
+  debugData(`ReturnStrategy: ${JSON.stringify(returnStrategy)}`);
+
   const featuresA = extractFeatures(recordA);
   const featuresB = extractFeatures(recordB);
 
@@ -50,11 +55,26 @@ export default ({strategy, treshold = 0.9}) => (recordA, recordB) => {
   if (similarityVector.some(v => v >= minProbabilityQuantifier)) {
     const probability = calculateprobability();
     debug(`probability: ${probability} (Treshold: ${treshold})`);
-    return {match: probability >= treshold, probability};
+    return returnResult({match: probability >= treshold, probability});
   }
 
   debugData(`No feature yielded minimum probability amount of points (${minProbabilityQuantifier})`);
-  return {match: false, probability: 0.0};
+  return returnResult({match: false, probability: 0.0});
+
+  function returnResult(result) {
+    if (returnStrategy) {
+      debug(`Returning detection strategy with the result`);
+      const resultWithStrategy = {match: result.match, probability: result.probability, strategy: formatStrategy(strategy), treshold};
+      debugData(`${JSON.stringify(resultWithStrategy)}`);
+      return resultWithStrategy;
+    }
+    return result;
+  }
+
+  function formatStrategy(strategy) {
+    const strategyNames = strategy.map(element => element.name);
+    return strategyNames || [];
+  }
 
   function calculateprobability() {
     const probability = similarityVector.reduce((acc, v) => acc + v, 0.0);
