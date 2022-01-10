@@ -4,7 +4,7 @@
 *
 * Melinda record matching modules for Javascript
 *
-* Copyright (C) 2020-2021 University Of Helsinki (The National Library Of Finland)
+* Copyright (C) 2020-2022 University Of Helsinki (The National Library Of Finland)
 *
 * This file is part of melinda-record-matching-js
 *
