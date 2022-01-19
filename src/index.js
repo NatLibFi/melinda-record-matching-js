@@ -47,7 +47,7 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
   const detect = createDetectionInterface(detectionOptions, returnStrategy);
 
   return record => {
-    const search = createSearchInterface({...searchOptions, record});
+    const search = createSearchInterface({...searchOptions, record, maxCandidates});
     return iterate({});
 
     // candidateCount : amount of candidate records retrived from SRU for matching, NOT including current record set
@@ -63,7 +63,7 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
     // state.queryCounter : sequence for current query
     // state.maxedQueries : queries that resulted in more than serverMaxResults hits
 
-    async function iterate({initialState = {}, matches = [], candidateCount = 0, nonMatches = [], duplicateCount = 0}) {
+    async function iterate({initialState = {}, matches = [], candidateCount = 0, nonMatches = [], duplicateCount = 0, nonMatchCount = 0}) {
       debugData(`Starting next matcher iteration.`);
       const {records, ...state} = await search(initialState);
 
@@ -88,17 +88,18 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
 
         const matchResult = iterateRecords({records, recordSetSize, maxMatches, matches, nonMatches});
         const newDuplicateCount = duplicateCount + matchResult.duplicateCount;
+        const newNonMatchCount = nonMatchCount + matchResult.nonMatchCount;
         const {newMatches, newNonMatches} = handleMatchResult(matchResult, matches, nonMatches);
 
         if (maxMatchesFound({matches: newMatches, maxMatches})) {
-          return returnResult({matches: newMatches, state, stopReason: 'maxMatches', nonMatches: newNonMatches, duplicateCount: newDuplicateCount, candidateCount: newCandidateCount});
+          return returnResult({matches: newMatches, state, stopReason: 'maxMatches', nonMatches: newNonMatches, duplicateCount: newDuplicateCount, candidateCount: newCandidateCount, nonMatchCount: newNonMatchCount});
         }
 
         if (maxCandidatesRetrieved(newCandidateCount, maxCandidates)) {
-          return returnResult({matches: newMatches, state, stopReason: 'maxCandidates', nonMatches: newNonMatches, duplicateCount: newDuplicateCount, candidateCount: newCandidateCount});
+          return returnResult({matches: newMatches, state, stopReason: 'maxCandidates', nonMatches: newNonMatches, duplicateCount: newDuplicateCount, candidateCount: newCandidateCount, nonMatchCount: newNonMatchCount});
         }
 
-        return iterate({initialState: state, matches: newMatches, candidateCount: newCandidateCount, nonMatches: newNonMatches, duplicateCount: newDuplicateCount});
+        return iterate({initialState: state, matches: newMatches, candidateCount: newCandidateCount, nonMatches: newNonMatches, duplicateCount: newDuplicateCount, nonMatchCount: newNonMatchCount});
       }
 
       function handleMatchResult(matchResult, matches, nonMatches) {
@@ -150,22 +151,22 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
     // - only one stopReason is returned (if there would be several possible stopReasons, stopReason is picked in the above order)
     // - currently stopReason can be non-empty also in cases where status is true, if matcher hit the stop reason when handling the last available candidate record
 
-    function returnResult({matches, state, stopReason, nonMatches, duplicateCount, candidateCount}) {
-      checkCounts(matches, nonMatches, candidateCount, duplicateCount);
+    function returnResult({matches, state, stopReason, nonMatches, duplicateCount, candidateCount, nonMatchCount}) {
+      checkCounts({matches, nonMatches, candidateCount, duplicateCount, nonMatchCount});
       const matchStatus = getMatchState(state, stopReason);
       // add nonMatches to result only if returnNonMatches is 'true', otherwise nonMatches have not been gathered
       const result = returnNonMatches ? {matches, matchStatus, nonMatches} : {matches, matchStatus};
       debugData(`${JSON.stringify(result)}`);
       return result;
 
-      // we could have a nonMatchCount even if nonMatches won't be returned so that checkCounts would make sense
       // note that in cases where the matching has been stopped because of maxMatches checkCounts won't (in most cases) match
 
-      function checkCounts(matches, nonMatches, candidateCount, duplicateCount) {
+      function checkCounts({matches, nonMatches, candidateCount, duplicateCount, nonMatchCount}) {
         const matchCount = matches.length;
-        const nonMatchCount = nonMatches.length;
+        debugData(`Return nonMatches: ${returnNonMatches}`);
+        const chosenNonMatchCount = returnNonMatches ? nonMatches.length : nonMatchCount;
         const totalHandled = matchCount + nonMatchCount + duplicateCount;
-        debug(`candidateCount: ${candidateCount}, matches: ${matchCount}, nonMatches: ${nonMatchCount}, duplicateCount: ${duplicateCount}`);
+        debug(`candidateCount: ${candidateCount}, matches: ${matchCount}, nonMatches: ${chosenNonMatchCount}, duplicateCount: ${duplicateCount}`);
         debug(`We got result for ${totalHandled} / ${candidateCount} retrieved candidates`);
         if (totalHandled !== candidateCount) {
           debug(`WARNING: Missing results for ${candidateCount - totalHandled} candidates`);
@@ -198,12 +199,13 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
       }
     }
 
-    function iterateRecords({records, recordSetSize, maxMatches, matches = [], nonMatches = [], recordMatches = [], recordNonMatches = [], recordCount = 0, recordDuplicateCount = 0}) {
+    function iterateRecords({records, recordSetSize, maxMatches, matches = [], nonMatches = [], recordMatches = [], recordNonMatches = [], recordCount = 0, recordDuplicateCount = 0, recordNonMatchCount = 0}) {
 
       // recordSetSize : total amount of records in the current record set
       // recordCount : amount of records from the current record set that have been handled
       // maxMatches : setting for maximum amount found by current matcher job before the matcher job is stopped
       // recordDuplicateCount : amount of records from the current record set that are already included in matches/nonMatches results
+      // recordNonMatchCount: amount of records from the current record set that are nonMatches (only is returnNonMatches setting is false)
 
       // records : non-handled records in the current record set
       // matches : found matches in the current matcher job
@@ -226,11 +228,11 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
           const detectionResult = detect(record, candidateRecord);
           return handleDetectionResult(detectionResult, candidateId, candidateRecord);
         }
-        return iterateRecords({records: records.slice(1), recordSetSize, maxMatches, matches, recordMatches, recordCount: newRecordCount, recordNonMatches, recordDuplicateCount: recordDuplicateCount + 1});
+        return iterateRecords({records: records.slice(1), recordSetSize, maxMatches, matches, recordMatches, recordCount: newRecordCount, recordNonMatches, recordDuplicateCount: recordDuplicateCount + 1, recordNonMatchCount});
       }
 
-      debug(`No more candidates, record set (${recordCount}/${recordSetSize}) done, ${recordMatches.length} matches found, ${recordDuplicateCount} candidates already handled${returnNonMatches ? `, ${recordNonMatches.length} nonMatches found.` : '.'}`);
-      return {matches: recordMatches, nonMatches: returnNonMatches ? recordNonMatches : [], duplicateCount: recordDuplicateCount};
+      debug(`No more candidates, record set (${recordCount}/${recordSetSize}) done, ${recordMatches.length} matches found, ${recordDuplicateCount} candidates already handled, ${returnNonMatches ? `${recordNonMatches.length}` : `${recordNonMatchCount}`} nonMatches found.`);
+      return {matches: recordMatches, nonMatches: returnNonMatches ? recordNonMatches : [], duplicateCount: recordDuplicateCount, nonMatchCount: recordNonMatchCount};
 
       function handleDetectionResult(detectionResult, candidateId, candidateRecord) {
         debugData(`MatchDetection results for ${candidateId} (${newRecordCount}/${recordSetSize}): ${JSON.stringify(detectionResult)}`);
@@ -256,7 +258,11 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
 
           return handleRecordMatch(detectionResult.match, newMatch);
         }
-        return iterateRecords({records: records.slice(1), recordSetSize, maxMatches, matches, recordMatches, recordCount: newRecordCount, recordNonMatches, recordDuplicateCount});
+
+        const newRecordNonMatchCount = recordNonMatchCount + 1;
+        debugData(`- Total nonMatches after this detection: ${newRecordNonMatchCount}`);
+
+        return iterateRecords({records: records.slice(1), recordSetSize, maxMatches, matches, recordMatches, recordCount: newRecordCount, recordNonMatches, recordDuplicateCount, recordNonMatchCount: newRecordNonMatchCount});
       }
 
       function handleRecordMatch(isMatch, newMatch) {
@@ -272,10 +278,10 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
 
         if (maxMatchesFound({matches: matches.concat(newRecordMatches), maxMatches})) {
           debug(`MaxMatches (${maxMatches}) reached, handled candidates in record set: ${newRecordCount} non-handled candidates in record set ${recordSetSize - newRecordCount}`);
-          return {matches: newRecordMatches, nonMatches: returnNonMatches ? newRecordNonMatches : [], duplicateCount: recordDuplicateCount};
+          return {matches: newRecordMatches, nonMatches: returnNonMatches ? newRecordNonMatches : [], duplicateCount: recordDuplicateCount, nonMatchCount: recordNonMatchCount};
         }
 
-        return iterateRecords({records: records.slice(1), recordSetSize, maxMatches, matches, recordMatches: newRecordMatches, recordCount: newRecordCount, recordNonMatches: returnNonMatches ? newRecordNonMatches : [], duplicateCount: recordDuplicateCount});
+        return iterateRecords({records: records.slice(1), recordSetSize, maxMatches, matches, recordMatches: newRecordMatches, recordCount: newRecordCount, recordNonMatches: returnNonMatches ? newRecordNonMatches : [], duplicateCount: recordDuplicateCount, recordNonMatchCount});
       }
 
       function candidateNotInMatches(matches, candidate) {

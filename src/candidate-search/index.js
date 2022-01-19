@@ -39,7 +39,7 @@ export class CandidateSearchError extends Error {}
 // serverMaxResults : maximum size of total search result available from the server, defaults to Aleph's 20000
 
 // eslint-disable-next-line max-statements
-export default ({record, searchSpec, url, maxRecordsPerRequest = 50, serverMaxResult = 20000}) => {
+export default ({record, searchSpec, url, maxCandidates, maxRecordsPerRequest = 50, serverMaxResult = 20000}) => {
   MarcRecord.setValidationOptions({subfieldValues: false});
 
   const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search');
@@ -49,11 +49,16 @@ export default ({record, searchSpec, url, maxRecordsPerRequest = 50, serverMaxRe
   debugData(`Url: ${url}`);
   debugData(`MaxRecordsPerRequest ${maxRecordsPerRequest}`);
   debugData(`ServerMaxResult: ${serverMaxResult}`);
+  debugData(`MaxCandidates: ${maxCandidates}`);
+
+  // Do not retrieve more candidates than defined in maxCandidates
+  const adjustedMaxRecordsPerRequest = maxRecordsPerRequest >= maxCandidates ? maxCandidates : maxRecordsPerRequest;
 
   const inputRecordId = getRecordId(record);
   const queryList = generateQueryList(record, searchSpec);
   const client = createClient({
-    url, maxRecordsPerRequest,
+    url,
+    maxRecordsPerRequest: adjustedMaxRecordsPerRequest,
     version: '2.0',
     retrieveAll: false
   });
