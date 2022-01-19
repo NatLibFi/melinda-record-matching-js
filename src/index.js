@@ -175,10 +175,14 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
       }
 
       function getMatchState(state, stopReason) {
-        debug(`Queries left ${state.queriesLeft}, Searches for current query left: ${state.resultSetOffset >= state.totalRecords}, non-retrieved records: ${state.totalRecords - state.queryCandidateCounter}, maxedQueries (${state.maxedQueries.length}): ${state.maxedQueries}`);
+        debugData(`${JSON.stringify(state)}`);
+        debug(`Queries left ${state.queriesLeft}, Searches for current query left: ${state.resultSetOffset && state.resultSetOffset <= state.totalRecords}, non-retrieved records: ${state.totalRecords - state.queryCandidateCounter}, maxedQueries (${state.maxedQueries.length}): ${state.maxedQueries}`);
+
         debugData(`StopReason: <${stopReason}>`);
 
-        const nonRetrieved = state.resultSetOffset >= state.totalRecords ? state.totalRecords - state.queryCandidateCounter : 0;
+        const searchesLeft = state.resultSetOffset && state.resultSetOffset <= state.totalRecords;
+        const nonRetrieved = searchesLeft ? state.totalRecords - state.queryCandidateCounter : 0;
+        debugData(`nonRetrieved: ${nonRetrieved}`);
 
         if (state.queriesLeft > 0 || nonRetrieved > 0 || state.maxedQueries.length > 0) {
           const maxedQueriesStopReason = state.maxedQueries.length > 0 ? 'maxedQueries' : '';

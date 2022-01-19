@@ -91,7 +91,7 @@ export default ({record, searchSpec, url, maxRecordsPerRequest = 50, serverMaxRe
 
       if (typeof nextOffset === 'number') {
         debug(`Next search will be for query ${queryOffset} ${query}, starting from record ${nextOffset}`);
-        return {records, queryOffset, resultSetOffset: nextOffset, queriesLeft: queryList.length - (queryOffset + 1), totalRecords: newTotalRecords, query, searchCounter: newSearchCounter, queryCandidateCounter: newQueryCandidateCounter, queryCounter: newQueryCandidateCounter, maxedQueries: newMaxedQueries};
+        return {records, queryOffset, resultSetOffset: nextOffset, queriesLeft: queryList.length - (queryOffset + 1), totalRecords: newTotalRecords, query, searchCounter: newSearchCounter, queryCandidateCounter: newQueryCandidateCounter, queryCounter: newQueryCounter, maxedQueries: newMaxedQueries};
       }
       debug(`Query ${queryOffset} ${query} done.`);
       debug(`There are (${queryList.length - (queryOffset + 1)} queries left)`);
