@@ -1,0 +1,29 @@
+{
+  "description": "Should use word search for titles starting with a boolean",
+  "type": "bibTitle",
+  "expectedQuery": ["dc.title=\"And foo bar*\""],
+  "inputRecord": {
+    "leader": "02518cam a2200745zi 4500",
+    "fields": [
+      {
+        "tag": "001",
+        "value": "000019643"
+      },
+      {
+        "tag": "245",
+        "ind1": " ",
+        "ind2": " ",
+        "subfields": [
+          {
+            "code": "a",
+            "value": "And foo :"
+          },
+          {
+            "code": "b",
+            "value": "bar  "
+          }
+        ]
+      }
+    ]
+  }
+}

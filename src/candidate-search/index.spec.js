@@ -46,7 +46,7 @@ describe('candidate-search', () => {
   });
 
   // eslint-disable-next-line max-statements
-  async function callback({getFixture, factoryOptions, searchOptions, expectedFactoryError, expectedSearchError, enabled = true}) {
+  async function callback({getFixture, factoryOptions, searchOptions, expectedFactoryError = false, expectedSearchError = false, enabled = true}) {
     const url = 'http://foo.bar';
 
     if (!enabled) {
@@ -64,7 +64,7 @@ describe('candidate-search', () => {
     }
 
     const search = createSearchInterface({...formatFactoryOptions(), url});
-    await iterate({searchOptions});
+    await iterate({searchOptions, expectedSearchError});
 
     function formatFactoryOptions() {
       debug(`Using factoryOptions: ${JSON.stringify(factoryOptions)}`);
@@ -77,7 +77,7 @@ describe('candidate-search', () => {
     }
 
     // eslint-disable-next-line max-statements
-    async function iterate({searchOptions, count = 1}) {
+    async function iterate({searchOptions, expectedSearchError, count = 1}) {
       const expectedResults = getFixture(`expectedResults${count}.json`);
 
       if (expectedSearchError) { // eslint-disable-line functional/no-conditional-statement
@@ -91,15 +91,10 @@ describe('candidate-search', () => {
         }
       }
 
-      const results = await search(searchOptions);
-
-      expect(formatResults(results)).to.eql(expectedResults);
-
-      if (results.records.length > 0) {
-        return iterate({
-          searchOptions: resultsToOptions(results),
-          count: count + 1
-        });
+      // eslint-disable-next-line functional/no-conditional-statement
+      if (!expectedSearchError) {
+        const results = await search(searchOptions);
+        expect(formatResults(results)).to.eql(expectedResults);
       }
 
       function formatResults(results) {
@@ -110,11 +105,6 @@ describe('candidate-search', () => {
         };
       }
 
-      function resultsToOptions(results) {
-        return Object.entries(results)
-          .filter(([k]) => k === 'records' === false) // If key is 'records' return false
-          .reduce((acc, [k, v]) => ({...acc, [k]: v}), {});
-      }
     }
   }
 });

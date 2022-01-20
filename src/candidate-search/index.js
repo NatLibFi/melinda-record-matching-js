@@ -86,6 +86,7 @@ export default ({record, searchSpec, url, maxCandidates, maxRecordsPerRequest = 
       const {records, nextOffset, total} = await retrieveRecords();
 
       // If resultSetOffset === 1 this is the first search for the current query
+      debugData(`ResultSetOffset: ${resultSetOffset}`);
       const newTotalRecords = resultSetOffset === 1 ? total : totalRecords;
       const newQueryCounter = resultSetOffset === 1 ? queryCounter + 1 : queryCounter;
       const newSearchCounter = resultSetOffset === 1 ? 1 : searchCounter + 1;
@@ -147,14 +148,6 @@ export default ({record, searchSpec, url, maxCandidates, maxRecordsPerRequest = 
               try {
                 const foundRecordMarc = await MARCXML.from(foundRecord, {subfieldValues: false});
                 const foundRecordId = getRecordId(foundRecordMarc);
-
-                // This does not work and might cause problems:
-                // Record *should* match itself AND in REST the input record is given id 000000001 always
-                debug(`Checking record id's - this does not work ${inputRecordId} vs ${foundRecordId}`);
-                if (inputRecordId === foundRecordId) {
-                  debug(`Input and candidate are the same record per 001. Discarding candidate`);
-                  return;
-                }
 
                 return {record: foundRecordMarc, id: foundRecordId};
               } catch (err) {

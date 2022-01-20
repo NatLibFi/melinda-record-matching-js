@@ -175,12 +175,15 @@ export function bibHostComponents(record) {
 
 // SRU search dc.title with a search phrase starting with ^ maps currently in Melinda to
 // (probably) to *headings* index TIT
+// - Aleph cannot currently handle headings searches starting with a boolean - in these cases use word search
+
 // Headings index TIT drops articles etc. from the start of the title according to the filing indicator
 // Currently filing indicator is not implemented - if the title starts with an article and the Melinda
 // record is correctly catalogued using a filing indicator -> dc.title search won't match
 
 export function bibTitle(record) {
   const title = getTitle();
+  const booleanStartWords = ['and', 'or', 'nor', 'not'];
 
   if (title) {
     const formatted = title
@@ -191,8 +194,10 @@ export function bibTitle(record) {
       .slice(0, 30)
       .trim();
 
+    // use word search for titles starting with a boolean
+    const useWordSearch = booleanStartWords.some(word => formatted.toLowerCase().startsWith(word));
     // Prevent too many matches by having a minimum length requirement
-    return formatted.length >= 5 ? [`dc.title="^${formatted}*"`] : [];
+    return formatted.length >= 5 ? [`dc.title="${useWordSearch ? '' : '^'}${formatted}*"`] : [];
   }
 
   return [];
