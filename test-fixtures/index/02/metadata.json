@@ -1,9 +1,11 @@
 {
   "description": "Should not find matches",
+  "enabled": true,
   "options": {
     "search": {
       "searchSpec": ["bibStandardIdentifiers"],
-      "url": "http://foo.bar"
+      "url": "http://foo.bar",
+      "maxRecordsPerRequest": 1
     },
     "detection": {
       "strategy": {
@@ -13,8 +15,12 @@
           "isbn"
         ]
       }
-    }
+    },
+    "maxMatches": 2,
+    "maxCandidates": 1
   },
+  "expectedMatchStatus": true,
+  "expectedStopReason": "maxCandidates",
   "requests": [
     {
       "method": "get",

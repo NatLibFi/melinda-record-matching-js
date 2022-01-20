@@ -1,0 +1,6 @@
+{
+ "queriesLeft": 0,
+ "queryCounter": 1,
+  "records": [],
+  "maxedQueries": ["dc.title=\"^foo bar*\""]
+}

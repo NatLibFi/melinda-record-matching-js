@@ -4,7 +4,7 @@
 *
 * Melinda record matching modules for Javascript
 *
-* Copyright (C) 2020 University Of Helsinki (The National Library Of Finland)
+* Copyright (C) 2020-2022 University Of Helsinki (The National Library Of Finland)
 *
 * This file is part of melinda-record-matching-js
 *
@@ -31,6 +31,9 @@ import {READERS} from '@natlibfi/fixura';
 import generateTests from '@natlibfi/fixugen-http-client';
 import {MarcRecord} from '@natlibfi/marc-record';
 import createSearchInterface, {CandidateSearchError} from '.';
+import createDebugLogger from 'debug';
+
+const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:test');
 
 describe('candidate-search', () => {
   generateTests({
@@ -43,7 +46,7 @@ describe('candidate-search', () => {
   });
 
   // eslint-disable-next-line max-statements
-  async function callback({getFixture, factoryOptions, searchOptions, expectedFactoryError, expectedSearchError, enabled = true}) {
+  async function callback({getFixture, factoryOptions, searchOptions, expectedFactoryError = false, expectedSearchError = false, enabled = true}) {
     const url = 'http://foo.bar';
 
     if (!enabled) {
@@ -61,18 +64,20 @@ describe('candidate-search', () => {
     }
 
     const search = createSearchInterface({...formatFactoryOptions(), url});
-    await iterate({searchOptions});
+    await iterate({searchOptions, expectedSearchError});
 
     function formatFactoryOptions() {
+      debug(`Using factoryOptions: ${JSON.stringify(factoryOptions)}`);
       return {
         ...factoryOptions,
-        maxRecordsPerRequest: 1,
+        maxRecordsPerRequest: factoryOptions.maxRecordsPerRequest || 1,
+        maxServerResults: factoryOptions.maxServerResults || undefined,
         record: new MarcRecord(factoryOptions.record, {subfieldValues: false})
       };
     }
 
     // eslint-disable-next-line max-statements
-    async function iterate({searchOptions, count = 1}) {
+    async function iterate({searchOptions, expectedSearchError, count = 1}) {
       const expectedResults = getFixture(`expectedResults${count}.json`);
 
       if (expectedSearchError) { // eslint-disable-line functional/no-conditional-statement
@@ -86,15 +91,10 @@ describe('candidate-search', () => {
         }
       }
 
-      const results = await search(searchOptions);
-
-      expect(formatResults(results)).to.eql(expectedResults);
-
-      if (results.records.length > 0) {
-        return iterate({
-          searchOptions: resultsToOptions(results),
-          count: count + 1
-        });
+      // eslint-disable-next-line functional/no-conditional-statement
+      if (!expectedSearchError) {
+        const results = await search(searchOptions);
+        expect(formatResults(results)).to.eql(expectedResults);
       }
 
       function formatResults(results) {
@@ -105,11 +105,6 @@ describe('candidate-search', () => {
         };
       }
 
-      function resultsToOptions(results) {
-        return Object.entries(results)
-          .filter(([k]) => k === 'records' === false) // If key is 'records' return false
-          .reduce((acc, [k, v]) => ({...acc, [k]: v}), {});
-      }
     }
   }
 });

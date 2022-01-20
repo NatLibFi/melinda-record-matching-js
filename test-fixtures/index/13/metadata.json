@@ -1,0 +1,36 @@
+{
+  "description": "Should not run matching twice for the same candidate record",
+  "enabled": true,
+  "options": {
+    "search": {
+      "searchSpec": ["bibStandardIdentifiers"],
+      "url": "http://foo.bar",
+      "maxRecordsPerRequest": 1
+    },
+    "detection": {
+      "strategy": {
+        "type": "bib",
+        "features": [
+          "title",
+          "isbn"
+        ]
+      }
+    },
+    "maxMatches": 100,
+    "maxCandidates": 100
+  },
+  "expectedMatchStatus": true,
+  "expectedStopReason": "",
+  "requests": [
+    {
+      "method": "get",
+      "url": "/?operation=searchRetrieve&query=dc.identifier%3D978-952-62-2477-0&startRecord=1&version=2.0&maximumRecords=1",
+      "status": 200
+    },
+    {
+      "method": "get",
+      "url": "/?operation=searchRetrieve&query=dc.identifier%3D978-952-62-2477-0&startRecord=2&version=2.0&maximumRecords=1",
+      "status": 200
+    }
+  ]
+}
