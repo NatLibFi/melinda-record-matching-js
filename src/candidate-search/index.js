@@ -148,6 +148,7 @@ export default ({record, searchSpec, url, maxCandidates, maxRecordsPerRequest = 
                 const foundRecordMarc = await MARCXML.from(foundRecord, {subfieldValues: false});
                 const foundRecordId = getRecordId(foundRecordMarc);
 
+                /*
                 // This does not work and might cause problems:
                 // Record *should* match itself AND in REST the input record is given id 000000001 always
                 debug(`Checking record id's - this does not work ${inputRecordId} vs ${foundRecordId}`);
@@ -155,6 +156,7 @@ export default ({record, searchSpec, url, maxCandidates, maxRecordsPerRequest = 
                   debug(`Input and candidate are the same record per 001. Discarding candidate`);
                   return;
                 }
+                */
 
                 return {record: foundRecordMarc, id: foundRecordId};
               } catch (err) {
