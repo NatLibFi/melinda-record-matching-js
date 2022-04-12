@@ -32,7 +32,7 @@ import createDetectionInterface, * as matchDetection from './match-detection';
 
 export {candidateSearch, matchDetection};
 
-export default ({detection: detectionOptions, search: searchOptions, maxMatches = 1, maxCandidates = 25, returnStrategy = false, returnQuery = false, returnNonMatches = false}) => {
+export default ({detection: detectionOptions, search: searchOptions, maxMatches = 1, maxCandidates = 25, returnStrategy = false, returnQuery = false, returnNonMatches = false, returnFailures}) => {
   const debug = createDebugLogger('@natlibfi/melinda-record-matching:index');
   const debugData = debug.extend('data');
 
@@ -43,6 +43,8 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
   debugData(`ReturnStrategy: ${JSON.stringify(returnStrategy)}`);
   debugData(`ReturnQuery: ${JSON.stringify(returnQuery)}`);
   debugData(`ReturnNonMatches: ${JSON.stringify(returnNonMatches)}`);
+  debugData(`ReturnFailures: ${JSON.stringify(returnFailures)}`);
+
 
   const detect = createDetectionInterface(detectionOptions, returnStrategy);
 
@@ -161,7 +163,9 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
       checkCounts({matches, nonMatches, candidateCount, duplicateCount, nonMatchCount, conversionFailureCount});
       const matchStatus = getMatchState(state, stopReason, conversionFailureCount);
       // add nonMatches to result only if returnNonMatches is 'true', otherwise nonMatches have not been gathered
-      const result = returnNonMatches ? {matches, matchStatus, nonMatches} : {matches, matchStatus};
+      const matchesResult = returnNonMatches ? {matches, matchStatus, nonMatches} : {matches, matchStatus};
+      const result = returnFailures ? {...matchesResult, conversionFailures} : matchesResult;
+      debugData(`ReturnFailures ${returnFailures}`);
       debugData(`${JSON.stringify(result)}`);
       return result;
 

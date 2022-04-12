@@ -1,0 +1,38 @@
+{
+  "description": "Should return conversionFailures is returnFailures is true",
+  "enabled": true,
+  "options": {
+    "search": {
+      "searchSpec": ["bibStandardIdentifiers"],
+      "url": "http://foo.bar",
+      "maxRecordsPerRequest": 1
+    },
+    "detection": {
+      "strategy": {
+        "type": "bib",
+        "features": [
+          "title",
+          "isbn"
+        ]
+      }
+    },
+    "maxMatches": 2,
+    "maxCandidates": 100,
+    "returnFailures": true
+  },
+  "expectedMatchStatus": false,
+  "expectedStopReason": "conversionFailures",
+  "expectedFailures": [{"status":422,"payload":{"message":"Failed converting record: Field is invalid: {\"tag\":\"245\",\"ind1\":\"1\",\"ind2\":\" \",\"subfields\":[]}","id":"000000000","data":"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n<record xmlns=\"http://www.loc.gov/MARC21/slim\">\n\t\n          \n          &gt;\n          \n          \n        \n\t<leader>02518cam a2200745zi 4500</leader>\n\t<controlfield tag=\"001\">000019642</controlfield>\n\t<datafield tag=\"020\" ind1=\" \" ind2=\" \">\n\t\t<subfield code=\"a\">978-952-62-2478-0</subfield>\n\t</datafield>\n\t<datafield tag=\"245\" ind1=\"1\" ind2=\" \"/>\n</record>"}}],
+  "requests": [
+    {
+      "method": "get",
+      "url": "/?operation=searchRetrieve&query=dc.identifier%3D978-952-62-2477-0&startRecord=1&version=2.0&maximumRecords=1",
+      "status": 200
+    },
+    {
+      "method": "get",
+      "url": "/?operation=searchRetrieve&query=dc.identifier%3D978-952-62-2477-0&startRecord=2&version=2.0&maximumRecords=1",
+      "status": 200
+    }
+  ]
+}
