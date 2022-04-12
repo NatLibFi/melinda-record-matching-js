@@ -32,7 +32,7 @@ import createDetectionInterface, * as matchDetection from './match-detection';
 
 export {candidateSearch, matchDetection};
 
-export default ({detection: detectionOptions, search: searchOptions, maxMatches = 1, maxCandidates = 25, returnStrategy = false, returnQuery = false, returnNonMatches = false, returnFailures}) => {
+export default ({detection: detectionOptions, search: searchOptions, maxMatches = 1, maxCandidates = 25, returnStrategy = false, returnQuery = false, returnNonMatches = false, returnFailures = false}) => {
   const debug = createDebugLogger('@natlibfi/melinda-record-matching:index');
   const debugData = debug.extend('data');
 
