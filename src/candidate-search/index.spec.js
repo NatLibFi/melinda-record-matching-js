@@ -30,6 +30,7 @@ import {expect} from 'chai';
 import {READERS} from '@natlibfi/fixura';
 import generateTests from '@natlibfi/fixugen-http-client';
 import {MarcRecord} from '@natlibfi/marc-record';
+import {Error as MatchingError} from '@natlibfi/melinda-commons';
 import createSearchInterface, {CandidateSearchError} from '.';
 import createDebugLogger from 'debug';
 
@@ -77,7 +78,7 @@ describe('candidate-search', () => {
     }
 
     // eslint-disable-next-line max-statements
-    async function iterate({searchOptions, expectedSearchError, count = 1}) {
+    async function iterate({searchOptions, expectedSearchError, expectedErrorStatus, count = 1}) {
       const expectedResults = getFixture(`expectedResults${count}.json`);
 
       if (expectedSearchError) { // eslint-disable-line functional/no-conditional-statement
@@ -85,8 +86,17 @@ describe('candidate-search', () => {
           await search(searchOptions);
           throw new Error('Expected an error');
         } catch (err) {
+          debug(`Got an error: ${err}`);
           expect(err).to.be.an('error');
-          expect(err.message).to.match(new RegExp(expectedSearchError, 'u'));
+          const errorMessage = err instanceof MatchingError ? err.payload.message : err.message;
+          const errorStatus = err instanceof MatchingError ? err.status : undefined;
+          debug(`errorMessage: ${errorMessage}, errorStatus: ${errorStatus}`);
+          expect(errorMessage).to.match(new RegExp(expectedSearchError, 'u'));
+
+          if (expectedErrorStatus) {
+            expect(errorStatus).to.be(expectedErrorStatus);
+            return;
+          }
           return;
         }
       }
@@ -98,7 +108,7 @@ describe('candidate-search', () => {
       }
 
       function formatResults(results) {
-        // console.log(results); //eslint-disable-line
+        debug(results); //eslint-disable-line
         return {
           ...results,
           records: results.records.map(({record, id}) => ({id, record: record.toObject()}))

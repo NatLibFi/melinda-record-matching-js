@@ -31,6 +31,7 @@ import createClient, {SruSearchError} from '@natlibfi/sru-client';
 import {MarcRecord} from '@natlibfi/marc-record';
 import {MARCXML} from '@natlibfi/marc-record-serializers';
 import generateQueryList from './query-list';
+import {Error as MatchingError} from '@natlibfi/melinda-commons';
 
 export {searchTypes} from './query-list';
 
@@ -72,40 +73,39 @@ export default ({record, searchSpec, url, maxCandidates, maxRecordsPerRequest = 
   // state.totalRecords : amount of candidate records available to the current query (undefined, if there was no queries left)
   // state.query : current query (undefined if there was no queries left)
   // state.searchCounter : sequence for current search for current query (undefined, if there we no queries left)
-  // state.queryCandidateCounter: amount of candidate records retrieved from SRU for matching for current query, including the current record set (undefined if there were no queries left)
+  // state.queryCandidateCounter: amount of candidates (records+failures) retrieved from SRU for matching for current query, including the current record+failure set (undefined if there were no queries left)
   // state.queriesLeft : amount of queries left
   // state.queryCounter : sequence for current query
   // state.maxedQueries : queries that resulted in more than serverMaxResults hits
 
 
-  // eslint-disable-next-line max-statements
   return async ({queryOffset = 0, resultSetOffset = 1, totalRecords = 0, searchCounter = 0, queryCandidateCounter = 0, queryCounter = 0, maxedQueries = []}) => {
     const query = queryList[queryOffset];
 
     if (query) {
-      const {records, nextOffset, total} = await retrieveRecords();
+      const {records, failures, nextOffset, total} = await retrieveRecords();
 
       // If resultSetOffset === 1 this is the first search for the current query
       debugData(`ResultSetOffset: ${resultSetOffset}`);
       const newTotalRecords = resultSetOffset === 1 ? total : totalRecords;
       const newQueryCounter = resultSetOffset === 1 ? queryCounter + 1 : queryCounter;
       const newSearchCounter = resultSetOffset === 1 ? 1 : searchCounter + 1;
-      const newQueryCandidateCounter = resultSetOffset === 1 ? records.length : queryCandidateCounter + records.length;
+      const newQueryCandidateCounter = resultSetOffset === 1 ? records.length + failures.length : queryCandidateCounter + records.length + failures.length;
 
       const maxedQuery = resultSetOffset === 1 ? checkMaxedQuery(query, total, serverMaxResult) : undefined;
       const newMaxedQueries = maxedQuery ? maxedQueries.concat(maxedQuery) : maxedQueries;
 
       if (typeof nextOffset === 'number') {
         debug(`Next search will be for query ${queryOffset} ${query}, starting from record ${nextOffset}`);
-        return {records, queryOffset, resultSetOffset: nextOffset, queriesLeft: queryList.length - (queryOffset + 1), totalRecords: newTotalRecords, query, searchCounter: newSearchCounter, queryCandidateCounter: newQueryCandidateCounter, queryCounter: newQueryCounter, maxedQueries: newMaxedQueries};
+        return {records, failures, queryOffset, resultSetOffset: nextOffset, queriesLeft: queryList.length - (queryOffset + 1), totalRecords: newTotalRecords, query, searchCounter: newSearchCounter, queryCandidateCounter: newQueryCandidateCounter, queryCounter: newQueryCounter, maxedQueries: newMaxedQueries};
       }
       debug(`Query ${queryOffset} ${query} done.`);
       debug(`There are (${queryList.length - (queryOffset + 1)} queries left)`);
-      return {records, queryOffset: queryOffset + 1, queriesLeft: queryList.length - (queryOffset + 1), totalRecords: newTotalRecords, query, searchCounter: newSearchCounter, queryCandidateCounter: newQueryCandidateCounter, queryCounter: newQueryCounter, maxedQueries: newMaxedQueries};
+      return {records, failures, queryOffset: queryOffset + 1, queriesLeft: queryList.length - (queryOffset + 1), totalRecords: newTotalRecords, query, searchCounter: newSearchCounter, queryCandidateCounter: newQueryCandidateCounter, queryCounter: newQueryCounter, maxedQueries: newMaxedQueries};
     }
 
     debug(`All ${queryList.length} queries done, there's no query for ${queryOffset}`);
-    return {records: [], queriesLeft: 0, queryCounter, maxedQueries};
+    return {records: [], failures: [], queriesLeft: 0, queryCounter, maxedQueries};
 
     function retrieveRecords() {
       return new Promise((resolve, reject) => {
@@ -131,27 +131,39 @@ export default ({record, searchSpec, url, maxCandidates, maxRecordsPerRequest = 
           })
           .on('end', async nextOffset => {
             try {
-              const records = await Promise.all(promises);
-              const filtered = records.filter(r => r);
+              const recordPromises = await Promise.allSettled(promises);
+              debug(`All recordPromises: ${JSON.stringify(recordPromises)}`);
+              const filtered = recordPromises.filter(r => r.status === 'fulfilled').map(r => r.value);
+              const failures = recordPromises.filter(r => r.status === 'rejected').map(r => ({status: r.reason.status, payload: r.reason.payload}));
 
-              debug(`Found ${filtered.length} candidates`);
+              debug(`Found ${JSON.stringify(recordPromises)} records`);
+              debug(`Found ${filtered.length} convertable candidates`);
+              debug(`Found ${failures.length} NON-convertable candidates`);
+              debug(`Converted: ${JSON.stringify(filtered)}.`);
+              debug(`Not converted: ${JSON.stringify(failures)}.`);
 
-              resolve({nextOffset, records: filtered, total: totalRecords});
+
+              resolve({nextOffset, records: filtered, failures, total: totalRecords});
             } catch (err) {
+              debug(`Error caught on END`);
               reject(err);
             }
           })
-          .on('record', foundRecord => {
+          .on('record', foundRecordXML => {
             promises.push(handleRecord()); // eslint-disable-line functional/immutable-data
 
             async function handleRecord() {
               try {
-                const foundRecordMarc = await MARCXML.from(foundRecord, {subfieldValues: false});
+                const foundRecordMarc = await MARCXML.from(foundRecordXML, {subfieldValues: false});
                 const foundRecordId = getRecordId(foundRecordMarc);
 
                 return {record: foundRecordMarc, id: foundRecordId};
               } catch (err) {
-                throw new Error(`Failed converting record: ${err}, record: ${foundRecord}`);
+                // What should this do?
+                const idFromXML = getRecordIdFromXML(foundRecordXML);
+                debugData(`Failed converting record: ${err.message}, id: ${idFromXML}, data: ${foundRecordXML}`);
+                //return {message: `Failed converting record: ${err.message}`, id: idFromXML, data: foundRecordXML};
+                throw new MatchingError(422, {message: `Failed converting record: ${err.message}`, id: idFromXML || '000000000', data: foundRecordXML});
               }
             }
           });
@@ -172,4 +184,11 @@ export default ({record, searchSpec, url, maxCandidates, maxRecordsPerRequest = 
     const [field] = record.get(/^001$/u);
     return field ? field.value : '';
   }
+
+  function getRecordIdFromXML(recordXML) {
+    //<controlfield tag=\"001\">015376846</controlfield
+    debug(`Cannot yet find possible database record id from recordXML (length ${recordXML.length})`);
+    return undefined;
+  }
+
 };

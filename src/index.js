@@ -63,13 +63,17 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
     // state.queryCounter : sequence for current query
     // state.maxedQueries : queries that resulted in more than serverMaxResults hits
 
-    async function iterate({initialState = {}, matches = [], candidateCount = 0, nonMatches = [], duplicateCount = 0, nonMatchCount = 0}) {
+    async function iterate({initialState = {}, matches = [], candidateCount = 0, nonMatches = [], duplicateCount = 0, nonMatchCount = 0, conversionFailures = []}) {
       debugData(`Starting next matcher iteration.`);
-      const {records, ...state} = await search(initialState);
+      const {records, failures, ...state} = await search(initialState);
 
-      debugData(`Current state: ${JSON.stringify(state)}, matches: ${matches.length}, candidateCount: ${candidateCount}, nonMatches: ${nonMatches.length}`);
+      debugData(`Current state: ${JSON.stringify(state)}, matches: ${matches.length}, candidateCount: ${candidateCount}, nonMatches: ${nonMatches.length}, nonMatchCount: ${nonMatchCount}, conversionFailures: ${conversionFailures}`);
       const recordSetSize = records.length;
-      const newCandidateCount = candidateCount + recordSetSize;
+      const failureSetSize = failures.length;
+      const newCandidateCount = candidateCount + recordSetSize + failureSetSize;
+
+      const newConversionFailures = conversionFailures.concat(failures);
+      debugData(`Failures: ${failures.length}, ConversionFailures: ${conversionFailures.length}, NewConversionFailures: ${newConversionFailures.length}`);
 
       if (recordSetSize > 0) {
         return handleRecordSet();
@@ -77,29 +81,30 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
 
       if (state.queriesLeft > 0) {
         debug(`Empty record set ${state.searchCounter} for ${state.query}, but there are ${state.queriesLeft} queries left`);
-        return iterate({initialState: state, matches, candidateCount: newCandidateCount, nonMatches, duplicateCount});
+        return iterate({initialState: state, matches, candidateCount: newCandidateCount, nonMatches, nonMatchCount, duplicateCount, conversionFailures: newConversionFailures});
       }
 
       debug(`No (more) candidate records to check, no more queries left, matches: ${matches.length}`);
-      return returnResult({matches, state, stopReason: '', nonMatches, candidateCount: newCandidateCount, duplicateCount});
+      return returnResult({matches, state, stopReason: '', nonMatches, nonMatchCount, candidateCount: newCandidateCount, duplicateCount, conversionFailures: newConversionFailures});
 
       function handleRecordSet() {
         debug(`Checking record set of ${recordSetSize} candidate records for possible matches, found by ${state.searchCounter} search for ${state.query}`);
 
-        const matchResult = iterateRecords({records, recordSetSize, maxMatches, matches, nonMatches});
+        const matchResult = iterateRecords({records, recordSetSize, maxMatches, matches, nonMatches, nonMatchCount});
+
         const newDuplicateCount = duplicateCount + matchResult.duplicateCount;
         const newNonMatchCount = nonMatchCount + matchResult.nonMatchCount;
         const {newMatches, newNonMatches} = handleMatchResult(matchResult, matches, nonMatches);
 
         if (maxMatchesFound({matches: newMatches, maxMatches})) {
-          return returnResult({matches: newMatches, state, stopReason: 'maxMatches', nonMatches: newNonMatches, duplicateCount: newDuplicateCount, candidateCount: newCandidateCount, nonMatchCount: newNonMatchCount});
+          return returnResult({matches: newMatches, state, stopReason: 'maxMatches', nonMatches: newNonMatches, duplicateCount: newDuplicateCount, candidateCount: newCandidateCount, nonMatchCount: newNonMatchCount, conversionFailures: newConversionFailures});
         }
 
         if (maxCandidatesRetrieved(newCandidateCount, maxCandidates)) {
-          return returnResult({matches: newMatches, state, stopReason: 'maxCandidates', nonMatches: newNonMatches, duplicateCount: newDuplicateCount, candidateCount: newCandidateCount, nonMatchCount: newNonMatchCount});
+          return returnResult({matches: newMatches, state, stopReason: 'maxCandidates', nonMatches: newNonMatches, duplicateCount: newDuplicateCount, candidateCount: newCandidateCount, nonMatchCount: newNonMatchCount, conversionFailures: newConversionFailures});
         }
 
-        return iterate({initialState: state, matches: newMatches, candidateCount: newCandidateCount, nonMatches: newNonMatches, duplicateCount: newDuplicateCount, nonMatchCount: newNonMatchCount});
+        return iterate({initialState: state, matches: newMatches, candidateCount: newCandidateCount, nonMatches: newNonMatches, duplicateCount: newDuplicateCount, nonMatchCount: newNonMatchCount, conversionFailures: newConversionFailures});
       }
 
       function handleMatchResult(matchResult, matches, nonMatches) {
@@ -147,13 +152,14 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
     // we could have here also returnRecords/returnMatchRecords/returnNonMatchRecord options that could be turned false for not to return actual record data
 
     // matchStatus.status: boolean, true if matcher retrieved and handled all found candidate records, false if it did not
-    // matchStatus.stopReason: string ('maxMatches','maxCandidates','maxedQueries',empty string/undefined), reason for stopping retrieving or handling the candidate records
+    // matchStatus.stopReason: string ('maxMatches','maxCandidates','maxedQueries','conversionFailures', empty string/undefined), reason for stopping retrieving or handling the candidate records
     // - only one stopReason is returned (if there would be several possible stopReasons, stopReason is picked in the above order)
     // - currently stopReason can be non-empty also in cases where status is true, if matcher hit the stop reason when handling the last available candidate record
 
-    function returnResult({matches, state, stopReason, nonMatches, duplicateCount, candidateCount, nonMatchCount}) {
-      checkCounts({matches, nonMatches, candidateCount, duplicateCount, nonMatchCount});
-      const matchStatus = getMatchState(state, stopReason);
+    function returnResult({matches, state, stopReason, nonMatches, duplicateCount, candidateCount, nonMatchCount, conversionFailures}) {
+      const conversionFailureCount = conversionFailures.length;
+      checkCounts({matches, nonMatches, candidateCount, duplicateCount, nonMatchCount, conversionFailureCount});
+      const matchStatus = getMatchState(state, stopReason, conversionFailureCount);
       // add nonMatches to result only if returnNonMatches is 'true', otherwise nonMatches have not been gathered
       const result = returnNonMatches ? {matches, matchStatus, nonMatches} : {matches, matchStatus};
       debugData(`${JSON.stringify(result)}`);
@@ -161,12 +167,12 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
 
       // note that in cases where the matching has been stopped because of maxMatches checkCounts won't (in most cases) match
 
-      function checkCounts({matches, nonMatches, candidateCount, duplicateCount, nonMatchCount}) {
+      function checkCounts({matches, nonMatches, candidateCount, duplicateCount, nonMatchCount, conversionFailureCount}) {
         const matchCount = matches.length;
         debugData(`Return nonMatches: ${returnNonMatches}`);
         const chosenNonMatchCount = returnNonMatches ? nonMatches.length : nonMatchCount;
-        const totalHandled = matchCount + nonMatchCount + duplicateCount;
-        debug(`candidateCount: ${candidateCount}, matches: ${matchCount}, nonMatches: ${chosenNonMatchCount}, duplicateCount: ${duplicateCount}`);
+        const totalHandled = matchCount + chosenNonMatchCount + duplicateCount;
+        debug(`candidateCount: ${candidateCount}, matches: ${matchCount}, nonMatches: ${chosenNonMatchCount}, duplicateCount: ${duplicateCount}, conversionFailureCount: ${conversionFailureCount}`);
         debug(`We got result for ${totalHandled} / ${candidateCount} retrieved candidates`);
         if (totalHandled !== candidateCount) {
           debug(`WARNING: Missing results for ${candidateCount - totalHandled} candidates`);
@@ -175,8 +181,9 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
         return;
       }
 
-      function getMatchState(state, stopReason) {
+      function getMatchState(state, stopReason, conversionFailuresCount) {
         debugData(`${JSON.stringify(state)}`);
+        debug(`We had ${conversionFailuresCount} retrieved candidates that could not be converted.`);
         debug(`Queries left ${state.queriesLeft}, Searches for current query left: ${state.resultSetOffset && state.resultSetOffset <= state.totalRecords}, non-retrieved records: ${state.totalRecords - state.queryCandidateCounter}, maxedQueries (${state.maxedQueries.length}): ${state.maxedQueries}`);
 
         debugData(`StopReason: <${stopReason}>`);
@@ -185,10 +192,15 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
         const nonRetrieved = searchesLeft ? state.totalRecords - state.queryCandidateCounter : 0;
         debugData(`nonRetrieved: ${nonRetrieved}`);
 
-        if (state.queriesLeft > 0 || nonRetrieved > 0 || state.maxedQueries.length > 0) {
-          const maxedQueriesStopReason = state.maxedQueries.length > 0 ? 'maxedQueries' : '';
-          const newStopReason = stopReason === '' ? maxedQueriesStopReason : stopReason;
+        // matchStatus.stopReason: string ('maxMatches','maxCandidates','maxedQueries','conversionFailures', empty string/undefined), reason for stopping retrieving or handling the candidate records
+        // 'maxMatches' and 'maxCandidates' are in stopReason, 'maxedQueries' and 'conversionFailures' are created here
+
+        if (state.queriesLeft > 0 || nonRetrieved > 0 || state.maxedQueries.length > 0 || conversionFailureCount > 0) {
+          const maxedQueriesStopReason = state.maxedQueries.length > 0 ? 'maxedQueries' : undefined;
+          const conversionFailuresStopReason = conversionFailureCount > 0 ? 'conversionFailures' : undefined;
+          const newStopReason = stopReason === '' || stopReason === undefined ? maxedQueriesStopReason || conversionFailuresStopReason : stopReason;
           debugData(`MaxedQueriesStopReason: <${maxedQueriesStopReason}>`);
+          debugData(`ConversionFailureStopReason <${conversionFailuresStopReason}>`);
           debugData(`NewStopReason: <${newStopReason}>`);
           debug(`Match status: false`);
           return {status: false, stopReason: newStopReason};
@@ -268,6 +280,7 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
       function handleRecordMatch(isMatch, newMatch) {
         const newRecordMatches = isMatch ? recordMatches.concat(newMatch) : recordMatches;
         const newRecordNonMatches = isMatch ? recordNonMatches : recordNonMatches.concat(newMatch);
+        const newRecordNonMatchCount = isMatch ? recordNonMatchCount : recordNonMatchCount + 1;
 
         debugData(`- Total matches after this detection: ${matches.concat(newRecordMatches).length} (max: ${maxMatches})`);
 
@@ -275,13 +288,14 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
         if (returnNonMatches) {
           debugData(`- Total nonMatches after this detection: ${nonMatches.concat(newRecordNonMatches).length}`);
         }
+        debugData(`- Total nonMatchCount after this detection: ${recordNonMatchCount}`);
 
         if (maxMatchesFound({matches: matches.concat(newRecordMatches), maxMatches})) {
           debug(`MaxMatches (${maxMatches}) reached, handled candidates in record set: ${newRecordCount} non-handled candidates in record set ${recordSetSize - newRecordCount}`);
-          return {matches: newRecordMatches, nonMatches: returnNonMatches ? newRecordNonMatches : [], duplicateCount: recordDuplicateCount, nonMatchCount: recordNonMatchCount};
+          return {matches: newRecordMatches, nonMatches: returnNonMatches ? newRecordNonMatches : [], duplicateCount: recordDuplicateCount, nonMatchCount: newRecordNonMatchCount};
         }
 
-        return iterateRecords({records: records.slice(1), recordSetSize, maxMatches, matches, recordMatches: newRecordMatches, recordCount: newRecordCount, recordNonMatches: returnNonMatches ? newRecordNonMatches : [], duplicateCount: recordDuplicateCount, recordNonMatchCount});
+        return iterateRecords({records: records.slice(1), recordSetSize, maxMatches, matches, recordMatches: newRecordMatches, recordCount: newRecordCount, recordNonMatches: returnNonMatches ? newRecordNonMatches : [], duplicateCount: recordDuplicateCount, recordNonMatchCount: newRecordNonMatchCount});
       }
 
       function candidateNotInMatches(matches, candidate) {

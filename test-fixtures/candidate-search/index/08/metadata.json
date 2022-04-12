@@ -1,5 +1,5 @@
 {
-  "description": "Should return failures if the record from response is not valid",
+  "description": "Should find both candidates and failures",
   "factoryOptions": {
     "searchSpec": ["bibTitle"],
     "record": {
@@ -32,6 +32,11 @@
     {
       "method": "get",
       "url": "/?operation=searchRetrieve&query=dc.title%3D%22%5Efoo bar*%22&startRecord=1&version=2.0&maximumRecords=1",
+      "status": 200
+    },
+    {
+      "method": "get",
+      "url": "/?operation=searchRetrieve&query=dc.title%3D%22%5Efoo bar*%22&startRecord=3&version=2.0&maximumRecords=1",
       "status": 200
     }
   ]

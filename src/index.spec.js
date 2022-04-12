@@ -62,14 +62,14 @@ describe('INDEX', () => {
     const {matches, matchStatus, nonMatches} = await match(record);
     debugData(`${matches.length}, ${matchStatus.status}/${matchStatus.stopReason}, ${nonMatches ? nonMatches.length : nonMatches}`);
 
+    expect(matchStatus.status).to.eql(expectedMatchStatus);
+    expect(matchStatus.stopReason).to.eql(expectedStopReason);
+
     const formattedMatchResult = formatRecordResults(matches);
     expect(formattedMatchResult).to.eql(expectedMatches);
 
     const formattedNonMatchResult = formatRecordResults(nonMatches);
     expect(formattedNonMatchResult).to.eql(expectedNonMatches);
-
-    expect(matchStatus.status).to.eql(expectedMatchStatus);
-    expect(matchStatus.stopReason).to.eql(expectedStopReason);
 
 
     function formatOptions() {
