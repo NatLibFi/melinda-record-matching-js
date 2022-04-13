@@ -108,7 +108,7 @@ export function bibSourceIds(record) {
 
         function removeSourcePrefix(subfieldValue) {
           const sourcePrefixRegex = (/^(?<sourcePrefix>\([A-Za-z0-9-]+\))(?<id>.+)$/u);
-          const normalizedValue = subfieldValue.replace(sourcePrefixRegex, '$<id>');
+          const normalizedValue = subfieldValue ? subfieldValue.replace(sourcePrefixRegex, '$<id>') : '';
           debugData(`Normalized ${subfieldValue} to ${normalizedValue}`);
           return normalizedValue;
         }
@@ -116,7 +116,7 @@ export function bibSourceIds(record) {
         function normalizeSidSubfieldValue(subfieldValue) {
           debugData(`Normalizing ${subfieldValue}`);
           const normalizeAwayRegex = (/[- ]/u);
-          return subfieldValue.replace(normalizeAwayRegex, '');
+          return subfieldValue ? subfieldValue.replace(normalizeAwayRegex, '') : '';
         }
 
       }

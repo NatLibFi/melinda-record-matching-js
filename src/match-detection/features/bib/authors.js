@@ -40,7 +40,7 @@ export default ({nameTreshold = 10} = {}) => ({
 
       function toObj({code, value}) {
         if (code === 'a') {
-          return {name: value.replace(/[^\p{Letter}\p{Number}]/gu, '').toLowerCase()};
+          return {name: value ? value.replace(/[^\p{Letter}\p{Number}]/gu, '').toLowerCase() : ''};
         }
 
         return {id: value};

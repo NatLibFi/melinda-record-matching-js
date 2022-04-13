@@ -59,7 +59,7 @@ export function getMelindaIdsF035(record) {
     return subfields
       .filter(sub => ['a', 'z'].includes(sub.code))
       .filter(sub => melindaIdRegExp.test(sub.value))
-      .map(({value}) => value.replace(melindaIdRegExp, '$<id>'));
+      .map(({value}) => value ? value.replace(melindaIdRegExp, '$<id>') : '');
 
   }
 }
