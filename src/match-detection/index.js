@@ -32,7 +32,6 @@ import * as features from './features';
 
 export {features};
 
-// eslint-disable-next-line max-statements
 export default ({strategy, treshold = 0.9}, returnStrategy = false) => (recordA, recordB) => {
   const minProbabilityQuantifier = 0.5;
 
@@ -44,22 +43,36 @@ export default ({strategy, treshold = 0.9}, returnStrategy = false) => (recordA,
   debugData(`ReturnStrategy: ${JSON.stringify(returnStrategy)}`);
 
   const featuresA = extractFeatures(recordA);
-  const featuresB = extractFeatures(recordB);
 
-  debugData(`Features (a): ${JSON.stringify(featuresA)}`);
-  debugData(`Features (b): ${JSON.stringify(featuresB)}`);
+  debug(`We got an array of records: ${Array.isArray(recordB)}`);
+  const recordsB = Array.isArray(recordB) ? recordB : [recordB];
+  const detectionResults = recordsB.map(record => actualDetection(featuresA, record));
 
-  const featurePairs = generateFeaturePairs();
-  const similarityVector = generateSimilarityVector();
+  return Array.isArray(recordB) ? detectionResults : detectionResults[0];
 
-  if (similarityVector.some(v => v >= minProbabilityQuantifier)) {
-    const probability = calculateprobability();
-    debug(`probability: ${probability} (Treshold: ${treshold})`);
-    return returnResult({match: probability >= treshold, probability});
+  function actualDetection(featuresA, record) {
+
+    const featuresB = extractFeatures(record);
+
+    debugData(`Features (a): ${JSON.stringify(featuresA)}`);
+    debugData(`Features (b): ${JSON.stringify(featuresB)}`);
+
+    const featurePairs = generateFeaturePairs(featuresA, featuresB);
+    const similarityVector = generateSimilarityVector(featurePairs);
+
+    if (similarityVector.some(v => v >= minProbabilityQuantifier)) {
+      const probability = calculateprobability(similarityVector);
+      debug(`probability: ${probability} (Treshold: ${treshold})`);
+      return returnResult({match: probability >= treshold, probability});
+    }
+
+    debugData(`No feature yielded minimum probability amount of points (${minProbabilityQuantifier})`);
+    return returnResult({match: false, probability: 0.0});
   }
 
-  debugData(`No feature yielded minimum probability amount of points (${minProbabilityQuantifier})`);
-  return returnResult({match: false, probability: 0.0});
+  function extractFeatures(record) {
+    return strategy.reduce((acc, {name, extract}) => acc.concat({name, value: extract(record)}), []);
+  }
 
   function returnResult(result) {
     if (returnStrategy) {
@@ -76,16 +89,12 @@ export default ({strategy, treshold = 0.9}, returnStrategy = false) => (recordA,
     return strategyNames || [];
   }
 
-  function calculateprobability() {
+  function calculateprobability(similarityVector) {
     const probability = similarityVector.reduce((acc, v) => acc + v, 0.0);
     return probability > 1.0 ? 1.0 : probability;
   }
 
-  function extractFeatures(record) {
-    return strategy.reduce((acc, {name, extract}) => acc.concat({name, value: extract(record)}), []);
-  }
-
-  function generateSimilarityVector() {
+  function generateSimilarityVector(featurePairs) {
     const compared = featurePairs.map(({name, a, b}) => {
       const {compare} = strategy.find(({name: featureName}) => name === featureName);
       const points = compare(a, b);
@@ -96,7 +105,7 @@ export default ({strategy, treshold = 0.9}, returnStrategy = false) => (recordA,
     return compared.map(({points}) => points);
   }
 
-  function generateFeaturePairs() {
+  function generateFeaturePairs(featuresA, featuresB) {
     const pairs = generatePairs();
     const missingFeatures = findMissing();
 
@@ -125,4 +134,5 @@ export default ({strategy, treshold = 0.9}, returnStrategy = false) => (recordA,
         .filter(v => pairs.some(({name}) => name === v) === false);
     }
   }
+
 };

@@ -40,6 +40,7 @@ export default ({pattern, subfieldCodes}) => {
     if (field) {
       return field.subfields
         .filter(({code}) => subfieldCodes.includes(code))
+      //  .map(({code, value}) => ({code, value: value.replace(/-/ug, '')}));
         .map(({code, value}) => ({code, value: value ? value.replace(/-/ug, '') : ''}));
     }
 
