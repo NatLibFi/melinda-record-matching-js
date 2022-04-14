@@ -1,0 +1,24 @@
+{
+  "leader": "02518cam a2200745zi 4500",
+  "fields": [
+    {
+      "tag": "001",
+      "value": "000019644"
+    },
+    {
+      "tag": "900",
+      "ind1": "1",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "foo."
+        },
+        {
+          "code": "b",
+          "value": "bar"
+        }
+      ]
+    }
+  ]
+}

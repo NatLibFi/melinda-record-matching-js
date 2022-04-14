@@ -1,0 +1,16 @@
+{
+  "description": "Should handle record with a valueless subfield",
+  "options": {
+    "strategy": {
+      "type": "bib",
+      "features": [
+        "title",
+        "isbn"
+      ]
+    }
+  },
+  "expectedResults": {
+    "match": false,
+    "probability": 0.5
+  }
+}
