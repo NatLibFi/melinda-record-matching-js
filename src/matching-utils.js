@@ -88,9 +88,6 @@ export function getSubfieldValues(field, subfieldCode) {
 }
 
 export function testStringOrNumber(value) {
-  if (!value || value === undefined || value === null) {
-    return false;
-  }
   if (typeof value === 'string' || typeof value === 'number') {
     return true;
   }
