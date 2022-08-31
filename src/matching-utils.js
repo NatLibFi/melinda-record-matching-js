@@ -4,7 +4,7 @@
 *
 * Melinda record matching modules for Javascript
 *
-* Copyright (C) 2020 University Of Helsinki (The National Library Of Finland)
+* Copyright (C) 2020-2022 University Of Helsinki (The National Library Of Finland)
 *
 * This file is part of melinda-record-matching-js
 *
@@ -58,8 +58,8 @@ export function getMelindaIdsF035(record) {
 
     return subfields
       .filter(sub => ['a', 'z'].includes(sub.code))
-      .filter(sub => melindaIdRegExp.test(sub.value))
-      .map(({value}) => value ? value.replace(melindaIdRegExp, '$<id>') : '');
+      .filter(sub => testStringOrNumber(sub.value) && melindaIdRegExp.test(String(sub.value)))
+      .map(({value}) => testStringOrNumber(value) ? String(value).replace(melindaIdRegExp, '$<id>') : '');
 
   }
 }
@@ -81,6 +81,18 @@ function countSubfields(field, subfieldCode) {
 
 export function getSubfieldValues(field, subfieldCode) {
   debugData(`Get subfield(s) $${subfieldCode} from ${JSON.stringify(field)}`);
-  return field.subfields.filter(({code}) => code === subfieldCode).map(({value}) => value);
+  return field.subfields
+    .filter(({code}) => code === subfieldCode)
+    .map(({value}) => testStringOrNumber(value) ? String(value) : '')
+    .filter(value => value);
 }
 
+export function testStringOrNumber(value) {
+  if (!value || value === undefined || value === null) {
+    return false;
+  }
+  if (typeof value === 'string' || typeof value === 'number') {
+    return true;
+  }
+  return false;
+}

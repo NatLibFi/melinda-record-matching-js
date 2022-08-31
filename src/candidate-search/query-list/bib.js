@@ -5,7 +5,7 @@
 *
 * Melinda record matching modules for Javascript
 *
-* Copyright (C) 2020 University Of Helsinki (The National Library Of Finland)
+* Copyright (C) 2020-2022 University Of Helsinki (The National Library Of Finland)
 *
 * This file is part of melinda-record-matching-js
 *
@@ -28,7 +28,7 @@
 */
 import createDebugLogger from 'debug';
 import {toQueries} from '../candidate-search-utils';
-import {getMelindaIdsF035, validateSidFieldSubfieldCounts, getSubfieldValues} from '../../matching-utils';
+import {getMelindaIdsF035, validateSidFieldSubfieldCounts, getSubfieldValues, testStringOrNumber} from '../../matching-utils';
 
 
 export function bibSourceIds(record) {
@@ -108,7 +108,7 @@ export function bibSourceIds(record) {
 
         function removeSourcePrefix(subfieldValue) {
           const sourcePrefixRegex = (/^(?<sourcePrefix>\([A-Za-z0-9-]+\))(?<id>.+)$/u);
-          const normalizedValue = subfieldValue ? subfieldValue.replace(sourcePrefixRegex, '$<id>') : '';
+          const normalizedValue = testStringOrNumber(subfieldValue) ? String(subfieldValue).replace(sourcePrefixRegex, '$<id>') : '';
           debugData(`Normalized ${subfieldValue} to ${normalizedValue}`);
           return normalizedValue;
         }
@@ -116,7 +116,7 @@ export function bibSourceIds(record) {
         function normalizeSidSubfieldValue(subfieldValue) {
           debugData(`Normalizing ${subfieldValue}`);
           const normalizeAwayRegex = (/[- ]/u);
-          return subfieldValue ? subfieldValue.replace(normalizeAwayRegex, '') : '';
+          return testStringOrNumber(subfieldValue) ? String(subfieldValue).replace(normalizeAwayRegex, '') : '';
         }
 
       }
@@ -151,7 +151,7 @@ export function bibMelindaIds(record) {
 // bibHostComponents should search all 773 $ws for possible host id, but what should it do in case of multiple host ids?
 export function bibHostComponents(record) {
   const id = getHostId();
-  return id ? [`melinda.partsofhost=${id}`] : [];
+  return testStringOrNumber(id) ? [`melinda.partsofhost=${id}`] : [];
 
   function getHostId() {
     const [field] = record.get(/^773$/u);
@@ -159,12 +159,12 @@ export function bibHostComponents(record) {
     if (field) {
       const {value} = field.subfields.find(({code}) => code === 'w') || {};
 
-      if (value && (/^\(FI-MELINDA\)/u).test(value)) {
-        return value.replace(/^\(FI-MELINDA\)/u, '');
+      if (testStringOrNumber(value) && (/^\(FI-MELINDA\)/u).test(String(value))) {
+        return String(value).replace(/^\(FI-MELINDA\)/u, '');
       }
 
-      if (value && (/^\(FIN01\)/u).test(value)) {
-        return value.replace(/^\(FIN01\)/u, '');
+      if (testStringOrNumber(value) && (/^\(FIN01\)/u).test(String(value))) {
+        return String(value).replace(/^\(FIN01\)/u, '');
       }
 
       return false;
@@ -185,8 +185,8 @@ export function bibTitle(record) {
   const title = getTitle();
   const booleanStartWords = ['and', 'or', 'nor', 'not'];
 
-  if (title) {
-    const formatted = title
+  if (testStringOrNumber(title)) {
+    const formatted = String(title)
       .replace(/[^\w\s\p{Alphabetic}]/gu, '')
       // Clean up concurrent spaces from fe. subfield changes
       .replace(/ +/gu, ' ')
@@ -208,7 +208,8 @@ export function bibTitle(record) {
     if (field) {
       return field.subfields
         .filter(({code}) => ['a', 'b'].includes(code))
-        .map(({value}) => value)
+        .map(({value}) => testStringOrNumber(value) ? String(value) : '')
+        .filter(value => value)
         // In Melinda's index subfield separators are indexed as ' '
         .join(' ');
     }
@@ -244,18 +245,18 @@ export function bibStandardIdentifiers(record) {
 
     if (tag === '022') {
       return subfields
-        .filter(sub => ['a', 'z', 'y'].includes(sub.code) && issnIsbnReqExp.test(sub.value) && sub.value !== undefined)
-        .map(({value}) => value);
+        .filter(sub => ['a', 'z', 'y'].includes(sub.code) && testStringOrNumber(sub.value) && issnIsbnReqExp.test(String(sub.value)))
+        .map(({value}) => String(value));
     }
 
     if (tag === '020') {
       return subfields
-        .filter(sub => ['a', 'z'].includes(sub.code) && issnIsbnReqExp.test(sub.value) && sub.value !== undefined)
-        .map(({value}) => value);
+        .filter(sub => ['a', 'z'].includes(sub.code) && testStringOrNumber(sub.value) && issnIsbnReqExp.test(String(sub.value)))
+        .map(({value}) => String(value));
     }
 
     return subfields
-      .filter(sub => ['a', 'z'].includes(sub.code) && otherIdReqExp.test(sub.value) && sub.value !== undefined)
-      .map(({value}) => value);
+      .filter(sub => ['a', 'z'].includes(sub.code) && testStringOrNumber(sub.value) && otherIdReqExp.test(String(sub.value)))
+      .map(({value}) => String(value));
   }
 }

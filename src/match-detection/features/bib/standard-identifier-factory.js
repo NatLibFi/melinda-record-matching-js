@@ -4,7 +4,7 @@
 *
 * Melinda record matching modules for Javascript
 *
-* Copyright (C) 2020 University Of Helsinki (The National Library Of Finland)
+* Copyright (C) 2020-2022 University Of Helsinki (The National Library Of Finland)
 *
 * This file is part of melinda-record-matching-js
 *
@@ -27,6 +27,7 @@
 */
 
 import createDebugLogger from 'debug';
+import {testStringOrNumber} from '../../../matching-utils';
 
 const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection:features:standard-identifiers');
 const debugData = debug.extend('data');
@@ -40,8 +41,8 @@ export default ({pattern, subfieldCodes}) => {
     if (field) {
       return field.subfields
         .filter(({code}) => subfieldCodes.includes(code))
-      //  .map(({code, value}) => ({code, value: value.replace(/-/ug, '')}));
-        .map(({code, value}) => ({code, value: value ? value.replace(/-/ug, '') : ''}));
+        .map(({code, value}) => ({code, value: testStringOrNumber(value) ? String(value).replace(/-/ug, '') : ''}))
+        .filter(value => value);
     }
 
     return [];

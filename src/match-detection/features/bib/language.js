@@ -5,7 +5,7 @@
 *
 * Melinda record matching modules for Javascript
 *
-* Copyright (C) 2020 University Of Helsinki (The National Library Of Finland)
+* Copyright (C) 2020-2022 University Of Helsinki (The National Library Of Finland)
 *
 * This file is part of melinda-record-matching-js
 *
@@ -86,7 +86,7 @@ export default () => ({
       return 0;
     }
 
-    debugData(`There area languages to compare`);
+    debugData(`There are languages to compare`);
 
     if (a[0] === b[0]) {
       return 0.1;
