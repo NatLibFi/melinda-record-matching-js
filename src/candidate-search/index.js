@@ -152,21 +152,21 @@ export default ({record, searchSpec, url, maxCandidates, maxRecordsPerRequest = 
               reject(err);
             }
           })
-          .on('record', foundRecordXML => {
+          .on('record', recordXML => {
             promises.push(handleRecord()); // eslint-disable-line functional/immutable-data
 
             async function handleRecord() {
               try {
-                const foundRecordMarc = await MARCXML.from(foundRecordXML, {subfieldValues: false});
-                const foundRecordId = getRecordId(foundRecordMarc);
+                const recordMarc = await MARCXML.from(recordXML, {subfieldValues: false});
+                const recordId = getRecordId(recordMarc);
 
-                return {record: foundRecordMarc, id: foundRecordId};
+                return {record: recordMarc, id: recordId};
               } catch (err) {
                 // What should this do?
-                const idFromXML = getRecordIdFromXML(foundRecordXML);
-                debugData(`Failed converting record: ${err.message}, id: ${idFromXML}, data: ${foundRecordXML}`);
-                //return {message: `Failed converting record: ${err.message}`, id: idFromXML, data: foundRecordXML};
-                throw new MatchingError(422, {message: `Failed converting record: ${err.message}`, id: idFromXML || '000000000', data: foundRecordXML});
+                const idFromXML = getRecordIdFromXML(recordXML);
+                debugData(`Failed converting record: ${err.message}, id: ${idFromXML}, data: ${recordXML}`);
+                //return {message: `Failed converting record: ${err.message}`, id: idFromXML, data: recordXML};
+                throw new MatchingError(422, {message: `Failed converting record: ${err.message}`, id: idFromXML || '000000000', data: recordXML});
               }
             }
           });
