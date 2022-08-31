@@ -28,6 +28,9 @@
 
 import {testStringOrNumber} from '../../../matching-utils';
 
+// We should also get copyright time and copyright/publication times from 26x
+// We could also enable matching of records which have consequent publication years
+
 export default () => ({
   name: 'Publication time',
   extract: record => {

@@ -26,6 +26,8 @@
 *
 */
 
+// we could handle the case of books/notes
+
 export default () => ({
   name: 'Record type',
   extract: r => r.leader[6] ? [r.leader[6]] : [],

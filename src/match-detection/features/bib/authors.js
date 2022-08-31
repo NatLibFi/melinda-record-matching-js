@@ -29,6 +29,8 @@
 import {LevenshteinDistance as leven} from 'natural';
 import {testStringOrNumber} from '../../../matching-utils';
 
+// We should extract also organisational authors (110/710)
+
 export default ({nameTreshold = 10} = {}) => ({
   name: 'Authors',
   extract: record => record.get(/^(?<def>100|700)$/u)
