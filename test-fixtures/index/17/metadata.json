@@ -1,0 +1,38 @@
+{
+  "description": "DISABLED: Should return also matchErrors as failures if returnFailures is true - (test does not work, because all know matchError cases are fixed)",
+  "enabled": false,
+  "options": {
+    "search": {
+      "searchSpec": ["bibStandardIdentifiers"],
+      "url": "http://foo.bar",
+      "maxRecordsPerRequest": 1
+    },
+    "detection": {
+      "strategy": {
+        "type": "bib",
+        "features": [
+          "title",
+          "isbn"
+        ]
+      }
+    },
+    "maxMatches": 2,
+    "maxCandidates": 100,
+    "returnFailures": true
+  },
+  "expectedMatchStatus": false,
+  "expectedStopReason": "matchErrors",
+  "expectedFailures": [{"payload": {"id": "000019642", "message": "Matching errored for database record 000019642. Cannot read property 'replace' of undefined."}, "status": 422}],
+  "requests": [
+    {
+      "method": "get",
+      "url": "/?operation=searchRetrieve&query=dc.identifier%3D978-952-62-2477-0&startRecord=1&version=2.0&maximumRecords=1",
+      "status": 200
+    },
+    {
+      "method": "get",
+      "url": "/?operation=searchRetrieve&query=dc.identifier%3D978-952-62-2477-0&startRecord=2&version=2.0&maximumRecords=1",
+      "status": 200
+    }
+  ]
+}

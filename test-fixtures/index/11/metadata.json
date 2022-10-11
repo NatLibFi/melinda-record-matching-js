@@ -1,5 +1,5 @@
 {
-  "description": "Should return matchQuery for matches/nonMatches when returnQuery is used",
+  "description": "Should return conversionFailures when returnFailures is used",
   "enabled": true,
   "options": {
     "search": {
@@ -19,7 +19,8 @@
     "maxMatches": 2,
     "maxCandidates": 100,
     "returnNonMatches": true,
-    "returnQuery": true
+    "returnQuery": true,
+    "returnFailures": true
   },
   "expectedMatchStatus": true,
   "expectedStopReason": "",

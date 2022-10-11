@@ -2,5 +2,6 @@
  "queriesLeft": 0,
  "queryCounter": 1,
   "records": [],
+  "failures": [],
   "maxedQueries": ["dc.title=\"^foo bar*\""]
 }

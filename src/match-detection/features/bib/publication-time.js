@@ -4,7 +4,7 @@
 *
 * Melinda record matching modules for Javascript
 *
-* Copyright (C) 2020 University Of Helsinki (The National Library Of Finland)
+* Copyright (C) 2020-2022 University Of Helsinki (The National Library Of Finland)
 *
 * This file is part of melinda-record-matching-js
 *
@@ -26,11 +26,16 @@
 *
 */
 
+import {testStringOrNumber} from '../../../matching-utils';
+
+// We should also get copyright time and copyright/publication times from 26x
+// We could also enable matching of records which have consequent publication years
+
 export default () => ({
   name: 'Publication time',
   extract: record => {
-    const value = record.get(/^008$/u)?.[0]?.value || '';
-    return value ? [value.slice(7, 11)] : [];
+    const value = record.get(/^008$/u)?.[0]?.value || undefined;
+    return testStringOrNumber(value) ? [String(value).slice(7, 11)] : [];
   },
   compare: (a, b) => a[0] === b[0] ? 0.1 : -1.0
 });

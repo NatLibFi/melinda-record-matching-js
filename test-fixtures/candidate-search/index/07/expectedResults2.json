@@ -7,6 +7,7 @@
   "searchCounter": 2,
   "totalRecords": 3,
   "maxedQueries": ["dc.title=\"^foo bar*\""],
+  "failures": [],
   "records":
   [
     {

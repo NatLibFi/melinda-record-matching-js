@@ -1,6 +1,5 @@
 {
-  "description": "Should throw because of the record from response is not valid",
-  "expectedSearchError": "^Failed converting record:",
+  "description": "Should return failures if the record from response is not valid",
   "factoryOptions": {
     "searchSpec": ["bibTitle"],
     "record": {

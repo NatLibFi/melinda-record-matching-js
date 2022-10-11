@@ -4,7 +4,7 @@
 *
 * Melinda record matching modules for Javascript
 *
-* Copyright (C) 2020 University Of Helsinki (The National Library Of Finland)
+* Copyright (C) 2020-2022 University Of Helsinki (The National Library Of Finland)
 *
 * This file is part of melinda-record-matching-js
 *
@@ -27,6 +27,9 @@
 */
 
 import {LevenshteinDistance as leven} from 'natural';
+import {testStringOrNumber} from '../../../matching-utils';
+
+// We should extract also organisational authors (110/710)
 
 export default ({nameTreshold = 10} = {}) => ({
   name: 'Authors',
@@ -40,7 +43,7 @@ export default ({nameTreshold = 10} = {}) => ({
 
       function toObj({code, value}) {
         if (code === 'a') {
-          return {name: value.replace(/[^\p{Letter}\p{Number}]/gu, '').toLowerCase()};
+          return {name: testStringOrNumber(value) ? String(value).replace(/[^\p{Letter}\p{Number}]/gu, '').toLowerCase() : ''};
         }
 
         return {id: value};

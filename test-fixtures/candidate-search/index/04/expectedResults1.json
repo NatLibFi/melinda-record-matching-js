@@ -1,0 +1,12 @@
+{
+  "queriesLeft":0,
+  "query": "dc.title=\"^foo bar*\"",
+  "queryCandidateCounter": 1,
+  "queryCounter": 1,
+  "queryOffset": 1,
+  "searchCounter": 1,
+  "totalRecords": 1,
+  "maxedQueries": [],
+  "records":[],
+  "failures": [{"status":422,"payload":{"message":"Failed converting record: Field is invalid: {\"tag\":\"245\",\"ind1\":\" \",\"ind2\":\" \",\"subfields\":[]}: instance is not any of [subschema 0],[subschema 1]","id":"000000000","data":"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n<record xmlns=\"http://www.loc.gov/MARC21/slim\">\n\t\n          \n          &gt;\n          \n        \n\t<leader>02983cam a2200709zi 4500</leader>\n\t<controlfield tag=\"001\">000019643</controlfield>\n\t<datafield tag=\"245\" ind1=\" \" ind2=\" \"/>\n</record>"}}]
+}

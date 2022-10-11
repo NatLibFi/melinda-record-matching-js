@@ -46,7 +46,7 @@ describe('INDEX', () => {
     }
   });
 
-  async function callback({getFixture, options, enabled = true, expectedMatchStatus, expectedStopReason}) {
+  async function callback({getFixture, options, enabled = true, expectedMatchStatus, expectedStopReason, expectedFailures}) {
 
     if (!enabled) {
       debug(`Disabled test!`);
@@ -59,8 +59,11 @@ describe('INDEX', () => {
 
 
     const match = createMatchInterface(formatOptions());
-    const {matches, matchStatus, nonMatches} = await match(record);
-    debugData(`${matches.length}, ${matchStatus.status}/${matchStatus.stopReason}, ${nonMatches ? nonMatches.length : nonMatches}`);
+    const {matches, matchStatus, nonMatches, conversionFailures} = await match(record);
+    debugData(`Matches: ${matches.length}, Status: ${matchStatus.status}/${matchStatus.stopReason}, NonMatches: ${nonMatches ? nonMatches.length : 'not returned'}, ConversionFailures: ${conversionFailures ? conversionFailures.length : 'not returned'}`);
+
+    expect(matchStatus.status).to.eql(expectedMatchStatus);
+    expect(matchStatus.stopReason).to.eql(expectedStopReason);
 
     const formattedMatchResult = formatRecordResults(matches);
     expect(formattedMatchResult).to.eql(expectedMatches);
@@ -68,9 +71,10 @@ describe('INDEX', () => {
     const formattedNonMatchResult = formatRecordResults(nonMatches);
     expect(formattedNonMatchResult).to.eql(expectedNonMatches);
 
-    expect(matchStatus.status).to.eql(expectedMatchStatus);
-    expect(matchStatus.stopReason).to.eql(expectedStopReason);
-
+    // eslint-disable-next-line functional/no-conditional-statement
+    if (expectedFailures) {
+      expect(conversionFailures).to.eql(expectedFailures);
+    }
 
     function formatOptions() {
       const contextFeatures = matchDetection.features[options.detection.strategy.type];

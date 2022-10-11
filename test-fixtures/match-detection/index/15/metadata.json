@@ -1,0 +1,23 @@
+{
+  "description": "Should return an array of matches if it gets an array of candidates",
+  "array": true,
+  "options": {
+    "strategy": {
+      "type": "bib",
+      "features": [
+        "title",
+        "isbn"
+      ]
+    }
+  },
+  "expectedResults": [
+    {
+      "match": true,
+      "probability": 1
+    },
+    {
+      "match": true,
+      "probability": 1
+    }
+  ]
+}
