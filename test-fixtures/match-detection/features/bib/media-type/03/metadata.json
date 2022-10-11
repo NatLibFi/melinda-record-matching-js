@@ -1,0 +1,57 @@
+{
+    "description": "Should extract media types (337 $b) from multiple fields",
+    "feature": "mediaType",
+    "type": "extract",
+    "expectedFeatures": ["s","c"],
+    "inputRecord": {
+      "leader": "02518cam a2200745zi 4500",
+      "fields": [
+        {
+          "tag": "001",
+          "value": "000019643"
+        },
+        {
+          "tag": "008",
+          "value": "831017s1983    fi ||||||||||||||||bfin||"
+        },
+        {
+          "tag": "337",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "audio"
+            },
+            {
+              "code": "b",
+              "value": "s"
+            },
+            {
+              "code": "2",
+              "value": "rdamedia"
+            }
+          ]
+        },
+        {
+          "tag": "337",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "tietokonekäyttöinen"
+            },
+            {
+              "code": "b",
+              "value": "c"
+            },
+            {
+              "code": "2",
+              "value": "rdamedia"
+            }
+          ]
+        }
+      ]
+    }
+  }

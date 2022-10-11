@@ -1,0 +1,8 @@
+{
+    "description": "Should return points if single mediaType matches",
+    "feature": "mediaType",
+    "type": "compare",
+    "expectedPoints": 1.0,
+    "featuresA": ["c"],
+    "featuresB": ["c"]
+  }

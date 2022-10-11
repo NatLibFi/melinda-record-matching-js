@@ -1,0 +1,8 @@
+{
+    "description": "Should not return points if there are mismatching mediaTypes",
+    "feature": "mediaType",
+    "type": "compare",
+    "expectedPoints": -1.0,
+    "featuresA": ["c", "s"],
+    "featuresB": ["c", "v"]
+  }

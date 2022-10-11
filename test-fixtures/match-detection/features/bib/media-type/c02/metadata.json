@@ -1,0 +1,8 @@
+{
+    "description": "Should return minus points if single mediaType mismatches",
+    "feature": "mediaType",
+    "type": "compare",
+    "expectedPoints": -1.0,
+    "featuresA": ["c"],
+    "featuresB": ["s"]
+  }

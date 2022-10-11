@@ -31,7 +31,10 @@ import {READERS} from '@natlibfi/fixura';
 import {expect} from 'chai';
 import {MarcRecord} from '@natlibfi/marc-record';
 import * as features from '.';
+import createDebugLogger from 'debug';
 
+
+const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection:features/bib:test');
 
 describe('match-detection/features/bib/', () => {
   generateTests({
@@ -46,6 +49,8 @@ describe('match-detection/features/bib/', () => {
       if (!enabled) {
         return;
       }
+
+      debug(`Testing: ${feature} ${type}`);
 
       if (type === 'extract') {
         const {expectedFeatures, inputRecord} = expectations;
