@@ -135,15 +135,15 @@ export default ({record, searchSpec, url, maxCandidates, maxRecordsPerRequest = 
           .on('end', async nextOffset => {
             try {
               const recordPromises = await Promise.allSettled(promises);
-              debug(`All recordPromises: ${JSON.stringify(recordPromises)}`);
+              debugData(`All recordPromises: ${JSON.stringify(recordPromises)}`);
               const filtered = recordPromises.filter(r => r.status === 'fulfilled').map(r => r.value);
               const failures = recordPromises.filter(r => r.status === 'rejected').map(r => ({status: r.reason.status, payload: r.reason.payload}));
 
-              debug(`Found ${JSON.stringify(recordPromises)} records`);
+              debug(`Found ${recordPromises.length} records`);
               debug(`Found ${filtered.length} convertable candidates`);
               debug(`Found ${failures.length} NON-convertable candidates`);
-              debug(`Converted: ${JSON.stringify(filtered)}.`);
-              debug(`Not converted: ${JSON.stringify(failures)}.`);
+              debugData(`Converted: ${JSON.stringify(filtered)}.`);
+              debugData(`Not converted: ${JSON.stringify(failures)}.`);
 
 
               resolve({nextOffset, records: filtered, failures, total: totalRecords});
