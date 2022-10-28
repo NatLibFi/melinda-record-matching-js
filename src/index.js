@@ -262,7 +262,7 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
       const recordsIsArray = Array.isArray(candidateRecords);
       debug(`records is an array: ${recordsIsArray}`);
       const result = detect(record, candidateRecords);
-      debug(`${JSON.stringify(result)}`);
+      debugData(`${JSON.stringify(result)}`);
       */
 
       if (candidate) {
