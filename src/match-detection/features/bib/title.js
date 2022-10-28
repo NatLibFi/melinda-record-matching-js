@@ -32,7 +32,7 @@ import {testStringOrNumber} from '../../../matching-utils';
 
 export default ({treshold = 10} = {}) => ({
   name: 'Title',
-  extract: record => {
+  extract: ({record}) => {
     const title = getTitle();
 
     if (testStringOrNumber(title)) {

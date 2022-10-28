@@ -33,7 +33,7 @@ import {testStringOrNumber} from '../../../matching-utils';
 
 export default () => ({
   name: 'Publication time',
-  extract: record => {
+  extract: ({record}) => {
     const value = record.get(/^008$/u)?.[0]?.value || undefined;
     return testStringOrNumber(value) ? [String(value).slice(7, 11)] : [];
   },

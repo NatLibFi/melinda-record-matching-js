@@ -38,28 +38,32 @@ export default ({strategy, treshold = 0.9}, returnStrategy = false) => ({recordA
   const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection');
   const debugData = debug.extend('data');
 
-  debugData(`Strategy: ${JSON.stringify(strategy)}`);
-  debugData(`Treshold: ${JSON.stringify(treshold)}`);
-  debugData(`ReturnStrategy: ${JSON.stringify(returnStrategy)}`);
-  debug(`Externals: ${JSON.stringify(recordAExternal)}, ${JSON.stringify(recordBExternal)}`);
+  debugData(`Strategy: ${JSON.stringify(strategy)}, Treshold: ${JSON.stringify(treshold)}, ReturnStrategy: ${JSON.stringify(returnStrategy)}`);
+  debugData(`Records: A: ${recordA}\nB: ${recordB}`);
+  debug(`Externals: A: ${JSON.stringify(recordAExternal)}, B: ${JSON.stringify(recordBExternal)}`);
 
-  const featuresA = extractFeatures(recordA);
+  const featuresA = extractFeatures({record: recordA, recordExternal: recordAExternal});
 
   debug(`We got an array of records: ${Array.isArray(recordB)}`);
   const recordsB = Array.isArray(recordB) ? recordB : [recordB];
+  const recordsBExternal = Array.isArray(recordB) ? recordBExternal : [recordBExternal];
 
-  const detectionResults = recordsB.map(record => actualDetection(featuresA, record));
+  const detectionResults = recordsB.map((record, index) => actualDetection({featuresA, recordAExternal, record, recordExternal: recordsBExternal[index], index}));
 
   // if we got array of records, we return an array of result
   // if we got a singular record, we return a singular result
   return Array.isArray(recordB) ? detectionResults : detectionResults[0];
 
-  function actualDetection(featuresA, record) {
+  function actualDetection({featuresA, record, recordExternal, index}) {
+    const labelA = recordAExternal && recordAExternal.label ? recordAExternal.label : 'a';
+    const labelB = recordExternal && recordExternal.label ? recordExternal.label : 'b';
 
-    const featuresB = extractFeatures(record);
 
-    debugData(`Features (a): ${JSON.stringify(featuresA)}`);
-    debugData(`Features (b): ${JSON.stringify(featuresB)}`);
+    debug(`Actual detection for record ${index + 1} ${labelB}`);
+    const featuresB = extractFeatures({record, recordExternal});
+
+    debugData(`Features (a: ${labelA}): ${JSON.stringify(featuresA)}`);
+    debugData(`Features (b: ${labelB}): ${JSON.stringify(featuresB)}`);
 
     const featurePairs = generateFeaturePairs(featuresA, featuresB);
     const similarityVector = generateSimilarityVector(featurePairs);
@@ -74,8 +78,8 @@ export default ({strategy, treshold = 0.9}, returnStrategy = false) => ({recordA
     return returnResult({match: false, probability: 0.0});
   }
 
-  function extractFeatures(record) {
-    return strategy.reduce((acc, {name, extract}) => acc.concat({name, value: extract(record)}), []);
+  function extractFeatures({record, recordExternal}) {
+    return strategy.reduce((acc, {name, extract}) => acc.concat({name, value: extract({record, recordExternal})}), []);
   }
 
   function returnResult(result) {

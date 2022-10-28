@@ -49,7 +49,7 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
 
   const detect = createDetectionInterface(detectionOptions, returnStrategy);
 
-  return ({record, recordExternal = {recordSource: 'incomingRecord'}}) => {
+  return ({record, recordExternal = {recordSource: 'incomingRecord', label: 'ic'}}) => {
 
     const search = createSearchInterface({...searchOptions, record, maxCandidates, recordExternal});
     return iterate({});
@@ -271,7 +271,7 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
         // eslint-disable-next-line functional/no-conditional-statement
         if (candidateNotInMatches(matches.concat(nonMatches), candidate)) {
           const {record: candidateRecord, id: candidateId} = candidate;
-          const recordBExternal = {id: candidate.id, recordSource: 'databaseRecord'};
+          const recordBExternal = {id: candidate.id, recordSource: 'databaseRecord', label: `db-${candidate.id}`};
           try {
             debug(`Running matchDetection for record ${candidateId} (${newRecordCount}/${recordSetSize})`);
             // we should handle errors from detection somehow - ie. cases where either record or candidateRecord errors

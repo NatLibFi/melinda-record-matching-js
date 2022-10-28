@@ -52,7 +52,7 @@ describe('match-detection/features/bib/', () => {
         const record = new MarcRecord(inputRecord, {subfieldValues: false});
         const {extract} = features[feature](options);
 
-        expect(extract(record)).to.eql(expectedFeatures);
+        expect(extract({record})).to.eql(expectedFeatures);
         return;
       }
 

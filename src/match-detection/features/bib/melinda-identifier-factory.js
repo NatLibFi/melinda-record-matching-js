@@ -43,7 +43,7 @@ export default () => {
 
   return {extract, compare};
 
-  function extract(record) {
+  function extract({record, recordExternal}) {
 
     const isMelindaRecord = record.get('003').some(f003 => f003.value === 'FI-MELINDA');
     const [f001] = record.get('001').map(field => field.value);
@@ -54,7 +54,7 @@ export default () => {
       f001 === undefined &&
       f035MelindaIds.length < 1) {
 
-      debug(`No Melinda-IDs found`);
+      debug(`${recordExternal.label} No Melinda-IDs found`);
       return {};
     }
 

@@ -35,7 +35,7 @@ const debugData = debug.extend('data');
 export default ({pattern, subfieldCodes}) => {
   return {extract, compare};
 
-  function extract(record) {
+  function extract({record}) {
     const [field] = record.get(pattern);
 
     if (field) {
