@@ -32,7 +32,7 @@ import * as features from './features';
 
 export {features};
 
-export default ({strategy, treshold = 0.9}, returnStrategy = false) => (recordA, recordB) => {
+export default ({strategy, treshold = 0.9}, returnStrategy = false) => ({recordA, recordB, recordAExternal = {}, recordBExternal = {}}) => {
   const minProbabilityQuantifier = 0.5;
 
   const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection');
@@ -41,13 +41,17 @@ export default ({strategy, treshold = 0.9}, returnStrategy = false) => (recordA,
   debugData(`Strategy: ${JSON.stringify(strategy)}`);
   debugData(`Treshold: ${JSON.stringify(treshold)}`);
   debugData(`ReturnStrategy: ${JSON.stringify(returnStrategy)}`);
+  debug(`Externals: ${JSON.stringify(recordAExternal)}, ${JSON.stringify(recordBExternal)}`);
 
   const featuresA = extractFeatures(recordA);
 
   debug(`We got an array of records: ${Array.isArray(recordB)}`);
   const recordsB = Array.isArray(recordB) ? recordB : [recordB];
+
   const detectionResults = recordsB.map(record => actualDetection(featuresA, record));
 
+  // if we got array of records, we return an array of result
+  // if we got a singular record, we return a singular result
   return Array.isArray(recordB) ? detectionResults : detectionResults[0];
 
   function actualDetection(featuresA, record) {

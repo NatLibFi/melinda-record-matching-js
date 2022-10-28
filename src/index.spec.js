@@ -59,7 +59,7 @@ describe('INDEX', () => {
 
 
     const match = createMatchInterface(formatOptions());
-    const {matches, matchStatus, nonMatches, conversionFailures} = await match(record);
+    const {matches, matchStatus, nonMatches, conversionFailures} = await match({record});
     debugData(`Matches: ${matches.length}, Status: ${matchStatus.status}/${matchStatus.stopReason}, NonMatches: ${nonMatches ? nonMatches.length : 'not returned'}, ConversionFailures: ${conversionFailures ? conversionFailures.length : 'not returned'}`);
 
     expect(matchStatus.status).to.eql(expectedMatchStatus);
