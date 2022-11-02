@@ -41,6 +41,7 @@ export default ({strategy, treshold = 0.9}, returnStrategy = false) => ({recordA
   debugData(`Strategy: ${JSON.stringify(strategy)}, Treshold: ${JSON.stringify(treshold)}, ReturnStrategy: ${JSON.stringify(returnStrategy)}`);
   debugData(`Records: A: ${recordA}\nB: ${recordB}`);
   debug(`Externals: A: ${JSON.stringify(recordAExternal)}, B: ${JSON.stringify(recordBExternal)}`);
+  // We could add here labels for records if we didn't get external labels
 
   const featuresA = extractFeatures({record: recordA, recordExternal: recordAExternal});
 
@@ -69,7 +70,7 @@ export default ({strategy, treshold = 0.9}, returnStrategy = false) => ({recordA
     const similarityVector = generateSimilarityVector(featurePairs);
 
     if (similarityVector.some(v => v >= minProbabilityQuantifier)) {
-      const probability = calculateprobability(similarityVector);
+      const probability = calculateProbability(similarityVector);
       debug(`probability: ${probability} (Treshold: ${treshold})`);
       return returnResult({match: probability >= treshold, probability});
     }
@@ -97,7 +98,7 @@ export default ({strategy, treshold = 0.9}, returnStrategy = false) => ({recordA
     return strategyNames || [];
   }
 
-  function calculateprobability(similarityVector) {
+  function calculateProbability(similarityVector) {
     const probability = similarityVector.reduce((acc, v) => acc + v, 0.0);
     return probability > 1.0 ? 1.0 : probability;
   }
