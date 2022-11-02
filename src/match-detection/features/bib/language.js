@@ -57,18 +57,19 @@ export default () => ({
 
     function get008Value() {
       const value = record.get(/^008$/u)?.[0]?.value || undefined;
-      debugData(`008 value: ${value}`);
+      debugData(`${label} 008 value: ${value}`);
 
       if (!value) {
         return undefined;
       }
 
       const code = value.slice(35, 38);
-      debugData(`008 code: ${code}`);
+      debugData(`${label} 008 code: ${code}`);
       return code === '|||' || code === '   ' || code === '^^^' ? undefined : code;
     }
 
     // Main language for the resource: in the first f041 $a or f041 $d
+    // Should we get all $a or $d languages instead of just the first?
     // Uses only f041s that have 2nd ind ' ', which means that the codes used are MARC 21 language codes
 
     function get041Values() {
