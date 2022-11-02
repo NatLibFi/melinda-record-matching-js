@@ -42,14 +42,14 @@ export default () => ({
     debugData(`${label} 008: ${JSON.stringify(value008)}, 041: ${JSON.stringify(values041)}`);
 
     if (value008 && values041.length > 0) {
-      debugData(`There's both 008 and 041, searching for value in both`);
+      debugData(`${label} There's both 008 and 041, searching for value in both`);
       const correspondingValue = values041.find(v => v === value008);
-      debugData(`Corresponding value: ${correspondingValue}`);
+      debugData(`${label} Corresponding value: ${correspondingValue}`);
       return correspondingValue ? [correspondingValue] : [];
     }
 
     if (!value008 && values041.length < 1) {
-      debugData(`No actual values found`);
+      debugData(`{$label} No actual values found`);
       return [];
     }
 
