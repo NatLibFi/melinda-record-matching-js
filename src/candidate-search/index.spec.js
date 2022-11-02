@@ -46,7 +46,6 @@ describe('candidate-search', () => {
     }
   });
 
-  // eslint-disable-next-line max-statements
   async function callback({getFixture, factoryOptions, searchOptions, expectedFactoryError = false, expectedSearchError = false, enabled = true}) {
     const url = 'http://foo.bar';
 
@@ -77,7 +76,6 @@ describe('candidate-search', () => {
       };
     }
 
-    // eslint-disable-next-line max-statements
     async function iterate({searchOptions, expectedSearchError, expectedErrorStatus, count = 1}) {
       const expectedResults = getFixture(`expectedResults${count}.json`);
 
@@ -108,7 +106,7 @@ describe('candidate-search', () => {
       }
 
       function formatResults(results) {
-        debug(results); //eslint-disable-line
+        debug(results);
         return {
           ...results,
           records: results.records.map(({record, id}) => ({id, record: record.toObject()}))

@@ -235,7 +235,6 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
     // - if creating the featureSet for the incoming record fails we have an unprocessable entity
     // - if creating the featureSet for a candidate record fails we could skip that candidate - but list the case as a detectionFailure, same as conversionFailures
 
-    // eslint-disable-next-line max-statements
     function iterateRecords({records, recordSetSize, maxMatches, matches = [], nonMatches = [], recordMatches = [], recordNonMatches = [], recordCount = 0, recordDuplicateCount = 0, recordNonMatchCount = 0, recordMatchErrors = []}) {
 
       // recordSetSize : total amount of records in the current record set

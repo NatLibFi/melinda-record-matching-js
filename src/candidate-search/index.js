@@ -39,7 +39,6 @@ export class CandidateSearchError extends Error {}
 
 // serverMaxResults : maximum size of total search result available from the server, defaults to Aleph's 20000
 
-// eslint-disable-next-line max-statements
 export default ({record, searchSpec, url, maxCandidates, maxRecordsPerRequest = 50, serverMaxResult = 20000}) => {
   MarcRecord.setValidationOptions({subfieldValues: false});
 
@@ -69,7 +68,7 @@ export default ({record, searchSpec, url, maxCandidates, maxRecordsPerRequest = 
 
   // if generateQueryList errored we should throw 422
 
-  if (queryList.length === 0) { // eslint-disable-line functional/no-conditional-statement
+  if (queryList.length === 0) {
     throw new CandidateSearchError(`Generated query list contains no queries`);
   }
 
@@ -175,7 +174,6 @@ export default ({record, searchSpec, url, maxCandidates, maxRecordsPerRequest = 
   };
 
   function checkMaxedQuery(query, total, serverMaxResult) {
-    // eslint-disable-next-line functional/no-conditional-statement
     if (total >= serverMaxResult) {
       debug(`WARNING: Query ${query} resulted in ${total} hits which meets the serverMaxResult (${serverMaxResult}) `);
       return query;

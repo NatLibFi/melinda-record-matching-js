@@ -40,7 +40,7 @@ describe('match-detection/features/bib/', () => {
     fixura: {
       reader: READERS.JSON
     },
-    // eslint-disable-next-line max-statements
+
     callback: ({enabled = true, feature, options, type, ...expectations}) => {
 
       if (!enabled) {

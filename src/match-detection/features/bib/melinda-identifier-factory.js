@@ -62,7 +62,6 @@ export default () => {
 
   }
 
-  // eslint-disable-next-line max-statements
   function compare(a, b) {
 
     if (a.isMelindaRecord && b.isMelindaRecord &&

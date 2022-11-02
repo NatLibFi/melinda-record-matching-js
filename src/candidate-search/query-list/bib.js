@@ -217,7 +217,6 @@ export function bibTitle(record) {
   }
 }
 
-// eslint-disable-next-line max-statements
 export function bibStandardIdentifiers(record) {
 
   const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:query:bibStandardIdentifiers');
