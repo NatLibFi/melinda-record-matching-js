@@ -31,6 +31,7 @@ export {default as isbn} from './isbn';
 export {default as issn} from './issn';
 export {default as otherStandardIdentifier} from './other-standard-identifier';
 export {default as title} from './title';
+export {default as titleVersionOriginal} from './title-version-original';
 export {default as authors} from './authors';
 export {default as recordType} from './record-type';
 export {default as publicationTime} from './publication-time';
