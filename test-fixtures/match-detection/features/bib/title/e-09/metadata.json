@@ -1,0 +1,32 @@
+{
+  "description": "Should extract titles ($a + $b)",
+  "comment": "Testing different subfield combinations",
+  "feature": "title",
+  "type": "extract",
+  "expectedFeatures": ["aarre5opettajanmateriaali"],
+  "inputRecord": {
+    "leader": "02518cam a2200745zi 4500",
+    "fields": [
+      {
+        "tag": "001",
+        "value": "000019643"
+      },
+      {
+        "tag": "245",
+        "ind1": "1",
+        "ind2": " ",
+        "subfields": [
+          {
+            "code": "a",
+            "value": "Aarre 5:"
+          },
+          {
+            "code": "b",
+            "value": "Opettajan materiaali"
+          }
+        ]
+      }
+    ]
+  },
+  "only": false
+}

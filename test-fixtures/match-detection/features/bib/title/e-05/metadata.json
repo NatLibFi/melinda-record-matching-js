@@ -1,0 +1,31 @@
+{
+  "description": "Should extract titles in all lower case",
+  "feature": "title",
+  "type": "extract",
+  "expectedFeatures": ["foofaabazbar"],
+  "inputRecord": {
+    "leader": "02518cam a2200745zi 4500",
+    "fields": [
+      {
+        "tag": "001",
+        "value": "000019643"
+      },
+      {
+        "tag": "245",
+        "ind1": "1",
+        "ind2": " ",
+        "subfields": [
+          {
+            "code": "a",
+            "value": "FOOfaaBaz"
+          },
+          {
+            "code": "b",
+            "value": "BAR /"
+          }
+        ]
+      }
+    ]
+  },
+  "only": false
+}

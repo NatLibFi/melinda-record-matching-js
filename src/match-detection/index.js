@@ -31,7 +31,7 @@ import * as features from './features';
 
 export {features};
 
-export default ({strategy, treshold = 0.9}, returnStrategy = false) => ({recordA, recordB, recordAExternal = {}, recordBExternal = {}}) => {
+export default ({strategy, treshold = 0.9}, returnStrategy = false, localSettings = {}) => ({recordA, recordB, recordAExternal = {}, recordBExternal = {}}) => {
   const minProbabilityQuantifier = 0.5;
 
   const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection');
@@ -42,7 +42,7 @@ export default ({strategy, treshold = 0.9}, returnStrategy = false) => ({recordA
   debug(`Externals: A: ${JSON.stringify(recordAExternal)}, B: ${JSON.stringify(recordBExternal)}`);
   // We could add here labels for records if we didn't get external labels
 
-  const featuresA = extractFeatures({record: recordA, recordExternal: recordAExternal});
+  const featuresA = extractFeatures({record: recordA, recordExternal: recordAExternal, localSettings});
 
   debug(`We got an array of records: ${Array.isArray(recordB)}`);
   const recordsB = Array.isArray(recordB) ? recordB : [recordB];
@@ -54,13 +54,13 @@ export default ({strategy, treshold = 0.9}, returnStrategy = false) => ({recordA
   // if we got a singular record, we return a singular result
   return Array.isArray(recordB) ? detectionResults : detectionResults[0];
 
-  function actualDetection({featuresA, record, recordExternal, index}) {
+  function actualDetection({featuresA, record, recordExternal, index, localSettings}) {
     const labelA = recordAExternal && recordAExternal.label ? recordAExternal.label : 'a';
     const labelB = recordExternal && recordExternal.label ? recordExternal.label : 'b';
 
 
     debug(`Actual detection for record ${index + 1} ${labelB}`);
-    const featuresB = extractFeatures({record, recordExternal});
+    const featuresB = extractFeatures({record, recordExternal, localSettings});
 
     debugData(`Features (a: ${labelA}): ${JSON.stringify(featuresA)}`);
     debugData(`Features (b: ${labelB}): ${JSON.stringify(featuresB)}`);

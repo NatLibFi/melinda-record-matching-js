@@ -1,5 +1,5 @@
 {
-  "description": "Comparison should return points for matching titles (Different values)",
+  "description": "Comparison should return minus points for matching titles (Different values)",
   "feature": "title",
   "type": "compare",
   "expectedPoints": -0.5,
