@@ -29,14 +29,18 @@
 import createDebugLogger from 'debug';
 import {testStringOrNumber} from '../../../matching-utils';
 
-const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection:features:standard-identifiers');
-const debugData = debug.extend('data');
 
-export default ({pattern, subfieldCodes}) => {
+export default ({pattern, subfieldCodes, identifier}) => {
+  const debug = createDebugLogger(`@natlibfi/melinda-record-matching:match-detection:features:standard-identifiers:${identifier}`);
+  const debugData = debug.extend('data');
+
   return {extract, compare};
 
-  function extract({record}) {
-    const [field] = record.get(pattern);
+  function extract({record, recordExternal}) {
+    const label = recordExternal && recordExternal.label ? recordExternal.label : 'record';
+    const fields = record.get(pattern);
+    const [field] = fields;
+    debug(`${label} has ${fields.length} {${identifier}}-fields `);
 
     if (field) {
       return field.subfields
@@ -56,6 +60,9 @@ export default ({pattern, subfieldCodes}) => {
 
     if (bothHaveValidIdentifiers()) {
       const {maxValues, matchingValues} = getValueCount(true);
+      if (matchingValues < 1) {
+        return -0.75;
+      }
       return matchingValues / maxValues * 0.75;
     }
 

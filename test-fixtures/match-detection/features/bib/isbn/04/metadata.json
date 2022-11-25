@@ -2,7 +2,7 @@
   "description": "Comparison should return minus points for mis-matching ISBN identifiers when there are no matching ISBNs",
   "feature": "isbn",
   "type": "compare",
-  "expectedPoints": 0.2,
+  "expectedPoints": -0.75,
   "featuresA": [
     { "code": "a", "value": "978952622477X" }
   ],
