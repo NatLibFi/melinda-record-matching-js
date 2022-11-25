@@ -1,0 +1,61 @@
+{
+  "description": "Should extract valid and invalid ISBN identifiers from two fields",
+  "feature": "isbn",
+  "type": "extract",
+  "expectedFeatures": [
+    {
+      "code": "a", "value": "9789526224771"
+    },
+    {
+      "code": "a", "value": "9789513148362"
+    },
+    {
+      "code": "z", "value": "9789513148361"
+    }
+  ],
+  "inputRecord": {
+    "leader": "02518cam a2200745zi 4500",
+    "fields": [
+      {
+        "tag": "001",
+        "value": "000019643"
+      },
+      {
+        "tag": "020",
+        "ind1": " ",
+        "ind2": " ",
+        "subfields": [
+          {
+            "code": "a",
+            "value": "978-952-62-2477-0"
+          },
+          {
+            "code": "z",
+            "value": "978-952-62-2477-1"
+          },
+          {
+            "code": "q",
+            "value": "PDF"
+          }
+        ]
+      },
+      {
+        "tag": "020",
+        "ind1": " ",
+        "ind2": " ",
+        "subfields": [
+          {
+            "code": "a",
+            "value": "978-951-31-4836-2"
+          },
+          {
+            "code": "q",
+            "value": "PDF"
+          }
+        ]
+      }
+    ]
+  },
+  "skip": false,
+  "only": false
+}

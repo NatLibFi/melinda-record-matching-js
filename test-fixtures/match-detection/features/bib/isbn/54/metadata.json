@@ -1,0 +1,36 @@
+{
+  "description": "SKIP: FIX: Should extract unique ISBN identifiers normalized as ISBN-13s (if possible)",
+  "feature": "isbn",
+  "type": "extract",
+  "expectedFeatures": [
+    {
+      "code": "a", "value": "9789526224770"
+    }
+  ],
+  "inputRecord": {
+    "leader": "02518cam a2200745zi 4500",
+    "fields": [
+      {
+        "tag": "001",
+        "value": "000019643"
+      },
+      {
+        "tag": "020",
+        "ind1": " ",
+        "ind2": " ",
+        "subfields": [
+          {
+            "code": "a",
+            "value": "952-62-2477-9"
+          },
+          {
+            "code": "q",
+            "value": "PDF"
+          }
+        ]
+      }
+    ]
+  },
+  "skip": true,
+  "only": false
+}

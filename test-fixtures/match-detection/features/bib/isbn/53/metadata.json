@@ -1,10 +1,10 @@
 {
-  "description": "Should extract ISBN identifiers",
+  "description": "SKIP: FIX: Should extract non-valid ISBNs from $a with code $z",
   "feature": "isbn",
   "type": "extract",
   "expectedFeatures": [
     {
-      "code": "a", "value": "9789526224770"
+      "code": "z", "value": "9789526224771"
     }
   ],
   "inputRecord": {
@@ -21,7 +21,7 @@
         "subfields": [
           {
             "code": "a",
-            "value": "978-952-62-2477-0"
+            "value": "9789526224771"
           },
           {
             "code": "q",
@@ -30,5 +30,7 @@
         ]
       }
     ]
-  }
+  },
+  "skip": true,
+  "only": false
 }
