@@ -63,7 +63,7 @@ describe('match-detection', () => {
         : new MarcRecord(getFixture('recordB.json'), {subfieldValues: false});
       debugData(inspect(recordB));
 
-      const results = detect(recordA, recordB);
+      const results = detect({recordA, recordB});
       debugData(`${JSON.stringify(results)}`);
 
       expect(results).to.eql(expectedResults);

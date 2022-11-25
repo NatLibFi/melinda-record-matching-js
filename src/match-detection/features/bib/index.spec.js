@@ -40,7 +40,7 @@ describe('match-detection/features/bib/', () => {
     fixura: {
       reader: READERS.JSON
     },
-    // eslint-disable-next-line max-statements
+
     callback: ({enabled = true, feature, options, type, ...expectations}) => {
 
       if (!enabled) {
@@ -52,7 +52,7 @@ describe('match-detection/features/bib/', () => {
         const record = new MarcRecord(inputRecord, {subfieldValues: false});
         const {extract} = features[feature](options);
 
-        expect(extract(record)).to.eql(expectedFeatures);
+        expect(extract({record})).to.eql(expectedFeatures);
         return;
       }
 

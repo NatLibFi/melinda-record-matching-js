@@ -1,6 +1,6 @@
 {
   "description": "Comparison should return points for matching titles (Different values)",
-  "feature": "title",
+  "feature": "titleVersionOriginal",
   "type": "compare",
   "expectedPoints": -0.5,
   "featuresA": ["foobarbarfoo"],

@@ -1,4 +1,3 @@
-/* eslint-disable max-statements */
 /**
 *
 * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -56,8 +55,9 @@ Records with matching local ids for matching local db are a very good match.
 
 export default () => ({
   name: 'All source IDs',
-  extract: record => {
-    debug(`Creating match detection features for all local source id's`);
+  extract: ({record, recordExternal}) => {
+    const label = recordExternal && recordExternal.label ? recordExternal.label : 'record';
+    debug(`Creating match detection features for all local source id's for ${label}`);
 
     const fSids = record.get('SID');
     debugData(`SID-fields (${fSids.length}): ${JSON.stringify(fSids)}`);

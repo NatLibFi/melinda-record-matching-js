@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /**
 *
 * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -32,36 +31,45 @@ import * as features from './features';
 
 export {features};
 
-export default ({strategy, treshold = 0.9}, returnStrategy = false) => (recordA, recordB) => {
+export default ({strategy, treshold = 0.9}, returnStrategy = false, localSettings = {}) => ({recordA, recordB, recordAExternal = {}, recordBExternal = {}}) => {
   const minProbabilityQuantifier = 0.5;
 
   const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection');
   const debugData = debug.extend('data');
 
-  debugData(`Strategy: ${JSON.stringify(strategy)}`);
-  debugData(`Treshold: ${JSON.stringify(treshold)}`);
-  debugData(`ReturnStrategy: ${JSON.stringify(returnStrategy)}`);
+  debugData(`Strategy: ${JSON.stringify(strategy)}, Treshold: ${JSON.stringify(treshold)}, ReturnStrategy: ${JSON.stringify(returnStrategy)}`);
+  debugData(`Records: A: ${recordA}\nB: ${recordB}`);
+  debug(`Externals: A: ${JSON.stringify(recordAExternal)}, B: ${JSON.stringify(recordBExternal)}`);
+  // We could add here labels for records if we didn't get external labels
 
-  const featuresA = extractFeatures(recordA);
+  const featuresA = extractFeatures({record: recordA, recordExternal: recordAExternal, localSettings});
 
   debug(`We got an array of records: ${Array.isArray(recordB)}`);
   const recordsB = Array.isArray(recordB) ? recordB : [recordB];
-  const detectionResults = recordsB.map(record => actualDetection(featuresA, record));
+  const recordsBExternal = Array.isArray(recordB) ? recordBExternal : [recordBExternal];
 
+  const detectionResults = recordsB.map((record, index) => actualDetection({featuresA, recordAExternal, record, recordExternal: recordsBExternal[index], index}));
+
+  // if we got array of records, we return an array of result
+  // if we got a singular record, we return a singular result
   return Array.isArray(recordB) ? detectionResults : detectionResults[0];
 
-  function actualDetection(featuresA, record) {
+  function actualDetection({featuresA, record, recordExternal, index, localSettings}) {
+    const labelA = recordAExternal && recordAExternal.label ? recordAExternal.label : 'a';
+    const labelB = recordExternal && recordExternal.label ? recordExternal.label : 'b';
 
-    const featuresB = extractFeatures(record);
 
-    debugData(`Features (a): ${JSON.stringify(featuresA)}`);
-    debugData(`Features (b): ${JSON.stringify(featuresB)}`);
+    debug(`Actual detection for record ${index + 1} ${labelB}`);
+    const featuresB = extractFeatures({record, recordExternal, localSettings});
+
+    debugData(`Features (a: ${labelA}): ${JSON.stringify(featuresA)}`);
+    debugData(`Features (b: ${labelB}): ${JSON.stringify(featuresB)}`);
 
     const featurePairs = generateFeaturePairs(featuresA, featuresB);
     const similarityVector = generateSimilarityVector(featurePairs);
 
     if (similarityVector.some(v => v >= minProbabilityQuantifier)) {
-      const probability = calculateprobability(similarityVector);
+      const probability = calculateProbability(similarityVector);
       debug(`probability: ${probability} (Treshold: ${treshold})`);
       return returnResult({match: probability >= treshold, probability});
     }
@@ -70,8 +78,8 @@ export default ({strategy, treshold = 0.9}, returnStrategy = false) => (recordA,
     return returnResult({match: false, probability: 0.0});
   }
 
-  function extractFeatures(record) {
-    return strategy.reduce((acc, {name, extract}) => acc.concat({name, value: extract(record)}), []);
+  function extractFeatures({record, recordExternal}) {
+    return strategy.reduce((acc, {name, extract}) => acc.concat({name, value: extract({record, recordExternal})}), []);
   }
 
   function returnResult(result) {
@@ -89,7 +97,7 @@ export default ({strategy, treshold = 0.9}, returnStrategy = false) => (recordA,
     return strategyNames || [];
   }
 
-  function calculateprobability(similarityVector) {
+  function calculateProbability(similarityVector) {
     const probability = similarityVector.reduce((acc, v) => acc + v, 0.0);
     return probability > 1.0 ? 1.0 : probability;
   }

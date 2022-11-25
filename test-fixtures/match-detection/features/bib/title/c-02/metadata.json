@@ -1,0 +1,8 @@
+{
+  "description": "Comparison should return plus points for matching titles (Different values, distance under treshold)",
+  "feature": "title",
+  "type": "compare",
+  "expectedPoints": 0.3,
+  "featuresA": ["foobarbarfoo"],
+  "featuresB": ["foobarbarfo"]
+}

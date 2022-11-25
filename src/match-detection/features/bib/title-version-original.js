@@ -4,7 +4,7 @@
 *
 * Melinda record matching modules for Javascript
 *
-* Copyright (C) 2020-2022 University Of Helsinki (The National Library Of Finland)
+* Copyright (C) 2020 University Of Helsinki (The National Library Of Finland)
 *
 * This file is part of melinda-record-matching-js
 *
@@ -26,53 +26,33 @@
 *
 */
 
-
-import {LevenshteinDistance as leven} from 'natural';
-import {testStringOrNumber} from '../../../matching-utils';
 import createDebugLogger from 'debug';
-
-const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection:features:title');
-const debugData = debug.extend('data');
-
+import {LevenshteinDistance as leven} from 'natural';
 
 export default ({treshold = 10} = {}) => ({
-  name: 'Title',
-  extract: ({record, recordExternal}) => {
-    const label = recordExternal && recordExternal.label ? recordExternal.label : 'record';
+  name: 'titleVersionOriginal',
+  extract: ({record}) => {
     const title = getTitle();
-    debug(`${label} title: ${title}`);
 
-    if (testStringOrNumber(title)) {
-      const titleAsNormalizedString = String(title)
-        // decompose unicode diacritics
-        .normalize('NFD')
-        // strip non-letters/numbers
-        // - note: combined with decomposing unicode diactics this normalizes both 'saa' and 'sää' as 'saa'
-        // - we could precompose the finnish letters back to avoid this
-        .replace(/[^\p{Letter}\p{Number}]/gu, '')
-        .toLowerCase();
-      debug(`${label} titleString: ${titleAsNormalizedString}`);
-      return [titleAsNormalizedString];
+    if (title) {
+      return [title.replace(/[^\p{Letter}\p{Number}]/gu, '').toLowerCase()];
     }
 
     return [];
 
     function getTitle() {
       const [field] = record.get(/^245$/u);
-      debugData(`${label} titleField: ${JSON.stringify(field)}`);
 
       if (field) {
         return field.subfields
-          // get also $n:s and $p:s here
-          .filter(({code}) => ['a', 'b', 'n', 'p'].includes(code))
-          .map(({value}) => testStringOrNumber(value) ? String(value) : '')
+          .filter(({code}) => ['a', 'b'].includes(code))
+          .map(({value}) => value)
           .join('');
       }
-      return false;
     }
   },
   compare: (a, b) => {
-    const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection:features/bib/title');
+    const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection:features/bib/title-version-original');
     const distance = leven(a[0], b[0]);
 
     if (distance === 0) {

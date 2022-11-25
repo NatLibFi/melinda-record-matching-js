@@ -33,22 +33,26 @@ import {testStringOrNumber} from '../../../matching-utils';
 
 export default ({nameTreshold = 10} = {}) => ({
   name: 'Authors',
-  extract: record => record.get(/^(?<def>100|700)$/u)
-    .map(({subfields}) => {
-      return subfields
-        .filter(({code, value}) => code && value)
-        .filter(({code}) => ['a', '0'].includes(code))
-        .map(toObj)
-        .reduce((acc, v) => ({...acc, ...v}), {});
+  extract: ({record}) => {
+    //const label = recordExternal && recordExternal.label ? recordExternal.label : 'record';
+    const authors = record.get(/^(?<def>100|700)$/u)
+      .map(({subfields}) => {
+        return subfields
+          .filter(({code, value}) => code && value)
+          .filter(({code}) => ['a', '0'].includes(code))
+          .map(toObj)
+          .reduce((acc, v) => ({...acc, ...v}), {});
 
-      function toObj({code, value}) {
-        if (code === 'a') {
-          return {name: testStringOrNumber(value) ? String(value).replace(/[^\p{Letter}\p{Number}]/gu, '').toLowerCase() : ''};
+        function toObj({code, value}) {
+          if (code === 'a') {
+            return {name: testStringOrNumber(value) ? String(value).replace(/[^\p{Letter}\p{Number}]/gu, '').toLowerCase() : ''};
+          }
+
+          return {id: value};
         }
-
-        return {id: value};
-      }
-    }),
+      });
+    return authors;
+  },
   compare: (a, b) => {
     const maxAuthors = a.length > b.length ? a.length : b.length;
     const matchingIds = findMatchingIds();

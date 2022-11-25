@@ -1,4 +1,3 @@
-/* eslint-disable max-statements */
 /**
 *
 * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -34,20 +33,22 @@ const debugData = debug.extend('data');
 
 export default () => ({
   name: 'Language',
-  extract: record => {
+  extract: ({record, recordExternal}) => {
+    const label = recordExternal && recordExternal.label ? recordExternal.label : 'record';
+
     const value008 = get008Value();
     const values041 = get041Values();
-    debugData(`008: ${JSON.stringify(value008)}, 041: ${JSON.stringify(values041)}`);
+    debugData(`${label} 008: ${JSON.stringify(value008)}, 041: ${JSON.stringify(values041)}`);
 
     if (value008 && values041.length > 0) {
-      debugData(`There's both 008 and 041, searching for value in both`);
+      debugData(`${label} There's both 008 and 041, searching for value in both`);
       const correspondingValue = values041.find(v => v === value008);
-      debugData(`Corresponding value: ${correspondingValue}`);
+      debugData(`${label} Corresponding value: ${correspondingValue}`);
       return correspondingValue ? [correspondingValue] : [];
     }
 
     if (!value008 && values041.length < 1) {
-      debugData(`No actual values found`);
+      debugData(`{$label} No actual values found`);
       return [];
     }
 
@@ -55,18 +56,19 @@ export default () => ({
 
     function get008Value() {
       const value = record.get(/^008$/u)?.[0]?.value || undefined;
-      debugData(`008 value: ${value}`);
+      debugData(`${label} 008 value: ${value}`);
 
       if (!value) {
         return undefined;
       }
 
       const code = value.slice(35, 38);
-      debugData(`008 code: ${code}`);
+      debugData(`${label} 008 code: ${code}`);
       return code === '|||' || code === '   ' || code === '^^^' ? undefined : code;
     }
 
     // Main language for the resource: in the first f041 $a or f041 $d
+    // Should we get all $a or $d languages instead of just the first?
     // Uses only f041s that have 2nd ind ' ', which means that the codes used are MARC 21 language codes
 
     function get041Values() {

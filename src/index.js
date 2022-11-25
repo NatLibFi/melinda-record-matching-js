@@ -49,8 +49,9 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
 
   const detect = createDetectionInterface(detectionOptions, returnStrategy);
 
-  return record => {
-    const search = createSearchInterface({...searchOptions, record, maxCandidates});
+  return ({record, recordExternal = {recordSource: 'incomingRecord', label: 'ic'}}) => {
+
+    const search = createSearchInterface({...searchOptions, record, maxCandidates, recordExternal});
     return iterate({});
 
     // candidateCount : amount of candidate records retrived from SRU for matching, NOT including current record set
@@ -234,7 +235,6 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
     // - if creating the featureSet for the incoming record fails we have an unprocessable entity
     // - if creating the featureSet for a candidate record fails we could skip that candidate - but list the case as a detectionFailure, same as conversionFailures
 
-    // eslint-disable-next-line max-statements
     function iterateRecords({records, recordSetSize, maxMatches, matches = [], nonMatches = [], recordMatches = [], recordNonMatches = [], recordCount = 0, recordDuplicateCount = 0, recordNonMatchCount = 0, recordMatchErrors = []}) {
 
       // recordSetSize : total amount of records in the current record set
@@ -270,10 +270,11 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
         // eslint-disable-next-line functional/no-conditional-statement
         if (candidateNotInMatches(matches.concat(nonMatches), candidate)) {
           const {record: candidateRecord, id: candidateId} = candidate;
+          const recordBExternal = {id: candidate.id, recordSource: 'databaseRecord', label: `db-${candidate.id}`};
           try {
             debug(`Running matchDetection for record ${candidateId} (${newRecordCount}/${recordSetSize})`);
             // we should handle errors from detection somehow - ie. cases where either record or candidateRecord errors
-            const detectionResult = detect(record, candidateRecord);
+            const detectionResult = detect({recordA: record, recordB: candidateRecord, recordAExternal: recordExternal, recordBExternal});
 
             return handleDetectionResult(detectionResult, candidateId, candidateRecord);
           } catch (error) {

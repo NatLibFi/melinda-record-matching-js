@@ -1,0 +1,52 @@
+{
+  "description": "FIX: Comparison should recognize cases where the difference is in the possible part number and return minus points - different subfields",
+  "comment": {
+    "fields": [
+      {
+        "tag": "245",
+        "ind1": "1",
+        "ind2": " ",
+        "subfields": [
+          {
+            "code": "a",
+            "value": "Aarre."
+          },
+          {
+            "code": "n",
+            "value": "5,"
+          },
+          {
+            "code": "p",
+            "value": "Opettajan materiaali"
+          }
+        ]
+      },
+      {
+        "tag": "245",
+        "ind1": "1",
+        "ind2": " ",
+        "subfields": [
+          {
+            "code": "a",
+            "value": "Aarre 6:"
+          },
+          {
+            "code": "b",
+            "value": "Opettajan materiaali"
+          }
+        ]
+      }
+    ]
+  },
+  "feature": "title",
+  "type": "compare",
+  "expectedPoints": -0.5,
+  "featuresA": [
+    "aarre5opettajanmateriaali"
+  ],
+  "featuresB": [
+    "aarre6opettajanmateriaali"
+  ],
+  "skip": true,
+  "only": false
+}

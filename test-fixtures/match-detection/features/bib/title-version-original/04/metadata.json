@@ -1,6 +1,6 @@
 {
   "description": "Comparison should return points for matching titles (Different values, distance under treshold)",
-  "feature": "title",
+  "feature": "titleVersionOriginal",
   "type": "compare",
   "expectedPoints": 0.3,
   "featuresA": ["foobarbarfoo"],
