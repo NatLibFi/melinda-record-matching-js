@@ -27,7 +27,7 @@
 */
 
 import createDebugLogger from 'debug';
-import {extractSubfieldsFromField, uniqueSubfields} from '../../../matching-utils';
+import {extractIdentifierSubfieldsFromField, uniqueSubfields} from '../../../matching-utils';
 
 // Note about validity of standardIdentifiers:
 // We have three types of invalid standardIdentifiers:
@@ -50,7 +50,9 @@ export default ({pattern, subfieldCodes, identifier, validIdentifierSubfieldCode
     const fields = record.get(pattern);
     debugData(`${label}: ${fields.length} ${identifier}-fields `);
 
-    const identifiersFromFields = fields.map(field => extractSubfieldsFromField(field, subfieldCodes));
+    // extractIdentifierSubfield normalizes hyphens away from the subfield values
+    const identifiersFromFields = fields.map(field => extractIdentifierSubfieldsFromField(field, subfieldCodes));
+
     debugData(`${label}: IDs from fields (${identifiersFromFields.length}): ${JSON.stringify(identifiersFromFields)}`);
     const allIdentifiers = identifiersFromFields.flat();
     debugData(`${label}: Flat IDs from fields (${allIdentifiers.length}): ${JSON.stringify(allIdentifiers)}`);

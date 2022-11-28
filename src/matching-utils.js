@@ -93,7 +93,7 @@ export function testStringOrNumber(value) {
   return false;
 }
 
-export function extractSubfieldsFromField(field, subfieldCodes) {
+export function extractIdentifierSubfieldsFromField(field, subfieldCodes) {
   if (field === undefined || field.subfields === undefined) {
     return [];
   }
