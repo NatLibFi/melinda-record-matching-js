@@ -1,15 +1,15 @@
 {
-  "description": "Comparison unique values and work same regardless of do we compare A to B or B to A. (Duplicate in A)",
+  "description": "Comparison unique values and work same regardless of do we compare A to B or B to A. Duplicate in B",
   "comment": "Values should be uniqued before comparing",
   "feature": "isbn",
   "type": "compare",
   "expectedPoints": 0.375,
   "featuresA": [
-    { "code": "a", "value": "978952622477X" },
+    { "code": "a", "value": "9789526224770" },
     { "code": "a", "value": "978952622477X" }
   ],
   "featuresB": [
-    { "code": "a", "value": "9789526224770" },
+    { "code": "a", "value": "978952622477X" },
     { "code": "a", "value": "978952622477X" }
   ],
   "skip": false,

@@ -27,10 +27,19 @@
 */
 
 import createDebugLogger from 'debug';
-import {testStringOrNumber} from '../../../matching-utils';
+import {extractSubfieldsFromField, uniqueSubfields} from '../../../matching-utils';
 
+// Note about validity of standardIdentifiers:
+// We have three types of invalid standardIdentifiers:
+// 1. Formally invalid standardIdentifiers (ie. typos either in the resource or the record)
+// 2. Formally valid standardIdentifiers that are used in a wrong resource
+// 3. Canceled standardIdentifiers
 
-export default ({pattern, subfieldCodes, identifier}) => {
+// Matcher could and should check that a standardIdentifier found in a subfield for a valid identifier is formally valid, and if it's not formally valid, handle it as an invalid standardIdentifier
+// Formally valid standardIdentifiers found in subfield for invalid identifier cannot be handled as valid standardIdentifiers, because they can be a case of type 2) or 3) invalid standardIdentifiers
+// We could also do a separate handling for formally valid an formally invalid standardIdentifiers
+
+export default ({pattern, subfieldCodes, identifier, validIdentifierSubfieldCodes = ['a']}) => {
   const debug = createDebugLogger(`@natlibfi/melinda-record-matching:match-detection:features:standard-identifiers:${identifier}`);
   const debugData = debug.extend('data');
 
@@ -39,39 +48,54 @@ export default ({pattern, subfieldCodes, identifier}) => {
   function extract({record, recordExternal}) {
     const label = recordExternal && recordExternal.label ? recordExternal.label : 'record';
     const fields = record.get(pattern);
-    const [field] = fields;
-    debug(`${label} has ${fields.length} {${identifier}}-fields `);
+    debugData(`${label}: ${fields.length} ${identifier}-fields `);
 
-    if (field) {
-      return field.subfields
-        .filter(({code}) => subfieldCodes.includes(code))
-        .map(({code, value}) => ({code, value: testStringOrNumber(value) ? String(value).replace(/-/ug, '') : ''}))
-        .filter(value => value);
-    }
+    const identifiersFromFields = fields.map(field => extractSubfieldsFromField(field, subfieldCodes));
+    debugData(`${label}: IDs from fields (${identifiersFromFields.length}): ${JSON.stringify(identifiersFromFields)}`);
+    const allIdentifiers = identifiersFromFields.flat();
+    debugData(`${label}: Flat IDs from fields (${allIdentifiers.length}): ${JSON.stringify(allIdentifiers)}`);
+    const identifiers = uniqueSubfields(allIdentifiers);
 
-    return [];
+    debugData(`${label}: Unique IDs from fields (${identifiers.length}): ${JSON.stringify(identifiers)}`);
+    return identifiers;
+
   }
 
   function compare(a, b) {
+    debug(`Comparing A and B`);
     if (a.length === 0 || b.length === 0) {
-      debugData(`No standardidentifiers to compare`);
+      debugData(`No standardidentifiers (${identifier}) to compare`);
       return 0;
     }
 
+    debugData(`A: ${JSON.stringify(a)}`);
+    debugData(`B: ${JSON.stringify(b)}`);
+
+
     if (bothHaveValidIdentifiers()) {
-      const {maxValues, matchingValues} = getValueCount(true);
+      // Compare only valid identifiers, if both have valid idenfiers
+      const {maxValues, possibleMatchValues, matchingValues} = getValueCount(true);
       if (matchingValues < 1) {
+        debug(`Both have valid standardidentifiers (${identifier}), but none of these match.`);
         return -0.75;
       }
-      return matchingValues / maxValues * 0.75;
+      debug(`Both have valid standardidentifiers (${identifier}), ${matchingValues}/${possibleMatchValues} valid identifiers match.`);
+      // ignore non-matches if there is mismatching amount of values
+      debug(`Possible matches: ${possibleMatchValues}/${maxValues}`);
+      // should we give some kind of penalty for mismatching amount of values
+      return matchingValues / possibleMatchValues * 0.75;
     }
-
+    // If both do not have valid identifiers, compare all identifiers
     const {maxValues, matchingValues} = getValueCount();
+    debug(`Both do NOT have valid standardidentifiers (${identifier}), ${matchingValues}/${maxValues} valid/invalid identifiers match.`);
+
     return matchingValues / maxValues * 0.2;
 
     function bothHaveValidIdentifiers() {
-      const aValues = a.filter(({code}) => code === 'a');
-      const bValues = a.filter(({code}) => code === 'a');
+      const aValues = a.filter(({code}) => validIdentifierSubfieldCodes.includes(code));
+      const bValues = a.filter(({code}) => validIdentifierSubfieldCodes.includes(code));
+      debug(`A: ${aValues.length} valid ${identifier} identifiers`);
+      debug(`B: ${bValues.length} valid ${identifier} identifiers`);
       return aValues.length > 0 && bValues.length > 0;
     }
 
@@ -79,15 +103,26 @@ export default ({pattern, subfieldCodes, identifier}) => {
       const aValues = getIdentifiers(a);
       const bValues = getIdentifiers(b);
 
+      const matchingValues = getMatchingValuesAmount(aValues, bValues);
+
       return {
         maxValues: aValues.length > bValues.length ? aValues.length : bValues.length,
-        matchingValues: aValues.filter(aValue => bValues.some(bValue => aValue === bValue)).length
+        // possibleMatchingValues: amount of identifiers in set of less identifiers (we cannot more values than these)
+        possibleMatchValues: aValues.length > bValues.length ? bValues.length : aValues.length,
+        matchingValues
       };
+
+      function getMatchingValuesAmount(aValues, bValues) {
+        const aToB = aValues.filter(aValue => bValues.some(bValue => aValue === bValue)).length;
+        const bToA = bValues.filter(bValue => aValues.some(aValue => bValue === aValue)).length;
+
+        return aToB < bToA ? aToB : bToA;
+      }
 
       function getIdentifiers(values) {
         if (validOnly) {
           return values
-            .filter(({code}) => code === 'a')
+            .filter(({code}) => validIdentifierSubfieldCodes.includes(code))
             .map(({value}) => value);
         }
 

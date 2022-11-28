@@ -30,6 +30,6 @@ import createInterface from './standard-identifier-factory';
 
 export default () => {
   const IDENTIFIER_NAME = 'ISBN';
-  const {extract, compare} = createInterface({identifier: IDENTIFIER_NAME, pattern: /^020$/u, subfieldCodes: ['a', 'z']});
+  const {extract, compare} = createInterface({identifier: IDENTIFIER_NAME, pattern: /^020$/u, subfieldCodes: ['a', 'z'], validIdentifierSubfieldCodes: ['a']});
   return {extract, compare, name: IDENTIFIER_NAME};
 };

@@ -8,5 +8,7 @@
   ],
   "featuresB": [
     { "code": "z", "value": "978952622477X" }
-  ]
+  ],
+  "skip": false,
+  "only": false
 }

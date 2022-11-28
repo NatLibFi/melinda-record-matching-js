@@ -1,8 +1,11 @@
 {
-  "description": "FIX: Should extract unique ISBN identifiers",
+  "description": "Should extract unique ISBN identifiers",
   "feature": "isbn",
   "type": "extract",
   "expectedFeatures": [
+    {
+      "code": "a", "value": "9789513148362"
+    },
     {
       "code": "a", "value": "9789526224770"
     }

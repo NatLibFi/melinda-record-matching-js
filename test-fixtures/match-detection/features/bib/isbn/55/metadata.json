@@ -1,16 +1,16 @@
 {
-  "description": "Should extract valid and invalid ISBN identifiers from two fields",
+  "description": "Should extract valid and invalid ISBN identifiers from two fields (valid and invalid ISBNs in correct subfields)",
   "feature": "isbn",
   "type": "extract",
   "expectedFeatures": [
     {
-      "code": "a", "value": "9789526224771"
+      "code": "a", "value": "9789526224770"
     },
     {
-      "code": "a", "value": "9789513148362"
+      "code": "z", "value": "9789526224771"
     },
     {
-      "code": "z", "value": "9789513148361"
+      "code": "z", "value": "9789526224770"
     }
   ],
   "inputRecord": {
@@ -45,8 +45,8 @@
         "ind2": " ",
         "subfields": [
           {
-            "code": "a",
-            "value": "978-951-31-4836-2"
+            "code": "z",
+            "value": "978-952-62-2477-0"
           },
           {
             "code": "q",

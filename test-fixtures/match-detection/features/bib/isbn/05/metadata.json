@@ -1,8 +1,8 @@
 {
-  "description": "Comparison should return points for mis-matching ISBN identifiers when there are no matching ISBNs",
+  "description": "Comparison should ignore non-paired identifiers",
   "feature": "isbn",
   "type": "compare",
-  "expectedPoints": 0.2,
+  "expectedPoints": 0.75,
   "featuresA": [
     { "code": "a", "value": "978952622477X" },
     { "code": "a", "value": "9789526224770" }

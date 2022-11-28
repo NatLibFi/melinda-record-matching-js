@@ -92,3 +92,24 @@ export function testStringOrNumber(value) {
   }
   return false;
 }
+
+export function extractSubfieldsFromField(field, subfieldCodes) {
+  if (field === undefined || field.subfields === undefined) {
+    return [];
+  }
+  const resultSubfields = field.subfields
+    .filter(({code}) => subfieldCodes.includes(code))
+    .map(({code, value}) => ({code, value: testStringOrNumber(value) ? String(value).replace(/-/ug, '') : ''}))
+    .filter(value => value);
+  return resultSubfields;
+}
+
+export function uniqueSubfields(subfields) {
+  return subfields.reduce((arr, e) => {
+    if (!arr.find(item => item.code === e.code && item.value === e.value)) {
+      const newArr = arr.concat(e);
+      return newArr;
+    }
+    return arr;
+  }, []);
+}
