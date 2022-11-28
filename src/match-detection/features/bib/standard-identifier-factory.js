@@ -1,3 +1,4 @@
+/* eslint-disable max-statements */
 /**
 *
 * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -84,8 +85,14 @@ export default ({pattern, subfieldCodes, identifier, validIdentifierSubfieldCode
       debug(`Both have valid standardidentifiers (${identifier}), ${matchingValues}/${possibleMatchValues} valid identifiers match.`);
       // ignore non-matches if there is mismatching amount of values
       debug(`Possible matches: ${possibleMatchValues}/${maxValues}`);
-      // should we give some kind of penalty for mismatching amount of values
-      return matchingValues / possibleMatchValues * 0.75;
+      //we give some kind of penalty for mismatching amount of values instead of simple divide?
+      const penaltyForMissing = 0.1 * (maxValues - possibleMatchValues);
+      const penaltyForMisMatch = 0.2 * (possibleMatchValues - matchingValues);
+      debug(`\t points: penaltyForMissing: ${penaltyForMissing}`);
+      debug(`\t points: penaltyForMisMatch: ${penaltyForMisMatch}`);
+
+      return 0.75 - penaltyForMisMatch - penaltyForMissing;
+      //return matchingValues / possibleMatchValues * 0.75;
     }
     // If both do not have valid identifiers, compare all identifiers
     const {maxValues, matchingValues} = getValueCount();
