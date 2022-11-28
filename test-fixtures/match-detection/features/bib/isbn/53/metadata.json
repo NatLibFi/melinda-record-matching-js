@@ -1,5 +1,5 @@
 {
-  "description": "SKIP: FIX: Should extract non-valid ISBNs from $a with code $z",
+  "description": "Should extract non-valid ISBNs from $a with code $z",
   "feature": "isbn",
   "type": "extract",
   "expectedFeatures": [
@@ -31,6 +31,6 @@
       }
     ]
   },
-  "skip": true,
+  "skip": false,
   "only": false
 }

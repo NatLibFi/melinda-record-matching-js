@@ -93,13 +93,13 @@ export function testStringOrNumber(value) {
   return false;
 }
 
-export function extractIdentifierSubfieldsFromField(field, subfieldCodes) {
+export function extractSubfieldsFromField(field, subfieldCodes) {
   if (field === undefined || field.subfields === undefined) {
     return [];
   }
   const resultSubfields = field.subfields
     .filter(({code}) => subfieldCodes.includes(code))
-    .map(({code, value}) => ({code, value: testStringOrNumber(value) ? String(value).replace(/-/ug, '') : ''}))
+    .map(({code, value}) => ({code, value: testStringOrNumber(value) ? String(value) : ''}))
     .filter(value => value);
   return resultSubfields;
 }

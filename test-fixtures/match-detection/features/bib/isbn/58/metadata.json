@@ -1,10 +1,10 @@
 {
-  "description": "Should extract ISBN identifiers normalized as non-hyphenated ISBN-13s (if possible)",
+  "description": "Should normalize hyphens out of invalid ISBNs",
   "feature": "isbn",
   "type": "extract",
   "expectedFeatures": [
     {
-      "code": "a", "value": "9789526224770"
+      "code": "z", "value": "95262247791"
     }
   ],
   "inputRecord": {
@@ -21,7 +21,7 @@
         "subfields": [
           {
             "code": "a",
-            "value": "952-62-2477-9"
+            "value": "952-62-2477-91"
           },
           {
             "code": "q",

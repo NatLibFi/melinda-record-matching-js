@@ -1,5 +1,5 @@
 {
-  "description": "Comparison unique values and work same regardless of do we compare A to B or B to A. Duplicate in B",
+  "description": "Comparison unique values and work same regardless of do we compare A to B or B to A. (Duplicate in B)",
   "comment": "Values should be uniqued before comparing",
   "feature": "isbn",
   "type": "compare",

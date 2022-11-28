@@ -28,7 +28,7 @@
 */
 
 import createDebugLogger from 'debug';
-import {extractIdentifierSubfieldsFromField, uniqueSubfields} from '../../../matching-utils';
+import {extractSubfieldsFromField, uniqueSubfields} from '../../../matching-utils';
 
 // Note about validity of standardIdentifiers:
 // We have three types of invalid standardIdentifiers:
@@ -40,7 +40,7 @@ import {extractIdentifierSubfieldsFromField, uniqueSubfields} from '../../../mat
 // Formally valid standardIdentifiers found in subfield for invalid identifier cannot be handled as valid standardIdentifiers, because they can be a case of type 2) or 3) invalid standardIdentifiers
 // We could also do a separate handling for formally valid an formally invalid standardIdentifiers
 
-export default ({pattern, subfieldCodes, identifier, validIdentifierSubfieldCodes = ['a']}) => {
+export default ({pattern, subfieldCodes, identifier, validIdentifierSubfieldCodes = ['a'], invalidIdentifierSubfieldCodes = ['z'], validatorAndNormalizer = undefined}) => {
   const debug = createDebugLogger(`@natlibfi/melinda-record-matching:match-detection:features:standard-identifiers:${identifier}`);
   const debugData = debug.extend('data');
 
@@ -52,15 +52,38 @@ export default ({pattern, subfieldCodes, identifier, validIdentifierSubfieldCode
     debugData(`${label}: ${fields.length} ${identifier}-fields `);
 
     // extractIdentifierSubfield normalizes hyphens away from the subfield values
-    const identifiersFromFields = fields.map(field => extractIdentifierSubfieldsFromField(field, subfieldCodes));
-
+    const identifiersFromFields = fields.map(field => extractSubfieldsFromField(field, subfieldCodes));
     debugData(`${label}: IDs from fields (${identifiersFromFields.length}): ${JSON.stringify(identifiersFromFields)}`);
     const allIdentifiers = identifiersFromFields.flat();
     debugData(`${label}: Flat IDs from fields (${allIdentifiers.length}): ${JSON.stringify(allIdentifiers)}`);
-    const identifiers = uniqueSubfields(allIdentifiers);
+
+    const validatedAndNormalizedIdentifiers = validateAndNormalizeIdentifiers({identifierSubs: allIdentifiers, validatorAndNormalizer, validIdentifierSubfieldCodes, invalidIdentifierSubfieldCodes});
+
+    const identifiers = uniqueSubfields(validatedAndNormalizedIdentifiers);
 
     debugData(`${label}: Unique IDs from fields (${identifiers.length}): ${JSON.stringify(identifiers)}`);
     return identifiers;
+
+    function validateAndNormalizeIdentifiers({identifierSubs, validatorAndNormalizer, validIdentifierSubfieldCodes, invalidIdentifierSubfieldCodes}) {
+      if (validatorAndNormalizer) {
+        return identifierSubs.map((idSub) => validateAndNormalizeIdentifier({idSub, validatorAndNormalizer, validIdentifierSubfieldCodes, invalidIdentifierSubfieldCodes}));
+      }
+      return identifierSubs.map((idSub) => normalizeHyphens(idSub));
+    }
+
+    function validateAndNormalizeIdentifier({idSub, validatorAndNormalizer, validIdentifierSubfieldCodes, invalidIdentifierSubfieldCodes}) {
+      const {valid, value} = validatorAndNormalizer(idSub.value);
+      if (validIdentifierSubfieldCodes.includes(idSub.code) && valid === false) {
+        const [code] = invalidIdentifierSubfieldCodes;
+        return {code, value};
+      }
+      return {code: idSub.code, value};
+    }
+
+    function normalizeHyphens(idSub) {
+      return {code: idSub.code, value: idSub.value.replace(/-/ug, '')};
+    }
+
 
   }
 
@@ -109,8 +132,8 @@ export default ({pattern, subfieldCodes, identifier, validIdentifierSubfieldCode
     }
 
     function getValueCount(validOnly = false) {
-      const aValues = getIdentifiers(a);
-      const bValues = getIdentifiers(b);
+      const aValues = getIdentifiers(a, validOnly);
+      const bValues = getIdentifiers(b, validOnly);
 
       const matchingValues = getMatchingValuesAmount(aValues, bValues);
 
@@ -122,13 +145,22 @@ export default ({pattern, subfieldCodes, identifier, validIdentifierSubfieldCode
       };
 
       function getMatchingValuesAmount(aValues, bValues) {
+        if (bValues.length > aValues.length) {
+          return aValues.filter(aValue => bValues.some(bValue => aValue === bValue)).length;
+        }
+        if (aValues.length > bValues.length) {
+          return bValues.filter(bValue => aValues.some(aValue => bValue === aValue)).length;
+        }
+
+        // If we have same amount of values, we'll check matches both ways, to avoid mixups in cases
+        // there would be duplicate values
         const aToB = aValues.filter(aValue => bValues.some(bValue => aValue === bValue)).length;
         const bToA = bValues.filter(bValue => aValues.some(aValue => bValue === aValue)).length;
 
         return aToB < bToA ? aToB : bToA;
       }
 
-      function getIdentifiers(values) {
+      function getIdentifiers(values, validOnly) {
         if (validOnly) {
           return values
             .filter(({code}) => validIdentifierSubfieldCodes.includes(code))

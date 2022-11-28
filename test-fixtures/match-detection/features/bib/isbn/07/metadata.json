@@ -1,5 +1,5 @@
 {
-  "description": "Comparison should return points for matching invalid ISBN identifiers when there are no valid ISBNs",
+  "description": "Comparison should return points for matching invalid ISBN identifiers when there are no valid ISBNs at all",
   "feature": "isbn",
   "type": "compare",
   "expectedPoints": 0.2,
