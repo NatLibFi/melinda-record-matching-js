@@ -1,0 +1,39 @@
+{
+  "description": "SKIP: Should generate title query including the part number $n and part name $p",
+  "type": "bibTitle",
+  "expectedQuery": ["dc.title=\"^E 18 romaani 1 Alkusoitto*\""],
+  "inputRecord": {
+    "leader": "02518cam a2200745zi 4500",
+    "fields": [
+      {
+        "tag": "001",
+        "value": "000019643"
+      },
+      {
+        "tag": "245",
+        "ind1": " ",
+        "ind2": " ",
+        "subfields": [
+          {
+            "code": "a",
+            "value": "E 18 :"
+          },
+          {
+            "code": "b",
+            "value": "romaani."
+          },
+          {
+            "code": "n",
+            "value": "1"
+          },
+          {
+            "code": "p",
+            "value": "Alkusoitto."
+          }
+        ]
+      }
+    ]
+  },
+  "skip": true,
+  "only": false
+}
