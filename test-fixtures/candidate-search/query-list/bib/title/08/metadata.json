@@ -1,5 +1,5 @@
 {
-  "description": "Should generate title query including the part number $n and part name $p",
+  "description": "SKIP: Should generate title query including the part number $n and part name $p",
   "type": "bibTitle",
   "expectedQuery": ["dc.title=\"^E 18 romaani 1 Alkusoitto*\""],
   "inputRecord": {
@@ -33,5 +33,7 @@
         ]
       }
     ]
-  }
+  },
+  "skip": true,
+  "only": false
 }

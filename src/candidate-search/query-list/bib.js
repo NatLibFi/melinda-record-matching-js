@@ -219,9 +219,8 @@ export function bibTitle(record) {
 
     if (field) {
       const titleString = field.subfields
-        .filter(({code}) => ['a', 'b', 'n', 'p'].includes(code))
-        // We'll want to get shorter versions, too
-        //.filter(({code}) => ['a', 'b'].includes(code))
+        //.filter(({code}) => ['a', 'b', 'n', 'p'].includes(code))
+        .filter(({code}) => ['a', 'b'].includes(code))
         //.filter(({code}) => ['a'].includes(code))
         .map(({value}) => testStringOrNumber(value) ? String(value) : '')
         .filter(value => value)
