@@ -196,26 +196,93 @@ export function bibTitle(record) {
 
     // use word search for titles starting with a boolean
     const useWordSearch = booleanStartWords.some(word => formatted.toLowerCase().startsWith(word));
-    // Prevent too many matches by having a minimum length requirement
-    return formatted.length >= 5 ? [`dc.title="${useWordSearch ? '' : '^'}${formatted}*"`] : [];
+    // Prevent too many matches by having a minimum length
+    // Note that currently this fails matching if there are no matches from previous matchers
+    if (formatted.length >= 5) {
+      return [`dc.title="${useWordSearch ? '' : '^'}${formatted}*"`];
+    }
+    return addAuthorsToSearch(`dc.title="${useWordSearch ? '' : '^'}${formatted}*"`);
   }
 
   return [];
+
+  function addAuthorsToSearch(titleQuery) {
+    const [authorQuery] = bibAuthors(record);
+    if (authorQuery !== undefined) {
+      return [`${authorQuery} AND ${titleQuery}`];
+    }
+    return [];
+  }
 
   function getTitle() {
     const [field] = record.get(/^245$/u);
 
     if (field) {
-      return field.subfields
-        .filter(({code}) => ['a', 'b'].includes(code))
+      const titleString = field.subfields
+        .filter(({code}) => ['a', 'b', 'n', 'p'].includes(code))
+        // We'll want to get shorter versions, too
+        //.filter(({code}) => ['a', 'b'].includes(code))
+        //.filter(({code}) => ['a'].includes(code))
         .map(({value}) => testStringOrNumber(value) ? String(value) : '')
         .filter(value => value)
         // In Melinda's index subfield separators are indexed as ' '
         .join(' ');
+      return titleString;
     }
     return false;
   }
 }
+
+export function bibAuthors(record) {
+  const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:query:bibAuthors');
+  const debugData = debug.extend('data');
+  debug(`Creating query for the first author`);
+  //debugData(record);
+
+  const author = getAuthor(record);
+  const booleanStartWords = ['and', 'or', 'nor', 'not'];
+
+
+  if (testStringOrNumber(author)) {
+    const formatted = String(author)
+      .replace(/[^\w\s\p{Alphabetic}]/gu, '')
+      // Clean up concurrent spaces from fe. subfield changes
+      .replace(/ +/gu, ' ')
+      .trim()
+      .slice(0, 30)
+      .trim();
+
+    // use word search for authors starting with a boolean
+    const useWordSearch = booleanStartWords.some(word => formatted.toLowerCase().startsWith(word));
+    // Prevent too many matches by having a minimum length
+    debugData(`Author string: ${formatted}`);
+    if (formatted.length >= 5) {
+      return [`dc.author="${useWordSearch ? '' : '^'}${formatted}*"`];
+    }
+    return [];
+  }
+
+  return [];
+
+  function getAuthor(record) {
+    //debugData(record);
+    // eslint-disable-next-line prefer-named-capture-group
+    const [field] = record.get(/^(100)|(110)|(111)|(700)|(710)|(711)$/u);
+    //debugData(field);
+
+    if (field) {
+      const authorString = field.subfields
+        .filter(({code}) => ['a'].includes(code))
+        .map(({value}) => testStringOrNumber(value) ? String(value) : '')
+        .filter(value => value)
+        // In Melinda's index subfield separators are indexed as ' '
+        .join(' ');
+      return authorString;
+    }
+    return false;
+  }
+}
+
 
 export function bibStandardIdentifiers(record) {
 
