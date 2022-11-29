@@ -1,6 +1,6 @@
 [
   {
-    "probability": 0.5,
+    "probability": -0.25,
     "matchQuery": "dc.identifier=978-952-62-2477-0",
     "candidate": {
       "id": "000019642",

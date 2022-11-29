@@ -1,9 +1,10 @@
 {
-  "description": "Comparison should return points for matching ISBN identifiers",
+  "description": "Comparison should give minor penalty for non-paired identifiers, when there's a match",
   "feature": "isbn",
   "type": "compare",
-  "expectedPoints": 0.75,
+  "expectedPoints": 0.65,
   "featuresA": [
+    { "code": "a", "value": "978952622477X" },
     { "code": "a", "value": "9789526224770" }
   ],
   "featuresB": [

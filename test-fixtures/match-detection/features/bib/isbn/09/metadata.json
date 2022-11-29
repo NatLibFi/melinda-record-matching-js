@@ -1,0 +1,16 @@
+{
+  "description": "Comparison should return minus points if there are valid and invalid ISBN:s and valid ISBNs do not match",
+  "feature": "isbn",
+  "type": "compare",
+  "expectedPoints": -0.75,
+  "featuresA": [
+    { "code": "a", "value": "978952622477X" },
+    { "code": "z", "value": "9789526224770" }
+  ],
+  "featuresB": [
+    { "code": "a", "value": "9789526224770" },
+    { "code": "z", "value": "978952622477X" }
+  ],
+  "skip": false,
+  "only": false
+}
