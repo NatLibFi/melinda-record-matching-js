@@ -1,5 +1,5 @@
 {
-  "description": "Should extract ISBN identifiers",
+  "description": "Should extract ISBN identifiers normalized as non-hyphenated ISBN-13s (if possible)",
   "feature": "isbn",
   "type": "extract",
   "expectedFeatures": [
@@ -21,7 +21,7 @@
         "subfields": [
           {
             "code": "a",
-            "value": "978-952-62-2477-0"
+            "value": "952-62-2477-9"
           },
           {
             "code": "q",
@@ -30,5 +30,7 @@
         ]
       }
     ]
-  }
+  },
+  "skip": false,
+  "only": false
 }

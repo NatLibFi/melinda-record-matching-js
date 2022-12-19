@@ -1,0 +1,16 @@
+{
+  "description": "Comparison should return points for matching invalid ISBN identifiers when there are valid isbns just in one record",
+  "feature": "isbn",
+  "type": "compare",
+  "expectedPoints": 0.2,
+  "featuresA": [
+    { "code": "z", "value": "978952622477X" },
+    { "code": "z", "value": "9789526224770" }
+  ],
+  "featuresB": [
+    { "code": "a", "value": "9789526224770" },
+    { "code": "a", "value": "978952622477X" }
+  ],
+  "skip": false,
+  "only": false
+}

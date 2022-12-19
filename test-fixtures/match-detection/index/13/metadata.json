@@ -12,5 +12,7 @@
   "expectedResults": {
     "match": false,
     "probability": 0.5
-  }
+  },
+  "skip": false,
+  "only": false
 }

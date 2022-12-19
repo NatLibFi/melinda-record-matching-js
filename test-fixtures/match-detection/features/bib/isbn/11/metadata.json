@@ -1,0 +1,16 @@
+{
+  "description": "Comparison should give a penalty for each additional mismatch when there's a match",
+  "feature": "isbn",
+  "type": "compare",
+  "expectedPoints": 0.55,
+  "featuresA": [
+    { "code": "a", "value": "978952622477X" },
+    { "code": "a", "value": "9789526224770" }
+  ],
+  "featuresB": [
+    { "code": "a", "value": "978952622477X" },
+    { "code": "a", "value": "9789526224771" }
+  ],
+  "skip": false,
+  "only": false
+}
