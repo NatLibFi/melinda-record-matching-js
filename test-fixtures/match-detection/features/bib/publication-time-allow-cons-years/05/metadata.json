@@ -1,0 +1,10 @@
+{
+  "description": "Comparison should return points for publication times differing by one",
+  "feature": "publicationTimeAllowConsYears",
+  "type": "compare",
+  "expectedPoints": 0.1,
+  "featuresA": ["1980"],
+  "featuresB": ["1981"],
+  "skip": false,
+  "only": false
+}
