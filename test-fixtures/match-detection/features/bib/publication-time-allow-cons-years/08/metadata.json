@@ -1,0 +1,10 @@
+{
+  "description": "Comparison should return minus points for non-matching non-numeric publication times",
+  "feature": "publicationTimeAllowConsYears",
+  "type": "compare",
+  "expectedPoints": -1,
+  "featuresA": ["foo"],
+  "featuresB": ["foo1"],
+  "skip": false,
+  "only": false
+}
