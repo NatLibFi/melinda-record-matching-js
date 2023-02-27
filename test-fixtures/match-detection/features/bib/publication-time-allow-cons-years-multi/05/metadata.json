@@ -1,0 +1,10 @@
+{
+  "description": "Comparison should return points for publication times differing by one",
+  "feature": "publicationTimeAllowConsYearsMulti",
+  "type": "compare",
+  "expectedPoints": 0.1,
+  "featuresA":  {"copyrightYears": [], "normalYears": ["1980"], "reprintYears": []},
+  "featuresB":  {"copyrightYears": [], "normalYears": ["1981"], "reprintYears": []},
+  "skip": false,
+  "only": false
+}

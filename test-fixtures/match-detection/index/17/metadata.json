@@ -1,0 +1,26 @@
+{
+  "description": "Should detect a match (A: onix type record, B: db record)",
+  "comment": "MET-247",
+  "options": {
+    "strategy": {
+      "type": "bib",
+      "features": [
+        "hostComponent",
+        "isbn",
+        "issn",
+        "otherStandardIdentifier",
+        "authors",
+        "recordType",
+        "publicationTimeAllowConsYearsMulti",
+        "language",
+        "bibliographicLevel"
+      ]
+    }
+  },
+  "expectedResults": {
+    "match": true,
+    "probability": 1
+  },
+  "skip": false,
+  "only": false
+}

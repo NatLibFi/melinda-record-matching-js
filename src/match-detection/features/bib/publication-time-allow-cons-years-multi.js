@@ -36,18 +36,136 @@ import createDebugLogger from 'debug';
 export default () => ({
   name: 'Publication time, allow consequent years, years from multiple sources',
   extract: ({record}) => {
-    const value = record.get(/^008$/u)?.[0]?.value || undefined;
-    return testStringOrNumber(value) ? [String(value).slice(7, 11)] : [];
+    const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection:features/bib/publication-time-allow-cons-years-multi');
+
+    const f008Values = extractF008Values(record);
+    debug(`${JSON.stringify(f008Values)}`);
+
+    const f26xValues = extractF26xValues(record);
+    debug(`${JSON.stringify(f26xValues)}`);
+
+    const f500Values = extractF500Years(record);
+    debug(`${JSON.stringify(f500Values)}`);
+
+    // We should get copyrightYear from f008Date2 to copyrightYears when f008YearType = 'r'
+    // Is the original year (f008Date2) in f008YearType === 'r' comparable to copyrightYear?
+    // We should handle unknown years (here or comparison?)
+    // We should handle year ranges for continuing resources / collections
+    // We should normalize copyright marks (etc.) out of copyrightYears
+
+    const normalYears = [...new Set(f26xValues.normalYears.concat(f008Values.f008Date1).filter(value => value && value !== '    '))].sort();
+    const copyrightYears = [...new Set(f26xValues.copyrightYears)].sort();
+    const reprintYears = [...new Set(f500Values)].sort();
+
+    const combined = {normalYears, copyrightYears, reprintYears};
+
+    debug(`Combined: ${JSON.stringify(combined)}`);
+
+    return combined;
+
+    function extractF008Values(record) {
+      const value = record.get(/^008$/u)?.[0]?.value || undefined;
+      if (value && testStringOrNumber(value)) {
+        const f008Date1 = extractF008Date1(value);
+        const f008Date2 = extractF008Date2(value);
+        const f008YearType = extractF008YearType(value);
+        return {f008Date1, f008Date2, f008YearType};
+      }
+      return {f008Date1: undefined, f008Date2: undefined, f008YearType: undefined};
+    }
+
+    function extractF008Date1(value) {
+      return String(value).slice(7, 11);
+    }
+
+    function extractF008Date2(value) {
+      return String(value).slice(11, 15);
+    }
+
+    function extractF008YearType(value) {
+      return String(value).slice(6, 7);
+    }
+
+    function extractF26xValues(record) {
+      const copyrightRegex = /^(?<copyrightPrefix>cop|cop.|c|©|p|℗)/u;
+
+      const pubNormalSubFieldValues = record.get(/^26[04]$/u)
+        .filter((field) => !(field.tag === '264' && field.ind2 === '4'))
+        .map(({subfields}) => subfields)
+        .flat()
+        .filter(({code}) => code === 'c')
+        .map(({value}) => value)
+        .filter(({value}) => !copyrightRegex.test(value));
+
+      debug(`Normal years: ${JSON.stringify(pubNormalSubFieldValues)}`);
+
+      const pubF264CopySubFieldValues = record.get(/^264$/u)
+        .filter((field) => field.ind2 === '4')
+        .map(({subfields}) => subfields)
+        .flat()
+        .filter(({code}) => code === 'c')
+        .map(({value}) => value);
+      debug(`F264 copyright years: ${JSON.stringify(pubF264CopySubFieldValues)}`);
+
+      const pubF260CopySubFieldValues = record.get(/^260$/u)
+        .map(({subfields}) => subfields)
+        .flat()
+        .filter(({code}) => code === 'c')
+        .filter(({value}) => copyrightRegex.test(value));
+      debug(`F260 copyright years: ${JSON.stringify(pubF260CopySubFieldValues)}`);
+
+      return {normalYears: pubNormalSubFieldValues, copyrightYears: [...pubF260CopySubFieldValues, ...pubF264CopySubFieldValues]};
+    }
+
+    function extractF500Years(record) {
+
+      const reprintRegex = /(?<reprint>Lisäpainokset:|Lisäpainos:)/u;
+      const reprintFieldContents = record.get(/^500$/u)
+        .map(({subfields}) => subfields)
+        .flat()
+        .filter(({code}) => code === 'a')
+        .map(({value}) => value);
+        //.filter(value => value.test(reprintRegex));
+
+      debug(`f500 reprint field contents: ${JSON.stringify(reprintFieldContents)}`);
+
+      const filteredF500 = reprintFieldContents.filter((content) => content && content.match(reprintRegex));
+
+      debug(`f500 reprint field contents (filtered): ${JSON.stringify(filteredF500)}`);
+
+      const reprintYears = extractReprintYears(filteredF500);
+
+      return reprintYears;
+    }
+
+    function extractReprintYears(contents) {
+      const yearRegex = /[0-9][0-9][0-9][0-9]/gu;
+      const years = contents.map(content => content.match(yearRegex))
+        .flat();
+      debug(`${JSON.stringify(years)}`);
+      const uniqYears = [...new Set(years)].sort();
+      debug(`${JSON.stringify(uniqYears)}`);
+      return uniqYears;
+    }
+
   },
+  // eslint-disable-next-line max-statements
   compare: (a, b) => {
     const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection:features/bib/publication-time-allow-cons-years-multi');
-    debug(`Comparing ${a[0]} to ${b[0]}`);
+    debug(`Comparing ${JSON.stringify(a)} to ${JSON.stringify(b)}`);
 
-    const [firstA] = a;
-    const [firstB] = b;
+    const [firstA] = a.normalYears ? a.normalYears : a;
+    const [firstB] = b.normalYears ? b.normalYears : b;
+
+    debug(`Comparing ${JSON.stringify(firstA)} to ${JSON.stringify(firstB)}`);
 
     if (firstA === firstB) {
       return 0.1;
+    }
+
+    // If either of years is a non string/number, values are not comparable
+    if (!testStringOrNumber(firstA) || !testStringOrNumber(firstB)) {
+      return 0;
     }
 
     const firstANumber = parseInt(firstA, 10);
@@ -59,7 +177,21 @@ export default () => ({
 
     // Handle consequent years as a match
     // see publication-time for a version that does not handle consequent years as a match
-    return firstANumber + 1 === firstBNumber || firstANumber - 1 === firstBNumber ? 0.1 : -1;
+    if (firstANumber + 1 === firstBNumber || firstANumber - 1 === firstBNumber) {
+      return 0.1;
+    }
+
+    const bNormalInAReprint = a.reprintYears.filter(aValue => b.normalYears.some(bValue => aValue === bValue));
+    const aNormalInBReprint = b.reprintYears.filter(bValue => a.normalYears.some(aValue => bValue === aValue));
+    debug(`BNorm in AReprint: ${JSON.stringify(bNormalInAReprint)}`);
+    debug(`ANorm in BReprint: ${JSON.stringify(aNormalInBReprint)}`);
+
+    if (bNormalInAReprint > 0 || aNormalInBReprint > 0) {
+      return 0;
+    }
+
+    return -1;
+
   }
 });
 

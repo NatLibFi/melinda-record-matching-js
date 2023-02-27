@@ -1,0 +1,17 @@
+{
+  "description": "Should not extract publication time (Missing 008)",
+  "feature": "publicationTimeAllowConsYearsMulti",
+  "type": "extract",
+  "expectedFeatures": {"copyrightYears": [], "normalYears": [], "reprintYears": []},
+  "inputRecord": {
+    "leader": "02518cam a2200745zi 4500",
+    "fields": [
+      {
+        "tag": "001",
+        "value": "000019643"
+      }
+    ]
+  },
+  "skip": false,
+  "only": false
+}
