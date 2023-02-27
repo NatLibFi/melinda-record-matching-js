@@ -1,8 +1,8 @@
 {
-  "description": "INACTIVE: Should extract the common language in 008 and 041",
+  "description": "INACTIVE: Should not extract language if there are both 008 and 041 and they do not have a common language",
   "feature": "language",
   "type": "extract",
-  "expectedFeatures": ["fin"],
+  "expectedFeatures": [],
   "inputRecord": {
     "leader": "02518cam a2200745zi 4500",
     "fields": [
@@ -25,7 +25,7 @@
           },
           {
             "code": "a",
-            "value": "fin"
+            "value": "swe"
           }
         ]
       }

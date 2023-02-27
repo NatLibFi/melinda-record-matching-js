@@ -1,8 +1,8 @@
 {
-  "description": "INACTIVE: Should extract the common language in 008 and 041",
+  "description": "Should extract all languages and sort and unique them",
   "feature": "language",
   "type": "extract",
-  "expectedFeatures": ["fin"],
+  "expectedFeatures": ["eng", "fin", "swe"],
   "inputRecord": {
     "leader": "02518cam a2200745zi 4500",
     "fields": [
@@ -25,11 +25,14 @@
           },
           {
             "code": "a",
+            "value": "swe"
+          },
+          {
+            "code": "d",
             "value": "fin"
           }
         ]
       }
     ]
-  },
-  "skip": true
+  }
 }

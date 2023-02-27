@@ -4,7 +4,7 @@
 *
 * Melinda record matching modules for Javascript
 *
-* Copyright (C) 2020-2022 University Of Helsinki (The National Library Of Finland)
+* Copyright (C) 2020-2023 University Of Helsinki (The National Library Of Finland)
 *
 * This file is part of melinda-record-matching-js
 *
@@ -27,6 +27,7 @@
 */
 
 import createDebugLogger from 'debug';
+import {getMatchCounts} from '../../../matching-utils';
 
 const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection:features:language');
 const debugData = debug.extend('data');
@@ -40,19 +41,15 @@ export default () => ({
     const values041 = get041Values();
     debugData(`${label} 008: ${JSON.stringify(value008)}, 041: ${JSON.stringify(values041)}`);
 
-    if (value008 && values041.length > 0) {
-      debugData(`${label} There's both 008 and 041, searching for value in both`);
-      const correspondingValue = values041.find(v => v === value008);
-      debugData(`${label} Corresponding value: ${correspondingValue}`);
-      return correspondingValue ? [correspondingValue] : [];
-    }
-
     if (!value008 && values041.length < 1) {
       debugData(`{$label} No actual values found`);
       return [];
     }
 
-    return value008 ? [value008] : [values041[0]];
+    const allValues = value008 === undefined ? values041 : values041.concat(value008);
+    const uniqueSortedValues = [...new Set(allValues)].sort();
+
+    return uniqueSortedValues;
 
     function get008Value() {
       const value = record.get(/^008$/u)?.[0]?.value || undefined;
@@ -64,11 +61,9 @@ export default () => ({
 
       const code = value.slice(35, 38);
       debugData(`${label} 008 code: ${code}`);
-      return code === '|||' || code === '   ' || code === '^^^' ? undefined : code;
+      return isLangCodeForALanguage(code) ? code : undefined;
     }
 
-    // Main language for the resource: in the first f041 $a or f041 $d
-    // Should we get all $a or $d languages instead of just the first?
     // Uses only f041s that have 2nd ind ' ', which means that the codes used are MARC 21 language codes
 
     function get041Values() {
@@ -77,23 +72,67 @@ export default () => ({
         .map(({subfields}) => subfields)
         .flat()
         .filter(({code}) => code === 'a' || code === 'd')
+        .filter(({value}) => value && isLangCodeForALanguage(value))
         .map(({value}) => value);
     }
+
+    // Check if a string is a possible, validly formed language code for a single language
+    // Currently accept also codes in capitals
+    function isLangCodeForALanguage(code) {
+      if (code.length !== 3) {
+        debugData(`Code ${code} is not correct length (3) for a language code.`);
+        return false;
+      }
+      if (code === '|||' || code === '   ' || code === '^^^' || code === 'mul' || code === 'zxx') {
+        debugData(`Code ${code} is not code for a spesific language.`);
+        return false;
+      }
+      const langCodePattern = /^[a-z][a-z][a-z]$/ui;
+      if (!langCodePattern.test(code)) {
+        debugData(`Code ${code} is not valid as a language code`);
+        return false;
+      }
+      return true;
+    }
+
   },
+  // eslint-disable-next-line max-statements
   compare: (a, b) => {
-    debugData(`Comparing ${JSON.stringify(a[0])} and ${JSON.stringify(b[0])}`);
+    debugData(`Comparing ${JSON.stringify(a)} and ${JSON.stringify(b)}`);
 
     if (a.length === 0 || b.length === 0) {
       debugData(`No language to compare`);
       return 0;
     }
 
-    debugData(`There are languages to compare`);
-
-    if (a[0] === b[0]) {
+    if (a.length === b.length && a.every((element, index) => element === b[index])) {
+      debugData(`All languages match`);
       return 0.1;
     }
 
-    return a[0] === 'und' || b[0] === 'und' ? 0.0 : -1.0;
+    const {matchingValues, possibleMatchValues, maxValues} = getMatchCounts(a, b);
+
+    if (matchingValues < 1) {
+      debug(`Both have languages, but none of these match.`);
+      return -1.0;
+    }
+    debug(`Both have languages, ${matchingValues}/${possibleMatchValues} valid languages match.`);
+    // ignore non-matches if there is mismatching amount of values
+    debug(`Possible matches: ${possibleMatchValues}/${maxValues}`);
+    //we give some kind of penalty for mismatching amount of values instead of simple divide?
+    const missingCount = maxValues - possibleMatchValues;
+    const misMatchCount = possibleMatchValues - matchingValues;
+    debug(`\t missing: ${missingCount}`);
+    debug(`\t mismatches: ${misMatchCount}`);
+
+    const penaltyForMissing = 0.02 * (maxValues - possibleMatchValues);
+    const penaltyForMisMatch = 0.05 * (possibleMatchValues - matchingValues);
+    debug(`\t points: penaltyForMissing: ${penaltyForMissing}`);
+    debug(`\t points: penaltyForMisMatch: ${penaltyForMisMatch}`);
+
+    const points = Number(Number(0.1 - penaltyForMisMatch - penaltyForMissing).toFixed(2));
+    debug(`Total points: ${points}`);
+
+    return points;
   }
 });

@@ -1,0 +1,8 @@
+{
+  "description": "Comparison should return points for (multiple) matching languages",
+  "feature": "language",
+  "type": "compare",
+  "expectedPoints": 0.1,
+  "featuresA": ["eng","fin"],
+  "featuresB": ["eng","fin"]
+}

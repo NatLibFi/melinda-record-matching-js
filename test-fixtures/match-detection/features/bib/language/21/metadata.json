@@ -1,8 +1,8 @@
 {
-  "description": "INACTIVE: Should extract the common language in 008 and 041",
+  "description": "Should not extract non valid language from 041 (||| in 008)",
   "feature": "language",
   "type": "extract",
-  "expectedFeatures": ["fin"],
+  "expectedFeatures": [],
   "inputRecord": {
     "leader": "02518cam a2200745zi 4500",
     "fields": [
@@ -12,7 +12,7 @@
       },
       {
         "tag": "008",
-        "value": "831017s1983    fi ||||||||||||||||bfin||"
+        "value": "831017s1983    fi ||||||||||||||||b|||||"
       },
       {
         "tag": "041",
@@ -21,15 +21,12 @@
         "subfields": [
           {
             "code": "a",
-            "value": "eng"
-          },
-          {
-            "code": "a",
-            "value": "fin"
+            "value": "mul"
           }
         ]
       }
     ]
   },
-  "skip": true
+  "skip": false,
+  "only": false
 }
