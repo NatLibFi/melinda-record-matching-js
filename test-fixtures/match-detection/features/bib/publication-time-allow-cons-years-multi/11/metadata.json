@@ -1,0 +1,43 @@
+{
+  "description": "Should extract publication times from f500 reprint fields",
+  "feature": "publicationTimeAllowConsYearsMulti",
+  "type": "extract",
+  "expectedFeatures": {"copyrightYears": [], "normalYears": ["1983"], "reprintYears": ["1984", "1998"]},
+  "inputRecord": {
+    "leader": "02518cam a2200745zi 4500",
+    "fields": [
+      {
+        "tag": "001",
+        "value": "000019643"
+      },
+      {
+        "tag": "008",
+        "value": "831017s1983    fi ||||||||||||||||bfin||"
+      },
+      {
+        "tag": "500",
+        "ind1": " ",
+        "ind2": " ",
+        "subfields": [
+          {
+            "code": "a",
+            "value": "Foobar: 2. painos 1984. - 4. p. 1998."
+          }
+      ]
+    },
+      {
+        "tag": "500",
+        "ind1": " ",
+        "ind2": " ",
+        "subfields": [
+          {
+            "code": "a",
+            "value": "Lisäpainokset: 2. painos 1984. - 4. p. 1998."
+          }
+      ]
+    }
+  ]
+  },
+  "skip": false,
+  "only": false
+}

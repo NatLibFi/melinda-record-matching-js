@@ -14,7 +14,7 @@
 		"url": "git@github.com:natlibfi/melinda-record-matching-js.git"
 	},
 	"license": "LGPL-3.0+",
-	"version": "4.0.0",
+	"version": "4.1.0-alpha.3",
 	"main": "./dist/index.js",
 	"engines": {
 		"node": ">=18"
@@ -38,12 +38,12 @@
 	"dependencies": {
 		"@natlibfi/marc-record": "^7.2.2",
 		"@natlibfi/marc-record-serializers": "^9.0.4",
-		"@natlibfi/melinda-commons": "^12.0.9",
+		"@natlibfi/melinda-commons": "^13.0.2",
 		"@natlibfi/sru-client": "^5.0.4",
 		"debug": "^4.3.4",
-		"isbn3": "^1.1.30",
+		"isbn3": "^1.1.33",
 		"moment": "^2.29.4",
-		"natural": "^6.1.4",
+		"natural": "^6.2.0",
 		"uuid": "^9.0.0",
 		"winston": "^3.8.2"
 	},
@@ -51,7 +51,7 @@
 		"@babel/cli": "^7.20.7",
 		"@babel/core": "^7.20.12",
 		"@babel/eslint-parser": "^7.19.1",
-		"@babel/node": "^7.20.0",
+		"@babel/node": "^7.20.7",
 		"@babel/preset-env": "^7.20.2",
 		"@babel/register": "^7.18.9",
 		"@natlibfi/eslint-config-melinda-backend": "^2.0.2",
@@ -63,7 +63,7 @@
 		"chai": "^4.3.7",
 		"chai-as-promised": "^7.1.1",
 		"cross-env": "^7.0.3",
-		"eslint": "^8.32.0",
+		"eslint": "^8.34.0",
 		"mocha": "^10.2.0",
 		"nodemon": "^2.0.20",
 		"nyc": "^15.1.0"

@@ -1,0 +1,10 @@
+{
+  "description": "Comparison should return zero points when either of times is not a string/number",
+  "feature": "publicationTimeAllowConsYears",
+  "type": "compare",
+  "expectedPoints": 0,
+  "featuresA": [null],
+  "featuresB": [],
+  "skip": false,
+  "only": false
+}

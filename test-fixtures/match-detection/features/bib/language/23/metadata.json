@@ -1,0 +1,10 @@
+{
+  "description": "Comparison should return minimal amount of points for partially matching languages (1 match, 2 mismatches, 5 missing)",
+  "feature": "language",
+  "type": "compare",
+  "expectedPoints": -0.10,
+  "featuresA": ["eng","dan","sme"],
+  "featuresB": ["eng","fin","swe","nor","lat","heb","ara","spa"],
+  "skip": false,
+  "only": false
+}

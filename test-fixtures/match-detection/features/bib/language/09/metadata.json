@@ -1,8 +1,8 @@
 {
-  "description": "Should not extract language if there are both 008 and 041 and they do not have a common language",
+  "description": "Should extract all languages and sort them",
   "feature": "language",
   "type": "extract",
-  "expectedFeatures": [],
+  "expectedFeatures": ["eng", "fin", "swe"],
   "inputRecord": {
     "leader": "02518cam a2200745zi 4500",
     "fields": [

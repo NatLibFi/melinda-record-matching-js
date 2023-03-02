@@ -113,3 +113,31 @@ export function uniqueSubfields(subfields) {
     return arr;
   }, []);
 }
+
+export function getMatchCounts(aValues, bValues) {
+
+  const matchingValues = getMatchingValuesAmount(aValues, bValues);
+
+  return {
+    maxValues: aValues.length > bValues.length ? aValues.length : bValues.length,
+    // possibleMatchingValues: amount of identifiers in set of less identifiers (we cannot more values than these)
+    possibleMatchValues: aValues.length > bValues.length ? bValues.length : aValues.length,
+    matchingValues
+  };
+
+  function getMatchingValuesAmount(aValues, bValues) {
+    if (bValues.length > aValues.length) {
+      return aValues.filter(aValue => bValues.some(bValue => aValue === bValue)).length;
+    }
+    if (aValues.length > bValues.length) {
+      return bValues.filter(bValue => aValues.some(aValue => bValue === aValue)).length;
+    }
+
+    // If we have same amount of values, we'll check matches both ways, to avoid mixups in cases
+    // there would be duplicate values
+    const aToB = aValues.filter(aValue => bValues.some(bValue => aValue === bValue)).length;
+    const bToA = bValues.filter(bValue => aValues.some(aValue => bValue === aValue)).length;
+
+    return aToB < bToA ? aToB : bToA;
+  }
+}
