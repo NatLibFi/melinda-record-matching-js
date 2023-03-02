@@ -1,8 +1,8 @@
 {
-  "description": "Should extract publication time from both f008 and f264s",
+  "description": "Should extract publication time from f26x $c and normalize punctuation out",
   "feature": "publicationTimeAllowConsYearsMulti",
   "type": "extract",
-  "expectedFeatures": {"copyrightYears": ["1980"], "normalYears": ["1983"], "reprintYears": []},
+  "expectedFeatures": {"copyrightYears": [], "normalYears": ["1983"], "reprintYears": []},
   "inputRecord": {
     "leader": "02518cam a2200745zi 4500",
     "fields": [
@@ -15,9 +15,9 @@
         "value": "831017s1983    fi ||||||||||||||||bfin||"
       },
       {
-        "tag": "264",
+        "tag": "260",
         "ind1": " ",
-        "ind2": "3",
+        "ind2": " ",
         "subfields": [
           {
             "code": "a",
@@ -29,18 +29,7 @@
           },
           {
             "code": "c",
-            "value": "1983"
-          }
-        ]
-      },
-      {
-        "tag": "264",
-        "ind1": " ",
-        "ind2": "4",
-        "subfields": [
-          {
-            "code": "c",
-            "value": "©1980"
+            "value": "1983."
           }
         ]
       }

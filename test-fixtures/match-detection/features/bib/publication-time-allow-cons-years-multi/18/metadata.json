@@ -1,5 +1,5 @@
 {
-  "description": "Should extract publication time from both f008 and f264s",
+  "description": "Should extract normalized copyright year from f260 $c",
   "feature": "publicationTimeAllowConsYearsMulti",
   "type": "extract",
   "expectedFeatures": {"copyrightYears": ["1980"], "normalYears": ["1983"], "reprintYears": []},
@@ -15,7 +15,7 @@
         "value": "831017s1983    fi ||||||||||||||||bfin||"
       },
       {
-        "tag": "264",
+        "tag": "260",
         "ind1": " ",
         "ind2": "3",
         "subfields": [
@@ -29,18 +29,7 @@
           },
           {
             "code": "c",
-            "value": "1983"
-          }
-        ]
-      },
-      {
-        "tag": "264",
-        "ind1": " ",
-        "ind2": "4",
-        "subfields": [
-          {
-            "code": "c",
-            "value": "©1980"
+            "value": "cop. 1980"
           }
         ]
       }

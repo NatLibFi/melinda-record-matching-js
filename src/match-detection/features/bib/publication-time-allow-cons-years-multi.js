@@ -35,25 +35,25 @@ import createDebugLogger from 'debug';
 
 export default () => ({
   name: 'Publication time, allow consequent years, years from multiple sources',
-  extract: ({record}) => {
+  extract: ({record, recordExternal}) => {
     const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection:features/bib/publication-time-allow-cons-years-multi');
+    const label = recordExternal && recordExternal.label ? recordExternal.label : 'record';
 
     const f008Values = extractF008Values(record);
-    debug(`${JSON.stringify(f008Values)}`);
+    debug(`${label} f008: ${JSON.stringify(f008Values)}`);
 
     const f26xValues = extractF26xValues(record);
-    debug(`${JSON.stringify(f26xValues)}`);
+    debug(`${label} f26x: ${JSON.stringify(f26xValues)}`);
 
     const f500Values = extractF500Years(record);
-    debug(`${JSON.stringify(f500Values)}`);
+    debug(`${label} f500: ${JSON.stringify(f500Values)}`);
 
     // We should get copyrightYear from f008Date2 to copyrightYears when f008YearType = 'r'
     // Is the original year (f008Date2) in f008YearType === 'r' comparable to copyrightYear?
     // We should handle unknown years (here or comparison?)
     // We should handle year ranges for continuing resources / collections
-    // We should normalize copyright marks (etc.) out of copyrightYears
 
-    const normalYears = [...new Set(f26xValues.normalYears.concat(f008Values.f008Date1).filter(value => value && value !== '    '))].sort();
+    const normalYears = [...new Set(f26xValues.normalYears.concat(f008Values.f008Date1).filter(value => value && value !== '    ' && value !== '||||'))].sort();
     const copyrightYears = [...new Set(f26xValues.copyrightYears)].sort();
     const reprintYears = [...new Set(f500Values)].sort();
 
@@ -64,6 +64,7 @@ export default () => ({
     return combined;
 
     function extractF008Values(record) {
+      // Record should have only one f008 - in case of several, we handle the first one
       const value = record.get(/^008$/u)?.[0]?.value || undefined;
       if (value && testStringOrNumber(value)) {
         const f008Date1 = extractF008Date1(value);
@@ -72,49 +73,73 @@ export default () => ({
         return {f008Date1, f008Date2, f008YearType};
       }
       return {f008Date1: undefined, f008Date2: undefined, f008YearType: undefined};
-    }
 
-    function extractF008Date1(value) {
-      return String(value).slice(7, 11);
-    }
+      function extractF008Date1(value) {
+        return String(value).slice(7, 11);
+      }
 
-    function extractF008Date2(value) {
-      return String(value).slice(11, 15);
-    }
+      function extractF008Date2(value) {
+        return String(value).slice(11, 15);
+      }
 
-    function extractF008YearType(value) {
-      return String(value).slice(6, 7);
+      function extractF008YearType(value) {
+        return String(value).slice(6, 7);
+      }
     }
 
     function extractF26xValues(record) {
       const copyrightRegex = /^(?<copyrightPrefix>cop|cop.|c|©|p|℗)/u;
 
-      const pubNormalSubFieldValues = record.get(/^26[04]$/u)
-        .filter((field) => !(field.tag === '264' && field.ind2 === '4'))
-        .map(({subfields}) => subfields)
-        .flat()
-        .filter(({code}) => code === 'c')
-        .map(({value}) => value)
-        .filter(({value}) => !copyrightRegex.test(value));
-
+      const pubNormalSubFieldValues = extractPubNormalSubfieldValues(record, copyrightRegex);
       debug(`Normal years: ${JSON.stringify(pubNormalSubFieldValues)}`);
 
-      const pubF264CopySubFieldValues = record.get(/^264$/u)
-        .filter((field) => field.ind2 === '4')
-        .map(({subfields}) => subfields)
-        .flat()
-        .filter(({code}) => code === 'c')
-        .map(({value}) => value);
+      const pubF264CopySubFieldValues = extractPubF264CopySubfieldValues(record);
       debug(`F264 copyright years: ${JSON.stringify(pubF264CopySubFieldValues)}`);
 
-      const pubF260CopySubFieldValues = record.get(/^260$/u)
-        .map(({subfields}) => subfields)
-        .flat()
-        .filter(({code}) => code === 'c')
-        .filter(({value}) => copyrightRegex.test(value));
+      const pubF260CopySubFieldValues = extractPubF260CopySubfieldValues(record, copyrightRegex);
       debug(`F260 copyright years: ${JSON.stringify(pubF260CopySubFieldValues)}`);
 
       return {normalYears: pubNormalSubFieldValues, copyrightYears: [...pubF260CopySubFieldValues, ...pubF264CopySubFieldValues]};
+
+      function extractPubNormalSubfieldValues(record, copyrightRegex) {
+        return record.get(/^26[04]$/u)
+          .filter((field) => !(field.tag === '264' && field.ind2 === '4'))
+          .map(({subfields}) => subfields)
+          .flat()
+          .filter(({code}) => code && code === 'c')
+          .filter(({value}) => value && !copyrightRegex.test(value))
+          .map(({value}) => value)
+          .map((value) => removeNonAlphaNumeric(value));
+      }
+
+      function extractPubF264CopySubfieldValues(record, copyrightRegex) {
+        return record.get(/^264$/u)
+          .filter((field) => field.ind2 === '4')
+          .map(({subfields}) => subfields)
+          .flat()
+          .filter(({code}) => code && code === 'c')
+          .filter(({value}) => value)
+          .map(({value}) => value)
+          .map((value) => value.replace(copyrightRegex, ''))
+          .map((value) => removeNonAlphaNumeric(value));
+      }
+
+      function extractPubF260CopySubfieldValues(record, copyrightRegex) {
+        return record.get(/^260$/u)
+          .map(({subfields}) => subfields)
+          .flat()
+          .filter(({code}) => code && code === 'c')
+          .filter(({value}) => value && copyrightRegex.test(value))
+          .map(({value}) => value)
+          .map((value) => value.replace(copyrightRegex, ''))
+          .map((value) => removeNonAlphaNumeric(value));
+      }
+
+      function removeNonAlphaNumeric(value) {
+        debug(`Cleaning: ${JSON.stringify(value)}`);
+        const nonAlphaNumericRegex = /[^A-Za-z0-9]/ug;
+        return value ? value.replace(nonAlphaNumericRegex, '') : value;
+      }
     }
 
     function extractF500Years(record) {
@@ -171,16 +196,26 @@ export default () => ({
     const firstANumber = parseInt(firstA, 10);
     const firstBNumber = parseInt(firstB, 10);
 
-    if (isNaN(firstANumber) || isNaN(firstBNumber)) {
-      return -1;
-    }
-
     // Handle consequent years as a match
     // see publication-time for a version that does not handle consequent years as a match
-    if (firstANumber + 1 === firstBNumber || firstANumber - 1 === firstBNumber) {
+    if (!(isNaN(firstANumber) || isNaN(firstBNumber)) &&
+       (firstANumber + 1 === firstBNumber || firstANumber - 1 === firstBNumber)) {
       return 0.1;
     }
 
+    // We should do something with copyrightYears, too
+
+    // Do not give minus points if a normal publishing year is found in normal years
+    const bNormalInANormal = a.normalYears.filter(aValue => b.normalYears.some(bValue => aValue === bValue));
+    const aNormalInBNormal = b.normalYears.filter(bValue => a.normalYears.some(aValue => bValue === aValue));
+    debug(`BNorm in ANorm: ${JSON.stringify(bNormalInANormal)}`);
+    debug(`ANorm in BNorm: ${JSON.stringify(aNormalInBNormal)}`);
+
+    if (bNormalInANormal > 0 || aNormalInBNormal > 0) {
+      return 0;
+    }
+
+    // Do not give minus points if a normal publishing year is found in reprint years
     const bNormalInAReprint = a.reprintYears.filter(aValue => b.normalYears.some(bValue => aValue === bValue));
     const aNormalInBReprint = b.reprintYears.filter(bValue => a.normalYears.some(aValue => bValue === aValue));
     debug(`BNorm in AReprint: ${JSON.stringify(bNormalInAReprint)}`);

@@ -1,0 +1,21 @@
+{
+  "description": "Should not extract '||||' as publication time",
+  "feature": "publicationTimeAllowConsYearsMulti",
+  "type": "extract",
+  "expectedFeatures": {"copyrightYears": [], "normalYears": [], "reprintYears": []},
+  "inputRecord": {
+    "leader": "02518cam a2200745zi 4500",
+    "fields": [
+      {
+        "tag": "001",
+        "value": "000019643"
+      },
+      {
+        "tag": "008",
+        "value": "831017s||||    fi ||||||||||||||||bfin||"
+      }
+    ]
+  },
+  "skip": false,
+  "only": false
+}
