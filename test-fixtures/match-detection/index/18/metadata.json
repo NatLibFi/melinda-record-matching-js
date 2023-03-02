@@ -1,0 +1,27 @@
+{
+  "description": "Should detect a match (All features for content match, allow consequent publication years, get years from multiple fields), when years match between normal and reprint years",
+  "comment": "MET-247",
+  "options": {
+    "strategy": {
+      "type": "bib",
+      "features": [
+        "hostComponent",
+        "isbn",
+        "issn",
+        "otherStandardIdentifier",
+        "authors",
+        "title",
+        "recordType",
+        "publicationTimeAllowConsYearsMulti",
+        "language",
+        "bibliographicLevel"
+      ]
+    }
+  },
+  "expectedResults": {
+    "match": true,
+    "probability": 1
+  },
+  "skip": false,
+  "only": false
+}

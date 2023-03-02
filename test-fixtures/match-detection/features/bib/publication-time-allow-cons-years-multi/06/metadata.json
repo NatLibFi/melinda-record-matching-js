@@ -1,0 +1,10 @@
+{
+  "description": "Comparison should return points for matching non-numeric publication times",
+  "feature": "publicationTimeAllowConsYearsMulti",
+  "type": "compare",
+  "expectedPoints": 0.1,
+  "featuresA":  {"copyrightYears": [], "normalYears": ["foo"], "reprintYears": []},
+  "featuresB":  {"copyrightYears": [], "normalYears": ["foo"], "reprintYears": []},
+  "skip": false,
+  "only": false
+}

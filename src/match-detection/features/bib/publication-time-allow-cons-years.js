@@ -48,6 +48,11 @@ export default () => ({
       return 0.1;
     }
 
+    // If either of years is a non string/number, values are not comparable
+    if (!testStringOrNumber(firstA) || !testStringOrNumber(firstB)) {
+      return 0;
+    }
+
     const firstANumber = parseInt(firstA, 10);
     const firstBNumber = parseInt(firstB, 10);
 

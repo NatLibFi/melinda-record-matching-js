@@ -1,0 +1,10 @@
+{
+  "description": "Comparison should return zero points when either of times is not a string/number",
+  "feature": "publicationTimeAllowConsYearsMulti",
+  "type": "compare",
+  "expectedPoints": 0,
+  "featuresA":  {"copyrightYears": [], "normalYears": [null], "reprintYears": []},
+  "featuresB":  {"copyrightYears": [], "normalYears": [], "reprintYears": []},
+  "skip": false,
+  "only": false
+}

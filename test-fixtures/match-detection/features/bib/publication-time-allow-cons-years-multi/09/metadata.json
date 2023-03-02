@@ -1,0 +1,51 @@
+{
+  "description": "Should extract publication time from both f008 and f264s",
+  "feature": "publicationTimeAllowConsYearsMulti",
+  "type": "extract",
+  "expectedFeatures": {"copyrightYears": ["1980"], "normalYears": ["1983"], "reprintYears": []},
+  "inputRecord": {
+    "leader": "02518cam a2200745zi 4500",
+    "fields": [
+      {
+        "tag": "001",
+        "value": "000019643"
+      },
+      {
+        "tag": "008",
+        "value": "831017s1983    fi ||||||||||||||||bfin||"
+      },
+      {
+        "tag": "264",
+        "ind1": " ",
+        "ind2": "3",
+        "subfields": [
+          {
+            "code": "a",
+            "value": "Keuruu :"
+          },
+          {
+            "code": "b",
+            "value": "Otava Kirjapaino"
+          },
+          {
+            "code": "c",
+            "value": "1983"
+          }
+        ]
+      },
+      {
+        "tag": "264",
+        "ind1": " ",
+        "ind2": "4",
+        "subfields": [
+          {
+            "code": "c",
+            "value": "©1980"
+          }
+        ]
+      }
+    ]
+  },
+  "skip": false,
+  "only": false
+}
