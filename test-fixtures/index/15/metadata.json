@@ -1,6 +1,5 @@
 {
   "description": "Should find matches but return false/conversionFailures if there are candidates that couldn't be converted",
-  "enabled": true,
   "options": {
     "search": {
       "searchSpec": ["bibStandardIdentifiers"],
@@ -32,5 +31,8 @@
       "url": "/?operation=searchRetrieve&query=dc.identifier%3D978-952-62-2477-0&startRecord=2&version=2.0&maximumRecords=1",
       "status": 200
     }
-  ]
+  ],
+  "expectedCandidateCount": 2,
+  "skip": false,
+  "only": false
 }

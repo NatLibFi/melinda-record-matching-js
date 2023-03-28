@@ -173,7 +173,7 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
       checkCounts({matches, nonMatches, candidateCount, duplicateCount, nonMatchCount, conversionFailureCount, matchErrorCount});
       const matchStatus = getMatchState(state, stopReason, conversionFailureCount, matchErrorCount);
       // add nonMatches to result only if returnNonMatches is 'true', otherwise nonMatches have not been gathered
-      const matchesResult = returnNonMatches ? {matches, matchStatus, nonMatches} : {matches, matchStatus};
+      const matchesResult = returnNonMatches ? {matches, matchStatus, nonMatches, candidateCount} : {matches, matchStatus, candidateCount};
       const failures = [...conversionFailures, ...matchErrors];
       const result = returnFailures ? {...matchesResult, conversionFailures: failures} : matchesResult;
       debugData(`ReturnFailures ${returnFailures}`);
