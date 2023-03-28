@@ -96,7 +96,8 @@
 		],
 		"reporter": [
 			"lcov",
-			"html"
+			"html",
+			"text"
 		],
 		"require": [
 			"@babel/register"
