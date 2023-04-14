@@ -1,6 +1,5 @@
 {
   "description": "Should return conversionFailures when returnFailures is used",
-  "enabled": true,
   "options": {
     "search": {
       "searchSpec": ["bibStandardIdentifiers"],
@@ -36,6 +35,7 @@
       "status": 200
     }
   ],
+  "expectedCandidateCount": 2,
   "skip": false,
   "only": false
 }

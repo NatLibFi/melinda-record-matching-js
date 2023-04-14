@@ -1,6 +1,5 @@
 {
   "description": "Should return matchStatus false/maxedQueries, if there are search queries with server maximum results",
-  "enabled": true,
   "options": {
     "search": {
       "searchSpec": ["bibStandardIdentifiers"],
@@ -33,5 +32,8 @@
       "url": "/?operation=searchRetrieve&query=dc.identifier%3D978-952-62-2477-0&startRecord=2&version=2.0&maximumRecords=1",
       "status": 200
     }
-  ]
+  ],
+  "expectedCandidateCount": 2,
+  "skip": false,
+  "only": false
 }

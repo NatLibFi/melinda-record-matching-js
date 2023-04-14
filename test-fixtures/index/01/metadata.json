@@ -1,6 +1,5 @@
 {
   "description": "Should find matches",
-  "enabled": true,
   "options": {
     "search": {
       "searchSpec": ["bibStandardIdentifiers"],
@@ -21,6 +20,7 @@
   },
   "expectedMatchStatus": false,
   "expectedStopReason": "maxCandidates",
+  "expectedCandidateCount": 1,
   "requests": [
     {
       "method": "get",
@@ -32,5 +32,7 @@
       "url": "/?operation=searchRetrieve&query=dc.identifier%3D978-952-62-2477-0&startRecord=2&version=2.0&maximumRecords=1",
       "status": 200
     }
-  ]
+  ],
+  "skip": false,
+  "only": false
 }

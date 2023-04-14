@@ -1,6 +1,5 @@
 {
   "description": "Should not find matches",
-  "enabled": true,
   "options": {
     "search": {
       "searchSpec": ["bibStandardIdentifiers"],
@@ -21,6 +20,7 @@
   },
   "expectedMatchStatus": true,
   "expectedStopReason": "maxCandidates",
+  "expectedCandidateCount": 1,
   "requests": [
     {
       "method": "get",

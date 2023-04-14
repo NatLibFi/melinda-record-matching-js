@@ -1,6 +1,5 @@
 {
   "description": "DISABLED: Should return also matchErrors as failures if returnFailures is true - (test does not work, because all know matchError cases are fixed)",
-  "enabled": false,
   "options": {
     "search": {
       "searchSpec": ["bibStandardIdentifiers"],
@@ -34,5 +33,8 @@
       "url": "/?operation=searchRetrieve&query=dc.identifier%3D978-952-62-2477-0&startRecord=2&version=2.0&maximumRecords=1",
       "status": 200
     }
-  ]
+  ],
+  "expectedCandidateCount": 1,
+  "skip": true,
+  "only": false
 }

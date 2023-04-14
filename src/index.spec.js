@@ -4,7 +4,7 @@
 *
 * Melinda record matching modules for Javascript
 *
-* Copyright (C) 2020-2022 University Of Helsinki (The National Library Of Finland)
+* Copyright (C) 2020-2023 University Of Helsinki (The National Library Of Finland)
 *
 * This file is part of melinda-record-matching-js
 *
@@ -46,12 +46,8 @@ describe('INDEX', () => {
     }
   });
 
-  async function callback({getFixture, options, enabled = true, expectedMatchStatus, expectedStopReason, expectedFailures}) {
-
-    if (!enabled) {
-      debug(`Disabled test!`);
-      return;
-    }
+  // eslint-disable-next-line max-statements
+  async function callback({getFixture, options, expectedMatchStatus, expectedStopReason, expectedFailures, expectedCandidateCount}) {
 
     const record = new MarcRecord(getFixture('inputRecord.json'), {subfieldValues: false});
     const expectedMatches = getFixture('expectedMatches.json');
@@ -59,11 +55,12 @@ describe('INDEX', () => {
 
 
     const match = createMatchInterface(formatOptions());
-    const {matches, matchStatus, nonMatches, conversionFailures} = await match({record});
+    const {matches, matchStatus, nonMatches, conversionFailures, candidateCount} = await match({record});
     debugData(`Matches: ${matches.length}, Status: ${matchStatus.status}/${matchStatus.stopReason}, NonMatches: ${nonMatches ? nonMatches.length : 'not returned'}, ConversionFailures: ${conversionFailures ? conversionFailures.length : 'not returned'}`);
 
     expect(matchStatus.status).to.eql(expectedMatchStatus);
     expect(matchStatus.stopReason).to.eql(expectedStopReason);
+    expect(candidateCount).to.eql(expectedCandidateCount);
 
     const formattedMatchResult = formatRecordResults(matches);
     expect(formattedMatchResult).to.eql(expectedMatches);
