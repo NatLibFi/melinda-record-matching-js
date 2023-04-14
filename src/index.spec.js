@@ -71,7 +71,7 @@ describe('INDEX', () => {
     const formattedNonMatchResult = formatRecordResults(nonMatches);
     expect(formattedNonMatchResult).to.eql(expectedNonMatches);
 
-    // eslint-disable-next-line functional/no-conditional-statement
+    // eslint-disable-next-line functional/no-conditional-statements
     if (expectedFailures) {
       expect(conversionFailures).to.eql(expectedFailures);
     }

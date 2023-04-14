@@ -79,7 +79,7 @@ describe('candidate-search', () => {
     async function iterate({searchOptions, expectedSearchError, expectedErrorStatus, count = 1}) {
       const expectedResults = getFixture(`expectedResults${count}.json`);
 
-      if (expectedSearchError) { // eslint-disable-line functional/no-conditional-statement
+      if (expectedSearchError) { // eslint-disable-line functional/no-conditional-statements
         try {
           await search(searchOptions);
           throw new Error('Expected an error');
@@ -99,7 +99,7 @@ describe('candidate-search', () => {
         }
       }
 
-      // eslint-disable-next-line functional/no-conditional-statement
+      // eslint-disable-next-line functional/no-conditional-statements
       if (!expectedSearchError) {
         const results = await search(searchOptions);
         expect(formatResults(results)).to.eql(expectedResults);
