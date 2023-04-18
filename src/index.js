@@ -113,7 +113,7 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
 
       function handleMatchResult(matchResult, matches, nonMatches, matchErrors) {
         debugData(`- Amount of new matches from record set: ${matchResult.matches.length}`);
-        // eslint-disable-next-line functional/no-conditional-statement
+        // eslint-disable-next-line functional/no-conditional-statements
         if (returnNonMatches) {
           debugData(`- Amount of new nonMatches from record set: ${matchResult.nonMatches.length}`);
         }
@@ -123,7 +123,7 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
         const newMatchErrors = matchErrors.concat(matchResult.matchErrors);
 
         debugData(`- Total amount of matches: ${newMatches.length}`);
-        // eslint-disable-next-line functional/no-conditional-statement
+        // eslint-disable-next-line functional/no-conditional-statements
         if (returnNonMatches) {
           debugData(`- Total amount of nonMatches: ${newNonMatches.length}`);
         }
@@ -173,7 +173,7 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
       checkCounts({matches, nonMatches, candidateCount, duplicateCount, nonMatchCount, conversionFailureCount, matchErrorCount});
       const matchStatus = getMatchState(state, stopReason, conversionFailureCount, matchErrorCount);
       // add nonMatches to result only if returnNonMatches is 'true', otherwise nonMatches have not been gathered
-      const matchesResult = returnNonMatches ? {matches, matchStatus, nonMatches} : {matches, matchStatus};
+      const matchesResult = returnNonMatches ? {matches, matchStatus, nonMatches, candidateCount} : {matches, matchStatus, candidateCount};
       const failures = [...conversionFailures, ...matchErrors];
       const result = returnFailures ? {...matchesResult, conversionFailures: failures} : matchesResult;
       debugData(`ReturnFailures ${returnFailures}`);
@@ -267,7 +267,7 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
 
       if (candidate) {
 
-        // eslint-disable-next-line functional/no-conditional-statement
+        // eslint-disable-next-line functional/no-conditional-statements
         if (candidateNotInMatches(matches.concat(nonMatches), candidate)) {
           const {record: candidateRecord, id: candidateId} = candidate;
           const recordBExternal = {id: candidate.id, recordSource: 'databaseRecord', label: `db-${candidate.id}`};
@@ -330,7 +330,7 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
 
         debugData(`- Total matches after this detection: ${matches.concat(newRecordMatches).length} (max: ${maxMatches})`);
 
-        // eslint-disable-next-line functional/no-conditional-statement
+        // eslint-disable-next-line functional/no-conditional-statements
         if (returnNonMatches) {
           debugData(`- Total nonMatches after this detection: ${nonMatches.concat(newRecordNonMatches).length}`);
         }

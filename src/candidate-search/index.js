@@ -119,7 +119,7 @@ export default ({record, searchSpec, url, maxCandidates, maxRecordsPerRequest = 
 
         client.searchRetrieve(query, {startRecord: resultSetOffset})
           .on('error', err => {
-            // eslint-disable-next-line functional/no-conditional-statement
+            // eslint-disable-next-line functional/no-conditional-statements
             if (err instanceof SruSearchError) {
               debug(`SRU SruSearchError for query: ${query}: ${err}`);
               reject(new CandidateSearchError(`SRU SruSearchError for query: ${query}: ${err}`));

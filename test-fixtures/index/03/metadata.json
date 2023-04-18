@@ -1,6 +1,5 @@
 {
   "description": "Should find matches in matchDetection even if input record has no ISBN",
-  "enabled": true,
   "options": {
     "search": {
       "searchSpec": ["bibStandardIdentifiers"],
@@ -32,5 +31,8 @@
     }
   ],
   "expectedMatchStatus": false,
-  "expectedStopReason": "maxCandidates"
+  "expectedStopReason": "maxCandidates",
+  "expectedCandidateCount": 1,
+  "skip": false,
+  "only": false
 }
