@@ -289,6 +289,8 @@ export function bibStandardIdentifiers(record) {
   const debugData = debug.extend('data');
   debug(`Creating queries for standard identifiers`);
 
+  // DEVELOP: should we query also f015 and f028?
+
   const fields = record.get(/^(?<def>020|022|024)$/u);
   const identifiers = [].concat(...fields.map(toIdentifiers));
   const uniqueIdentifiers = [...new Set(identifiers)];
