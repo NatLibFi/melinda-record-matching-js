@@ -201,7 +201,8 @@ export function bibTitle(record) {
     if (formatted.length >= 5) {
       return [`dc.title="${useWordSearch ? '' : '^'}${formatted}*"`];
     }
-    return addAuthorsToSearch(`dc.title="${useWordSearch ? '' : '^'}${formatted}*"`);
+    // use word search without ending * also in combination searches to avoid SRU-server crashes [MRA-189]
+    return addAuthorsToSearch(`dc.title="${formatted}"`);
   }
 
   return [];
