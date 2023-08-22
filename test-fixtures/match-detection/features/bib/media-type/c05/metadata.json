@@ -1,5 +1,7 @@
 {
     "description": "Should not return points if there are mismatching mediaTypes",
+    "only": false,
+    "skip": false,
     "feature": "mediaType",
     "type": "compare",
     "expectedPoints": -1.0,

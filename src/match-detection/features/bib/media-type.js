@@ -34,9 +34,12 @@ const debugData = debug.extend('data');
 
 export default () => ({
   name: 'Media type',
-  extract: record => {
+  extract: ({record, recordExternal}) => {
+    const label = recordExternal && recordExternal.label ? recordExternal.label : 'record';
+    debugData(`Record (${label}): ${JSON.stringify(record)}`);
+    debugData(`RecordExternal: ${JSON.stringify(recordExternal)}`);
     const values337 = get337Values();
-    debugData(`337 $b values: ${JSON.stringify(values337)}`);
+    debug(`${label} 337 $b values: ${JSON.stringify(values337)}`);
 
     return values337;
 

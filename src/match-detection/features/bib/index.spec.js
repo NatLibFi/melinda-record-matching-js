@@ -35,6 +35,8 @@ import createDebugLogger from 'debug';
 
 
 const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection:features/bib:test');
+const debugData = debug.extend('data');
+
 
 describe('match-detection/features/bib/', () => {
   generateTests({
@@ -55,6 +57,7 @@ describe('match-detection/features/bib/', () => {
       if (type === 'extract') {
         const {expectedFeatures, inputRecord} = expectations;
         const record = new MarcRecord(inputRecord, {subfieldValues: false});
+        debugData(`Record: ${record}`);
         const {extract} = features[feature](options);
 
         expect(extract({record})).to.eql(expectedFeatures);

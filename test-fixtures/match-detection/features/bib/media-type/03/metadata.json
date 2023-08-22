@@ -1,5 +1,7 @@
 {
     "description": "Should extract media types (337 $b) from multiple fields",
+    "only": false,
+    "skip": false,
     "feature": "mediaType",
     "type": "extract",
     "expectedFeatures": ["s","c"],

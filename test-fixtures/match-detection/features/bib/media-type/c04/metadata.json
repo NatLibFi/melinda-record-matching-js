@@ -1,5 +1,7 @@
 {
-    "description": "Should return points if mediaTypes of one record are a subset of mediaTypes of other record",
+    "description": "Should return points if mediaTypes of record B are a subset of mediaTypes of record A",
+    "only": false,
+    "skip": false,
     "feature": "mediaType",
     "type": "compare",
     "expectedPoints": 1.0,

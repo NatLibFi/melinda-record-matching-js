@@ -1,5 +1,7 @@
 {
     "description": "Should return points if single mediaType matches",
+    "only": false,
+    "skip": false,
     "feature": "mediaType",
     "type": "compare",
     "expectedPoints": 1.0,

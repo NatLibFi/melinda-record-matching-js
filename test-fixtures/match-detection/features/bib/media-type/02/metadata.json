@@ -1,5 +1,7 @@
 {
     "description": "Should extract media types (337 $b) - only if the field has $2 rdamedia",
+    "only": false,
+    "skip": false,
     "feature": "mediaType",
     "type": "extract",
     "expectedFeatures": ["c"],
