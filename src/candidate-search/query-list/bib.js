@@ -201,7 +201,8 @@ export function bibTitle(record) {
     if (formatted.length >= 5) {
       return [`dc.title="${useWordSearch ? '' : '^'}${formatted}*"`];
     }
-    return addAuthorsToSearch(`dc.title="${useWordSearch ? '' : '^'}${formatted}*"`);
+    // use word search without ending * also in combination searches to avoid SRU-server crashes [MRA-189]
+    return addAuthorsToSearch(`dc.title="${formatted}"`);
   }
 
   return [];
@@ -210,6 +211,15 @@ export function bibTitle(record) {
     const [authorQuery] = bibAuthors(record);
     if (authorQuery !== undefined) {
       return [`${authorQuery} AND ${titleQuery}`];
+    }
+    return addPublisherToSearch(titleQuery);
+    //return [];
+  }
+
+  function addPublisherToSearch(query) {
+    const [publisherQuery] = bibPublishers(record);
+    if (publisherQuery !== undefined) {
+      return [`${publisherQuery} AND ${query}`];
     }
     return [];
   }
@@ -258,6 +268,9 @@ export function bibAuthors(record) {
     if (formatted.length >= 5) {
       return [`dc.author="${useWordSearch ? '' : '^'}${formatted}*"`];
     }
+    //if (formatted) {
+    //  return [`dc.author="${formatted}"`];
+    //}
     return [];
   }
 
@@ -282,12 +295,55 @@ export function bibAuthors(record) {
   }
 }
 
+export function bibPublishers(record) {
+  const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:query:bibPublishers');
+  const debugData = debug.extend('data');
+  debug(`Creating query for the first publisher`);
+  //debugData(record);
+
+  const publisher = getPublisher(record);
+  if (testStringOrNumber(publisher)) {
+    const formatted = String(publisher)
+      .replace(/[^\w\s\p{Alphabetic}]/gu, '')
+      // Clean up concurrent spaces from fe. subfield changes
+      .replace(/ +/gu, ' ')
+      .trim()
+      .slice(0, 30)
+      .trim();
+
+    debugData(`Publisher string: ${formatted}`);
+    // use non-wildcard word search from dc.publisher
+    return [`dc.publisher="${formatted}"`];
+  }
+
+  return [];
+
+  function getPublisher(record) {
+    //debugData(record);
+    const [field] = record.get(/^(?:260)|(?:264)$/u);
+    //debugData(field);
+
+    if (field) {
+      const publisherString = field.subfields
+        .filter(({code}) => ['b'].includes(code))
+        .map(({value}) => testStringOrNumber(value) ? String(value) : '')
+        .filter(value => value)
+        // In Melinda's index subfield separators are indexed as ' '
+        .join(' ');
+      return publisherString;
+    }
+    return false;
+  }
+}
+
 
 export function bibStandardIdentifiers(record) {
 
   const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:query:bibStandardIdentifiers');
   const debugData = debug.extend('data');
   debug(`Creating queries for standard identifiers`);
+
+  // DEVELOP: should we query also f015 and f028?
 
   const fields = record.get(/^(?<def>020|022|024)$/u);
   const identifiers = [].concat(...fields.map(toIdentifiers));

@@ -27,6 +27,8 @@
 */
 
 // we could handle the case of books/notes
+// Recordtype: LDR/06 - Type of Record
+// Note: currently matchValidator fails all mismatching recordTypes, so this won't actually do much
 
 export default () => ({
   name: 'Record type',

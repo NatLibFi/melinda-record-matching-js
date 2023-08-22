@@ -1,7 +1,7 @@
 {
-  "description": "Should combine an author query from a f111 with title query for a title that's shorter than five characters",
+  "description": "Should create a combined publisher and title query if both author and title are shorter than five",
   "type": "bibTitle",
-  "expectedQuery": ["dc.author=\"^Bar Bazam*\" AND dc.title=\"foo\""],
+  "expectedQuery": ["dc.publisher=\"publishing house\" AND dc.title=\"foo\""],
   "inputRecord": {
     "leader": "02518cam a2200745zi 4500",
     "fields": [
@@ -16,7 +16,7 @@
         "subfields": [
           {
             "code": "a",
-            "value": "Bar, Bazam."
+            "value": "Bar."
           }
         ]
       },
@@ -28,6 +28,17 @@
           {
             "code": "a",
             "value": "foo :"
+          }
+        ]
+      },
+      {
+        "tag": "260",
+        "ind1": " ",
+        "ind2": " ",
+        "subfields": [
+          {
+            "code": "b",
+            "value": "publishing house :"
           }
         ]
       }
