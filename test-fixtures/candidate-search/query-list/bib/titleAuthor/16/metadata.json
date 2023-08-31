@@ -1,0 +1,38 @@
+{
+  "description": "Should not create a combined author and title query if both are shorter than five",
+  "only": false,
+  "skip": false,
+  "type": "bibTitleAuthor",
+  "expectedQuery": [],
+  "inputRecord": {
+    "leader": "02518cam a2200745zi 4500",
+    "fields": [
+      {
+        "tag": "001",
+        "value": "000019643"
+      },
+      {
+        "tag": "111",
+        "ind1": " ",
+        "ind2": " ",
+        "subfields": [
+          {
+            "code": "a",
+            "value": "Bar."
+          }
+        ]
+      },
+      {
+        "tag": "245",
+        "ind1": " ",
+        "ind2": " ",
+        "subfields": [
+          {
+            "code": "a",
+            "value": "foo :"
+          }
+        ]
+      }
+    ]
+  }
+}

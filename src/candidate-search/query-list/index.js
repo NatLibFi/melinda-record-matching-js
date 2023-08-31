@@ -32,7 +32,8 @@ export const searchTypes = {
   bib: {
     standardIdentifiers: 'bibStandardIdentifiers',
     hostComponents: 'bibHostComponents',
-    title: 'bibTitle',
+    title: 'bibTitle', // title ( + first author + first publisher if needed)
+    titleAuthor: 'bibTitleAuthor', // title + first author (or first publisher if no author)
     melindaId: 'bibMelindaIds',
     sourceIds: 'bibSourceIds'
   }

@@ -1,0 +1,31 @@
+{
+  "description": "Should generate titleAuthor query: only title, if there's no author and no publisher and title is longer than 5 chars",
+  "only": false,
+  "skip": false,
+  "type": "bibTitleAuthor",
+  "expectedQuery": ["dc.title=\"^foo bar*\""],
+  "inputRecord": {
+    "leader": "02518cam a2200745zi 4500",
+    "fields": [
+      {
+        "tag": "001",
+        "value": "000019643"
+      },
+      {
+        "tag": "245",
+        "ind1": " ",
+        "ind2": " ",
+        "subfields": [
+          {
+            "code": "a",
+            "value": "foo :"
+          },
+          {
+            "code": "b",
+            "value": "bar  "
+          }
+        ]
+      }
+    ]
+  }
+}
