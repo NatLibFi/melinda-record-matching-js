@@ -1,0 +1,41 @@
+{
+  "description": "Should throw because of a SRU error - System temporarily unavailable",
+  "skip": false,
+  "only": false,
+  "expectedSearchError": "SRU SruSearchError for query: dc.title=\"\\^foo bar\\*\": Error: System temporarily unavailable",
+  "factoryOptions": {
+    "searchSpec": ["bibTitle"],
+    "record": {
+      "leader": "02518cam a2200745zi 4500",
+      "fields": [
+        {
+          "tag": "001",
+          "value": "000019640"
+        },
+        {
+          "tag": "245",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "foo."
+            },
+            {
+              "code": "b",
+              "value": "bar  "
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "searchOptions": {},
+  "requests": [
+    {
+      "method": "get",
+      "url": "/?operation=searchRetrieve&query=dc.title%3D%22%5Efoo+bar*%22&startRecord=1&version=2.0&maximumRecords=1",
+      "status": 200
+    }
+  ]
+}

@@ -1,7 +1,9 @@
 {
   "description": "Should combine an author query from a f100 with title query for a title that's shorter than five characters",
+  "skip": false,
+  "only": false,
   "type": "bibTitle",
-  "expectedQuery": ["dc.author=\"^Bar Bazam*\" AND dc.title=\"^foo*\""],
+  "expectedQuery": ["dc.author=\"^Bar Bazam*\" AND dc.title=\"foo\""],
   "inputRecord": {
     "leader": "02518cam a2200745zi 4500",
     "fields": [
@@ -32,7 +34,5 @@
         ]
       }
     ]
-  },
-  "skip": false,
-  "only": false
+  }
 }
