@@ -38,7 +38,7 @@
 	"dependencies": {
 		"@natlibfi/marc-record": "^7.3.1",
 		"@natlibfi/marc-record-serializers": "^10.1.2",
-		"@natlibfi/melinda-commons": "^13.0.7",
+		"@natlibfi/melinda-commons": "^13.0.8-alpha.1",
 		"@natlibfi/sru-client": "^6.0.5",
 		"debug": "^4.3.4",
 		"isbn3": "^1.1.43",
