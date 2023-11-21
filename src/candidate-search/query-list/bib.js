@@ -182,6 +182,17 @@ export function bibHostComponents(record) {
 // record is correctly catalogued using a filing indicator -> dc.title search won't match
 
 export function bibTitle(record) {
+  // We get author/publisher only when formatted title is shorter than 5 chars
+  return bibTitleAuthorPublisher({record, onlyTitleLength: 5});
+}
+
+export function bibTitleAuthor(record) {
+  // We use onlyTitleLength that is longer than our formatted length to
+  // get an author or an publisher always
+  return bibTitleAuthorPublisher({record, onlyTitleLength: 100});
+}
+
+export function bibTitleAuthorPublisher({record, onlyTitleLength}) {
   const title = getTitle();
   const booleanStartWords = ['and', 'or', 'nor', 'not'];
 
@@ -196,30 +207,37 @@ export function bibTitle(record) {
 
     // use word search for titles starting with a boolean
     const useWordSearch = booleanStartWords.some(word => formatted.toLowerCase().startsWith(word));
-    // Prevent too many matches by having a minimum length
+    // Prevent too many matches / SRU crashing by having a minimum length
     // Note that currently this fails matching if there are no matches from previous matchers
-    if (formatted.length >= 5) {
+    if (formatted.length >= onlyTitleLength) {
       return [`dc.title="${useWordSearch ? '' : '^'}${formatted}*"`];
     }
+    const queryIsOkAlone = formatted.length >= 5;
+
     // use word search without ending * also in combination searches to avoid SRU-server crashes [MRA-189]
-    return addAuthorsToSearch(`dc.title="${formatted}"`);
+    const query = `dc.title="${useWordSearch || !queryIsOkAlone ? '' : '^'}${formatted}${queryIsOkAlone ? '*' : ''}"`;
+
+    return addAuthorsToSearch({query, queryIsOkAlone});
   }
 
   return [];
 
-  function addAuthorsToSearch(titleQuery) {
+  function addAuthorsToSearch({query, queryIsOkAlone = false}) {
     const [authorQuery] = bibAuthors(record);
     if (authorQuery !== undefined) {
-      return [`${authorQuery} AND ${titleQuery}`];
+      return [`${authorQuery} AND ${query}`];
     }
-    return addPublisherToSearch(titleQuery);
+    return addPublisherToSearch({query, queryIsOkAlone});
     //return [];
   }
 
-  function addPublisherToSearch(query) {
+  function addPublisherToSearch({query, queryIsOkAlone = false}) {
     const [publisherQuery] = bibPublishers(record);
     if (publisherQuery !== undefined) {
       return [`${publisherQuery} AND ${query}`];
+    }
+    if (queryIsOkAlone) {
+      return [`${query}`];
     }
     return [];
   }
@@ -268,9 +286,6 @@ export function bibAuthors(record) {
     if (formatted.length >= 5) {
       return [`dc.author="${useWordSearch ? '' : '^'}${formatted}*"`];
     }
-    //if (formatted) {
-    //  return [`dc.author="${formatted}"`];
-    //}
     return [];
   }
 
