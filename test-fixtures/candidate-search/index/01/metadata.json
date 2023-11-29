@@ -1,5 +1,7 @@
 {
   "description": "Should find candidates",
+  "only": false,
+  "skip": false,
   "factoryOptions": {
     "searchSpec": ["bibTitle"],
     "record": {

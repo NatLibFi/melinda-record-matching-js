@@ -1,0 +1,16 @@
+{
+  "description": "Should generate titleAuthorYear query (No 245) - empty query",
+  "only": false,
+  "skip": false,
+  "type": "bibTitleAuthorYear",
+  "expectedQuery": [],
+  "inputRecord": {
+    "leader": "02518cam a2200745zi 4500",
+    "fields": [
+      {
+        "tag": "001",
+        "value": "000019643"
+      }
+    ]
+  }
+}
