@@ -30,6 +30,7 @@ import createDebugLogger from 'debug';
 import {toQueries} from '../candidate-search-utils';
 import {getMelindaIdsF035, validateSidFieldSubfieldCounts, getSubfieldValues, testStringOrNumber} from '../../matching-utils';
 
+const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:query');
 
 export function bibSourceIds(record) {
 
@@ -187,12 +188,22 @@ export function bibTitle(record) {
 }
 
 export function bibTitleAuthor(record) {
+  debug('bibTitleAuthor');
   // We use onlyTitleLength that is longer than our formatted length to
   // get an author or an publisher always
   return bibTitleAuthorPublisher({record, onlyTitleLength: 100});
 }
 
-export function bibTitleAuthorPublisher({record, onlyTitleLength}) {
+export function bibTitleAuthorYear(record) {
+  debug('bibTitleAuthorYear');
+  // We use onlyTitleLength that is longer than our formatted length to
+  // get an author or an publisher always
+
+  return bibTitleAuthorPublisher({record, onlyTitleLength: 100, addYear: true});
+}
+
+export function bibTitleAuthorPublisher({record, onlyTitleLength, addYear = false}) {
+  debug('bibTitleAuthorPublisher');
   const title = getTitle();
   const booleanStartWords = ['and', 'or', 'nor', 'not'];
 
@@ -216,25 +227,43 @@ export function bibTitleAuthorPublisher({record, onlyTitleLength}) {
 
     // use word search without ending * also in combination searches to avoid SRU-server crashes [MRA-189]
     const query = `dc.title="${useWordSearch || !queryIsOkAlone ? '' : '^'}${formatted}${queryIsOkAlone ? '*' : ''}"`;
-
-    return addAuthorsToSearch({query, queryIsOkAlone});
+    debug(`query: ${query}`);
+    return addAuthorsToSearch({query, queryIsOkAlone, addYear});
   }
 
   return [];
 
-  function addAuthorsToSearch({query, queryIsOkAlone = false}) {
+  function addAuthorsToSearch({query, queryIsOkAlone = false, addYear = false}) {
+    debug('addAuthorsToSearch');
     const [authorQuery] = bibAuthors(record);
     if (authorQuery !== undefined) {
+      if (addYear) {
+        return addYearToSearch({query: `${authorQuery} AND ${query}`, queryIsOkAlone: true});
+      }
       return [`${authorQuery} AND ${query}`];
     }
-    return addPublisherToSearch({query, queryIsOkAlone});
+    return addPublisherToSearch({query, queryIsOkAlone, addYear});
     //return [];
   }
 
-  function addPublisherToSearch({query, queryIsOkAlone = false}) {
+  function addPublisherToSearch({query, queryIsOkAlone = false, addYear = false}) {
     const [publisherQuery] = bibPublishers(record);
     if (publisherQuery !== undefined) {
+      if (addYear) {
+        return addYearToSearch({query: `${publisherQuery} AND ${query}`, queryIsOkAlone: true});
+      }
       return [`${publisherQuery} AND ${query}`];
+    }
+    if (queryIsOkAlone && !addYear) {
+      return [`${query}`];
+    }
+    return addYearToSearch({query, queryIsOkAlone});
+  }
+
+  function addYearToSearch({query, queryIsOkAlone = false}) {
+    const [yearQuery] = bibYear(record);
+    if (yearQuery !== undefined) {
+      return [`${yearQuery} AND ${query}`];
     }
     if (queryIsOkAlone) {
       return [`${query}`];
@@ -348,6 +377,24 @@ export function bibPublishers(record) {
       return publisherString;
     }
     return false;
+  }
+}
+
+export function bibYear(record) {
+  const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:query:bibYear');
+  const debugData = debug.extend('data');
+  debug(`Creating query for the publishing year`);
+  debugData(record);
+
+  const year = getYear(record);
+  if (year) {
+    return [`dc.date="${year}"`];
+  }
+  return [];
+
+  function getYear(record) {
+    const value = record.get(/^008$/u)?.[0]?.value || undefined;
+    return testStringOrNumber(value) ? String(value).slice(7, 11) : undefined;
   }
 }
 

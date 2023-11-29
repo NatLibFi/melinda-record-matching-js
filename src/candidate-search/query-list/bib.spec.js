@@ -47,7 +47,8 @@ describe('candidate-search/query-list/bib/', () => {
         return;
       }
 
-      expect(generate(record)).to.eql(expectedQuery);
+      const queryList = generate(record);
+      expect(queryList).to.eql(expectedQuery);
     }
   });
 });
