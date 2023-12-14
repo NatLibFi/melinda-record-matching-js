@@ -201,15 +201,23 @@ export function bibTitleAuthor(record) {
 }
 
 export function bibTitleAuthorYear(record) {
-  debug('bibTitleAuthorYear');
+  debug('bibTitleAuthorYearAlternates');
   // We use onlyTitleLength that is longer than our formatted length to
   // get an author or an publisher always
 
   return bibTitleAuthorPublisher({record, onlyTitleLength: 100, addYear: true});
 }
 
-export function bibTitleAuthorPublisher({record, onlyTitleLength, addYear = false}) {
-  debug('bibTitleAuthorPublisher');
+export function bibTitleAuthorYearAlternates(record) {
+  debug('bibTitleAuthorYearAlternates');
+  // We use onlyTitleLength that is longer than our formatted length to
+  // get an author or an publisher always
+
+  return {queryList: bibTitleAuthorPublisher({record, onlyTitleLength: 100, addYear: true, alternates: true}), queryListType: 'alternates'};
+}
+
+export function bibTitleAuthorPublisher({record, onlyTitleLength, addYear = false, alternates = false}) {
+  debug(`bibTitleAuthorPublisher, onlyTitleLength: ${onlyTitleLength}, addYear: ${addYear}, alternates: ${alternates}`);
   const title = getTitle();
   const booleanStartWords = ['and', 'or', 'nor', 'not'];
 

@@ -55,7 +55,10 @@ export default ({record, searchSpec, url, maxCandidates, maxRecordsPerRequest = 
   const adjustedMaxRecordsPerRequest = maxRecordsPerRequest >= maxCandidates ? maxCandidates : maxRecordsPerRequest;
 
   const inputRecordId = getRecordId(record);
-  const queryList = generateQueryList(record, searchSpec);
+  const queryListResult = generateQueryList(record, searchSpec);
+  const queryList = queryListResult.queryList ? queryListResult.queryList : queryListResult;
+  const {queryListType} = queryListResult;
+
   const client = createClient({
     url,
     maxRecordsPerRequest: adjustedMaxRecordsPerRequest,
@@ -64,7 +67,7 @@ export default ({record, searchSpec, url, maxCandidates, maxRecordsPerRequest = 
   });
 
   debug(`Searching matches for ${inputRecordId}`);
-  debug(`Generated queryList ${JSON.stringify(queryList)}`);
+  debug(`Generated queryList (type: ${queryListType}) ${JSON.stringify(queryList)}`);
 
 
   // if generateQueryList errored we should throw 422
