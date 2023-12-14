@@ -1,5 +1,7 @@
 {
   "description": "Should generate host record query",
+  "only": false,
+  "skip": false,
   "type": "bibHostComponents",
   "expectedQuery": ["melinda.partsofhost=12345"],
   "inputRecord": {

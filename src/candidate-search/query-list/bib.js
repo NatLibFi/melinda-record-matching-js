@@ -150,7 +150,13 @@ export function bibMelindaIds(record) {
 // bibHostComponents returns host id from the first subfield $w of first field f773, see test-fixtures 04 and 05
 // bibHostComponents should search all 773 $ws for possible host id, but what should it do in case of multiple host ids?
 export function bibHostComponents(record) {
+  const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:query:bibHostComponents');
+  const debugData = debug.extend('data');
+  debug(`Creating queries for hostIds`);
+
   const id = getHostId();
+  debugData(`Found id: ${JSON.stringify(id)}`);
+
   return testStringOrNumber(id) ? [`melinda.partsofhost=${id}`] : [];
 
   function getHostId() {
