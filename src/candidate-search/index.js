@@ -69,12 +69,16 @@ export default ({record, searchSpec, url, maxCandidates, maxRecordsPerRequest = 
   debug(`Searching matches for ${inputRecordId}`);
   debug(`Generated queryList (type: ${queryListType}) ${JSON.stringify(queryList)}`);
 
-
   // if generateQueryList errored we should throw 422
 
   if (queryList.length === 0) {
     throw new CandidateSearchError(`Generated query list contains no queries`);
   }
+
+  if (queryListType && queryListType !== 'alternates') {
+    throw new CandidateSearchError(`Generated query list has invalid type`);
+  }
+
 
   // state.totalRecords : amount of candidate records available to the current query (undefined, if there was no queries left)
   // state.query : current query (undefined if there was no queries left)
