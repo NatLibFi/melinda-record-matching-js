@@ -35,6 +35,7 @@ export const searchTypes = {
     title: 'bibTitle', // title ( + first author + first publisher if needed)
     titleAuthor: 'bibTitleAuthor', // title + first author (or first publisher if no author)
     titleAuthorYear: 'bibTitleAuthorYear', // title + first author (or first publisher if no author), publishing year
+    titleAuthorYearAlternates: 'bibTitleAuthorYearAlternates', // title + first author (or first publisher if no author), publishing year
     melindaId: 'bibMelindaIds',
     sourceIds: 'bibSourceIds'
     //DEVELOP: bibContent: 'bibContent'

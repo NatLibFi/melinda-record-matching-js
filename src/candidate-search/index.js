@@ -66,17 +66,36 @@ export default ({record, searchSpec, url, maxCandidates, maxRecordsPerRequest = 
     retrieveAll: false
   });
 
+  const totalClient = createClient({
+    url,
+    maxRecordsPerRequest: '0',
+    version: '2.0',
+    retrieveAll: false
+  });
+
+
   debug(`Searching matches for ${inputRecordId}`);
-  debug(`Generated queryList (type: ${queryListType}) ${JSON.stringify(queryList)}`);
+  const chosenQueryList = choseQueries(queryList, queryListType);
 
-  // if generateQueryList errored we should throw 422
+  function choseQueries(queryList, queryListType) {
+    debug(`Generated queryList (type: ${queryListType}) ${JSON.stringify(queryList)}`);
 
-  if (queryList.length === 0) {
-    throw new CandidateSearchError(`Generated query list contains no queries`);
-  }
+    // if generateQueryList errored we should throw 422
+    if (queryList.length === 0) {
+      throw new CandidateSearchError(`Generated query list contains no queries`);
+    }
 
-  if (queryListType && queryListType !== 'alternates') {
-    throw new CandidateSearchError(`Generated query list has invalid type`);
+    if (queryListType && queryListType !== 'alternates') {
+      throw new CandidateSearchError(`Generated query list has invalid type`);
+    }
+
+    // eslint-disable-next-line no-constant-condition, no-mixed-operators
+    if (queryListType === 'alternates' && queryList.length > 1) {
+      const totalsForQueries = queryList.map(retrieveTotal());
+      debug(`${JSON.stringify(totalsForQueries)}`);
+      return queryList;
+    }
+    return queryList;
   }
 
 
@@ -90,7 +109,7 @@ export default ({record, searchSpec, url, maxCandidates, maxRecordsPerRequest = 
 
 
   return async ({queryOffset = 0, resultSetOffset = 1, totalRecords = 0, searchCounter = 0, queryCandidateCounter = 0, queryCounter = 0, maxedQueries = []}) => {
-    const query = queryList[queryOffset];
+    const query = chosenQueryList[queryOffset];
 
     if (query) {
       const {records, failures, nextOffset, total} = await retrieveRecords();
@@ -181,13 +200,31 @@ export default ({record, searchSpec, url, maxCandidates, maxRecordsPerRequest = 
     }
   };
 
+  function retrieveTotal(query) {
+    debug(`Searching for candidateTotals with query: ${query}`);
+    // eslint-disable-next-line functional/no-let
+    totalClient.searchRetrieve(query)
+      .on('error', err => {
+        // eslint-disable-next-line functional/no-conditional-statements
+        if (err instanceof SruSearchError) {
+          debug(`SRU SruSearchError for query: ${query}: ${err}`);
+          throw new CandidateSearchError(`SRU SruSearchError for getting total for query: ${query}: ${err}`);
+        }
+        debug(`SRU error for query: ${query}: ${err}`);
+        throw new CandidateSearchError(`SRU error for getting total for query: ${query}: ${err}`);
+      })
+      .on('total', total => {
+        debug(`Got total: ${total}`);
+        return {query, total};
+      });
+  }
+
   function checkMaxedQuery(query, total, serverMaxResult) {
     if (total >= serverMaxResult) {
       debug(`WARNING: Query ${query} resulted in ${total} hits which meets the serverMaxResult (${serverMaxResult}) `);
       return query;
     }
   }
-
 
   function getRecordId(record) {
     const [field] = record.get(/^001$/u);
