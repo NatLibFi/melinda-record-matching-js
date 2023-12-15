@@ -105,10 +105,13 @@ export default ({record, searchSpec, url, maxCandidates, maxRecordsPerRequest = 
 
   // eslint-disable-next-line max-statements
   return async ({queryOffset = 0, resultSetOffset = 1, totalRecords = 0, searchCounter = 0, queryCandidateCounter = 0, queryCounter = 0, maxedQueries = []}) => {
+
+    /*
     if (queryListType === 'alternates') {
       debug('Alternates - stop here');
       return {records: [], failures: [], queriesLeft: 0, queryCounter, maxedQueries};
     }
+    */
     const query = chosenQueryList[queryOffset];
     debug(`Running query ${JSON.stringify(query)} (${queryOffset})`);
 
