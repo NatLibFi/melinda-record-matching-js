@@ -212,8 +212,8 @@ export function bibTitleAuthorYearAlternates(record) {
   debug('bibTitleAuthorYearAlternates');
   // We use onlyTitleLength that is longer than our formatted length to
   // get an author or an publisher always
-
-  return {queryList: bibTitleAuthorPublisher({record, onlyTitleLength: 100, addYear: true, alternates: true, alternateQueries: []}), queryListType: 'alternates'};
+  const origQueryList = bibTitleAuthorPublisher({record, onlyTitleLength: 100, addYear: true, alternates: true, alternateQueries: []});
+  return {queryList: origQueryList.toReversed(), queryListType: 'alternates'};
 }
 
 export function bibTitleAuthorPublisher({record, onlyTitleLength, addYear = false, alternates = false, alternateQueries = []}) {
