@@ -1,9 +1,9 @@
 {
   "description": "Should generate titleAuthorYear queries as alternates",
-  "only": true,
+  "only": false,
   "skip": false,
   "type": "bibTitleAuthorYearAlternates",
-  "expectedQuery": ["dc.date=\"2020\" AND dc.author=\"^Bazam*\" AND dc.title=\"^foo bar*\""],
+  "expectedQuery": ["dc.title=\"^foo bar*\"","dc.author=\"^Bazam*\" AND dc.title=\"^foo bar*\"","dc.date=\"2020\" AND dc.author=\"^Bazam*\" AND dc.title=\"^foo bar*\""],
   "expectedQueryListType": "alternates",
   "inputRecord": {
     "leader": "02518cam a2200745zi 4500",

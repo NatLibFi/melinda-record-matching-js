@@ -4,7 +4,7 @@
 *
 * Melinda record matching modules for Javascript
 *
-* Copyright (C) 2020-2022 University Of Helsinki (The National Library Of Finland)
+* Copyright (C) 2020-2023 University Of Helsinki (The National Library Of Finland)
 *
 * This file is part of melinda-record-matching-js
 *
@@ -56,8 +56,8 @@ export default ({record, searchSpec, url, maxCandidates, maxRecordsPerRequest = 
 
   const inputRecordId = getRecordId(record);
   const queryListResult = generateQueryList(record, searchSpec);
-  const queryList = queryListResult.queryList ? queryListResult.queryList : queryListResult;
-  const {queryListType} = queryListResult;
+  const queryList = queryListResult[0]?.queryList ? queryListResult[0].queryList : queryListResult;
+  const queryListType = queryListResult[0]?.queryListType ? queryListResult[0].queryListType : undefined;
 
   const client = createClient({
     url,
@@ -110,6 +110,7 @@ export default ({record, searchSpec, url, maxCandidates, maxRecordsPerRequest = 
 
   return async ({queryOffset = 0, resultSetOffset = 1, totalRecords = 0, searchCounter = 0, queryCandidateCounter = 0, queryCounter = 0, maxedQueries = []}) => {
     const query = chosenQueryList[queryOffset];
+    debug(`Running query ${JSON.stringify(query)} (${queryOffset})`);
 
     if (query) {
       const {records, failures, nextOffset, total} = await retrieveRecords();
