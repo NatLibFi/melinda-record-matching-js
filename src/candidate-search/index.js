@@ -66,17 +66,10 @@ export default ({record, searchSpec, url, maxCandidates, maxRecordsPerRequest = 
     retrieveAll: false
   });
 
-  const totalClient = createClient({
-    url,
-    maxRecordsPerRequest: '0',
-    version: '2.0',
-    retrieveAll: false
-  });
-
-
   debug(`Searching matches for ${inputRecordId}`);
   const chosenQueryList = choseQueries(queryList, queryListType);
 
+  // eslint-disable-next-line require-await
   function choseQueries(queryList, queryListType) {
     debug(`Generated queryList (type: ${queryListType}) ${JSON.stringify(queryList)}`);
 
@@ -89,11 +82,13 @@ export default ({record, searchSpec, url, maxCandidates, maxRecordsPerRequest = 
       throw new CandidateSearchError(`Generated query list has invalid type`);
     }
 
-    // eslint-disable-next-line no-constant-condition, no-mixed-operators
     if (queryListType === 'alternates' && queryList.length > 1) {
-      const totalsForQueries = queryList.map(retrieveTotal());
-      debug(`${JSON.stringify(totalsForQueries)}`);
+      //const [query] = queryList;
+      //const totalResult = await retrieveTotal(query);
+      // const totalsForQueries = queryList.map(query => retrieveTotal(query));
+      //debug(`${JSON.stringify(totalResult)}`);
       return queryList;
+      //return [];
     }
     return queryList;
   }
@@ -108,7 +103,12 @@ export default ({record, searchSpec, url, maxCandidates, maxRecordsPerRequest = 
   // state.maxedQueries : queries that resulted in more than serverMaxResults hits
 
 
+  // eslint-disable-next-line max-statements
   return async ({queryOffset = 0, resultSetOffset = 1, totalRecords = 0, searchCounter = 0, queryCandidateCounter = 0, queryCounter = 0, maxedQueries = []}) => {
+    if (queryListType === 'alternates') {
+      debug('Alternates - stop here');
+      return {records: [], failures: [], queriesLeft: 0, queryCounter, maxedQueries};
+    }
     const query = chosenQueryList[queryOffset];
     debug(`Running query ${JSON.stringify(query)} (${queryOffset})`);
 
@@ -201,9 +201,9 @@ export default ({record, searchSpec, url, maxCandidates, maxRecordsPerRequest = 
     }
   };
 
-  function retrieveTotal(query) {
+  /*
+  async function retrieveTotal(query) {
     debug(`Searching for candidateTotals with query: ${query}`);
-    // eslint-disable-next-line functional/no-let
     totalClient.searchRetrieve(query)
       .on('error', err => {
         // eslint-disable-next-line functional/no-conditional-statements
@@ -217,8 +217,13 @@ export default ({record, searchSpec, url, maxCandidates, maxRecordsPerRequest = 
       .on('total', total => {
         debug(`Got total: ${total}`);
         return {query, total};
+      })
+      .on('end', end => {
+        debug(`End ${JSON.stringify(end)}`);
       });
   }
+*/
+
 
   function checkMaxedQuery(query, total, serverMaxResult) {
     if (total >= serverMaxResult) {

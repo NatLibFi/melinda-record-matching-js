@@ -1,15 +1,34 @@
 {
   "description": "Should find candidates (alternates-type query)",
   "only": false,
-  "skip": false,
+  "skip": true,
   "factoryOptions": {
     "searchSpec": ["bibTitleAuthorYearAlternates"],
-    "record": {
+    "record":  {
       "leader": "02518cam a2200745zi 4500",
       "fields": [
         {
           "tag": "001",
-          "value": "000019640"
+          "value": "000019643"
+        },
+        {
+          "tag": "008",
+          "value": "221130s2020    dk |||||o|||||||||||swe||"
+        },
+        {
+          "tag": "100",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "Bazam,"
+            },
+            {
+              "code": "e",
+              "value": "kirjoittaja"
+            }
+          ]
         },
         {
           "tag": "245",
@@ -18,7 +37,7 @@
           "subfields": [
             {
               "code": "a",
-              "value": "foo."
+              "value": "foo :"
             },
             {
               "code": "b",
@@ -33,17 +52,32 @@
   "requests": [
     {
       "method": "get",
-      "url": "/?operation=searchRetrieve&query=%5Bobject+Object%5D&startRecord=1&version=2.0&maximumRecords=1",
+      "url": "/?operation=searchRetrieve&query=dc.title%3D%22%5Efoo+bar*%22&startRecord=1&version=2.0&maximumRecords=0",
       "status": 200
     },
     {
       "method": "get",
-      "url": "/?operation=searchRetrieve&query=dc.title%3D%22%5Efoo bar*%22&startRecord=1&version=2.0&maximumRecords=1",
+      "url": "/?operation=searchRetrieve&query=&startRecord=1&version=2.0&maximumRecords=0",
       "status": 200
     },
     {
       "method": "get",
-      "url": "/?operation=searchRetrieve&query=dc.title%3D%22%5Efoo bar*%22&startRecord=3&version=2.0&maximumRecords=1",
+      "url": "/?operation=searchRetrieve&query=&startRecord=3&version=2.0&maximumRecords=0",
+      "status": 200
+    },
+    {
+      "method": "get",
+      "url": "/?operation=searchRetrieve&query=dc.title%3D%22%5Efoo+bar*%22&startRecord=1&version=2.0&maximumRecords=1",
+      "status": 200
+    },
+    {
+      "method": "get",
+      "url": "/?operation=searchRetrieve&query=&startRecord=1&version=2.0&maximumRecords=1",
+      "status": 200
+    },
+    {
+      "method": "get",
+      "url": "/?operation=searchRetrieve&query=&startRecord=3&version=2.0&maximumRecords=1",
       "status": 200
     }
   ]
