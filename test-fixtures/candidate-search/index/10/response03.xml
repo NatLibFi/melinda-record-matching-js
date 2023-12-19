@@ -1,20 +1,4 @@
 <?xml version="1.0"?>
 <zs:searchRetrieveResponse xmlns:zs="http://docs.oasis-open.org/ns/search-ws/sruResponse">
-  <zs:numberOfRecords>3</zs:numberOfRecords>
-  <zs:records>
-    <zs:record>
-      <zs:recordSchema>info:srw/schema/1/foo</zs:recordSchema>
-      <zs:recordXMLEscaping>xml</zs:recordXMLEscaping>
-      <zs:recordData>
-        <record xmlns="http://www.loc.gov/MARC21/slim">
-          <leader>02983cam a2200709zi 4500</leader>
-          <controlfield tag="001">000019644</controlfield>>
-          <datafield tag="245" ind1=" " ind2=" ">
-            <subfield code="a">Foo Bar</subfield>
-          </datafield>
-        </record>
-      </zs:recordData>
-      <zs:recordPosition>3</zs:recordPosition>
-    </zs:record>
-  </zs:records>
+  <zs:numberOfRecords>9300</zs:numberOfRecords>
 </zs:searchRetrieveResponse>

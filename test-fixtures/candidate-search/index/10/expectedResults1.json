@@ -1,6 +1,6 @@
 {
-  "queriesLeft":0,
-  "query": "dc.title=\"^foo bar*\"",
+  "queriesLeft": 2,
+  "query": "dc.author=\"^Bazam*\" AND dc.title=\"^foo bar*\"",
   "queryCandidateCounter": 2,
   "queryCounter": 1,
   "queryOffset": 0,

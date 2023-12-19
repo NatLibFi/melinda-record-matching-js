@@ -32,6 +32,7 @@ import {MarcRecord} from '@natlibfi/marc-record';
 import {MARCXML} from '@natlibfi/marc-record-serializers';
 import generateQueryList from './query-list';
 import {Error as MatchingError} from '@natlibfi/melinda-commons';
+import chooseQueries from './choose-queries';
 
 export {searchTypes} from './query-list';
 
@@ -39,7 +40,7 @@ export class CandidateSearchError extends Error {}
 
 // serverMaxResults : maximum size of total search result available from the server, defaults to Aleph's 20000
 
-export default ({record, searchSpec, url, maxCandidates, maxRecordsPerRequest = 50, serverMaxResult = 20000}) => {
+export default async ({record, searchSpec, url, maxCandidates, maxRecordsPerRequest = 50, serverMaxResult = 20000}) => {
   MarcRecord.setValidationOptions({subfieldValues: false});
 
   const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search');
@@ -59,6 +60,16 @@ export default ({record, searchSpec, url, maxCandidates, maxRecordsPerRequest = 
   const queryList = queryListResult[0]?.queryList ? queryListResult[0].queryList : queryListResult;
   const queryListType = queryListResult[0]?.queryListType ? queryListResult[0].queryListType : undefined;
 
+  // if generateQueryList errored we should throw 422
+  if (queryList.length === 0) {
+    debug(`Empty list`);
+    throw new CandidateSearchError(`Generated query list contains no queries`);
+  }
+  if (queryListType && queryListType !== 'alternates') {
+    debug(`Unknown queryListType`);
+    throw new CandidateSearchError(`Generated query list has invalid type`);
+  }
+
   const client = createClient({
     url,
     maxRecordsPerRequest: adjustedMaxRecordsPerRequest,
@@ -67,33 +78,19 @@ export default ({record, searchSpec, url, maxCandidates, maxRecordsPerRequest = 
   });
 
   debug(`Searching matches for ${inputRecordId}`);
-  const chosenQueryList = choseQueries(queryList, queryListType);
+  const chosenQueryList = await filterQueryList({queryList, queryListType});
+  debug(`Chosen queries: ${JSON.stringify(chosenQueryList)}`);
 
-  // eslint-disable-next-line require-await
-  function choseQueries(queryList, queryListType) {
+  async function filterQueryList({queryList, queryListType, maxCandidates}) {
     debug(`Generated queryList (type: ${queryListType}) ${JSON.stringify(queryList)}`);
 
-    // if generateQueryList errored we should throw 422
-    if (queryList.length === 0) {
-      throw new CandidateSearchError(`Generated query list contains no queries`);
-    }
-
-    if (queryListType && queryListType !== 'alternates') {
-      throw new CandidateSearchError(`Generated query list has invalid type`);
-    }
-
     if (queryListType === 'alternates' && queryList.length > 1) {
-      //const [query] = queryList;
-      //const totalResult = await retrieveTotal(query);
-      // const totalsForQueries = queryList.map(query => retrieveTotal(query));
-      //debug(`${JSON.stringify(totalResult)}`);
-      return queryList;
-      //return [];
+      const queryListResult = await chooseQueries({url, queryList, queryListType, maxCandidates});
+      debug(`queryListResult: ${JSON.stringify(queryListResult)}`);
+      return queryListResult.map(elem => elem.query);
     }
     return queryList;
   }
-
-
   // state.totalRecords : amount of candidate records available to the current query (undefined, if there was no queries left)
   // state.query : current query (undefined if there was no queries left)
   // state.searchCounter : sequence for current search for current query (undefined, if there we no queries left)
@@ -102,16 +99,11 @@ export default ({record, searchSpec, url, maxCandidates, maxRecordsPerRequest = 
   // state.queryCounter : sequence for current query
   // state.maxedQueries : queries that resulted in more than serverMaxResults hits
 
+  return {search};
 
   // eslint-disable-next-line max-statements
-  return async ({queryOffset = 0, resultSetOffset = 1, totalRecords = 0, searchCounter = 0, queryCandidateCounter = 0, queryCounter = 0, maxedQueries = []}) => {
+  async function search({queryOffset = 0, resultSetOffset = 1, totalRecords = 0, searchCounter = 0, queryCandidateCounter = 0, queryCounter = 0, maxedQueries = []}) {
 
-    /*
-    if (queryListType === 'alternates') {
-      debug('Alternates - stop here');
-      return {records: [], failures: [], queriesLeft: 0, queryCounter, maxedQueries};
-    }
-    */
     const query = chosenQueryList[queryOffset];
     debug(`Running query ${JSON.stringify(query)} (${queryOffset})`);
 
@@ -202,31 +194,7 @@ export default ({record, searchSpec, url, maxCandidates, maxRecordsPerRequest = 
           });
       });
     }
-  };
-
-  /*
-  async function retrieveTotal(query) {
-    debug(`Searching for candidateTotals with query: ${query}`);
-    totalClient.searchRetrieve(query)
-      .on('error', err => {
-        // eslint-disable-next-line functional/no-conditional-statements
-        if (err instanceof SruSearchError) {
-          debug(`SRU SruSearchError for query: ${query}: ${err}`);
-          throw new CandidateSearchError(`SRU SruSearchError for getting total for query: ${query}: ${err}`);
-        }
-        debug(`SRU error for query: ${query}: ${err}`);
-        throw new CandidateSearchError(`SRU error for getting total for query: ${query}: ${err}`);
-      })
-      .on('total', total => {
-        debug(`Got total: ${total}`);
-        return {query, total};
-      })
-      .on('end', end => {
-        debug(`End ${JSON.stringify(end)}`);
-      });
   }
-*/
-
 
   function checkMaxedQuery(query, total, serverMaxResult) {
     if (total >= serverMaxResult) {
@@ -245,5 +213,4 @@ export default ({record, searchSpec, url, maxCandidates, maxRecordsPerRequest = 
     debug(`Cannot yet find possible database record id from recordXML (length ${recordXML.length})`);
     return undefined;
   }
-
 };
