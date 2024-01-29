@@ -14,7 +14,7 @@
 		"url": "git@github.com:natlibfi/melinda-record-matching-js.git"
 	},
 	"license": "LGPL-3.0+",
-	"version": "4.3.0",
+	"version": "4.3.1-alpha.3",
 	"main": "./dist/index.js",
 	"engines": {
 		"node": ">=18"
@@ -24,47 +24,49 @@
 	},
 	"scripts": {
 		"prepare": "npm run build",
+		"build": "babel src --source-maps --copy-files --delete-dir-on-start --out-dir=dist",
 		"start": "node dist/index.js",
 		"cli": "node dist/cli.js",
-		"lint": "eslint src",
-		"lint:dev": "eslint --fix src",
-		"test:base": "cross-env NODE_ENV=test nyc mocha --require @babel/register",
-		"test": "npm run lint && npm run test:base -- --recursive src",
-		"test:dev": "npm run lint:dev && npm run test:base -- --recursive src && npm run coverage",
+		"lint": "eslint ./src",
+		"lint:dev": "eslint --fix ./src",
+		"test": "npm run lint && npm run test:base",
+		"test:base": "cross-env NODE_ENV=test nyc mocha --package ./package.json",
+		"test:dev": "npm run lint:dev && npm run test:base && npm run coverage",
 		"coverage": "nyc check-coverage --per-file",
-		"build": "babel src --source-maps --copy-files --delete-dir-on-start --out-dir=dist",
+		"dev": "nodemon",
+		"dev:debug": "cross-env LOG_LEVEL=debug DEBUG=@natlibfi/* NODE_ENV=test nodemon",
 		"watch:test": "cross-env DEBUG=1 NODE_ENV=test nodemon -w src -w test-fixtures --exec 'npm run test:dev'"
 	},
 	"dependencies": {
-		"@natlibfi/marc-record": "^8.0.0",
+		"@natlibfi/marc-record": "^8.1.0",
 		"@natlibfi/marc-record-serializers": "^10.1.2",
-		"@natlibfi/melinda-commons": "^13.0.8-alpha.1",
-		"@natlibfi/sru-client": "^6.0.5",
+		"@natlibfi/melinda-commons": "^13.0.12",
+		"@natlibfi/sru-client": "^6.0.8",
 		"debug": "^4.3.4",
-		"isbn3": "^1.1.43",
-		"moment": "^2.29.4",
-		"natural": "^6.8.0",
+		"isbn3": "^1.1.44",
+		"moment": "^2.30.1",
+		"natural": "^6.10.4",
 		"uuid": "^9.0.1",
 		"winston": "^3.11.0"
 	},
 	"devDependencies": {
-		"@babel/cli": "^7.23.0",
-		"@babel/core": "^7.23.3",
-		"@babel/node": "^7.22.19",
-		"@babel/preset-env": "^7.23.3",
-		"@babel/register": "^7.22.15",
-		"@natlibfi/eslint-config-melinda-backend": "^3.0.3",
-		"@natlibfi/fixugen": "^2.0.2",
-		"@natlibfi/fixugen-http-client": "^3.0.1",
-		"@natlibfi/fixura": "^3.0.2",
+		"@babel/cli": "^7.23.9",
+		"@babel/core": "^7.23.9",
+		"@babel/node": "^7.23.9",
+		"@babel/preset-env": "^7.23.9",
+		"@babel/register": "^7.23.7",
+		"@natlibfi/eslint-config-melinda-backend": "^3.0.4",
+		"@natlibfi/fixugen": "^2.0.4",
+		"@natlibfi/fixugen-http-client": "^3.0.4",
+		"@natlibfi/fixura": "^3.0.4",
 		"babel-plugin-istanbul": "^6.1.1",
 		"babel-plugin-rewire": "^1.2.0",
-		"chai": "^4.3.10",
+		"chai": "^4.4.1",
 		"chai-as-promised": "^7.1.1",
 		"cross-env": "^7.0.3",
-		"eslint": "^8.53.0",
+		"eslint": "^8.56.0",
 		"mocha": "^10.2.0",
-		"nodemon": "^3.0.1",
+		"nodemon": "^3.0.3",
 		"nyc": "^15.1.0"
 	},
 	"eslintConfig": {
@@ -88,17 +90,33 @@
 			}
 		}
 	},
-	"nyc": {
-		"exclude": [
-			"*/*.spec.js",
-			"*/**/*.spec.js"
-		],
-		"reporter": [
-			"lcov",
-			"html"
+	"mocha": {
+		"spec": [
+			"src/*.spec.js",
+			"src/**/*.spec.js"
 		],
 		"require": [
 			"@babel/register"
+		],
+		"inline-diffs": true,
+		"maxDiffSize": 25000,
+		"bail": true,
+		"exit": true
+	},
+	"nodemonConfig": {
+		"exec": "npm run test:dev",
+		"watch": [
+			"src/*",
+			"test-fixtures/*"
+		]
+	},
+	"nyc": {
+		"exclude": [
+			"src/*.spec.js",
+			"src/**/*.spec.js"
+		],
+		"reporter": [
+			"text"
 		],
 		"sourceMap": false,
 		"instrument": false,
