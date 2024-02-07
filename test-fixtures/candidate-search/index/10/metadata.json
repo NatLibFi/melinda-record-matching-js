@@ -1,6 +1,6 @@
 {
   "description": "Should find candidates (alternates-type query)",
-  "only": true,
+  "only": false,
   "skip": false,
   "factoryOptions": {
     "searchSpec": ["bibTitleAuthorYearAlternates"],
