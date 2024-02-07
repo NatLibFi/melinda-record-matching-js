@@ -220,8 +220,6 @@ export function bibTitleAuthorYearAlternates(record) {
 export function bibTitleAuthorPublisher({record, onlyTitleLength, addYear = false, alternates = false, alternateQueries = []}) {
   debug(`bibTitleAuthorPublisher, onlyTitleLength: ${onlyTitleLength}, addYear: ${addYear}, alternates: ${alternates}`);
   const title = getTitle();
-  const booleanStartWords = ['and', 'or', 'nor', 'not'];
-
   if (testStringOrNumber(title)) {
     const formatted = String(title)
       .replace(/[^\w\s\p{Alphabetic}]/gu, '')
@@ -232,7 +230,7 @@ export function bibTitleAuthorPublisher({record, onlyTitleLength, addYear = fals
       .trim();
 
     // use word search for titles starting with a boolean
-    const useWordSearch = booleanStartWords.some(word => formatted.toLowerCase().startsWith(word));
+    const useWordSearch = checkUseWordSearch(formatted);
     // Prevent too many matches / SRU crashing by having a minimum length
     // Note that currently this fails matching if there are no matches from previous matchers
     if (formatted.length >= onlyTitleLength && !alternates) {
@@ -316,8 +314,6 @@ export function bibAuthors(record) {
   //debugData(record);
 
   const author = getAuthor(record);
-  const booleanStartWords = ['and', 'or', 'nor', 'not'];
-
 
   if (testStringOrNumber(author)) {
     const formatted = String(author)
@@ -329,7 +325,7 @@ export function bibAuthors(record) {
       .trim();
 
     // use word search for authors starting with a boolean
-    const useWordSearch = booleanStartWords.some(word => formatted.toLowerCase().startsWith(word));
+    const useWordSearch = checkUseWordSearch(formatted);
     // Prevent too many matches by having a minimum length
     debugData(`Author string: ${formatted}`);
     if (formatted.length >= 5) {
@@ -418,6 +414,11 @@ export function bibYear(record) {
   }
 }
 
+export function checkUseWordSearch(formatted) {
+  // Note: add a space to startWords to catch just actual boolean words
+  const booleanStartWords = ['and ', 'or ', 'nor ', 'not '];
+  return booleanStartWords.some(word => formatted.toLowerCase().startsWith(word));
+}
 
 export function bibStandardIdentifiers(record) {
 
