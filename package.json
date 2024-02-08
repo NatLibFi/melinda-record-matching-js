@@ -43,7 +43,7 @@
 		"@natlibfi/melinda-commons": "^13.0.12",
 		"@natlibfi/sru-client": "^6.0.8",
 		"debug": "^4.3.4",
-		"isbn3": "^1.1.44",
+		"isbn3": "^1.1.45",
 		"moment": "^2.30.1",
 		"natural": "^6.10.4",
 		"uuid": "^9.0.1",
