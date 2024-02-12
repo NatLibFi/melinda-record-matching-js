@@ -1,9 +1,9 @@
 {
-  "description": "Should generate host record query",
-  "only": false,
+  "description": "Should not use word search for titles starting with a word starting with a boolean (*And*um)",
   "skip": false,
-  "type": "bibHostComponents",
-  "expectedQuery": ["melinda.partsofhost=12345"],
+  "only": false,
+  "type": "bibTitle",
+  "expectedQuery": ["dc.title=\"^Andum foo bar*\""],
   "inputRecord": {
     "leader": "02518cam a2200745zi 4500",
     "fields": [
@@ -12,17 +12,17 @@
         "value": "000019643"
       },
       {
-        "tag": "773",
+        "tag": "245",
         "ind1": " ",
         "ind2": " ",
         "subfields": [
           {
             "code": "a",
-            "value": "foobar"
+            "value": "Andum foo :"
           },
           {
-            "code": "w",
-            "value": "(FI-MELINDA)12345"
+            "code": "b",
+            "value": "bar  "
           }
         ]
       }

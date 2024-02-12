@@ -49,9 +49,11 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
 
   const detect = createDetectionInterface(detectionOptions, returnStrategy);
 
-  return ({record, recordExternal = {recordSource: 'incomingRecord', label: 'ic'}}) => {
+  return prepareSearch;
 
-    const search = createSearchInterface({...searchOptions, record, maxCandidates, recordExternal});
+  async function prepareSearch({record, recordExternal = {recordSource: 'incomingRecord', label: 'ic'}}) {
+
+    const {search} = await createSearchInterface({...searchOptions, record, maxCandidates, recordExternal});
     return iterate({});
 
     // candidateCount : amount of candidate records retrived from SRU for matching, NOT including current record set
@@ -365,5 +367,5 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
         return true;
       }
     }
-  };
+  }
 };

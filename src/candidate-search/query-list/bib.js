@@ -5,7 +5,7 @@
 *
 * Melinda record matching modules for Javascript
 *
-* Copyright (C) 2020-2022 University Of Helsinki (The National Library Of Finland)
+* Copyright (C) 2020-2023 University Of Helsinki (The National Library Of Finland)
 *
 * This file is part of melinda-record-matching-js
 *
@@ -30,6 +30,7 @@ import createDebugLogger from 'debug';
 import {toQueries} from '../candidate-search-utils';
 import {getMelindaIdsF035, validateSidFieldSubfieldCounts, getSubfieldValues, testStringOrNumber} from '../../matching-utils';
 
+const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:query');
 
 export function bibSourceIds(record) {
 
@@ -150,7 +151,13 @@ export function bibMelindaIds(record) {
 // bibHostComponents returns host id from the first subfield $w of first field f773, see test-fixtures 04 and 05
 // bibHostComponents should search all 773 $ws for possible host id, but what should it do in case of multiple host ids?
 export function bibHostComponents(record) {
+  const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:query:bibHostComponents');
+  const debugData = debug.extend('data');
+  debug(`Creating queries for hostIds`);
+
   const id = getHostId();
+  debugData(`Found id: ${JSON.stringify(id)}`);
+
   return testStringOrNumber(id) ? [`melinda.partsofhost=${id}`] : [];
 
   function getHostId() {
@@ -187,15 +194,32 @@ export function bibTitle(record) {
 }
 
 export function bibTitleAuthor(record) {
+  debug('bibTitleAuthor');
   // We use onlyTitleLength that is longer than our formatted length to
   // get an author or an publisher always
   return bibTitleAuthorPublisher({record, onlyTitleLength: 100});
 }
 
-export function bibTitleAuthorPublisher({record, onlyTitleLength}) {
-  const title = getTitle();
-  const booleanStartWords = ['and', 'or', 'nor', 'not'];
+export function bibTitleAuthorYear(record) {
+  debug('bibTitleAuthorYearAlternates');
+  // We use onlyTitleLength that is longer than our formatted length to
+  // get an author or an publisher always
 
+  return bibTitleAuthorPublisher({record, onlyTitleLength: 100, addYear: true});
+}
+
+export function bibTitleAuthorYearAlternates(record) {
+  debug('bibTitleAuthorYearAlternates');
+  // We use onlyTitleLength that is longer than our formatted length to
+  // get an author or an publisher always
+  const origQueryList = bibTitleAuthorPublisher({record, onlyTitleLength: 100, addYear: true, alternates: true, alternateQueries: []});
+  debug(`${JSON.stringify(origQueryList)}`);
+  return {queryList: Array.from(origQueryList).reverse(), queryListType: 'alternates'};
+}
+
+export function bibTitleAuthorPublisher({record, onlyTitleLength, addYear = false, alternates = false, alternateQueries = []}) {
+  debug(`bibTitleAuthorPublisher, onlyTitleLength: ${onlyTitleLength}, addYear: ${addYear}, alternates: ${alternates}`);
+  const title = getTitle();
   if (testStringOrNumber(title)) {
     const formatted = String(title)
       .replace(/[^\w\s\p{Alphabetic}]/gu, '')
@@ -206,38 +230,61 @@ export function bibTitleAuthorPublisher({record, onlyTitleLength}) {
       .trim();
 
     // use word search for titles starting with a boolean
-    const useWordSearch = booleanStartWords.some(word => formatted.toLowerCase().startsWith(word));
+    const useWordSearch = checkUseWordSearch(formatted);
     // Prevent too many matches / SRU crashing by having a minimum length
     // Note that currently this fails matching if there are no matches from previous matchers
-    if (formatted.length >= onlyTitleLength) {
+    if (formatted.length >= onlyTitleLength && !alternates) {
       return [`dc.title="${useWordSearch ? '' : '^'}${formatted}*"`];
     }
     const queryIsOkAlone = formatted.length >= 5;
 
     // use word search without ending * also in combination searches to avoid SRU-server crashes [MRA-189]
     const query = `dc.title="${useWordSearch || !queryIsOkAlone ? '' : '^'}${formatted}${queryIsOkAlone ? '*' : ''}"`;
+    debug(`query: ${query}`);
+    const newAlternateQueries = alternates ? [...alternateQueries, query] : alternateQueries;
 
-    return addAuthorsToSearch({query, queryIsOkAlone});
+    return addAuthorsToSearch({query, queryIsOkAlone, addYear, alternates, alternateQueries: newAlternateQueries});
   }
 
   return [];
 
-  function addAuthorsToSearch({query, queryIsOkAlone = false}) {
+  function addAuthorsToSearch({query, queryIsOkAlone = false, addYear = false, alternates = false, alternateQueries = []}) {
+    debug('addAuthorsToSearch');
     const [authorQuery] = bibAuthors(record);
     if (authorQuery !== undefined) {
-      return [`${authorQuery} AND ${query}`];
+      if (addYear) {
+        const newAlternateQueries = alternates ? [...alternateQueries, `${authorQuery} AND ${query}`] : alternateQueries;
+        return addYearToSearch({query: `${authorQuery} AND ${query}`, queryIsOkAlone: true, alternates, alternateQueries: newAlternateQueries});
+      }
+      return alternates ? alternateQueries : [`${authorQuery} AND ${query}`];
     }
-    return addPublisherToSearch({query, queryIsOkAlone});
+    return addPublisherToSearch({query, queryIsOkAlone, addYear, alternates, alternateQueries});
     //return [];
   }
 
-  function addPublisherToSearch({query, queryIsOkAlone = false}) {
+  function addPublisherToSearch({query, queryIsOkAlone = false, addYear = false, alternates = false, alternateQueries = []}) {
     const [publisherQuery] = bibPublishers(record);
     if (publisherQuery !== undefined) {
-      return [`${publisherQuery} AND ${query}`];
+      if (addYear) {
+        const newAlternateQueries = alternates ? [...alternateQueries, `${publisherQuery} AND ${query}`] : alternateQueries;
+        return addYearToSearch({query: `${publisherQuery} AND ${query}`, queryIsOkAlone: true, alternates, alternateQueries: newAlternateQueries});
+      }
+      return alternates ? alternateQueries : [`${publisherQuery} AND ${query}`];
+    }
+    if (queryIsOkAlone && !addYear) {
+      return alternates ? alternateQueries : [`${query}`];
+    }
+    return addYearToSearch({query, queryIsOkAlone, alternates, alternateQueries});
+  }
+
+  function addYearToSearch({query, queryIsOkAlone = false, alternates = false, alternateQueries = []}) {
+    const [yearQuery] = bibYear(record);
+    if (yearQuery !== undefined) {
+      const newAlternateQueries = alternates ? [...alternateQueries, `${yearQuery} AND ${query}`] : alternateQueries;
+      return alternates ? newAlternateQueries : [`${yearQuery} AND ${query}`];
     }
     if (queryIsOkAlone) {
-      return [`${query}`];
+      return alternates ? alternateQueries : [`${query}`];
     }
     return [];
   }
@@ -267,8 +314,6 @@ export function bibAuthors(record) {
   //debugData(record);
 
   const author = getAuthor(record);
-  const booleanStartWords = ['and', 'or', 'nor', 'not'];
-
 
   if (testStringOrNumber(author)) {
     const formatted = String(author)
@@ -280,7 +325,7 @@ export function bibAuthors(record) {
       .trim();
 
     // use word search for authors starting with a boolean
-    const useWordSearch = booleanStartWords.some(word => formatted.toLowerCase().startsWith(word));
+    const useWordSearch = checkUseWordSearch(formatted);
     // Prevent too many matches by having a minimum length
     debugData(`Author string: ${formatted}`);
     if (formatted.length >= 5) {
@@ -351,6 +396,29 @@ export function bibPublishers(record) {
   }
 }
 
+export function bibYear(record) {
+  const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:query:bibYear');
+  const debugData = debug.extend('data');
+  debug(`Creating query for the publishing year`);
+  debugData(record);
+
+  const year = getYear(record);
+  if (year) {
+    return [`dc.date="${year}"`];
+  }
+  return [];
+
+  function getYear(record) {
+    const value = record.get(/^008$/u)?.[0]?.value || undefined;
+    return testStringOrNumber(value) ? String(value).slice(7, 11) : undefined;
+  }
+}
+
+export function checkUseWordSearch(formatted) {
+  // Note: add a space to startWords to catch just actual boolean words
+  const booleanStartWords = ['and ', 'or ', 'nor ', 'not '];
+  return booleanStartWords.some(word => formatted.toLowerCase().startsWith(word));
+}
 
 export function bibStandardIdentifiers(record) {
 
