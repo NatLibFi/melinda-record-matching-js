@@ -1,0 +1,50 @@
+{
+  "description": "Should generate titleAuthorYear query",
+  "only": false,
+  "skip": false,
+  "type": "bibTitleAuthorYear",
+  "expectedQuery": ["dc.date=\"2020\" AND dc.author=\"^Bazam*\" AND dc.title=\"^foo bar*\""],
+  "inputRecord": {
+    "leader": "02518cam a2200745zi 4500",
+    "fields": [
+      {
+        "tag": "001",
+        "value": "000019643"
+      },
+      {
+        "tag": "008",
+        "value": "221130s2020    dk |||||o|||||||||||swe||"
+      },
+      {
+        "tag": "100",
+        "ind1": " ",
+        "ind2": " ",
+        "subfields": [
+          {
+            "code": "a",
+            "value": "Bazam,"
+          },
+          {
+            "code": "e",
+            "value": "kirjoittaja"
+          }
+        ]
+      },
+      {
+        "tag": "245",
+        "ind1": " ",
+        "ind2": " ",
+        "subfields": [
+          {
+            "code": "a",
+            "value": "foo :"
+          },
+          {
+            "code": "b",
+            "value": "bar  "
+          }
+        ]
+      }
+    ]
+  }
+}

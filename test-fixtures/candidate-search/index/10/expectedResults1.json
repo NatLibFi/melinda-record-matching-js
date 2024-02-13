@@ -1,0 +1,61 @@
+{
+  "queriesLeft": 2,
+  "query": "dc.author=\"^Bazam*\" AND dc.title=\"^foo bar*\"",
+  "queryCandidateCounter": 2,
+  "queryCounter": 1,
+  "queryOffset": 0,
+  "resultSetOffset": 3,
+  "searchCounter": 1,
+  "totalRecords": 3,
+  "maxedQueries": [],
+  "failures": [],
+  "records":
+  [
+    {
+      "id": "000019643",
+      "record": {
+        "leader": "02983cam a2200709zi 4500",
+        "fields": [
+          {
+            "tag": "001",
+            "value": "000019643"
+          },
+          {
+            "tag": "245",
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "code": "a",
+                "value": "FooBar"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "000019640",
+      "record": {
+        "leader": "02983cam a2200709zi 4500",
+        "fields": [
+          {
+            "tag": "001",
+            "value": "000019640"
+          },
+          {
+            "tag": "245",
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "code": "a",
+                "value": "FooBar"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

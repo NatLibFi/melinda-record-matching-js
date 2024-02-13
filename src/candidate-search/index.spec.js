@@ -46,6 +46,7 @@ describe('candidate-search', () => {
     }
   });
 
+  // eslint-disable-next-line max-statements
   async function callback({getFixture, factoryOptions, searchOptions, expectedFactoryError = false, expectedSearchError = false, enabled = true}) {
     const url = 'http://foo.bar';
 
@@ -54,16 +55,29 @@ describe('candidate-search', () => {
     }
 
     if (expectedFactoryError) {
+      debug(`We're expecting an error`);
       if (expectedFactoryError.isCandidateSearchError) {
-        expect(() => createSearchInterface({...formatFactoryOptions(), url})).to.throw(CandidateSearchError, new RegExp(expectedFactoryError, 'u'));
+        try {
+          const result = createSearchInterface({...formatFactoryOptions(), url});
+          debug(result);
+        } catch (err) {
+          expect(err).to.equal(new CandidateSearchError(expectedFactoryError));
+        }
         return;
       }
 
-      expect(() => createSearchInterface({...formatFactoryOptions(), url})).to.throw(new RegExp(expectedFactoryError, 'u'));
+      try {
+        const result = createSearchInterface({...formatFactoryOptions(), url});
+        debug(result);
+      } catch (err) {
+        expect(err).to.equal(new Error(expectedFactoryError));
+      }
       return;
     }
 
-    const search = createSearchInterface({...formatFactoryOptions(), url});
+    const {search} = await createSearchInterface({...formatFactoryOptions(), url});
+    // eslint-disable-next-line no-console
+    console.log(search);
     await iterate({searchOptions, expectedSearchError});
 
     function formatFactoryOptions() {

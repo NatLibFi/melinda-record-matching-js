@@ -1,9 +1,9 @@
 {
-  "description": "Should generate host record query",
+  "description": "Should not create a combined titleAuthorYear query if there are no authors, no publishers, no years and title is too short",
   "only": false,
   "skip": false,
-  "type": "bibHostComponents",
-  "expectedQuery": ["melinda.partsofhost=12345"],
+  "type": "bibTitleAuthorYear",
+  "expectedQuery": [],
   "inputRecord": {
     "leader": "02518cam a2200745zi 4500",
     "fields": [
@@ -12,17 +12,13 @@
         "value": "000019643"
       },
       {
-        "tag": "773",
+        "tag": "245",
         "ind1": " ",
         "ind2": " ",
         "subfields": [
           {
             "code": "a",
-            "value": "foobar"
-          },
-          {
-            "code": "w",
-            "value": "(FI-MELINDA)12345"
+            "value": "foo :"
           }
         ]
       }

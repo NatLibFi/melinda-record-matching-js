@@ -1,0 +1,74 @@
+{
+  "description": "Should find candidates (alternates-type query)",
+  "only": false,
+  "skip": false,
+  "factoryOptions": {
+    "searchSpec": ["bibTitleAuthorYearAlternates"],
+    "record":  {
+      "leader": "02518cam a2200745zi 4500",
+      "fields": [
+        {
+          "tag": "001",
+          "value": "000019643"
+        },
+        {
+          "tag": "008",
+          "value": "221130s2020    dk |||||o|||||||||||swe||"
+        },
+        {
+          "tag": "100",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "Bazam,"
+            },
+            {
+              "code": "e",
+              "value": "kirjoittaja"
+            }
+          ]
+        },
+        {
+          "tag": "245",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "foo :"
+            },
+            {
+              "code": "b",
+              "value": "bar  "
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "searchOptions": {},
+  "requests": [
+    {
+      "method": "get",
+      "url": "/?operation=searchRetrieve&query=dc.date%3D%222020%22+AND+dc.author%3D%22%5EBazam*%22+AND+dc.title%3D%22%5Efoo+bar*%22&startRecord=1&version=2.0",
+      "status": 200
+    },
+    {
+      "method": "get",
+      "url": "/?operation=searchRetrieve&query=dc.author%3D%22%5EBazam*%22+AND+dc.title%3D%22%5Efoo+bar*%22&startRecord=1&version=2.0",
+      "status": 200
+    },
+    {
+      "method": "get",
+      "url": "/?operation=searchRetrieve&query=dc.title%3D%22%5Efoo+bar*%22&startRecord=1&version=2.0",
+      "status": 200
+    },
+    {
+      "method": "get",
+      "url": "/?operation=searchRetrieve&query=dc.author%3D%22%5EBazam*%22+AND+dc.title%3D%22%5Efoo+bar*%22&startRecord=1&version=2.0&maximumRecords=1",
+      "status": 200
+    }
+  ]
+}
