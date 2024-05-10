@@ -13,8 +13,8 @@
 		"type": "git",
 		"url": "git@github.com:natlibfi/melinda-record-matching-js.git"
 	},
-	"license": "LGPL-3.0+",
-	"version": "4.3.2",
+	"license": "MIT",
+	"version": "4.3.3-alpha.2",
 	"main": "./dist/index.js",
 	"engines": {
 		"node": ">=18"
@@ -38,35 +38,35 @@
 		"watch:test": "cross-env DEBUG=1 NODE_ENV=test nodemon -w src -w test-fixtures --exec 'npm run test:dev'"
 	},
 	"dependencies": {
-		"@natlibfi/marc-record": "^8.1.0",
+		"@natlibfi/marc-record": "^8.1.2",
 		"@natlibfi/marc-record-serializers": "^10.1.2",
-		"@natlibfi/melinda-commons": "^13.0.12",
-		"@natlibfi/sru-client": "^6.0.8",
+		"@natlibfi/melinda-commons": "^13.0.13",
+		"@natlibfi/sru-client": "^6.0.10",
 		"debug": "^4.3.4",
-		"isbn3": "^1.1.45",
+		"isbn3": "^1.1.48",
 		"moment": "^2.30.1",
-		"natural": "^6.10.4",
+		"natural": "^6.12.0",
 		"uuid": "^9.0.1",
-		"winston": "^3.11.0"
+		"winston": "^3.13.0"
 	},
 	"devDependencies": {
-		"@babel/cli": "^7.23.9",
-		"@babel/core": "^7.23.9",
+		"@babel/cli": "^7.24.5",
+		"@babel/core": "^7.24.5",
 		"@babel/node": "^7.23.9",
-		"@babel/preset-env": "^7.23.9",
+		"@babel/preset-env": "^7.24.5",
 		"@babel/register": "^7.23.7",
-		"@natlibfi/eslint-config-melinda-backend": "^3.0.4",
-		"@natlibfi/fixugen": "^2.0.4",
-		"@natlibfi/fixugen-http-client": "^3.0.4",
-		"@natlibfi/fixura": "^3.0.4",
+		"@natlibfi/eslint-config-melinda-backend": "^3.0.5",
+		"@natlibfi/fixugen": "^2.0.5",
+		"@natlibfi/fixugen-http-client": "^3.0.5",
+		"@natlibfi/fixura": "^3.0.5",
 		"babel-plugin-istanbul": "^6.1.1",
 		"babel-plugin-rewire": "^1.2.0",
 		"chai": "^4.4.1",
 		"chai-as-promised": "^7.1.1",
 		"cross-env": "^7.0.3",
-		"eslint": "^8.56.0",
-		"mocha": "^10.2.0",
-		"nodemon": "^3.0.3",
+		"eslint": "^8.57.0",
+		"mocha": "^10.4.0",
+		"nodemon": "^3.1.0",
 		"nyc": "^15.1.0"
 	},
 	"eslintConfig": {
