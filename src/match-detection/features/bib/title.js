@@ -1,6 +1,3 @@
-
-
-
 import {LevenshteinDistance as leven} from 'natural';
 import {testStringOrNumber} from '../../../matching-utils';
 import createDebugLogger from 'debug';
