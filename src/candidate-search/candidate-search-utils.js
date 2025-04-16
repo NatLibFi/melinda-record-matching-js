@@ -5,6 +5,7 @@ export function toQueries(identifiers, queryString) {
   const debug = createDebugLogger('@natlibfi/melinda-record-matching:toQueries');
   const debugData = debug.extend('data');
 
+  // We quote the identifier, if it contains a slash! (Slash in non-quoted SRU-search breaks search.)
   const quotedIdentifiers = identifiers.map(identifier => identifier.match(/\//u) ? `"${identifier}"` : `${identifier}`);
 
   // Aleph supports only two queries with or -operator (This is not actually true)
