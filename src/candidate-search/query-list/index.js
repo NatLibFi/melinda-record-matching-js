@@ -34,13 +34,13 @@ export default async (record, searchSpec, client) => {
   return results;
 
   async function handleQextractors(qExtractors, results = []) {
-    const [cb, ...rest] = qExtractors;
+    const [qExtractor, ...rest] = qExtractors;
 
-    if (cb === undefined) {
+    if (qExtractor === undefined) {
       return results.flat();
     }
 
-    const result = await cb(record, client);
+    const result = await qExtractor(record, client);
     return handleQextractors(rest, [...results, result]);
   }
 

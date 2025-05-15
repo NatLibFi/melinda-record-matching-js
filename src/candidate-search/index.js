@@ -2,7 +2,6 @@ import createDebugLogger from 'debug';
 import createClient, {SruSearchError} from '@natlibfi/sru-client';
 import {MarcRecord} from '@natlibfi/marc-record';
 import generateQueryList from './query-list';
-import {Error as MatchingError} from '@natlibfi/melinda-commons';
 import chooseQueries from './choose-queries';
 
 export {searchTypes} from './query-list';
@@ -119,6 +118,7 @@ export default async ({record, searchSpec, url, maxCandidates, maxRecordsPerRequ
 
 export function retrieveRecords(client, query, resultSetOffset) {
   const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:retrieveRecords');
+  // eslint-disable-next-line no-unused-vars
   const debugData = debug.extend('data');
 
   return new Promise((resolve, reject) => {
@@ -143,7 +143,7 @@ export function retrieveRecords(client, query, resultSetOffset) {
         debug(`Got total: ${total}`);
         totalRecords += total;
       })
-      .on('end', async nextOffset => {
+      .on('end', nextOffset => {
         try {
           debug(`Found ${records.length} records`);
 
@@ -154,11 +154,10 @@ export function retrieveRecords(client, query, resultSetOffset) {
         }
       })
       .on('record', record => {
-        // eslint-disable-line functional/immutable-data
         const [field] = record.get(/^001$/u);
         debug(field);
-        const recordId = field.value ? field.value : '';
-        records.push({record, id: recordId});
+        const id = field.value ? field.value : '';
+        records.push({record, id}); // eslint-disable-line functional/immutable-data
       });
   });
 }

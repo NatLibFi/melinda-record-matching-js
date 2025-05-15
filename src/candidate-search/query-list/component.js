@@ -5,15 +5,9 @@ import {getSubfieldValues, testStringOrNumber, toMelindaIds} from '../../matchin
 
 const setTimeoutPromise = promisify(setTimeout); // eslint-disable-line
 
-// TODO:
-// Multi 773 handling
-// Multi $w handling
-// $w (prefix)<id> handling
-// $w <id> & $w (prefix)<id> Match
-
 export function hostIdMelinda(record) {
   const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:query:hostIdMelinda');
-  const debugData = debug.extend('data');
+  const debugData = debug.extend('data'); // eslint-disable-line
   debug(`Creating query for the Melinda Id host`);
 
   const ids = hostId(record);
@@ -25,6 +19,7 @@ export function hostIdMelinda(record) {
   return [];
 
   function hostId(record) {
+    // Multi 773 handling
     const f773s = record.get(/^773$/u)
       .filter(f773 => f773.subfields.some(sub => sub.code === 'w' && (/\(FI-MELINDA\).*/ui).test(sub.value)));
 
@@ -32,6 +27,9 @@ export function hostIdMelinda(record) {
       return false;
     }
 
+    // Multi $w handling
+    // $w (prefix)<id> handling
+    // $w <id> & $w (prefix)<id> Match
     const melindaIds = f773s.map(f773 => toMelindaIds(f773, ['w'])).flat()
       .filter(value => testStringOrNumber(value)) // drop invalid values
       .filter((value, index, array) => array.indexOf(value) === index); // unique values;
@@ -39,13 +37,9 @@ export function hostIdMelinda(record) {
   }
 }
 
-// Tää tänne
-// Jos 773ssa ei ole (melinda/XXXX)
-// Hae 773 w sella melindasta tätiID:llä emo
-// SRU melinda.sourceid=<täti Id>tati (katso candihausta mallia)
 export async function hostIdOtherSource(record, client) {
   const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:query:hostIdOtherSource');
-  const debugData = debug.extend('data');
+  const debugData = debug.extend('data'); // eslint-disable-line
   debug(`Creating query for the Other source Id host`);
 
   const ids = getHostIds(record);
@@ -55,20 +49,13 @@ export async function hostIdOtherSource(record, client) {
     const melindaHostQueries = await handleSruCalls(otherSourceIds);
     debug(JSON.stringify(melindaHostQueries));
 
-
-    // Tää palautetaan listalle hauksi
-    // hae melindasta emon MelindaIDllä sen poikaset
-    // SRU melinda.partsofhost=<melinda id> ilman prefix(fi-melinda)
     return melindaHostQueries;
   }
 
   debug(`No valid other source hosts found`);
   return [];
 
-  // Multi 773 handling
-  // Multi $w handling
-  // $w (prefix)<id> handling
-  // $w <id> & $w (prefix)<id> Match
+
   function getHostIds(record) {
     const f773s = record.get(/^773$/u)
       .filter(f773 => f773.subfields.some(sub => sub.code === 'w' && !(/\(FI-MELINDA\).*/ui).test(sub.value)));
@@ -76,12 +63,16 @@ export async function hostIdOtherSource(record, client) {
       return false;
     }
 
+    // Multi 773 handling
     const subfieldWs = f773s
       .map(f773 => {
         debugData(`f773: ${JSON.stringify(f773)}`);
         return getSubfieldValues(f773, 'w').flat();
       }).flat();
 
+    // Multi $w handling
+    // $w (prefix)<id> handling
+    // $w <id> & $w (prefix)<id> Match
     const ids = subfieldWs.map(value => `${value}`.replace(/\(FI-.*\)/ui, '')) // remove prefixes
       .filter(value => testStringOrNumber(value)) // drop invalid values
       .filter((value, index, array) => array.indexOf(value) === index); // unique values
@@ -91,9 +82,7 @@ export async function hostIdOtherSource(record, client) {
 
   function getOtherSources(record) {
     const fSids = record.get('SID');
-    return fSids.map(field => {
-      return getSubfieldValues(field, 'b');
-    });
+    return fSids.map(field => getSubfieldValues(field, 'b'));
   }
 
   async function handleSruCalls(otherSourceIds, ids = []) {
@@ -107,8 +96,8 @@ export async function hostIdOtherSource(record, client) {
 
     const otherSourceHostQuery = await toQueries([otherSourceId], 'melinda.sourceid');
     const id = await new Promise((resolve, reject) => {
-      // eslint-disable-next-line functional/no-let
       debug(`Searching for hosts with query: ${otherSourceHostQuery}`);
+      // eslint-disable-next-line functional/no-let
       let recordId;
 
       client.searchRetrieve(otherSourceHostQuery)
@@ -119,6 +108,7 @@ export async function hostIdOtherSource(record, client) {
         .on('end', async () => {
           try {
             debug(`Searching for hosts: done`);
+            await setTimeoutPromise(10);
             resolve(recordId);
           } catch (err) {
             debug(`Error caught on END`);

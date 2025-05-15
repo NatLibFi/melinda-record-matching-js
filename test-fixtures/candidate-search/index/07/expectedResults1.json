@@ -1,5 +1,5 @@
 {
-  "queriesLeft":0,
+  "queriesLeft": 0,
   "query": "dc.title=\"^foo bar*\"",
   "queryCandidateCounter": 2,
   "queryCounter": 1,
@@ -7,10 +7,10 @@
   "resultSetOffset": 3,
   "searchCounter": 1,
   "totalRecords": 3,
-  "maxedQueries": ["dc.title=\"^foo bar*\""],
-  "failures": [],
-  "records":
-  [
+  "maxedQueries": [
+    "dc.title=\"^foo bar*\""
+  ],
+  "records": [
     {
       "id": "000019643",
       "record": {

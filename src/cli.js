@@ -16,9 +16,7 @@ async function cli() {
     .usage('Not installed: npx $0 <operation> [options] and env variable info in README')
     .usage('Build from source: node dist/index.js <operation> [options] and env variable info in README')
     .showHelpOnFail(true)
-    .example([
-      ['$ node /dist/cli.js record.json'],
-    ])
+    .example([['$ node /dist/cli.js record.json']])
     .env('MELINDA_RECORD_MATCH')
     .version()
     .positional('file', {type: 'string', describe: 'Json file of records to match'})
@@ -74,7 +72,6 @@ async function cli() {
   debug(JSON.stringify(result));
 
 
-  // TODO: palauta iffilliset generaattorit ja syötä optiona IDS, STANDARD_IDS, CONTENT tai CONTENTALT
   function generateStrategy(searchType) {
     if (['IDS'].includes(searchType)) {
       return [
@@ -148,16 +145,14 @@ async function cli() {
     }
 
     if (['STANDARD_IDS'].includes(searchType)) {
-      return [
-        candidateSearch.searchTypes.bib.standardIdentifiers
-      ];
+      return [candidateSearch.searchTypes.bib.standardIdentifiers];
     }
 
     if (['COMPONENT'].includes(searchType)) {
       return [
         //candidateSearch.searchTypes.bib.sourceIds,
         candidateSearch.searchTypes.component.hostIdMelinda,
-        //candidateSearch.searchTypes.component.hostIdOtherSource
+        candidateSearch.searchTypes.component.hostIdOtherSource
       ];
     }
 

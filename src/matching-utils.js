@@ -15,7 +15,7 @@ export function getMelindaIdsF035(record) {
     return [];
   }
 
-  const allF035MelindaIds = [].concat(...f035s.map(toMelindaIds));
+  const allF035MelindaIds = [].concat(...f035s.map(field => toMelindaIds(field)));
   const f035MelindaIds = [...new Set(allF035MelindaIds)];
 
   debugData(`Fields (${f035s.length}): ${JSON.stringify(f035s)}`);

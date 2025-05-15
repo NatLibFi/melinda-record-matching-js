@@ -1,7 +1,6 @@
 {
- "queriesLeft": 0,
- "queryCounter": 1,
+  "queriesLeft": 0,
+  "queryCounter": 1,
   "records": [],
-  "maxedQueries": [],
-  "failures": []
+  "maxedQueries": []
 }
