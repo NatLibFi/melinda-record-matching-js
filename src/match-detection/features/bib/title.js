@@ -1,6 +1,7 @@
-import {LevenshteinDistance as leven} from 'natural';
-import {testStringOrNumber} from '../../../matching-utils';
 import createDebugLogger from 'debug';
+import naturalPkg from 'natural';
+const {LevenshteinDistance: leven} = naturalPkg;
+import {testStringOrNumber} from '../../../matching-utils.js';
 
 const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection:features:title');
 const debugData = debug.extend('data');

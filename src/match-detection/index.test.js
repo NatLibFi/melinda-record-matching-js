@@ -1,19 +1,20 @@
-
+import assert from 'node:assert';
+import {describe} from 'node:test';
+import createDebugLogger from 'debug';
+import {inspect} from 'util';
 import generateTests from '@natlibfi/fixugen';
 import {READERS} from '@natlibfi/fixura';
-import {expect} from 'chai';
 import {MarcRecord} from '@natlibfi/marc-record';
-import * as features from './features';
-import createDetectionInterface from '.';
-import {inspect} from 'util';
-import createDebugLogger from 'debug';
+
+import createDetectionInterface from './index.js';
+import * as features from './features/index.js';
 
 const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection:test');
 const debugData = debug.extend('data');
 
 describe('match-detection', () => {
   generateTests({
-    path: [__dirname, '..', '..', 'test-fixtures', 'match-detection', 'index'],
+    path: [import.meta.dirname, '..', '..', 'test-fixtures', 'match-detection', 'index'],
     useMetadataFile: true,
     recurse: false,
     fixura: {
@@ -39,7 +40,7 @@ describe('match-detection', () => {
       const results = detect({recordA, recordB});
       debugData(`${JSON.stringify(results)}`);
 
-      expect(results).to.eql(expectedResults);
+      assert.deepStrictEqual(results, expectedResults);
 
       function formatOptions() {
         const contextFeatures = features[options.strategy.type];

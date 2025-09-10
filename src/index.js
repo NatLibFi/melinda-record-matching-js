@@ -1,6 +1,6 @@
 import createDebugLogger from 'debug';
-import createSearchInterface, * as candidateSearch from './candidate-search';
-import createDetectionInterface, * as matchDetection from './match-detection';
+import createSearchInterface, * as candidateSearch from './candidate-search/index.js';
+import createDetectionInterface, * as matchDetection from './match-detection/index.js';
 //import inspect from 'util';
 
 export {candidateSearch, matchDetection};
@@ -83,7 +83,6 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
 
       function handleMatchResult(matchResult, matches, nonMatches, matchErrors) {
         debugData(`- Amount of new matches from record set: ${matchResult.matches.length}`);
-        // eslint-disable-next-line functional/no-conditional-statements
         if (returnNonMatches) {
           debugData(`- Amount of new nonMatches from record set: ${matchResult.nonMatches.length}`);
         }
@@ -93,7 +92,6 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
         const newMatchErrors = matchErrors.concat(matchResult.matchErrors);
 
         debugData(`- Total amount of matches: ${newMatches.length}`);
-        // eslint-disable-next-line functional/no-conditional-statements
         if (returnNonMatches) {
           debugData(`- Total amount of nonMatches: ${newNonMatches.length}`);
         }
@@ -230,8 +228,6 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
       */
 
       if (candidate) {
-
-        // eslint-disable-next-line functional/no-conditional-statements
         if (candidateNotInMatches(matches.concat(nonMatches), candidate)) {
           const {record: candidateRecord, id: candidateId} = candidate;
           const recordBExternal = {id: candidate.id, recordSource: 'databaseRecord', label: `db-${candidate.id}`};
@@ -294,7 +290,6 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
 
         debugData(`- Total matches after this detection: ${matches.concat(newRecordMatches).length} (max: ${maxMatches})`);
 
-        // eslint-disable-next-line functional/no-conditional-statements
         if (returnNonMatches) {
           debugData(`- Total nonMatches after this detection: ${nonMatches.concat(newRecordNonMatches).length}`);
         }

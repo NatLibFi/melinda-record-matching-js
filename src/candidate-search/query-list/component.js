@@ -1,7 +1,7 @@
 import createDebugLogger from 'debug';
 import {promisify} from 'util';
-import {toQueries} from '../candidate-search-utils';
-import {getSubfieldValues, testStringOrNumber, toMelindaIds} from '../../matching-utils';
+import {toQueries} from '../candidate-search-utils.js';
+import {getSubfieldValues, testStringOrNumber, toMelindaIds} from '../../matching-utils.js';
 
 const setTimeoutPromise = promisify(setTimeout); // eslint-disable-line
 
@@ -97,7 +97,6 @@ export async function hostIdOtherSource(record, client) {
     const otherSourceHostQuery = await toQueries([otherSourceId], 'melinda.sourceid');
     const id = await new Promise((resolve, reject) => {
       debug(`Searching for hosts with query: ${otherSourceHostQuery}`);
-      // eslint-disable-next-line functional/no-let
       let recordId;
 
       client.searchRetrieve(otherSourceHostQuery)

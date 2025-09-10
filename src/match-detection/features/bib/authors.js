@@ -1,7 +1,8 @@
 
 
-import {LevenshteinDistance as leven} from 'natural';
-import {testStringOrNumber} from '../../../matching-utils';
+import naturalPkg from 'natural';
+const {LevenshteinDistance: leven} = naturalPkg;
+import {testStringOrNumber} from '../../../matching-utils.js';
 
 // We should extract also organisational authors (110/710)
 

@@ -1,9 +1,10 @@
-import {expect} from 'chai';
+import assert from 'node:assert';
+import {describe} from 'node:test';
 import {READERS} from '@natlibfi/fixura';
 import generateTests from '@natlibfi/fixugen-http-client';
 import {MarcRecord} from '@natlibfi/marc-record';
 import {Error as MatchingError} from '@natlibfi/melinda-commons';
-import createSearchInterface, {CandidateSearchError} from '.';
+import createSearchInterface, {CandidateSearchError} from './index.js';
 import createDebugLogger from 'debug';
 
 const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:test');
@@ -11,7 +12,7 @@ const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-sea
 describe('candidate-search', () => {
   generateTests({
     callback,
-    path: [__dirname, '..', '..', 'test-fixtures', 'candidate-search', 'index'],
+    path: [import.meta.dirname, '..', '..', 'test-fixtures', 'candidate-search', 'index'],
     recurse: false,
     fixura: {
       reader: READERS.JSON
@@ -30,26 +31,28 @@ describe('candidate-search', () => {
       debug(`We're expecting an error`);
       if (expectedFactoryError.isCandidateSearchError) {
         try {
-          const result = createSearchInterface({...formatFactoryOptions(), url});
+          const result = await createSearchInterface({...formatFactoryOptions(), url});
           debug(result);
         } catch (err) {
-          expect(err).to.equal(new CandidateSearchError(expectedFactoryError));
+          assert.equal(err instanceof CandidateSearchError, true);
+          assert.match(err.message, new RegExp(expectedFactoryError.message));
+        } finally {
+          return;
         }
-        return;
       }
 
       try {
-        const result = createSearchInterface({...formatFactoryOptions(), url});
+        const result = await createSearchInterface({...formatFactoryOptions(), url});
         debug(result);
       } catch (err) {
-        expect(err).to.equal(new Error(expectedFactoryError));
+        assert.equal(err instanceof Error, true);
+        assert.match(err.message, new RegExp(expectedFactoryError.message));
+      } finally {
+        return;
       }
-      return;
     }
 
     const {search} = await createSearchInterface({...formatFactoryOptions(), url});
-    // eslint-disable-next-line no-console
-    console.log(search);
     await iterate({searchOptions, expectedSearchError});
 
     function formatFactoryOptions() {
@@ -65,30 +68,29 @@ describe('candidate-search', () => {
     async function iterate({searchOptions, expectedSearchError, expectedErrorStatus, count = 1}) {
       const expectedResults = getFixture(`expectedResults${count}.json`);
 
-      if (expectedSearchError) { // eslint-disable-line functional/no-conditional-statements
+      if (expectedSearchError) {
         try {
           await search(searchOptions);
           throw new Error('Expected an error');
         } catch (err) {
           debug(`Got an error: ${err}`);
-          expect(err).to.be.an('error');
+          assert(err instanceof Error);
           const errorMessage = err instanceof MatchingError ? err.payload.message : err.message;
           const errorStatus = err instanceof MatchingError ? err.status : undefined;
           debug(`errorMessage: ${errorMessage}, errorStatus: ${errorStatus}`);
-          expect(errorMessage).to.match(new RegExp(expectedSearchError, 'u'));
+          assert.match(errorMessage, new RegExp(expectedSearchError, 'u'));
 
           if (expectedErrorStatus) {
-            expect(errorStatus).to.be(expectedErrorStatus);
+            assert.equal(errorStatus, expectedErrorStatus);
             return;
           }
           return;
         }
       }
 
-      // eslint-disable-next-line functional/no-conditional-statements
       if (!expectedSearchError) {
         const results = await search(searchOptions);
-        expect(formatResults(results)).to.eql(expectedResults);
+        assert.deepStrictEqual(formatResults(results), expectedResults);
       }
 
       function formatResults(results) {
@@ -98,7 +100,6 @@ describe('candidate-search', () => {
           records: results.records.map(({record, id}) => ({id, record: record.toObject()}))
         };
       }
-
     }
   }
 });

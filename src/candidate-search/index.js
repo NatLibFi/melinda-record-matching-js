@@ -1,10 +1,11 @@
 import createDebugLogger from 'debug';
 import createClient, {SruSearchError} from '@natlibfi/sru-client';
 import {MarcRecord} from '@natlibfi/marc-record';
-import generateQueryList from './query-list';
-import chooseQueries from './choose-queries';
 
-export {searchTypes} from './query-list';
+import generateQueryList from './query-list/index.js';
+import chooseQueries from './choose-queries.js';
+
+export {searchTypes} from './query-list/index.js';
 
 export class CandidateSearchError extends Error { }
 
@@ -123,14 +124,12 @@ export function retrieveRecords(client, query, resultSetOffset) {
 
   return new Promise((resolve, reject) => {
     const records = [];
-    // eslint-disable-next-line functional/no-let
     let totalRecords = 0;
 
     debug(`Searching for candidates with query: ${query} (Offset ${resultSetOffset})`);
 
     client.searchRetrieve(query, {startRecord: resultSetOffset})
       .on('error', err => {
-        // eslint-disable-next-line functional/no-conditional-statements
         if (err instanceof SruSearchError) {
           debug(`SRU SruSearchError for query: ${query}: ${err}`);
           reject(new CandidateSearchError(`SRU SruSearchError for query: ${query}: ${err}`));
@@ -157,7 +156,7 @@ export function retrieveRecords(client, query, resultSetOffset) {
         const [field] = record.get(/^001$/u);
         debug(field);
         const id = field.value ? field.value : '';
-        records.push({record, id}); // eslint-disable-line functional/immutable-data
+        records.push({record, id});
       });
   });
 }

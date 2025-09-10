@@ -1,10 +1,11 @@
 
+import assert from 'node:assert';
+import {describe} from 'node:test';
+import createDebugLogger from 'debug';
 import generateTests from '@natlibfi/fixugen';
 import {READERS} from '@natlibfi/fixura';
-import {expect} from 'chai';
 import {MarcRecord} from '@natlibfi/marc-record';
-import * as features from '.';
-import createDebugLogger from 'debug';
+import * as features from './index.js';
 
 
 const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection:features/bib:test');
@@ -13,7 +14,7 @@ const debugData = debug.extend('data');
 
 describe('match-detection/features/bib/', () => {
   generateTests({
-    path: [__dirname, '..', '..', '..', '..', 'test-fixtures', 'match-detection', 'features', 'bib'],
+    path: [import.meta.dirname, '..', '..', '..', '..', 'test-fixtures', 'match-detection', 'features', 'bib'],
     useMetadataFile: true,
     fixura: {
       reader: READERS.JSON
@@ -33,7 +34,7 @@ describe('match-detection/features/bib/', () => {
         debugData(`Record: ${record}`);
         const {extract} = features[feature](options);
 
-        expect(extract({record})).to.eql(expectedFeatures);
+        assert.deepStrictEqual(extract({record}), expectedFeatures);
         return;
       }
 
@@ -41,7 +42,7 @@ describe('match-detection/features/bib/', () => {
         const {featuresA, featuresB, expectedPoints} = expectations;
         const {compare} = features[feature](options);
 
-        expect(compare(featuresA, featuresB)).to.equal(expectedPoints);
+        assert.equal(compare(featuresA, featuresB), expectedPoints);
         return;
       }
 

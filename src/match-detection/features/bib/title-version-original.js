@@ -1,6 +1,7 @@
 
 import createDebugLogger from 'debug';
-import {LevenshteinDistance as leven} from 'natural';
+import naturalPkg from 'natural';
+const {LevenshteinDistance: leven} = naturalPkg;
 
 export default ({treshold = 10} = {}) => ({
   name: 'titleVersionOriginal',

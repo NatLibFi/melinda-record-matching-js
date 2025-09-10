@@ -1,6 +1,6 @@
 
 import createDebugLogger from 'debug';
-import {validateSidFieldSubfieldCounts, getSubfieldValues} from '../../../matching-utils';
+import {validateSidFieldSubfieldCounts, getSubfieldValues} from '../../../matching-utils.js';
 
 const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection:features:all-source-ids');
 const debugData = debug.extend('data');
@@ -71,7 +71,7 @@ export default () => ({
     debugData(`Comparing ${JSON.stringify(a)} and ${JSON.stringify(b)}`);
 
     const matches = a.filter(sidA => b.some(sidB => sidA.sourceDb === sidB.sourceDb &&
-            sidA.sourceId === sidB.sourceId));
+      sidA.sourceId === sidB.sourceId));
     debugData(`Matches (${matches.length}): ${JSON.stringify(matches)}`);
 
     const mismatches = a.filter(sidA => b.some(sidB => sidA.sourceDb === sidB.sourceDb &&

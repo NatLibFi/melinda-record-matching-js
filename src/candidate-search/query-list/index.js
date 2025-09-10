@@ -1,5 +1,5 @@
-import * as bib from './bib';
-import * as component from './component';
+import * as bib from './bib.js';
+import * as component from './component.js';
 import createDebugLogger from 'debug';
 
 const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:index');

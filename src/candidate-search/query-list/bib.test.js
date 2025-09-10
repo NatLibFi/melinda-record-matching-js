@@ -1,16 +1,17 @@
+import assert from 'node:assert';
+import {describe} from 'node:test';
+import createDebugLogger from 'debug';
 import generateTests from '@natlibfi/fixugen';
 import {READERS} from '@natlibfi/fixura';
-import {expect} from 'chai';
 import {MarcRecord} from '@natlibfi/marc-record';
-import * as generators from './bib';
-import createDebugLogger from 'debug';
+import * as generators from './bib.js';
 
 const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:query:bibHostComponents:test');
 const debugData = debug.extend('data');
 
 describe('candidate-search/query-list/bib/', () => {
   generateTests({
-    path: [__dirname, '..', '..', '..', 'test-fixtures', 'candidate-search', 'query-list', 'bib'],
+    path: [import.meta.dirname, '..', '..', '..', 'test-fixtures', 'candidate-search', 'query-list', 'bib'],
     useMetadataFile: true,
     fixura: {
       reader: READERS.JSON
@@ -27,11 +28,11 @@ describe('candidate-search/query-list/bib/', () => {
       debugData(`Result: ${JSON.stringify(result)}`);
 
       if (result.queryListType) {
-        expect(result.queryList).to.eql(expectedQuery);
-        expect(result.queryListType).to.eql(expectedQueryListType);
+        assert.deepStrictEqual(result.queryList, expectedQuery);
+        assert.equal(result.queryListType, expectedQueryListType);
         return;
       }
-      expect(result).to.eql(expectedQuery);
+      assert.deepStrictEqual(result, expectedQuery);
     }
   });
 });

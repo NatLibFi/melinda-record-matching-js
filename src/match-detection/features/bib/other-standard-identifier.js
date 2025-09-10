@@ -1,5 +1,5 @@
 
-import createInterface from './standard-identifier-factory';
+import createInterface from './standard-identifier-factory.js';
 
 // DEVELOP: we should compare indicators and sf2 for f024
 

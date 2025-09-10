@@ -1,6 +1,6 @@
 
 import createDebugLogger from 'debug';
-import {getMatchCounts} from '../../../matching-utils';
+import {getMatchCounts} from '../../../matching-utils.js';
 
 const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection:features:language');
 const debugData = debug.extend('data');

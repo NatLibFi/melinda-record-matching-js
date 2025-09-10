@@ -1,7 +1,7 @@
 import createDebugLogger from 'debug';
 import createClient, {SruSearchError} from '@natlibfi/sru-client';
 
-export class CandidateSearchError extends Error {}
+export class CandidateSearchError extends Error { }
 
 export default async function ({url, queryList, queryListType, maxCandidates = 50}) {
 
@@ -50,14 +50,12 @@ export default async function ({url, queryList, queryListType, maxCandidates = 5
 
     function retrieveTotal() {
       return new Promise((resolve, reject) => {
-        // eslint-disable-next-line functional/no-let
         let totalRecords = 0;
 
         debug(`Searching total amount of candidates for query: ${query}`);
 
         client.searchRetrieve(query)
           .on('error', err => {
-            // eslint-disable-next-line functional/no-conditional-statements
             if (err instanceof SruSearchError) {
               debug(`SRU SruSearchError for query: ${query}: ${err}`);
               reject(new CandidateSearchError(`SRU SruSearchError for query: ${query}: ${err}`));

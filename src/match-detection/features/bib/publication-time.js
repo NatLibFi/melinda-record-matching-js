@@ -1,6 +1,6 @@
 
 
-import {testStringOrNumber} from '../../../matching-utils';
+import {testStringOrNumber} from '../../../matching-utils.js';
 
 // We should also get copyright time and copyright/publication times from 26x
 // see publication-time-allow-cons-years for a version allowing consequent years to match

@@ -1,6 +1,6 @@
 
 import createDebugLogger from 'debug';
-import * as features from './features';
+import * as features from './features/index.js';
 
 export {features};
 

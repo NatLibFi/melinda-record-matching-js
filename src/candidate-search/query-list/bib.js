@@ -1,6 +1,6 @@
 import createDebugLogger from 'debug';
-import {toQueries} from '../candidate-search-utils';
-import {getMelindaIdsF035, validateSidFieldSubfieldCounts, getSubfieldValues, testStringOrNumber} from '../../matching-utils';
+import {toQueries} from '../candidate-search-utils.js';
+import {getMelindaIdsF035, validateSidFieldSubfieldCounts, getSubfieldValues, testStringOrNumber} from '../../matching-utils.js';
 
 const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:query');
 

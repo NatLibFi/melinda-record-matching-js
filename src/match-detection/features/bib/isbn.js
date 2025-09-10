@@ -1,7 +1,7 @@
 
-import createInterface from './standard-identifier-factory';
-import {parse as isbnParse} from 'isbn3';
 import createDebugLogger from 'debug';
+import {parse as isbnParse} from 'isbn3';
+import createInterface from './standard-identifier-factory.js';
 
 const debug = createDebugLogger(`@natlibfi/melinda-record-matching:match-detection:features:standard-identifiers:ISBN`);
 const debugData = debug.extend('data');

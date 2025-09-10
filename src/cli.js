@@ -1,6 +1,6 @@
 import fs from 'fs';
 import yargs from 'yargs';
-import createMatchOperator, {candidateSearch, matchDetection} from './index';
+import createMatchOperator, {candidateSearch, matchDetection} from './index.js';
 import createDebugLogger from 'debug';
 import {MarcRecord} from '@natlibfi/marc-record';
 

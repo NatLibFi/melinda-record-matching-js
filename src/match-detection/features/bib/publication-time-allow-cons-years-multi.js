@@ -1,6 +1,6 @@
 
-import {testStringOrNumber} from '../../../matching-utils';
 import createDebugLogger from 'debug';
+import {testStringOrNumber} from '../../../matching-utils.js';
 
 // We should also get copyright time and copyright/publication times from 26x
 // We should also get publishing time type from f008
