@@ -25,6 +25,7 @@
 		"access": "public"
 	},
 	"scripts": {
+		"prepare": "npm run build",
 		"start": "node dist/index.js",
 		"build": "esbuild \"src/**/*.js\" --sourcemap --platform=node --outdir=dist",
 		"cli": "node dist/cli.js",
