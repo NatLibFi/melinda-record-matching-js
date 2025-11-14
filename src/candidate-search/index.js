@@ -153,10 +153,17 @@ export function retrieveRecords(client, query, resultSetOffset) {
         }
       })
       .on('record', record => {
-        const [field] = record.get(/^001$/u);
-        debug(field);
-        const id = field.value ? field.value : '';
-        records.push({record, id});
+        // MarcRecord Error handling
+        try {
+          const marcRecord = new MarcRecord(record);
+          const [field] = marcRecord.get(/^001$/u);
+          debug(field);
+          const id = field.value ? field.value : '';
+          records.push({record: marcRecord, id});
+        } catch (error) {
+          debug(`Sru => record error: ${error}`);
+          debug(`Sru => record: ${record}`);
+        }
       });
   });
 }
