@@ -1,9 +1,10 @@
-import {expect} from 'chai';
+import assert from 'node:assert';
+import {describe} from 'node:test';
+import createDebugLogger from 'debug';
 import {READERS} from '@natlibfi/fixura';
 import generateTests from '@natlibfi/fixugen-http-client';
 import {MarcRecord} from '@natlibfi/marc-record';
-import createMatchInterface, {matchDetection} from '.';
-import createDebugLogger from 'debug';
+import createMatchInterface, {matchDetection} from './index.js';
 
 const debug = createDebugLogger('@natlibfi/melinda-record-matching:index:test');
 const debugData = debug.extend('data');
@@ -11,7 +12,7 @@ const debugData = debug.extend('data');
 describe('INDEX', () => {
   generateTests({
     callback,
-    path: [__dirname, '..', 'test-fixtures', 'index'],
+    path: [import.meta.dirname, '..', 'test-fixtures', 'index'],
     recurse: false,
     fixura: {
       reader: READERS.JSON
@@ -30,19 +31,18 @@ describe('INDEX', () => {
     const {matches, matchStatus, nonMatches, conversionFailures, candidateCount} = await match({record});
     debugData(`Matches: ${matches.length}, Status: ${matchStatus.status}/${matchStatus.stopReason}, NonMatches: ${nonMatches ? nonMatches.length : 'not returned'}, ConversionFailures: ${conversionFailures ? conversionFailures.length : 'not returned'}`);
 
-    expect(matchStatus.status).to.eql(expectedMatchStatus);
-    expect(matchStatus.stopReason).to.eql(expectedStopReason);
-    expect(candidateCount).to.eql(expectedCandidateCount);
+    assert.equal(matchStatus.status, expectedMatchStatus);
+    assert.equal(matchStatus.stopReason, expectedStopReason);
+    assert.equal(candidateCount, expectedCandidateCount);
 
     const formattedMatchResult = formatRecordResults(matches);
-    expect(formattedMatchResult).to.eql(expectedMatches);
+    assert.deepStrictEqual(formattedMatchResult, expectedMatches);
 
     const formattedNonMatchResult = formatRecordResults(nonMatches);
-    expect(formattedNonMatchResult).to.eql(expectedNonMatches);
+    assert.deepStrictEqual(formattedNonMatchResult, expectedNonMatches);
 
-    // eslint-disable-next-line functional/no-conditional-statements
     if (expectedFailures) {
-      expect(conversionFailures).to.eql(expectedFailures);
+      assert.deepStrictEqual(conversionFailures, expectedFailures);
     }
 
     function formatOptions() {
@@ -80,8 +80,5 @@ describe('INDEX', () => {
         record: newRecord.toObject()
       };
     }
-
-
   }
-
 });

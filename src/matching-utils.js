@@ -15,7 +15,7 @@ export function getMelindaIdsF035(record) {
     return [];
   }
 
-  const allF035MelindaIds = [].concat(...f035s.map(toMelindaIds));
+  const allF035MelindaIds = [].concat(...f035s.map(field => toMelindaIds(field)));
   const f035MelindaIds = [...new Set(allF035MelindaIds)];
 
   debugData(`Fields (${f035s.length}): ${JSON.stringify(f035s)}`);
@@ -23,16 +23,15 @@ export function getMelindaIdsF035(record) {
   debugData(`Unique ids (${f035MelindaIds.length}): ${JSON.stringify(f035MelindaIds)}`);
 
   return f035MelindaIds;
+}
 
-  function toMelindaIds({subfields}) {
-    const melindaIdRegExp = /^(?<prefix>\(FI-MELINDA\)|FCC)(?<id>\d{9})$/u;
+export function toMelindaIds({subfields}, subfieldsToParse = ['a', 'z']) {
+  const melindaIdRegExp = /^(?<prefix>\(FI-MELINDA\)|FCC)(?<id>\d{9})$/u;
 
-    return subfields
-      .filter(sub => ['a', 'z'].includes(sub.code))
-      .filter(sub => testStringOrNumber(sub.value) && melindaIdRegExp.test(String(sub.value)))
-      .map(({value}) => testStringOrNumber(value) ? String(value).replace(melindaIdRegExp, '$<id>') : '');
-
-  }
+  return subfields
+    .filter(sub => subfieldsToParse.includes(sub.code))
+    .filter(sub => testStringOrNumber(sub.value) && melindaIdRegExp.test(String(sub.value)))
+    .map(({value}) => testStringOrNumber(value) ? String(value).replace(melindaIdRegExp, '$<id>') : '');
 }
 
 export function validateSidFieldSubfieldCounts(field) {

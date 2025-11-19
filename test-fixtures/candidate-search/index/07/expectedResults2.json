@@ -6,10 +6,10 @@
   "queryCounter": 1,
   "searchCounter": 2,
   "totalRecords": 3,
-  "maxedQueries": ["dc.title=\"^foo bar*\""],
-  "failures": [],
-  "records":
-  [
+  "maxedQueries": [
+    "dc.title=\"^foo bar*\""
+  ],
+  "records": [
     {
       "id": "000019644",
       "record": {

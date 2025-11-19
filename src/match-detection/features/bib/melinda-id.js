@@ -1,5 +1,5 @@
 
-import createInterface from './melinda-identifier-factory';
+import createInterface from './melinda-identifier-factory.js';
 
 export default () => {
   const {extract, compare} = createInterface();

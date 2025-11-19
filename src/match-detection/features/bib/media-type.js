@@ -13,7 +13,7 @@ export default () => ({
     debugData(`Record (${label}): ${JSON.stringify(record)}`);
     debugData(`RecordExternal: ${JSON.stringify(recordExternal)}`);
     const values337 = get337Values();
-    debug(`${label} 337 $b values: ${JSON.stringify(values337)}`);
+    debug(`${label}: 337 $b values: ${JSON.stringify(values337)}`);
 
     return values337;
 

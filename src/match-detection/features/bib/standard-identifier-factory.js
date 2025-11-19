@@ -1,8 +1,7 @@
 /* eslint-disable max-statements */
 
-
 import createDebugLogger from 'debug';
-import {extractSubfieldsFromField, uniqueSubfields} from '../../../matching-utils';
+import {extractSubfieldsFromField, uniqueSubfields} from '../../../matching-utils.js';
 
 // Note about validity of standardIdentifiers:
 // We have three types of invalid standardIdentifiers:

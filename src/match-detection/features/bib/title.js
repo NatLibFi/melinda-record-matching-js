@@ -1,6 +1,7 @@
-import {LevenshteinDistance as leven} from 'natural';
-import {testStringOrNumber} from '../../../matching-utils';
 import createDebugLogger from 'debug';
+import naturalPkg from 'natural';
+const {LevenshteinDistance: leven} = naturalPkg;
+import {testStringOrNumber} from '../../../matching-utils.js';
 
 const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection:features:title');
 const debugData = debug.extend('data');
@@ -11,7 +12,7 @@ export default ({treshold = 10} = {}) => ({
   extract: ({record, recordExternal}) => {
     const label = recordExternal && recordExternal.label ? recordExternal.label : 'record';
     const title = getTitle();
-    debug(`${label} title: ${title}`);
+    debug(`${label}: title: ${title}`);
 
     if (testStringOrNumber(title)) {
       const titleAsNormalizedString = String(title)
@@ -22,7 +23,7 @@ export default ({treshold = 10} = {}) => ({
         // - we could precompose the finnish letters back to avoid this
         .replace(/[^\p{Letter}\p{Number}]/gu, '')
         .toLowerCase();
-      debug(`${label} titleString: ${titleAsNormalizedString}`);
+      debug(`${label}: titleString: ${titleAsNormalizedString}`);
       return [titleAsNormalizedString];
     }
 
@@ -30,7 +31,7 @@ export default ({treshold = 10} = {}) => ({
 
     function getTitle() {
       const [field] = record.get(/^245$/u);
-      debugData(`${label} titleField: ${JSON.stringify(field)}`);
+      debugData(`${label}: titleField: ${JSON.stringify(field)}`);
 
       if (field) {
         return field.subfields

@@ -1,6 +1,6 @@
 import createDebugLogger from 'debug';
-import {toQueries} from '../candidate-search-utils';
-import {getMelindaIdsF035, validateSidFieldSubfieldCounts, getSubfieldValues, testStringOrNumber} from '../../matching-utils';
+import {toQueries} from '../candidate-search-utils.js';
+import {getMelindaIdsF035, validateSidFieldSubfieldCounts, getSubfieldValues, testStringOrNumber} from '../../matching-utils.js';
 
 const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:query');
 
@@ -372,7 +372,6 @@ export function bibYear(record) {
   const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:query:bibYear');
   const debugData = debug.extend('data');
   debug(`Creating query for the publishing year`);
-  debugData(record);
 
   const year = getYear(record);
   if (year) {
@@ -381,7 +380,14 @@ export function bibYear(record) {
   return [];
 
   function getYear(record) {
-    const value = record.get(/^008$/u)?.[0]?.value || undefined;
+    const [f008] = record.get(/^008$/u);
+    if (f008 === undefined) {
+      debug('f008 missing');
+      return false;
+    }
+
+    debugData(`f008: ${JSON.stringify(f008)}`);
+    const {value} = f008;
     return testStringOrNumber(value) ? String(value).slice(7, 11) : undefined;
   }
 }

@@ -1,6 +1,6 @@
 
 import createDebugLogger from 'debug';
-import {getMatchCounts} from '../../../matching-utils';
+import {getMatchCounts} from '../../../matching-utils.js';
 
 const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection:features:language');
 const debugData = debug.extend('data');
@@ -12,10 +12,10 @@ export default () => ({
 
     const value008 = get008Value();
     const values041 = get041Values();
-    debugData(`${label} 008: ${JSON.stringify(value008)}, 041: ${JSON.stringify(values041)}`);
+    debugData(`${label}: 008: ${JSON.stringify(value008)}, 041: ${JSON.stringify(values041)}`);
 
     if (!value008 && values041.length < 1) {
-      debugData(`{$label} No actual values found`);
+      debugData(`${label}: No actual values found`);
       return [];
     }
 
@@ -26,14 +26,14 @@ export default () => ({
 
     function get008Value() {
       const value = record.get(/^008$/u)?.[0]?.value || undefined;
-      debugData(`${label} 008 value: ${value}`);
+      debugData(`${label}: 008 value: ${value}`);
 
       if (!value) {
         return undefined;
       }
 
       const code = value.slice(35, 38);
-      debugData(`${label} 008 code: ${code}`);
+      debugData(`${label}: 008 code: ${code}`);
       return isLangCodeForALanguage(code) ? code : undefined;
     }
 

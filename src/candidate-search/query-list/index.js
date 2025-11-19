@@ -1,6 +1,5 @@
-
-
-import * as bib from './bib';
+import * as bib from './bib.js';
+import * as component from './component.js';
 import createDebugLogger from 'debug';
 
 const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:index');
@@ -17,18 +16,33 @@ export const searchTypes = {
     melindaId: 'bibMelindaIds',
     sourceIds: 'bibSourceIds'
     //DEVELOP: bibContent: 'bibContent'
+  },
+  component: {
+    hostIdMelinda: 'hostIdMelinda', // 773 $w (FI-MELINDA)
+    hostIdOtherSource: 'hostIdOtherSource', // 773 $w !(FI-MELINDA)
+    hostIsbn: 'hostIsbn' // 773 $z
   }
 };
 
-export default (record, searchSpec) => {
-  const extractors = {...bib};
+export default async (record, searchSpec, client) => {
+  const extractors = {...bib, ...component};
   debugData(`extractors: ${JSON.stringify(extractors)}`);
   debugData(`searchSpec: ${JSON.stringify(searchSpec)}`);
 
-  return searchSpec
-    .map(generateQueryExtractor)
-    .map(cb => cb(record))
-    .flat();
+  const qExtractors = searchSpec.map(generateQueryExtractor);
+  const results = await handleQextractors(qExtractors);
+  return results;
+
+  async function handleQextractors(qExtractors, results = []) {
+    const [qExtractor, ...rest] = qExtractors;
+
+    if (qExtractor === undefined) {
+      return results.flat();
+    }
+
+    const result = await qExtractor(record, client);
+    return handleQextractors(rest, [...results, result]);
+  }
 
   function generateQueryExtractor(type) {
     if (extractors[type]) {

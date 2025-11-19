@@ -1,6 +1,6 @@
 
-import {testStringOrNumber} from '../../../matching-utils';
 import createDebugLogger from 'debug';
+import {testStringOrNumber} from '../../../matching-utils.js';
 
 // We should also get copyright time and copyright/publication times from 26x
 // We should also get publishing time type from f008
@@ -13,13 +13,13 @@ export default () => ({
     const label = recordExternal && recordExternal.label ? recordExternal.label : 'record';
 
     const f008Values = extractF008Values(record);
-    debug(`${label} f008: ${JSON.stringify(f008Values)}`);
+    debug(`${label}: f008: ${JSON.stringify(f008Values)}`);
 
     const f26xValues = extractF26xValues(record);
-    debug(`${label} f26x: ${JSON.stringify(f26xValues)}`);
+    debug(`${label}: f26x: ${JSON.stringify(f26xValues)}`);
 
     const f500Values = extractF500Years(record);
-    debug(`${label} f500: ${JSON.stringify(f500Values)}`);
+    debug(`${label}: f500: ${JSON.stringify(f500Values)}`);
 
     // We should get copyrightYear from f008Date2 to copyrightYears when f008YearType = 'r'
     // Is the original year (f008Date2) in f008YearType === 'r' comparable to copyrightYear?
@@ -123,7 +123,7 @@ export default () => ({
         .flat()
         .filter(({code}) => code === 'a')
         .map(({value}) => value);
-        //.filter(value => value.test(reprintRegex));
+      //.filter(value => value.test(reprintRegex));
 
       debug(`f500 reprint field contents: ${JSON.stringify(reprintFieldContents)}`);
 
@@ -172,7 +172,7 @@ export default () => ({
     // Handle consequent years as a match
     // see publication-time for a version that does not handle consequent years as a match
     if (!(isNaN(firstANumber) || isNaN(firstBNumber)) &&
-       (firstANumber + 1 === firstBNumber || firstANumber - 1 === firstBNumber)) {
+      (firstANumber + 1 === firstBNumber || firstANumber - 1 === firstBNumber)) {
       return 0.1;
     }
 
