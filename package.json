@@ -13,7 +13,7 @@
 		"url": "https://github.com/NatLibFi/melinda-record-matching-js"
 	},
 	"license": "MIT",
-	"version": "5.0.0-alpha.4",
+	"version": "5.0.0",
 	"type": "module",
 	"main": "./dist/index.js",
 	"bin": "./dist/cli.js",
