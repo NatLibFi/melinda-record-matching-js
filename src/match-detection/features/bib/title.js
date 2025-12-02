@@ -7,7 +7,7 @@ const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detecti
 const debugData = debug.extend('data');
 
 
-export default ({treshold = 10} = {}) => ({
+export default ({threshold = 10} = {}) => ({
   name: 'Title',
   extract: ({record, recordExternal}) => {
     const label = recordExternal && recordExternal.label ? recordExternal.label : 'record';
@@ -56,7 +56,7 @@ export default ({treshold = 10} = {}) => ({
 
     debug(`'${a}' vs '${b}': Max length = ${maxLength}, distance = ${distance}, percentage = ${percentage}`);
 
-    if (percentage <= treshold) {
+    if (percentage <= threshold) {
       return 0.3;
     }
 

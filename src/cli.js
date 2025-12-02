@@ -55,7 +55,7 @@ async function cli() {
   debug(JSON.stringify(args));
 
   const detection = {
-    treshold: 0.9,
+    threshold: 0.9,
     strategy: generateStrategy(searchType)
   };
 

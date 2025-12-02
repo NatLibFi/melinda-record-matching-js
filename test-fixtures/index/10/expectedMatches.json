@@ -5,7 +5,7 @@
       "Title",
       "ISBN"
     ],
-    "treshold": 0.9,
+    "threshold": 0.9,
     "candidate": {
       "id": "000019641",
       "record": {

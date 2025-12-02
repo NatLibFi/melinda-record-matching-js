@@ -4,13 +4,13 @@ import * as features from './features/index.js';
 
 export {features};
 
-export default ({strategy, treshold = 0.9}, returnStrategy = false, localSettings = {}) => ({recordA, recordB, recordAExternal = {}, recordBExternal = {}}) => {
+export default ({strategy, threshold = 0.9}, returnStrategy = false, localSettings = {}) => ({recordA, recordB, recordAExternal = {}, recordBExternal = {}}) => {
   const minProbabilityQuantifier = 0.5;
 
   const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection');
   const debugData = debug.extend('data');
 
-  debugData(`Strategy: ${JSON.stringify(strategy)}, Treshold: ${JSON.stringify(treshold)}, ReturnStrategy: ${JSON.stringify(returnStrategy)}`);
+  debugData(`Strategy: ${JSON.stringify(strategy)}, Threshold: ${JSON.stringify(threshold)}, ReturnStrategy: ${JSON.stringify(returnStrategy)}`);
   debugData(`Records: A: ${recordA}\nB: ${recordB}`);
   debug(`Externals: A: ${JSON.stringify(recordAExternal)}, B: ${JSON.stringify(recordBExternal)}`);
   // We could add here labels for records if we didn't get external labels
@@ -43,8 +43,8 @@ export default ({strategy, treshold = 0.9}, returnStrategy = false, localSetting
 
     if (similarityVector.some(v => v >= minProbabilityQuantifier)) {
       const probability = calculateProbability(similarityVector);
-      debug(`probability: ${probability} (Treshold: ${treshold})`);
-      return returnResult({match: probability >= treshold, probability});
+      debug(`probability: ${probability} (Threshold: ${threshold})`);
+      return returnResult({match: probability >= threshold, probability});
     }
 
     debugData(`No feature yielded minimum probability amount of points (${minProbabilityQuantifier})`);
@@ -58,7 +58,7 @@ export default ({strategy, treshold = 0.9}, returnStrategy = false, localSetting
   function returnResult(result) {
     if (returnStrategy) {
       debug(`Returning detection strategy with the result`);
-      const resultWithStrategy = {match: result.match, probability: result.probability, strategy: formatStrategy(strategy), treshold};
+      const resultWithStrategy = {match: result.match, probability: result.probability, strategy: formatStrategy(strategy), threshold};
       debugData(`${JSON.stringify(resultWithStrategy)}`);
       return resultWithStrategy;
     }
