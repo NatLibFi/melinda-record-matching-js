@@ -1,8 +1,16 @@
 {
-  "description": "Comparison should return points for (multiple) matching languages",
+  "description": "Comparison should return points for (multiple) matching languages in f041s",
   "feature": "language",
   "type": "compare",
   "expectedPoints": 0.1,
-  "featuresA": ["eng","fin"],
-  "featuresB": ["eng","fin"]
+  "featuresA": [{
+    "fields": [
+      {"tag": "041", "ind1": " ", "ind2": " ", "subfields": [{"code": "a", "value": "eng"}, {"code": "a", "value": "fin"}]}
+    ]
+  }, "A"],
+  "featuresB": [{
+    "fields": [
+      {"tag": "041", "ind1": " ", "ind2": " ", "subfields": [{"code": "a", "value": "eng"}, {"code": "a", "value": "fin"}]}
+    ]
+  }, "B"]
 }

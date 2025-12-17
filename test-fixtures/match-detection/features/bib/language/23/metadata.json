@@ -3,8 +3,31 @@
   "feature": "language",
   "type": "compare",
   "expectedPoints": -0.10,
-  "featuresA": ["eng","dan","sme"],
-  "featuresB": ["eng","fin","swe","nor","lat","heb","ara","spa"],
+
+    "featuresA": [{
+    "fields": [
+      {"tag": "041", "ind1": " ", "ind2": " ", "subfields": [
+        {"code": "a", "value": "eng"},
+        {"code": "a", "value": "dan"},
+        {"code": "a", "value": "est"}
+      ]}
+    ]
+  }, "A"],
+  "featuresB": [{
+    "fields": [
+      {"tag": "041", "ind1": " ", "ind2": " ", "subfields": [
+        {"code": "a", "value": "eng"},
+        {"code": "a", "value": "fin"},
+        {"code": "a", "value": "swe"},
+        {"code": "a", "value": "nor"},
+        {"code": "a", "value": "lat"},
+        {"code": "a", "value": "heb"},
+        {"code": "a", "value": "ara"},
+        {"code": "a", "value": "spa"}
+      ]}
+
+    ]
+  }, "B"],
   "skip": false,
   "only": false
 }
