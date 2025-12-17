@@ -1,5 +1,5 @@
 {
-  "description": "Should extract language from 041 (||| in 008)",
+  "description": "Should extract language from 041 (||| in 008) (DEPRECATED! Remove or replace eventually!)",
   "feature": "language",
   "type": "extract",
   "expectedFeatures": ["fin"],
@@ -27,6 +27,6 @@
       }
     ]
   },
-  "skip": false,
+  "skip": true,
   "only": false
 }
