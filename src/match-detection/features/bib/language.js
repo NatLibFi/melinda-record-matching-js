@@ -35,7 +35,7 @@ export default () => ({
     // - Normalize language codes
     // - Normalize sami langage codes
     // - Remove 'zxx'
-    return [clonedRecord, label];
+    return [{leader: clonedRecord.leader, fields: clonedRecord.fields}, label];
   },
   // eslint-disable-next-line max-statements
   compare: (aa, bb) => {
