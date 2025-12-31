@@ -4,7 +4,7 @@ import * as features from './features/index.js';
 
 export {features};
 
-export default ({strategy, threshold = 0.9}, returnStrategy = false, localSettings = {}) => ({recordA, recordB, recordAExternal = {}, recordBExternal = {}}) => {
+export default ({strategy, threshold = 0.8999}, returnStrategy = false, localSettings = {}) => ({recordA, recordB, recordAExternal = {}, recordBExternal = {}}) => {
   const minProbabilityQuantifier = 0.5;
 
   const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection');
