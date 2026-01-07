@@ -48,7 +48,7 @@ export default () => ({
     return applyLimits(score008 + score041);
 
     function applyLimits(score) {
-      if (score > 0.1) {
+      if (score > 0.1) { // Keeps the original max, we might have 0.10 (041) + 0.05 (008/35-37) = 0.15 now
         return 0.1;
       }
       if (score < -1) {
@@ -73,6 +73,11 @@ export default () => ({
       if (a008 === b008) {
         return 0.05;
       }
+
+      if (a008 === 'mul' || b008 === 'mul') {
+        return 0.0;
+      }
+
       return -0.2;
     }
 
