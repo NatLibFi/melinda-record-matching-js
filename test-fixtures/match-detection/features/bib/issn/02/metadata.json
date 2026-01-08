@@ -1,12 +1,12 @@
 {
-  "description": "Comparison should return points for matching standard identifiers",
-  "feature": "isbn",
+  "description": "Comparison should return penalty points for non-matching standard identifiers",
+  "feature": "issn",
   "type": "compare",
-  "expectedPoints": 0.75,
+  "expectedPoints": -0.2,
   "featuresA": [
-    { "code": "a", "value": "20493630" }
+    "2049-3630"
   ],
   "featuresB": [
-    { "code": "a", "value": "20493630" }
+    "2049-363X"
   ]
 }
