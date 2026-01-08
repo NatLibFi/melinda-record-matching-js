@@ -30,11 +30,9 @@ export default () => ({
 
     FixSami041().fix(clonedRecord); // Handle 'smi' adding if needed
     Remove041zxx().fix(clonedRecord); // Remove 'zxx' from f041s
+    // Add other language code normalizations?
 
-    // NB! Apply filters!
-    // - Normalize language codes
-    // - Normalize sami langage codes
-    // - Remove 'zxx'
+    // Should we return all the fields, or just the relevant fields?
     return [{leader: clonedRecord.leader, fields: clonedRecord.fields}, label];
   },
   // eslint-disable-next-line max-statements
@@ -92,14 +90,13 @@ export default () => ({
         return 0.0; // Should we punish these for badness?
       }
       if (a041s.length === 1 && b041s.length === 1) {
-        if (getSourceOfLanguageCode(a041s[0]) === getSourceOfLanguageCode(b041s[0])) {
-          const scoreInd1 = indicator1Penalty(a041s[0], b041s[0]);
-          debug(`\t Indicator penalty: '${scoreInd1}'`);
-          return scoreInd1 + compareLanguageCodeLists(getFieldsLanguageCodes(a041s[0]), getFieldsLanguageCodes(b041s[0]));
-        }
-        return -1.0;
+        // The language codes are typically same between different sources. Incur a small penalty for differences though...
+        const sourcePenalty = getSourceOfLanguageCode(a041s[0]) === getSourceOfLanguageCode(b041s[0]) ? 0.0 : -0.05;
+        const scoreInd1 = indicator1Penalty(a041s[0], b041s[0]);
+        debug(`\t Indicator penalty: '${scoreInd1}'`);
+        return sourcePenalty + scoreInd1 + compareLanguageCodeLists(getFieldsLanguageCodes(a041s[0]), getFieldsLanguageCodes(b041s[0]));
       }
-
+      // Things are already complicated (likely to pe penalized, so no nedd to worrty about language code sources, I daresay.
       return compareLanguageCodeLists(getLanguageCodesFrom041Fields(a), getLanguageCodesFrom041Fields(b));
 
       function getFields041(record) {
@@ -114,7 +111,7 @@ export default () => ({
     function getSourceOfLanguageCode(field) {
       const sf2 = field.subfields.find(sf => sf.code === '2');
       if (!sf2) {
-        return undefined;
+        return 'MARC';
       }
       // Normalize the two relevant language code names:
       if (sf2.value.match(/639.2/u)) {
@@ -191,7 +188,7 @@ export default () => ({
           debug(`Both have languages, but none of these match. However, the benefit of doubt is given: '${aOnly[0]}' and '${bOnly[0]}' might mean the same}`);
           return 0;
         }
-        debug(`Both have languages, but none of these match.`);
+        debug(`Both have languages, but none of these match.`); // includes 'mul' vs a single language code
         return -1.0;
       }
 
@@ -277,7 +274,7 @@ function getLanguageCodesFrom041Fields(record) {
   // and also ISO 639-2 and ISO 639-3 overlap to a degree. If we ever run into a trouble with some ISO 639-2 vs 639-3 mismatch, then we'll work it out.
   // Also we could write a validator that converts ISO 639-2 to marc if applicable and maybe even partial support for ISO-639-3.
   // Note that ISO 639-2-B values correspond with marc beteer that ISO 639-2-T. Eg. code for Chinese 'zho' should/code be normalized to 'chi'!
-  const values = record.fields.filter(f => f.tag === '041').flatMap(f => getSingle041Values(f));
+  const values = record.fields.filter(f => f.tag === '041').flatMap(f => getFieldsLanguageCodes(f));
   /*
         // .filter(({ind2}) => ind2 === ' ')
         .map(({subfields}) => subfields)
@@ -286,7 +283,7 @@ function getLanguageCodesFrom041Fields(record) {
         .filter(({value}) => value && isLangCodeForALanguage(value))
         .map(({value}) => value);
     */
-  return [...new Set(value)].sort();
+  return [...new Set(values)].sort();
 }
 
 function getFieldsLanguageCodes(field) {
