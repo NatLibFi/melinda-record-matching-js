@@ -1,8 +1,8 @@
 {
-  "description": "Comparison should give minor penalty for non-paired identifiers, when there's a match",
+  "description": "Non-paired identifiers don't cause penalty, when there's a match",
   "feature": "isbn",
   "type": "compare",
-  "expectedPoints": 0.65,
+  "expectedPoints": 0.75,
   "featuresA": [
     { "code": "a", "value": "978952622477X" },
     { "code": "a", "value": "9789526224770" }

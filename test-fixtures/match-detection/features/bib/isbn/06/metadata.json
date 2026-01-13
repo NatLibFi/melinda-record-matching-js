@@ -3,7 +3,7 @@
   "comment": "Values should be uniqued before comparing",
   "feature": "isbn",
   "type": "compare",
-  "expectedPoints": 0.55,
+  "expectedPoints": 0.75,
   "featuresA": [
     { "code": "a", "value": "978952622477X" },
     { "code": "a", "value": "978952622477X" }

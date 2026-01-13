@@ -78,9 +78,12 @@ export default ({pattern, subfieldCodes, identifier, validIdentifierSubfieldCode
         debug(`Both have valid standardidentifiers (${identifier}), but none of these match.`);
         return -0.75;
       }
-      debug(`Both have valid standardidentifiers (${identifier}), ${matchingValues}/${possibleMatchValues} valid identifiers match.`);
+      debug(`Both have valid standard identifiers (${identifier}), ${matchingValues}/${possibleMatchValues} valid identifiers match.`);
       // ignore non-matches if there is mismatching amount of values
       debug(`Possible matches: ${possibleMatchValues}/${maxValues}`);
+      return 0.75;
+
+      /*
       //we give some kind of penalty for mismatching amount of values instead of simple divide?
       const penaltyForMissing = 0.1 * (maxValues - possibleMatchValues);
       const penaltyForMisMatch = 0.2 * (possibleMatchValues - matchingValues);
@@ -89,6 +92,7 @@ export default ({pattern, subfieldCodes, identifier, validIdentifierSubfieldCode
 
       return 0.75 - penaltyForMisMatch - penaltyForMissing;
       //return matchingValues / possibleMatchValues * 0.75;
+      */
     }
     // If both do not have valid identifiers, compare all identifiers
     const {maxValues, matchingValues} = getValueCount();
