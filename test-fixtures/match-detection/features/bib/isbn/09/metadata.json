@@ -1,15 +1,18 @@
 {
-  "description": "Comparison should return minus points if there are valid and invalid ISBN:s and valid ISBNs do not match",
+  "description": "Two values match, but they don't look like isbns, so no points for that. Both have $a -> penalty (might be too tough)",
   "feature": "isbn",
   "type": "compare",
   "expectedPoints": -0.75,
   "featuresA": [
-    { "code": "a", "value": "978952622477X" },
-    { "code": "z", "value": "9789526224770" }
+    { "tag": "020", "ind1": " ", "ind2": " ", "subfields": [
+      { "code": "a", "value": "978952622477X" }
+    ]}
   ],
   "featuresB": [
-    { "code": "a", "value": "9789526224770" },
-    { "code": "z", "value": "978952622477X" }
+    { "tag": "020", "ind1": " ", "ind2": " ", "subfields": [
+      { "code": "a", "value": "9789526224770" },
+      { "code": "z", "value": "978952622477X" }
+    ]}
   ],
   "skip": false,
   "only": false

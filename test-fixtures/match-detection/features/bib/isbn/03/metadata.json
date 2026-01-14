@@ -2,12 +2,16 @@
   "description": "Comparison should return points for matching invalid ISBN identifiers",
   "feature": "isbn",
   "type": "compare",
-  "expectedPoints": 0.2,
+  "expectedPoints": 0.5,
   "featuresA": [
-    { "code": "z", "value": "978952622477X" }
+    { "tag": "020", "ind1": " ", "ind2": " ", "subfields": [
+      { "code": "z", "value": "952622477X" }
+    ]}
   ],
   "featuresB": [
-    { "code": "z", "value": "978952622477X" }
+    { "tag": "020", "ind1": " ", "ind2": " ", "subfields": [
+      { "code": "z", "value": "952622477X" }
+    ]}
   ],
   "skip": false,
   "only": false

@@ -4,10 +4,14 @@
   "type": "compare",
   "expectedPoints": -0.75,
   "featuresA": [
-    { "code": "a", "value": "978952622477X" }
+    { "tag": "020", "ind1": " ", "ind2": " ", "subfields": [
+      { "code": "a", "value": "9789526224771" }
+    ]}
   ],
   "featuresB": [
-    { "code": "a", "value": "9789526224770" }
+    { "tag": "020", "ind1": " ", "ind2": " ", "subfields": [
+      { "code": "a", "value": "9789526224770" }
+    ]}
   ],
   "skip": false,
   "only": false
