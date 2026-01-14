@@ -67,21 +67,24 @@ export default ({pattern, subfieldCodes, identifier, validIdentifierSubfieldCode
       return 0;
     }
 
+    const SCORE = 0.75;
+
     debugData(`A: ${JSON.stringify(a)}`);
     debugData(`B: ${JSON.stringify(b)}`);
 
+    const aValid = a.filter(sf => validIdentifierSubfieldCodes.includes(sf.code));
+    const bValid = b.filter(sf => validIdentifierSubfieldCodes.includes(sf.code));
+
+    if (aValid.some(asf => bValid.find(bsf => bsf.value === asf.value)) || bValid.some(bsf => aValid.find(asf => asf.value === bsf.value))) {
+      return SCORE;
+    }
 
     if (bothHaveValidIdentifiers()) {
-      // Compare only valid identifiers, if both have valid idenfiers
-      const {maxValues, possibleMatchValues, matchingValues} = getValueCount(true);
-      if (matchingValues < 1) {
-        debug(`Both have valid standardidentifiers (${identifier}), but none of these match.`);
-        return -0.75;
-      }
-      debug(`Both have valid standard identifiers (${identifier}), ${matchingValues}/${possibleMatchValues} valid identifiers match.`);
-      // ignore non-matches if there is mismatching amount of values
-      debug(`Possible matches: ${possibleMatchValues}/${maxValues}`);
-      return 0.75;
+      return -SCORE;
+    }
+    // Not sure what to do if two invalid identifiers match... (There might me some stuff that causes false positives for some identifier types)
+    return 0.0;
+
 
       /*
       //we give some kind of penalty for mismatching amount of values instead of simple divide?
@@ -93,12 +96,14 @@ export default ({pattern, subfieldCodes, identifier, validIdentifierSubfieldCode
       return 0.75 - penaltyForMisMatch - penaltyForMissing;
       //return matchingValues / possibleMatchValues * 0.75;
       */
-    }
-    // If both do not have valid identifiers, compare all identifiers
-    const {maxValues, matchingValues} = getValueCount();
-    debug(`Both do NOT have valid standardidentifiers (${identifier}), ${matchingValues}/${maxValues} valid/invalid identifiers match.`);
 
-    return matchingValues / maxValues * 0.2;
+    /*
+    //// If both do not have valid identifiers, compare all identifiers
+    //const {maxValues, matchingValues} = getValueCount();
+    //debug(`Both do NOT have valid standardidentifiers (${identifier}), ${matchingValues}/${maxValues} valid/invalid identifiers match.`);
+
+    //return matchingValues / maxValues * 0.2;
+    */
 
     function bothHaveValidIdentifiers() {
       const aValues = a.filter(({code}) => validIdentifierSubfieldCodes.includes(code));
