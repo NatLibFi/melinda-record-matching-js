@@ -1,35 +1,25 @@
 {
-  "description": "INACTIVE: Should not extract language if there are both 008 and 041 and they do not have a common language",
+  "description": "same language code 'eng' (+0.1) but with a language code source penalty (-0.05).",
   "feature": "language",
-  "type": "extract",
-  "expectedFeatures": [],
-  "inputRecord": {
-    "leader": "02518cam a2200745zi 4500",
+  "type": "compare",
+  "expectedPoints": 0.05,
+
+    "featuresA": [{
     "fields": [
-      {
-        "tag": "001",
-        "value": "000019643"
-      },
-      {
-        "tag": "008",
-        "value": "831017s1983    fi ||||||||||||||||bfin||"
-      },
-      {
-        "tag": "041",
-        "ind1": "0",
-        "ind2": " ",
-        "subfields": [
-          {
-            "code": "a",
-            "value": "eng"
-          },
-          {
-            "code": "a",
-            "value": "swe"
-          }
-        ]
-      }
+      {"tag": "041", "ind1": " ", "ind2": "7", "subfields": [
+        {"code": "a", "value": "eng"},
+        {"code": "2", "value": "ISO639-2"}
+      ]}
     ]
-  },
-  "skip": true
+  }, "A"],
+  "featuresB": [{
+    "fields": [
+      {"tag": "041", "ind1": " ", "ind2": " ", "subfields": [
+        {"code": "a", "value": "eng"}
+      ]}
+
+    ]
+  }, "B"],
+  "skip": false,
+  "only": false
 }
