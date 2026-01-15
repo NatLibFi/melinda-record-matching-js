@@ -1,15 +1,17 @@
 {
-  "description": "Comparison should give a penalty for each additional mismatch when there's a match",
+  "description": "Comparison should *not* give a penalty for each additional mismatch when there's a match",
   "feature": "isbn",
   "type": "compare",
-  "expectedPoints": 0.55,
+  "expectedPoints": 0.75,
   "featuresA": [
-    { "code": "a", "value": "978952622477X" },
-    { "code": "a", "value": "9789526224770" }
+    { "tag": "020", "ind1": " ", "ind2": " ", "subfields": [ { "code": "a", "value": "978952622477X" } ] },
+    { "tag": "020", "ind1": " ", "ind2": " ", "subfields": [ { "code": "a", "value": "9789526224770" } ] }
   ],
   "featuresB": [
-    { "code": "a", "value": "978952622477X" },
-    { "code": "a", "value": "9789526224771" }
+    { "tag": "020", "ind1": " ", "ind2": " ", "subfields": [
+      { "code": "a", "value": "978952622477X" },
+      { "code": "a", "value": "9789526224771" }
+    ]}
   ],
   "skip": false,
   "only": false
