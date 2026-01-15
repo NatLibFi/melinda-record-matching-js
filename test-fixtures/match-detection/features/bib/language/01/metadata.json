@@ -1,30 +1,20 @@
 {
-  "description": "Should extract language",
+  "description": "Preprocess Sami language",
+  "skip": false,
   "feature": "language",
   "type": "extract",
-  "expectedFeatures": ["fin"],
   "inputRecord": {
     "leader": "02518cam a2200745zi 4500",
     "fields": [
-      {
-        "tag": "001",
-        "value": "000019643"
-      },
-      {
-        "tag": "008",
-        "value": "831017s1983    fi ||||||||||||||||bfin||"
-      },
-      {
-        "tag": "041",
-        "ind1": "0",
-        "ind2": " ",
-        "subfields": [
-          {
-            "code": "a",
-            "value": "fin"
-          }
-        ]
-      }
+      { "tag": "008", "value": "831017s1983    fi |||||||||||||||||sma||" },
+      { "tag": "041", "ind1": "0", "ind2": " ", "subfields": [ { "code": "a", "value": "sma" }] }
     ]
-  }
+  },
+  "expectedFeatures": [ {
+    "leader": "02518cam a2200745zi 4500",
+    "fields": [
+      { "tag": "008", "value": "831017s1983    fi |||||||||||||||||smi||" },
+      { "tag": "041", "ind1": "0", "ind2": " ", "subfields": [ { "code": "a", "value": "smi" }, { "code": "a", "value": "sma" }] }
+    ]
+  }, "record" ]
 }
