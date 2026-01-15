@@ -1,0 +1,14 @@
+{
+  "description": "Comparison should not return points for missing language in both. (No fields at all; tests robustness)",
+  "feature": "language",
+  "type": "compare",
+  "expectedPoints": 0,
+  "featuresA": [{
+    "fields": [
+    ]
+  }, "A"],
+  "featuresB": [{
+    "fields": [
+    ]
+  }, "B"]
+}

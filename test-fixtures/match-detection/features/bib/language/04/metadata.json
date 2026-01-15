@@ -1,0 +1,21 @@
+{
+  "description": "Comparison should return points for matching languages",
+  "feature": "language",
+  "type": "compare",
+  "expectedPoints": 0.1,
+  "featuresA": [{
+    "fields": [
+      {"tag": "041", "ind1": " ", "ind2": " ", "subfields": [
+        {"code": "a", "value": "fin"}
+      ]}
+    ]
+  }, "A"],
+  "featuresB": [{
+    "fields": [
+      {"tag": "041", "ind1": " ", "ind2": " ", "subfields": [
+        {"code": "a", "value": "fin"}
+      ]}
+
+    ]
+  }, "B"]
+}
