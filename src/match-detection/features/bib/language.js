@@ -1,6 +1,7 @@
 
 import createDebugLogger from 'debug';
-import clone from 'clone';
+
+import {MarcRecord} from '@natlibfi/marc-record';
 
 import {FixSami041, Remove041zxx} from '@natlibfi/marc-record-validators-melinda';
 
@@ -26,7 +27,7 @@ export default () => ({
   name: 'Language',
   extract: ({record, recordExternal}) => {
     const label = recordExternal && recordExternal.label ? recordExternal.label : 'record';
-    const clonedRecord = clone(record); // NB! This loses record.get()...
+    const clonedRecord = new MarcRecord(record, record._validationOptions); // clone(record); // NB! This loses record.get()...
 
     FixSami041().fix(clonedRecord); // Handle 'smi' adding if needed
     Remove041zxx().fix(clonedRecord); // Remove 'zxx' from f041s
@@ -176,7 +177,7 @@ export default () => ({
 
       // Damage control:
 
-      // Not using the generic solution here as 'und' can mean a lot
+      // Not using the generic solution here as eg. 'und' needs a special treatment
       const sharedValues = getSharedValues(a, b);
       const aOnly = a.filter(val => !sharedValues.includes(val));
       const bOnly = b.filter(val => !sharedValues.includes(val));
@@ -193,7 +194,6 @@ export default () => ({
       }
 
       const {matchingValues, possibleMatchValues, maxValues} = getMatchCounts(a, b);
-
 
       debug(`Both have languages, ${matchingValues}/${possibleMatchValues} valid languages match.`);
       // ignore non-matches if there is mismatching amount of values
