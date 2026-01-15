@@ -1,11 +1,9 @@
 {
-  "description": "Should extract ISSN identifiers",
+  "description": "Should extract ISSN identifiers from 022",
   "feature": "issn",
   "type": "extract",
   "expectedFeatures": [
-    {
-      "code": "a", "value": "20493630"
-    }
+    "2049-3630"
   ],
   "inputRecord": {
     "leader": "02518cam a2200745zi 4500",
@@ -21,8 +19,13 @@
         "subfields": [
           {
             "code": "a",
-            "value": "2049-3630"
+            "value": "2049-3630 foo bar"
           }
+        ]
+      },
+      { "tag": "773", "ind1": " ", "ind2": " ", "subfields": [
+          { "code": "t", "value": "Tuttelintiire." },
+          { "code": "x", "value": "1234-5678"}
         ]
       }
     ]

@@ -3,6 +3,19 @@
   "feature": "language",
   "type": "compare",
   "expectedPoints": -1.0,
-  "featuresA": ["eng"],
-  "featuresB": ["fin"]
+  "featuresA": [{
+    "fields": [
+      {"tag": "041", "ind1": " ", "ind2": " ", "subfields": [
+        {"code": "a", "value": "eng"}
+      ]}
+    ]
+  }, "A"],
+  "featuresB": [{
+    "fields": [
+      {"tag": "041", "ind1": " ", "ind2": " ", "subfields": [
+        {"code": "a", "value": "fin"}
+      ]}
+
+    ]
+  }, "B"]
 }
