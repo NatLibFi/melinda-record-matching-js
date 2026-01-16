@@ -1,9 +1,9 @@
 {
-  "description": "Should extract ISSN identifiers from 022",
+  "description": "Should extract ISSN identifiers from 773 (since melinda UI commons isComponentRecord() function",
   "feature": "issn",
   "type": "extract",
   "expectedFeatures": [
-    "2049-3630"
+    "1234-5678"
   ],
   "inputRecord": {
     "leader": "02518cam a2200745zi 4500",
