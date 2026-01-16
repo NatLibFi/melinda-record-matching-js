@@ -1,5 +1,5 @@
 {
-  "description": "Valid isbn matches an invalid isbn of another record: looks fine to me",
+  "description": "Invalid isbn's don't count: score is 0",
   "feature": "isbn",
   "type": "compare",
   "expectedPoints": 0.0,
