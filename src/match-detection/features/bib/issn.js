@@ -10,6 +10,9 @@ export default () => {
 
 
 import createDebugLogger from 'debug';
+
+import {isComponentRecord} from '@natlibfi/melinda-commons';
+
 const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection:features:issn');
 const debugData = debug.extend('data');
 
@@ -18,7 +21,8 @@ export default () => ({
   extract: ({record/*, recordExternal*/}) => {
     //const label = recordExternal && recordExternal.label ? recordExternal.label : 'record';
 
-    const isHost = isHostRecord(record);
+    const isHost = !isComponentRecord(record, false, []);
+
     debug(`\t Is HOST: '${isHost}'`);
     return getIssns();
 
@@ -79,11 +83,6 @@ export default () => ({
 
   }
 });
-
-export function isHostRecord(record) {
-  const ldr07 = record.leader?.charAt(7) || '?';
-  return !['a', 'b', 'd'].includes(ldr07);
-}
 
 export function uniqArray(arr) {
   return arr.filter((val, i) => arr.indexOf(val) === i);

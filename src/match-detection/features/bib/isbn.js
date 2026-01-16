@@ -2,7 +2,9 @@
 import createDebugLogger from 'debug';
 import {parse as isbnParse} from 'isbn3';
 
-import {isHostRecord, uniqArray} from './issn.js';
+import {uniqArray} from './issn.js';
+import {isComponentRecord} from '@natlibfi/melinda-commons';
+
 
 const debug = createDebugLogger(`@natlibfi/melinda-record-matching:match-detection:features:standard-identifiers:ISBN`);
 const debugData = debug.extend('data');
@@ -14,9 +16,9 @@ export default () => ({
   extract: ({record/*, recordExternal*/}) => {
     //const label = recordExternal && recordExternal.label ? recordExternal.label : 'record';
 
-    const isHost = isHostRecord(record);
+    const host = !isComponentRecord(record, false, []);
 
-    if (isHost) {
+    if (host) {
       return record.get('020').filter(f => f.subfields?.some(sf => ['a', 'z'].includes(sf.code) && sf.value));
     }
     return record.get('773').filter(f => f.subfields?.some(sf => ['z'].includes(sf.code) && sf.value));
