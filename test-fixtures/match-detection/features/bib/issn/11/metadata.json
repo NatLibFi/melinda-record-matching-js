@@ -1,0 +1,23 @@
+{
+  "description": "Should extract ISSN identifiers from 773$x",
+  "feature": "issn",
+  "type": "extract",
+  "expectedFeatures": [
+    "1234-5678"
+  ],
+  "inputRecord": {
+    "leader": "02518caa a2200745zi 4500",
+    "fields": [
+      { "tag": "001", "value": "000019643" },
+      { "tag": "022", "ind1": " ", "ind2": " ", "subfields": [
+          { "code": "a", "value": "2049-3630 foo bar" }
+        ]
+      },
+      { "tag": "773", "ind1": " ", "ind2": " ", "subfields": [
+          { "code": "t", "value": "Tuttelintiire." },
+          { "code": "x", "value": "1234-5678"}
+        ]
+      }
+    ]
+  }
+}

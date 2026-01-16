@@ -3,9 +3,10 @@
   "feature": "isbn",
   "type": "extract",
   "expectedFeatures": [
-    {
-      "code": "a", "value": "9789526224770"
-    }
+    { "tag": "020", "ind1": " ", "ind2": " ", "subfields": [
+      { "code": "a", "value": "952-62-2477-9" },
+      { "code": "q", "value": "PDF" }
+    ]}
   ],
   "inputRecord": {
     "leader": "02518cam a2200745zi 4500",

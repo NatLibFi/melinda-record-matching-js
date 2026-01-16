@@ -1,32 +1,24 @@
 {
-  "description": "Should not extract non valid language from 041 (||| in 008)",
+  "description": "'mul' vs a single language code should result in penalty",
   "feature": "language",
-  "type": "extract",
-  "expectedFeatures": [],
-  "inputRecord": {
-    "leader": "02518cam a2200745zi 4500",
+  "type": "compare",
+  "expectedPoints": -1.0,
+
+    "featuresA": [{
     "fields": [
-      {
-        "tag": "001",
-        "value": "000019643"
-      },
-      {
-        "tag": "008",
-        "value": "831017s1983    fi ||||||||||||||||b|||||"
-      },
-      {
-        "tag": "041",
-        "ind1": "0",
-        "ind2": " ",
-        "subfields": [
-          {
-            "code": "a",
-            "value": "mul"
-          }
-        ]
-      }
+      {"tag": "041", "ind1": " ", "ind2": " ", "subfields": [
+        {"code": "a", "value": "mul"}
+      ]}
     ]
-  },
+  }, "A"],
+  "featuresB": [{
+    "fields": [
+      {"tag": "041", "ind1": " ", "ind2": " ", "subfields": [
+        {"code": "a", "value": "eng"}
+      ]}
+
+    ]
+  }, "B"],
   "skip": false,
   "only": false
 }

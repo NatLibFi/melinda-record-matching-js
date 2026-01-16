@@ -39,10 +39,11 @@
 	"dependencies": {
 		"@natlibfi/marc-record": "^10.0.1",
 		"@natlibfi/marc-record-serializers": "^11.0.1",
+		"@natlibfi/marc-record-validators-melinda": "^12.0.4",
 		"@natlibfi/melinda-commons": "^14.0.2",
 		"@natlibfi/sru-client": "^7.0.1",
 		"debug": "^4.4.3",
-		"isbn3": "^2.0.2",
+		"isbn3": "^2.0.3",
 		"moment": "^2.30.1",
 		"natural": "^8.1.0",
 		"uuid": "^13.0.0",
@@ -50,10 +51,14 @@
 	},
 	"devDependencies": {
 		"@natlibfi/fixugen": "^3.0.0",
-		"@natlibfi/fixugen-http-client": "^4.0.1",
+		"@natlibfi/fixugen-http-client": "^4.0.2",
 		"@natlibfi/fixura": "^4.0.0",
 		"cross-env": "^10.1.0",
 		"esbuild": "^0.27.2",
 		"eslint": "^9.39.2"
-	}
+	},
+	"overrides": {
+		"nanoid": "^3.3.8"
+	},
+	"nvolkComment": "cld3-asm 4.0.0 uses emscripten-wasm-loader ^3.0.3 which uses problematic, non-secure nanoid version 2.X.X."
 }
