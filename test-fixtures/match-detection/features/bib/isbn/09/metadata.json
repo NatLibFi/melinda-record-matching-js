@@ -1,8 +1,8 @@
 {
-  "description": "Two values match, but they don't look like isbns, so no points for that. Both have $a -> penalty (might be too tough)",
+  "description": "Invalid ISBNs and canceled ISBN are meaningless here",
   "feature": "isbn",
   "type": "compare",
-  "expectedPoints": -0.75,
+  "expectedPoints": 0.0,
   "featuresA": [
     { "tag": "020", "ind1": " ", "ind2": " ", "subfields": [
       { "code": "a", "value": "978952622477X" }

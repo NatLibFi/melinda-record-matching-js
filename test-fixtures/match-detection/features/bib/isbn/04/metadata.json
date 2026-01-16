@@ -1,8 +1,8 @@
 {
-  "description": "Comparison should return minus points for mis-matching ISBN identifiers when there are no matching ISBNs",
+  "description": "One value is invalid, so it is not used when comparing valid ISBNs. As there's only one valid ISBN no score is given.",
   "feature": "isbn",
   "type": "compare",
-  "expectedPoints": -0.75,
+  "expectedPoints": 0.0,
   "featuresA": [
     { "tag": "020", "ind1": " ", "ind2": " ", "subfields": [
       { "code": "a", "value": "9789526224771" }

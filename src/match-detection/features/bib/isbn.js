@@ -2,10 +2,12 @@
 import createDebugLogger from 'debug';
 import {parse as isbnParse} from 'isbn3';
 
-import {isHostRecord} from './issn.js';
+import {isHostRecord, uniqArray} from './issn.js';
 
 const debug = createDebugLogger(`@natlibfi/melinda-record-matching:match-detection:features:standard-identifiers:ISBN`);
 const debugData = debug.extend('data');
+
+const MAX_SCORE = 0.75;
 
 export default () => ({
   name: 'ISBN',
@@ -30,25 +32,59 @@ export default () => ({
     const [subfieldCodeForGoodValues, subfieldCodeForBadValues] = getSubfieldCodes(aa[0].tag);
 
     const [goodValuesA, badValuesA] = getValues(aa);
+    debug(`GOOD VALUES (A): ${goodValuesA.join(', ')}`);
+    debug(`BAD VALUES (A): ${badValuesA.join(', ')}`);
     const [goodValuesB, badValuesB] = getValues(bb);
+    debug(`GOOD VALUES (B): ${goodValuesB.join(', ')}`);
+    debug(`BAD VALUES (B): ${badValuesB.join(', ')}`);
 
-    if (goodValuesA.some(valA => goodValuesB.includes(valA)) || goodValuesB.some(valB => goodValuesA.includes(valB))) {
-      return 0.75;
+
+    const [sharedGoodValues, goodValuesAOnly, goodValuesBOnly] = getUnionData(goodValuesA, goodValuesB);
+
+    debug(`GOOD\tBOTH: ${sharedGoodValues.length}, A only: ${goodValuesAOnly.length}, B only: ${goodValuesBOnly.length}`);
+
+    const hitScore = scoreHit();
+
+    function scoreHit() {
+      if (sharedGoodValues.length > 0) {
+        return MAX_SCORE;
+      }
+      // One record consider ISBN good and the other record considered it's canceled:
+      if (goodValuesA.some(valA => badValuesB.includes(valA)) || goodValuesB.some(valB => badValuesA.includes(valB))) {
+        return MAX_SCORE;
+      }
+
+      // Value is bad, but looks isbn-ish to a human eye (not validating the isbn again, note than invalid isbns in 020$a are considered bad):
+      // Could happen for two canceled ISBNs for example. I'll give this two thirds of the full score
+      if (badValuesA.some(valA => looksGood(valA) && badValuesB.includes(valA)) || badValuesB.some(valB => looksGood(valB) && badValuesA.includes(valB))) {
+        return MAX_SCORE * 2 / 3;
+      }
+
+      return 0;
     }
 
-    if (goodValuesA.some(valA => badValuesB.includes(valA)) || goodValuesB.some(valB => badValuesA.includes(valB))) {
-      return 0.75;
+    if (sharedGoodValues.length > 0) {
+      // Third argument (aka 'N times') is >= 0
+      return scoreData(hitScore, 0.8, goodValuesAOnly.length + goodValuesBOnly.length);
     }
 
-    // Value is bad, but looks isbn-ish to a human eye:
-    if (badValuesA.some(valA => looksGood(valA) && badValuesB.includes(valA)) || badValuesB.some(valB => looksGood(valB) && badValuesA.includes(valB))) {
-      return 0.5;
+    if (hitScore === MAX_SCORE) {
+      // -1 is needed to make the third argument >= 0 (otherwise min val would be 0)
+      return scoreData(hitScore, 0.8, goodValuesAOnly.length + goodValuesBOnly.length - 1);
     }
 
-    if (goodValuesA.length === 0 && goodValuesB === 0) {
+    if (hitScore > 0) { // Canceled/invalid ISBNs match
+      // Note that this is not (currently) penalized for non-matching canceled/invalid ISBNs. Maybe it should be.
+      return scoreData(hitScore, 0.8, goodValuesAOnly.length + goodValuesBOnly.length);
+    }
+
+    // No match:
+
+    if (goodValuesA.length === 0 || goodValuesB === 0) { // At least one record did not have any good ISBNs, so not penalizing here! (Invalid 020$as are counted a bad.)
       return 0.0;
     }
-    return -0.75;
+
+    return -0.75; // Has good ISBNs on both records, but they did not match
 
 
     function getSubfieldCodes(tag) {
@@ -78,18 +114,38 @@ export default () => ({
         return [trueGoodValues, wannabeGoodValues];
       }
       const badValues = fields.flatMap(f => f.subfields.filter(sf => sf.code === subfieldCodeForBadValues)).map(sf => sf.value);
-      return [trueGoodValues, [...badValues, ...wannabeGoodValues]];
+      return [uniqArray(trueGoodValues), uniqArray([...wannabeGoodValues, ...badValues])];
     }
 
     function validatorAndNormalizer(string) {
       const isbnParseResult = isbnParse(string) || '';
       debugData(`isbnParseResult: ${JSON.stringify(isbnParseResult)}`);
-      if (isbnParseResult === null) {
-        debug(`Not parseable ISBN, just removing hyphens`);
+      if (!isbnParseResult.isValid) {
+        debug(`Not parseable ISBN '${string}', just removing hyphens`);
         return {valid: false, value: string.replace(/-/ug, '')};
       }
-      debug(`Parseable ISBN, normalizing to ISBN-13`);
+
+      debug(`Parseable ISBN '${string}, normalizing to ISBN-13 '${isbnParseResult.isbn13}'`);
       return {valid: true, value: isbnParseResult.isbn13};
     }
   }
 });
+
+// These are outside the default function as I'll probably want to export these later on
+
+function getUnionData(set1, set2) {
+  const shared = set1.filter(val => set2.includes(val));
+  const onlyInSet1 = set1.filter(val => !shared.includes(val));
+  const onlyInSet2 = set2.filter(val => !shared.includes(val));
+  return [shared, onlyInSet1, onlyInSet2];
+}
+
+function scoreData(score, factor, n) {
+  return innerScoreData(score, n);
+  function innerScoreData(currScore, remaining) {
+    if (remaining > 0) {
+      return innerScoreData(currScore * factor, remaining-1);
+    }
+    return Math.round(currScore * 100)/100; // 0.600000000001 => 0.6
+  }
+}

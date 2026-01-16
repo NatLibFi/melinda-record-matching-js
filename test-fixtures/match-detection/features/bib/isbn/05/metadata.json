@@ -1,5 +1,5 @@
 {
-  "description": "Pair found. The non-pairing $a does not incur a penalty",
+  "description": "Pair found. The non-pairing $a does not incur a penalty as it is invalid",
   "feature": "isbn",
   "type": "compare",
   "expectedPoints": 0.75,

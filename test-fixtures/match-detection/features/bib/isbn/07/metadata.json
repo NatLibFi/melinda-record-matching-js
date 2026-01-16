@@ -1,20 +1,19 @@
 {
-  "description": "The are invalid $z isbns that look decent and match. Since they are both $z give a slightlu lower score (0.5 instead of 0.75)",
+  "description": "There's invalid $z isbns: a pair and a loner. Since they are both $z give a slightly lower score (0.5 instead of 0.75). No penalties for $z",
   "feature": "isbn",
   "type": "compare",
   "expectedPoints": 0.5,
   "featuresA": [
     { "tag": "020", "subfields": [
-      { "code": "z", "value": "978952622477X" },
       { "code": "z", "value": "9789526224770" }
     ]}
   ],
   "featuresB": [
     { "tag": "020", "subfields": [
-       { "code": "z", "value": "9789526224770" }
+      { "code": "z", "value": "9789526224770" }
     ]},
     { "tag": "020", "subfields": [
-      { "code": "z", "value": "978952622477X" }
+      { "code": "z", "value": "9789526224771" }
     ]}
   ],
   "skip": false,

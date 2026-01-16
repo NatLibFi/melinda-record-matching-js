@@ -2,16 +2,14 @@
   "description": "Valid isbn matches an invalid isbn of another record: looks fine to me",
   "feature": "isbn",
   "type": "compare",
-  "expectedPoints": 0.75,
+  "expectedPoints": 0.0,
   "featuresA": [
     { "tag": "020", "ind1": " ", "ind2": " ", "subfields": [
-      { "code": "z", "value": "978952622477X" },
-      { "code": "z", "value": "9789526224770" }
+      { "code": "z", "value": "978952622477X" }
     ]}
   ],
   "featuresB": [
     { "tag": "020", "ind1": " ", "ind2": " ", "subfields": [
-      { "code": "a", "value": "9789526224770" },
       { "code": "a", "value": "978952622477X" }
     ]}
   ],
