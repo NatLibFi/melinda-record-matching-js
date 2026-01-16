@@ -1,0 +1,19 @@
+{
+  "description": "ISBN match (0.75) is reduced by factor 0.8 *twice* as there are two non-matching ISBNs",
+  "comment": "978952622477X is invalid as isbn3 never ends in X",
+  "feature": "isbn",
+  "type": "compare",
+  "expectedPoints": 0.48,
+  "featuresA": [
+    { "tag": "020", "ind1": " ", "ind2": " ", "subfields": [ { "code": "a", "value": "978-951-29-5671-5" } ] },
+    { "tag": "020", "ind1": " ", "ind2": " ", "subfields": [ { "code": "a", "value": "9789526224770" } ] }
+  ],
+  "featuresB": [
+    { "tag": "020", "ind1": " ", "ind2": " ", "subfields": [
+      { "code": "a", "value": "978-951-29-5671-5" },
+      { "code": "a", "value": "978-951-672-276-7" }
+    ]}
+  ],
+  "skip": false,
+  "only": false
+}

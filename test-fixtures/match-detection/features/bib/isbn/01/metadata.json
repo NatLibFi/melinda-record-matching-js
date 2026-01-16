@@ -1,0 +1,18 @@
+{
+  "description": "Matching invalid ISBN identifiers (so score is less than in test 02",
+  "feature": "isbn",
+  "type": "compare",
+  "expectedPoints": 0.5,
+  "featuresA": [
+    { "tag": "020", "ind1": " ", "ind2": " ", "subfields": [
+      { "code": "a", "value": "9789526224771" }
+    ]}
+  ],
+  "featuresB": [
+    { "tag": "020", "ind1": " ", "ind2": " ", "subfields": [
+      { "code": "a", "value": "9789526224771" }
+    ]}
+  ],
+  "skip": false,
+  "only": false
+}
