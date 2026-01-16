@@ -1,16 +1,12 @@
 {
-  "description": "Crappy code pair does not look like isbn13 (ends in X). Thus the pair contains nothing to be compared...",
+  "description": "Comparison should return points for matching invalid standard identifiers",
   "feature": "otherStandardIdentifier",
   "type": "compare",
-  "expectedPoints": 0.0,
+  "expectedPoints": 0.2,
   "featuresA": [
-    { "tag": "020", "ind1": " ", "ind2": " ", "subfields": [
-      { "code": "z", "value": "978044990620X" }
-    ]}
+    { "code": "z", "value": "978044990620X" }
   ],
   "featuresB": [
-    { "tag": "020", "ind1": " ", "ind2": " ", "subfields": [
-      { "code": "z", "value": "978044990620X" }
-    ]}
+    { "code": "z", "value": "978044990620X" }
   ]
 }
