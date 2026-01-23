@@ -23,19 +23,19 @@ export default () => ({
 
     const isHost = !isComponentRecord(record, false, []);
 
-    debug(`\t Is HOST: '${isHost}'`);
+    // debug(`\t Is HOST: '${isHost}'`);
     return getIssns();
 
     function getIssns() {
       const fields = getRelevantFields();
-      debug(`\t N fields: '${fields.length}'`);
       if (fields.length === 0) {
         return [];
       }
+      debug(`\t ${fields.length} potential ISSN fields (${fields[0].tag})`);
       const subfieldCodes = getRelevantSubfieldCodes();
-      debug(`\t subfield codes: '${subfieldCodes.join("', '")}'`);
+      //debug(`\t subfield codes: '${subfieldCodes.join("', '")}'`);
       const subfieldValues = fields.flatMap(f => f.subfields.filter(sf => subfieldCodes.includes(sf.code)).map(sf => sf.value));
-      debug(`\t cand values: '${subfieldValues.join("', '")}'`);
+      //debug(`\t cand values: '${subfieldValues.join("', '")}'`);
       // Stripping punctuaction with substring here is pretty quick and dirty approach...
       const validSubfieldValues = subfieldValues?.map(val => normalizeSubfieldValue(val)).filter(val => isValidIssn(val));
       if (!validSubfieldValues) {
