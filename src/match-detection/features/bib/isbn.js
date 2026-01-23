@@ -34,16 +34,24 @@ export default () => ({
     const [subfieldCodeForGoodValues, subfieldCodeForBadValues] = getSubfieldCodes(aa[0].tag);
 
     const [goodValuesA, badValuesA] = getValues(aa);
-    debug(`GOOD VALUES (A): ${goodValuesA.join(', ')}`);
-    debug(`BAD VALUES (A): ${badValuesA.join(', ')}`);
-    const [goodValuesB, badValuesB] = getValues(bb);
-    debug(`GOOD VALUES (B): ${goodValuesB.join(', ')}`);
-    debug(`BAD VALUES (B): ${badValuesB.join(', ')}`);
+    if (goodValuesA.length) {
+      debug(`GOOD VALUES (A): ${goodValuesA.join(', ')}`);
+    }
+    if (badValuesA.length) {
+      debug(`BAD VALUES (A): ${badValuesA.join(', ')}`);
+    }
 
+    const [goodValuesB, badValuesB] = getValues(bb);
+    if (goodValuesB.length) {
+      debug(`GOOD VALUES (B): ${goodValuesB.join(', ')}`);
+    }
+    if (badValuesB.length) {
+      debug(`BAD VALUES (B): ${badValuesB.join(', ')}`);
+    }
 
     const [sharedGoodValues, goodValuesAOnly, goodValuesBOnly] = getUnionData(goodValuesA, goodValuesB);
 
-    debug(`GOOD\tBOTH: ${sharedGoodValues.length}, A only: ${goodValuesAOnly.length}, B only: ${goodValuesBOnly.length}`);
+    //debug(`GOOD\tBOTH: ${sharedGoodValues.length}, A only: ${goodValuesAOnly.length}, B only: ${goodValuesBOnly.length}`);
 
     const hitScore = scoreHit();
 
@@ -120,15 +128,28 @@ export default () => ({
     }
 
     function validatorAndNormalizer(string) {
-      const isbnParseResult = isbnParse(string) || '';
-      debugData(`isbnParseResult: ${JSON.stringify(isbnParseResult)}`);
-      if (!isbnParseResult.isValid) {
-        debug(`Not parseable ISBN '${string}', just removing hyphens`);
-        return {valid: false, value: string.replace(/-/ug, '')};
+      const string2 = string.replace(/\. -$/u, ''); // Remove punctuation (773$z)
+
+      // Hack: Historically we 020$a "1234567890 sidottu" etc. Try the LHS alone:
+      const string3 = string2.replace(/ .*$/u, '');
+      if (string2 !== string3) {
+        const altResult = validatorAndNormalizer(string3);
+        if (altResult.valid) {
+          return altResult;
+        }
       }
 
-      debug(`Parseable ISBN '${string}, normalizing to ISBN-13 '${isbnParseResult.isbn13}'`);
+      const isbnParseResult = isbnParse(string2, '') || '';
+      debugData(`isbnParseResult: ${JSON.stringify(isbnParseResult)}`);
+      if (!isbnParseResult.isValid) {
+        debug(`Not parseable ISBN '${string2}', just removing hyphens`);
+        return {valid: false, value: string2.replace(/-/ug, '')};
+      }
+
+      debug(`Parseable ISBN '${string2}', normalizing to ISBN-13 '${isbnParseResult.isbn13}'`);
       return {valid: true, value: isbnParseResult.isbn13};
+
+
     }
   }
 });
