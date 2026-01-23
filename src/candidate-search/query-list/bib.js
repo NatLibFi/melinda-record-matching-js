@@ -282,6 +282,10 @@ export function bibTitleAuthorPublisher({record, onlyTitleLength, addYear = fals
         .filter(value => value)
         // In Melinda's index subfield separators are indexed as ' '
         .join(' ');
+
+      if (/^[1-9]$/u.test(field.ind2)) { // Skip non-filing characters
+        return titleString.slice(parseInt(field.ind2));
+      }
       return titleString;
     }
     return false;
