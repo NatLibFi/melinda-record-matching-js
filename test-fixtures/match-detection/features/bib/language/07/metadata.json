@@ -1,8 +1,16 @@
 {
-  "description": "Comparison should not return points for missing language in both",
+  "description": "Comparison should not return points for missing language in both. (040$b refers to the cataloging language)",
   "feature": "language",
   "type": "compare",
   "expectedPoints": 0,
-  "featuresA": [],
-  "featuresB": []
+  "featuresA": [{
+    "fields": [
+      {"tag": "040", "ind1": " ", "ind2": " ", "subfields": [{"code": "b", "value": "fin"}]}
+    ]
+  }, "A"],
+  "featuresB": [{
+    "fields": [
+      {"tag": "040", "ind1": " ", "ind2": " ", "subfields": [{"code": "b", "value": "fin"}]}
+    ]
+  }, "B"]
 }

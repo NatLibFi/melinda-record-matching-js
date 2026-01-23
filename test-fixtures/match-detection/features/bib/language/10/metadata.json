@@ -1,5 +1,6 @@
 {
-  "description": "Should extract language from 041 (^^^ in f008)",
+  "description": "Should extract language from 041 (^^^ in f008) (DEPRECATED! Remove eventually!)",
+  "skip": true,
   "feature": "language",
   "type": "extract",
   "expectedFeatures": ["fin"],

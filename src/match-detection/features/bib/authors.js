@@ -6,7 +6,7 @@ import {testStringOrNumber} from '../../../matching-utils.js';
 
 // We should extract also organisational authors (110/710)
 
-export default ({nameTreshold = 10} = {}) => ({
+export default ({nameThreshold = 10} = {}) => ({
   name: 'Authors',
   extract: ({record}) => {
     //const label = recordExternal && recordExternal.label ? recordExternal.label : 'record';
@@ -58,7 +58,7 @@ export default ({nameTreshold = 10} = {}) => ({
         const maxLength = getMaxLength();
         const percentage = distance / maxLength * 100;
 
-        return percentage <= nameTreshold;
+        return percentage <= nameThreshold;
 
         function getMaxLength() {
           return a.length > b.length ? a.length : b.length;

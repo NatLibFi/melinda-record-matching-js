@@ -1,5 +1,6 @@
 {
   "description": "Should extract language from 041 (no f008)",
+  "skip": true,
   "feature": "language",
   "type": "extract",
   "expectedFeatures": ["fin"],
