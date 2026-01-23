@@ -93,9 +93,9 @@ export default () => ({
       if (a041s.length === 1 && b041s.length === 1) {
         // The language codes are typically same between different sources. Incur a small penalty for differences though...
         const sourcePenalty = getSourceOfLanguageCode(a041s[0]) === getSourceOfLanguageCode(b041s[0]) ? 0.0 : -0.05;
-        const scoreInd1 = indicator1Penalty(a041s[0], b041s[0]);
-        debug(`\t Indicator penalty: '${scoreInd1}'`);
-        return sourcePenalty + scoreInd1 + compareLanguageCodeLists(getFieldsLanguageCodes(a041s[0]), getFieldsLanguageCodes(b041s[0]));
+        const mainPenalty = compareLanguageCodeLists(getFieldsLanguageCodes(a041s[0]), getFieldsLanguageCodes(b041s[0]));
+        const scoreInd1 = mainPenalty === 0.0 ? 0.0 : indicator1Penalty(a041s[0], b041s[0]);
+        return mainPenalty + sourcePenalty + scoreInd1;
       }
       // Things are already complicated (likely to pe penalized, so no nedd to worrty about language code sources, I daresay.
       return compareLanguageCodeLists(getLanguageCodesFrom041Fields(a), getLanguageCodesFrom041Fields(b));
