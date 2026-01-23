@@ -193,13 +193,7 @@ export function bibTitleAuthorPublisher({record, onlyTitleLength, addYear = fals
   debug(`bibTitleAuthorPublisher, onlyTitleLength: ${onlyTitleLength}, addYear: ${addYear}, alternates: ${alternates}`);
   const title = getTitle();
   if (testStringOrNumber(title)) {
-    const formatted = String(title)
-      .replace(/[^\w\s\p{Alphabetic}]/gu, '')
-      // Clean up concurrent spaces from fe. subfield changes
-      .replace(/ +/gu, ' ')
-      .trim()
-      .slice(0, 30)
-      .trim();
+    const formatted = getFormatted(title);
 
     // use word search for titles starting with a boolean
     const useWordSearch = checkUseWordSearch(formatted);
@@ -216,6 +210,21 @@ export function bibTitleAuthorPublisher({record, onlyTitleLength, addYear = fals
     const newAlternateQueries = alternates ? [...alternateQueries, query] : alternateQueries;
 
     return addAuthorsToSearch({query, queryIsOkAlone, addYear, alternates, alternateQueries: newAlternateQueries});
+
+    function getFormatted(title) {
+      const formatted = String(title)
+        .replace(/[\-+ !"(){}\[\]<>;:.?/@*%=^_`~]/gu, ' ')
+        .replace(/[^\w\s\p{Alphabetic}]/gu, '')
+        // Clean up concurrent spaces from fe. subfield changes
+        .replace(/  +/gu, ' ')
+        .trim()
+        .replace(/^(.{30}\S*) .*$/, "$1")
+        .trim();
+
+      
+
+      return formatted;
+    }
   }
 
   return [];
@@ -393,9 +402,10 @@ export function bibYear(record) {
 }
 
 export function checkUseWordSearch(formatted) {
+  const lowercased = formatted.toLowerCase();
   // Note: add a space to startWords to catch just actual boolean words
   const booleanStartWords = ['and ', 'or ', 'nor ', 'not '];
-  return booleanStartWords.some(word => formatted.toLowerCase().startsWith(word));
+  return booleanStartWords.some(word => lowercased.startsWith(word));
 }
 
 export function bibStandardIdentifiers(record) {
