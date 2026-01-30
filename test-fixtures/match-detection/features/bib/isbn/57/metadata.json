@@ -2,14 +2,13 @@
   "description": "Should extract valid and invalid ISBNs identifiers from the same field",
   "feature": "isbn",
   "type": "extract",
-  "expectedFeatures": [
-    {
-      "code": "a", "value": "9789526224770"
-    },
-    {
-      "code": "z", "value": "9789513148362"
-    }
-  ],
+  "expectedFeatures": [{
+    "tag": "020", "ind1": " ", "ind2": " ", "subfields": [
+      { "code": "a", "value": "978-952-62-2477-0" },
+      { "code": "z", "value": "978-951-31-4836-2" },
+      { "code": "q", "value": "PDF" }
+    ]
+  }],
   "inputRecord": {
     "leader": "02518cam a2200745zi 4500",
     "fields": [

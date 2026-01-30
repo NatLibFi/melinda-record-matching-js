@@ -1,5 +1,5 @@
 {
-  "description": "Should not detect a match (Minimum treshold not reached)",
+  "description": "Should not detect a match (Minimum threshold not reached)",
   "options": {
     "strategy": {
       "type": "bib",

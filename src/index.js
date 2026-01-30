@@ -124,7 +124,7 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
     // - candidate.record
     // - probability
     // - strategy (if returnStrategy option is true)
-    // - treshold (if returnStrategy option is true)
+    // - threshold (if returnStrategy option is true)
     // - matchQuery (if returnQuery option is true)
     // failures: array of conversionFailures from candidate-search and matchErrors from matchDetection in error format {status, payload: {message, id}} if returnFailures is true
 
@@ -257,7 +257,7 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
 
         if (detectionResult.match || returnNonMatches) {
           debug(`${detectionResult.match ? `Record ${candidateId} (${newRecordCount}/${recordSetSize}) is a match!` : `Record ${candidateId} (${newRecordCount}/${recordSetSize}) is NOT a match!`}`);
-          debugData(`Strategy: ${JSON.stringify(detectionResult.strategy)}, Treshold: ${JSON.stringify(detectionResult.treshold)}`);
+          debugData(`Strategy: ${JSON.stringify(detectionResult.strategy)}, Threshold: ${JSON.stringify(detectionResult.threshold)}`);
 
           const matchResult = {
             probability: detectionResult.probability,
@@ -268,7 +268,7 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
           };
           const strategyResult = {
             strategy: detectionResult.strategy,
-            treshold: detectionResult.treshold
+            threshold: detectionResult.threshold
           };
           const newMatch = returnStrategy ? {...matchResult, ...strategyResult} : {...matchResult};
 

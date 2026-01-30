@@ -112,9 +112,14 @@ export default async ({record, searchSpec, url, maxCandidates, maxRecordsPerRequ
   }
 
   function getRecordId(record) {
-    const [field] = record.get(/^001$/u);
-    return field ? field.value : '';
+    const [f001] = record.get(/^001$/u);
+    const [f003] = record.get(/^003$/u);
+    if (f001 && f003) {
+      return `${f003.value}-${f001.value}`;
+    }
+    return f001 ? f001.value : '';
   }
+
 };
 
 export function retrieveRecords(client, query, resultSetOffset) {

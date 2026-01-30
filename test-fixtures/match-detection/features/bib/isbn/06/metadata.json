@@ -1,16 +1,19 @@
 {
-  "description": "Comparison unique values and work same regardless of do we compare A to B or B to A. (Duplicate in A)",
+  "description": "Matching ISBN pair with one non-matching ISBN: reduce match point because of the non-match. Also use hyphens.",
   "comment": "Values should be uniqued before comparing",
   "feature": "isbn",
   "type": "compare",
-  "expectedPoints": 0.55,
+  "expectedPoints": 0.6,
   "featuresA": [
-    { "code": "a", "value": "978952622477X" },
-    { "code": "a", "value": "978952622477X" }
+    { "tag": "020", "ind1": " ", "ind2": " ", "subfields": [
+     { "code": "a", "value": "9789529487394" }
+    ]}
   ],
   "featuresB": [
-    { "code": "a", "value": "9789526224770" },
-    { "code": "a", "value": "978952622477X" }
+    { "tag": "020", "ind1": " ", "ind2": " ", "subfields": [
+      { "code": "a", "value": "9789526224770" },
+      { "code": "a", "value": "978-952-94-8739-4" }
+    ]}
   ],
   "skip": false,
   "only": false

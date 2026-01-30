@@ -1,10 +1,31 @@
 {
-  "description": "Comparison should return minimal amount of points for partially matching languages (1 match, 2 mismatches, 5 missing)",
+  "description": "'mul' vs multiple language codes should not result in penalty",
   "feature": "language",
   "type": "compare",
-  "expectedPoints": -0.10,
-  "featuresA": ["eng","dan","sme"],
-  "featuresB": ["eng","fin","swe","nor","lat","heb","ara","spa"],
+  "expectedPoints": 0.0,
+
+    "featuresA": [{
+    "fields": [
+      {"tag": "041", "ind1": " ", "ind2": " ", "subfields": [
+        {"code": "a", "value": "mul"}
+      ]}
+    ]
+  }, "A"],
+  "featuresB": [{
+    "fields": [
+      {"tag": "041", "ind1": " ", "ind2": " ", "subfields": [
+        {"code": "a", "value": "eng"},
+        {"code": "a", "value": "fin"},
+        {"code": "a", "value": "swe"},
+        {"code": "a", "value": "nor"},
+        {"code": "a", "value": "lat"},
+        {"code": "a", "value": "heb"},
+        {"code": "a", "value": "ara"},
+        {"code": "a", "value": "spa"}
+      ]}
+
+    ]
+  }, "B"],
   "skip": false,
   "only": false
 }

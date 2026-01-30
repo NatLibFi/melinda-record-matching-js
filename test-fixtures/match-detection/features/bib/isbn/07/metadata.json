@@ -1,15 +1,20 @@
 {
-  "description": "Comparison should return points for matching invalid ISBN identifiers when there are no valid ISBNs at all",
+  "description": "There's invalid $z isbns: a pair and a loner. Since they are both $z give a slightly lower score (0.5 instead of 0.75). No penalties for $z",
   "feature": "isbn",
   "type": "compare",
-  "expectedPoints": 0.2,
+  "expectedPoints": 0.5,
   "featuresA": [
-    { "code": "z", "value": "978952622477X" },
-    { "code": "z", "value": "9789526224770" }
+    { "tag": "020", "subfields": [
+      { "code": "z", "value": "9789526224770" }
+    ]}
   ],
   "featuresB": [
-    { "code": "z", "value": "9789526224770" },
-    { "code": "z", "value": "978952622477X" }
+    { "tag": "020", "subfields": [
+      { "code": "z", "value": "9789526224770" }
+    ]},
+    { "tag": "020", "subfields": [
+      { "code": "z", "value": "9789526224771" }
+    ]}
   ],
   "skip": false,
   "only": false
