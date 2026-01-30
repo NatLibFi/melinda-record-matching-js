@@ -152,13 +152,8 @@ export function bibHostComponents(record) {
   }
 }
 
-// SRU search dc.title with a search phrase starting with ^ maps currently in Melinda to
-// (probably) to *headings* index TIT
+// SRU search dc.title with a search phrase starting with ^ maps currently in Melinda to (probably) to *headings* index TIT
 // - Aleph cannot currently handle headings searches starting with a boolean - in these cases use word search
-
-// Headings index TIT drops articles etc. from the start of the title according to the filing indicator
-// Currently filing indicator is not implemented - if the title starts with an article and the Melinda
-// record is correctly catalogued using a filing indicator -> dc.title search won't match
 
 export function bibTitle(record) {
   // We get author/publisher only when formatted title is shorter than 5 chars
@@ -220,8 +215,6 @@ export function bibTitleAuthorPublisher({record, onlyTitleLength, addYear = fals
         .trim()
         .replace(/^(.{30}\S*) .*$/, "$1")
         .trim();
-
-      
 
       return formatted;
     }
@@ -329,7 +322,7 @@ export function bibAuthors(record) {
 
     if (field) {
       const authorString = field.subfields
-        .filter(({code}) => ['a'].includes(code))
+        .filter(({code}) => ['a'].includes(code)) // We might use different subfield code sets for X00, X10 and X11?
         .map(({value}) => testStringOrNumber(value) ? String(value) : '')
         .filter(value => value)
         // In Melinda's index subfield separators are indexed as ' '
