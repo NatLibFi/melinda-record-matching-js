@@ -3,8 +3,16 @@
   "feature": "language",
   "type": "compare",
   "expectedPoints": 0.08,
-  "featuresA": ["eng"],
-  "featuresB": ["eng","fin"],
+  "featuresA": [{
+    "fields": [
+      {"tag": "041", "ind1": " ", "ind2": " ", "subfields": [{"code": "a", "value": "rum"}]}
+    ]
+  }, "A"],
+  "featuresB": [{
+    "fields": [
+      {"tag": "041", "ind1": " ", "ind2": " ", "subfields": [{"code": "a", "value": "rum"}, {"code": "a", "value": "fin"}]}
+    ]
+  }, "B"],
   "skip": false,
   "only": false
 }

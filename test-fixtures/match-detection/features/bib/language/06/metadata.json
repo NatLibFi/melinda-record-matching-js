@@ -1,5 +1,6 @@
 {
-  "description": "Should not extract language if there's no f008 or f041",
+  "description": "Should not extract language if there's no f008 or f041 (DEPRECATED! Remove or replace with another test!)",
+  "skip": true,
   "feature": "language",
   "type": "extract",
   "expectedFeatures": [],

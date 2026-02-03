@@ -1,32 +1,20 @@
 {
-  "description": "Should extract language from 041 (||| in 008)",
+  "description": "Test zxx removal in 041 fields",
   "feature": "language",
   "type": "extract",
-  "expectedFeatures": ["fin"],
   "inputRecord": {
     "leader": "02518cam a2200745zi 4500",
     "fields": [
-      {
-        "tag": "001",
-        "value": "000019643"
-      },
-      {
-        "tag": "008",
-        "value": "831017s1983    fi ||||||||||||||||b|||||"
-      },
-      {
-        "tag": "041",
-        "ind1": "0",
-        "ind2": " ",
-        "subfields": [
-          {
-            "code": "a",
-            "value": "fin"
-          }
-        ]
-      }
+      { "tag": "008", "value": "831017s1983    fi |||||||||||||||||foo||" },
+      { "tag": "041", "ind1": "0", "ind2": " ", "subfields": [ { "code": "a", "value": "foo" }, { "code": "a", "value": "zxx" }] },
+      { "tag": "041", "ind1": "0", "ind2": " ", "subfields": [ { "code": "a", "value": "zxx" }] }
     ]
   },
-  "skip": false,
-  "only": false
+  "expectedFeatures": [ {
+    "leader": "02518cam a2200745zi 4500",
+    "fields": [
+      { "tag": "008", "value": "831017s1983    fi |||||||||||||||||foo||" },
+      { "tag": "041", "ind1": "0", "ind2": " ", "subfields": [ { "code": "a", "value": "foo" }] }
+    ]
+  }, "record" ]
 }

@@ -1,15 +1,17 @@
 {
-  "description": "Comparison should return points for matching invalid ISBN identifiers when there are valid isbns just in one record",
+  "description": "Invalid isbn's don't count: score is 0",
   "feature": "isbn",
   "type": "compare",
-  "expectedPoints": 0.2,
+  "expectedPoints": 0.0,
   "featuresA": [
-    { "code": "z", "value": "978952622477X" },
-    { "code": "z", "value": "9789526224770" }
+    { "tag": "020", "ind1": " ", "ind2": " ", "subfields": [
+      { "code": "z", "value": "978952622477X" }
+    ]}
   ],
   "featuresB": [
-    { "code": "a", "value": "9789526224770" },
-    { "code": "a", "value": "978952622477X" }
+    { "tag": "020", "ind1": " ", "ind2": " ", "subfields": [
+      { "code": "a", "value": "978952622477X" }
+    ]}
   ],
   "skip": false,
   "only": false

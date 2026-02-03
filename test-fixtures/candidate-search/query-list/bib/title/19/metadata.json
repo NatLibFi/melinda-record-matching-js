@@ -1,0 +1,27 @@
+{
+  "description": "Should not use word search for titles starting with a word starting with a boolean (*And*um)",
+  "skip": false,
+  "only": false,
+  "type": "bibTitle",
+  "expectedQuery": ["dc.title=\"^mighty have fallen*\""],
+  "inputRecord": {
+    "leader": "02518cam a2200745zi 4500",
+    "fields": [
+      {
+        "tag": "001",
+        "value": "000019643"
+      },
+      {
+        "tag": "245",
+        "ind1": " ",
+        "ind2": "4",
+        "subfields": [
+          {
+            "code": "a",
+            "value": "The mighty have fallen"
+          }
+        ]
+      }
+    ]
+  }
+}

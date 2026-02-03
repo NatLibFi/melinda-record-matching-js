@@ -4,9 +4,9 @@
   "type": "compare",
   "expectedPoints": 0.2,
   "featuresA": [
-    { "code": "z", "value": "2049363X" }
+    "2049-363X"
   ],
   "featuresB": [
-    { "code": "z", "value": "2049363X" }
+    "2049-363X"
   ]
 }

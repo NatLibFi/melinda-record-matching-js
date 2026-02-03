@@ -1,16 +1,20 @@
 {
-  "description": "Comparison unique values and work same regardless of do we compare A to B or B to A. (Duplicate in B)",
+  "description": "Match x 2. Check mainly that uniq works.",
   "comment": "Values should be uniqued before comparing",
   "feature": "isbn",
   "type": "compare",
-  "expectedPoints": 0.55,
+  "expectedPoints": 0.75,
   "featuresA": [
-    { "code": "a", "value": "9789526224770" },
-    { "code": "a", "value": "978952622477X" }
+    { "tag": "020", "ind1": " ", "ind2": " ", "subfields": [
+      { "code": "a", "value": "978-1-5400-3029-0" },
+      { "code": "a", "value": "978-1-5400-3029-0" }
+    ]}
   ],
   "featuresB": [
-    { "code": "a", "value": "978952622477X" },
-    { "code": "a", "value": "978952622477X" }
+    { "tag": "020", "ind1": " ", "ind2": " ", "subfields": [
+      { "code": "a", "value": "9781540030290" },
+      { "code": "a", "value": "97815400-30290" }
+    ]}
   ],
   "skip": false,
   "only": false
