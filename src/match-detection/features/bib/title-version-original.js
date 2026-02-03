@@ -3,7 +3,7 @@ import createDebugLogger from 'debug';
 import naturalPkg from 'natural';
 const {LevenshteinDistance: leven} = naturalPkg;
 
-export default ({treshold = 10} = {}) => ({
+export default ({threshold = 10} = {}) => ({
   name: 'titleVersionOriginal',
   extract: ({record}) => {
     const title = getTitle();
@@ -38,7 +38,7 @@ export default ({treshold = 10} = {}) => ({
 
     debug(`'${a}' vs '${b}': Max length = ${maxLength}, distance = ${distance}, percentage = ${percentage}`);
 
-    if (percentage <= treshold) {
+    if (percentage <= threshold) {
       return 0.3;
     }
 

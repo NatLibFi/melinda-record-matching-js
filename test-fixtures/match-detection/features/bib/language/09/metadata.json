@@ -1,5 +1,6 @@
 {
-  "description": "Should extract all languages and sort them",
+  "description": "Should extract all languages and sort them (DEPRECATED! Remove eventually!)",
+  "skip": true,
   "feature": "language",
   "type": "extract",
   "expectedFeatures": ["eng", "fin", "swe"],

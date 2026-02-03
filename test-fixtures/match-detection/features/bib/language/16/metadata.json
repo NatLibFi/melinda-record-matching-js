@@ -1,38 +1,25 @@
 {
-  "description": "Should extract all languages and sort and unique them",
+  "description": "ind1 check: same language 'eng' (+0.1) but translation vs non-translation (-0.1). Is the penalty too light?",
   "feature": "language",
-  "type": "extract",
-  "expectedFeatures": ["eng", "fin", "swe"],
-  "inputRecord": {
-    "leader": "02518cam a2200745zi 4500",
+  "type": "compare",
+  "expectedPoints": 0.0,
+
+    "featuresA": [{
     "fields": [
-      {
-        "tag": "001",
-        "value": "000019643"
-      },
-      {
-        "tag": "008",
-        "value": "831017s1983    fi ||||||||||||||||bfin||"
-      },
-      {
-        "tag": "041",
-        "ind1": "0",
-        "ind2": " ",
-        "subfields": [
-          {
-            "code": "a",
-            "value": "eng"
-          },
-          {
-            "code": "a",
-            "value": "swe"
-          },
-          {
-            "code": "d",
-            "value": "fin"
-          }
-        ]
-      }
+      {"tag": "041", "ind1": "1", "ind2": " ", "subfields": [
+        {"code": "a", "value": "eng"},
+        {"code": "h", "value": "fin"}
+      ]}
     ]
-  }
+  }, "A"],
+  "featuresB": [{
+    "fields": [
+      {"tag": "041", "ind1": "0", "ind2": " ", "subfields": [
+        {"code": "a", "value": "eng"}
+      ]}
+
+    ]
+  }, "B"],
+  "skip": false,
+  "only": false
 }

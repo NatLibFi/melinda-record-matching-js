@@ -3,8 +3,10 @@
   "feature": "isbn",
   "type": "extract",
   "expectedFeatures": [
-    {
-      "code": "z", "value": "95262247791"
+    { "tag": "020", "ind1": " ", "ind2": " ", "subfields": [
+        { "code": "a", "value": "952-62-2477-91" },
+        { "code": "q", "value": "PDF" }
+      ]
     }
   ],
   "inputRecord": {

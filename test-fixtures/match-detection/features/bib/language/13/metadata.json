@@ -1,5 +1,6 @@
 {
-  "description": "Should extract language from f041 d",
+  "description": "Should extract language from f041 d. (DEPRECATED! Remove eventually!)",
+  "skip": true,
   "feature": "language",
   "type": "extract",
   "expectedFeatures": ["fin"],
