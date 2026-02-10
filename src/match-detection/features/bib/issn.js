@@ -37,7 +37,7 @@ export default () => ({
       const subfieldValues = fields.flatMap(f => f.subfields.filter(sf => subfieldCodes.includes(sf.code)).map(sf => sf.value));
       //debug(`\t cand values: '${subfieldValues.join("', '")}'`);
       // Stripping punctuaction with substring here is pretty quick and dirty approach...
-      const validSubfieldValues = subfieldValues?.map(val => normalizeSubfieldValue(val)).filter(val => isValidIssn(val));
+      const validSubfieldValues = subfieldValues?.map(val => normalizeIssnSubfieldValue(val)).filter(val => isValidIssn(val));
       if (!validSubfieldValues) {
         return [];
       }
@@ -51,9 +51,6 @@ export default () => ({
       return record.get(/^[79]73$/u);
     }
 
-    function normalizeSubfieldValue(val) {
-      return val.replace(/[., :;].*$/u, '');
-    }
 
     function isValidIssn(val) {
       return /^[0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9X]$/u.test(val);
@@ -83,6 +80,10 @@ export default () => ({
 
   }
 });
+
+export function normalizeIssnSubfieldValue(val) {
+  return val.replace(/[., :;].*$/u, '');
+}
 
 export function uniqArray(arr) {
   return arr.filter((val, i) => arr.indexOf(val) === i);

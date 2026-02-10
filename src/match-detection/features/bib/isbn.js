@@ -127,30 +127,7 @@ export default () => ({
       return [uniqArray(trueGoodValues), uniqArray([...wannabeGoodValues, ...badValues])];
     }
 
-    function validatorAndNormalizer(string) {
-      const string2 = string.replace(/\. -$/u, ''); // Remove punctuation (773$z)
 
-      // Hack: Historically we 020$a "1234567890 sidottu" etc. Try the LHS alone:
-      const string3 = string2.replace(/ .*$/u, '');
-      if (string2 !== string3) {
-        const altResult = validatorAndNormalizer(string3);
-        if (altResult.valid) {
-          return altResult;
-        }
-      }
-
-      const isbnParseResult = isbnParse(string2, '') || '';
-      debugData(`isbnParseResult: ${JSON.stringify(isbnParseResult)}`);
-      if (!isbnParseResult.isValid) {
-        debug(`Not parseable ISBN '${string2}', just removing hyphens`);
-        return {valid: false, value: string2.replace(/-/ug, '')};
-      }
-
-      debug(`Parseable ISBN '${string2}', normalizing to ISBN-13 '${isbnParseResult.isbn13}'`);
-      return {valid: true, value: isbnParseResult.isbn13};
-
-
-    }
   }
 });
 
@@ -171,4 +148,32 @@ function scoreData(score, factor, n) {
     }
     return Math.round(currScore * 100)/100; // 0.600000000001 => 0.6
   }
+}
+
+function validatorAndNormalizer(string) {
+  const string2 = string.replace(/\. -$/u, ''); // Remove punctuation (773$z)
+
+  // Hack: Historically we 020$a "1234567890 sidottu" etc. Try the LHS alone:
+  const string3 = string2.replace(/ .*$/u, '');
+  if (string2 !== string3) {
+    const altResult = validatorAndNormalizer(string3);
+    if (altResult.valid) {
+      return altResult;
+    }
+  }
+
+  const isbnParseResult = isbnParse(string2, '') || '';
+  debugData(`isbnParseResult: ${JSON.stringify(isbnParseResult)}`);
+  if (!isbnParseResult.isValid) {
+    debug(`Not parseable ISBN '${string2}', just removing hyphens`);
+    return {valid: false, value: string2.replace(/-/ug, '')};
+  }
+
+  debug(`Parseable ISBN '${string2}', normalizing to ISBN-13 '${isbnParseResult.isbn13}'`);
+  return {valid: true, value: isbnParseResult.isbn13};
+}
+
+export function normalizeIsbn(val) {
+  const tmp = validatorAndNormalizer(val);
+  return tmp.value;
 }
