@@ -2,8 +2,14 @@ import createDebugLogger from 'debug';
 import {promisify} from 'util';
 import {toQueries} from '../candidate-search-utils.js';
 import {getSubfieldValues, testStringOrNumber, toMelindaIds} from '../../matching-utils.js';
+import { normalizeIssnSubfieldValue } from '../../match-detection/features/bib/issn.js';
+import { normalizeIsbn } from '../../match-detection/features/bib/isbn.js';
 
 const setTimeoutPromise = promisify(setTimeout); // eslint-disable-line
+
+const ISBN = 'z';
+const ISSN = 'x';
+const IDENTIFIER = 'o';
 
 export function hostIdMelinda(record) {
   const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:query:hostIdMelinda');
@@ -20,8 +26,8 @@ export function hostIdMelinda(record) {
 
   function hostId(record) {
     // Multi 773 handling
-    const f773s = record.get(/^773$/u)
-      .filter(f773 => f773.subfields.some(sub => sub.code === 'w' && (/\(FI-MELINDA\).*/ui).test(sub.value)));
+    const f773s = getHostItemEntryFields(record)
+      .filter(f773 => f773.subfields.some(sub => sub.code === 'w' && valueIsMelindaId(sub.value)));
 
     if (f773s.length === 0) {
       return false;
@@ -57,8 +63,8 @@ export async function hostIdOtherSource(record, client) {
 
 
   function getHostIds(record) {
-    const f773s = record.get(/^773$/u)
-      .filter(f773 => f773.subfields.some(sub => sub.code === 'w' && !(/\(FI-MELINDA\).*/ui).test(sub.value)));
+    const f773s = getHostItemEntryFields(record)
+      .filter(f773 => f773.subfields.some(sub => sub.code === 'w' && !valueIsMelindaId(sub.value))); // !(/^\(FI-MELINDA\).*/ui).test(sub.value)));
     if (f773s.length === 0) {
       return false;
     }
@@ -125,3 +131,117 @@ export async function hostIdOtherSource(record, client) {
   }
 }
 
+export function hostIssn(record) {
+  return hostIdentifier(record, ISSN);
+}
+
+export function hostIsbn(record) {
+  return hostIdentifier(record, ISBN);
+}
+
+export async function hostIdentifier(record, relevantSubfieldCode = IDENTIFIER) {
+  const relevantFields = getHostItemEntryFields(record);
+  const relevantSubfields = relevantFields.map(f => f.subfields).flat().filter(sf => sf.code === relevantSubfieldCode);
+
+  const relevantIdentifiers = getRelevantIdentifiers();
+
+  if (relevantValues.length === 0) {
+    return [];
+  }
+
+  return await handleSruIdentifierCalls(relevantIdentifiers, []);
+
+
+  function getRelevantIdentifiers() {
+    if (relevantSubfieldCode === ISBN) {
+      return relevantSubfields.map(sf => normalizeIsbn(sf.value));
+    }
+    if (relevantSubfieldCode == ISSN) {
+      return relevantSubfields.map(sf => normalizeIssnSubfieldValue(sf.value));
+    }
+    return relevantSubfields.map(sf => sf.value);
+  }
+
+  function getSruSearchType() {
+    if (relevantSubfieldCode === ISBN) {
+      return 'index.bath.isbn';
+    }
+    if (relevantSubfieldCode === ISSN) {
+      return 'index.bath.issn';
+    }
+    return 'whatever.whatever'; // 773$o not really supported
+  }
+
+  async function handleSruIdentifierCalls(identifiers, ids = []) {
+    const [currIdentifier, ...remainingidentifiers] = identifiers;
+
+    if (currIdentifier === undefined) {
+      debug(`host ids: ${ids}`);
+      const validIds = ids.filter(id => id);
+      // TODO: this might return 1000s of comp... Should we include title?
+      return toQueries(validIds, 'melinda.partsofhost');
+    }
+
+    const query = await toQueries([currIdentifier], getSruSearchType());
+    const id = await new Promise((resolve, reject) => {
+      debug(`Searching for hosts with query: ${otherSourceHostQuery}`);
+      let recordId;
+
+      client.searchRetrieve(query)
+        .on('error', err => {
+          debug(`SRU error for query: ${query}: ${err}`);
+          reject(err);
+        })
+        .on('end', async () => {
+          try {
+            debug(`Searching for hosts: done`);
+            await setTimeoutPromise(10);
+            resolve(recordId);
+          } catch (err) {
+            debug(`Error caught on END`);
+            reject(err);
+          }
+        })
+        .on('record', record => {
+          const [field] = record.get(/^001$/u);
+          debug(field);
+          recordId = field.value ? field.value : '';
+      });
+    });
+    return handleSruIdentifierCalls(remainingidentifiers, [...ids, id]);
+  }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function getHostItemEntryFields(record) {
+  return record.get(/^[79]73$/u);
+}
+
+function valueIsMelindaId(val) {
+  return (/^\(FI-MELINDA\)0[0-9]{8}$/ui).test(val);
+}

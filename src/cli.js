@@ -10,7 +10,7 @@ async function cli() {
   const debug = createDebugLogger('@natlibfi/melinda-record-matching:cli');
   const args = yargs(process.argv.slice(2))
     .scriptName('melinda-record-matching-js')
-    .epilog('Copyright (C) 2022-2023 University Of Helsinki (The National Library Of Finland)')
+    .epilog('Copyright (C) 2022-2026 University Of Helsinki (The National Library Of Finland)')
     .usage('$0 <file> [options] and env variable info in README')
     .usage('Installed globally: $0 <file> [options] and env variable info in README')
     .usage('Not installed: npx $0 <file> [options] and env variable info in README')
@@ -152,7 +152,10 @@ async function cli() {
       return [
         //candidateSearch.searchTypes.bib.sourceIds,
         candidateSearch.searchTypes.component.hostIdMelinda,
-        candidateSearch.searchTypes.component.hostIdOtherSource
+        candidateSearch.searchTypes.component.hostIdOtherSource,
+        candidateSearch.searchTypes.component.hostIsbn,
+        candidateSearch.searchTypes.component.hostIssn
+        // 773$o as well?
       ];
     }
 
@@ -174,4 +177,5 @@ async function cli() {
 
     throw new Error('Unsupported match validation package');
   }
+
 }
