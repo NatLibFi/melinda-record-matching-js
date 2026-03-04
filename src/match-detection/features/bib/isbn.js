@@ -90,7 +90,7 @@ export default () => ({
 
     // No match:
 
-    if (goodValuesA.length === 0 || goodValuesB === 0) { // At least one record did not have any good ISBNs, so not penalizing here! (Invalid 020$as are counted a bad.)
+    if (goodValuesA.length === 0 || goodValuesB.length === 0) { // At least one record did not have any good ISBNs, so not penalizing here! (Invalid 020$as are counted a bad.)
       return 0.0;
     }
 
@@ -117,13 +117,14 @@ export default () => ({
     }
 
     function getValues(fields) {
+      // Valid values are notmalized to their isbn-13 form. Invalid values get their '-'s removed.
       const goodValues = fields.flatMap(f => f.subfields.filter(sf => sf.code === subfieldCodeForGoodValues)).map(sf => validatorAndNormalizer(sf.value));
       const trueGoodValues = goodValues.filter(val => val.valid).map(val => val.value);
       const wannabeGoodValues = goodValues.filter(val => !val.valid).map(val => val.value);
       if (!subfieldCodeForBadValues) { // 773
         return [trueGoodValues, wannabeGoodValues];
       }
-      const badValues = fields.flatMap(f => f.subfields.filter(sf => sf.code === subfieldCodeForBadValues)).map(sf => sf.value);
+      const badValues = fields.flatMap(f => f.subfields.filter(sf => sf.code === subfieldCodeForBadValues)).map(sf => validatorAndNormalizer(sf.value).value);
       return [uniqArray(trueGoodValues), uniqArray([...wannabeGoodValues, ...badValues])];
     }
 
