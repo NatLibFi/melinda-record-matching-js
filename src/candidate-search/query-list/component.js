@@ -2,8 +2,8 @@ import createDebugLogger from 'debug';
 import {promisify} from 'util';
 import {toQueries} from '../candidate-search-utils.js';
 import {getSubfieldValues, testStringOrNumber, toMelindaIds} from '../../matching-utils.js';
-import { normalizeIssnSubfieldValue } from '../../match-detection/features/bib/issn.js';
-import { normalizeIsbn } from '../../match-detection/features/bib/isbn.js';
+import {normalizeIssnSubfieldValue} from '../../match-detection/features/bib/issn.js';
+import {normalizeIsbn} from '../../match-detection/features/bib/isbn.js';
 
 const setTimeoutPromise = promisify(setTimeout); // eslint-disable-line
 
@@ -212,31 +212,6 @@ export async function hostIdentifier(record, relevantSubfieldCode = IDENTIFIER) 
   }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 function getHostItemEntryFields(record) {
   return record.get(/^[79]73$/u);
