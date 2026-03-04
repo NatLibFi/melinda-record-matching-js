@@ -1,0 +1,8 @@
+{
+  "description": "Comparison should not like unexpected 008/06='b'",
+  "feature": "publicationTime",
+  "type": "compare",
+  "expectedPoints": -1.0,
+  "featuresA": {"typeOfDate": "b", "date1": "1983", "date2": "    "},
+  "featuresB": {"typeOfDate": "s", "date1": "1983", "date2": "    "}
+}
