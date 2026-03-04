@@ -2,7 +2,7 @@
   "description": "Should extract publication time",
   "feature": "publicationTime",
   "type": "extract",
-  "expectedFeatures": ["1983"],
+  "expectedFeatures": {"typeOfDate": "s", "date1": "1983", "date2": "    "},
   "inputRecord": {
     "leader": "02518cam a2200745zi 4500",
     "fields": [

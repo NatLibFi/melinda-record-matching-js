@@ -1,0 +1,8 @@
+{
+  "description": "Comparison should return 0.0 if there's a value which contains no data",
+  "feature": "publicationTime",
+  "type": "compare",
+  "expectedPoints": 0.0,
+  "featuresA": {"typeOfDate": "s", "date1": "1980", "date2": "    "},
+  "featuresB": {"typeOfDate": "s", "date1": "||||", "date2": "    "}
+}

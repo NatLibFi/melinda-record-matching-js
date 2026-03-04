@@ -3,6 +3,6 @@
   "feature": "publicationTime",
   "type": "compare",
   "expectedPoints": 0.1,
-  "featuresA": ["1983"],
-  "featuresB": ["1983"]
+  "featuresA": {"typeOfDate": "s", "date1": "1983", "date2": "    "},
+  "featuresB": {"typeOfDate": "s", "date1": "1983", "date2": "    "}
 }

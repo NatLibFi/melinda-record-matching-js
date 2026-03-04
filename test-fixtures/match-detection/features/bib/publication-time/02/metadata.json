@@ -2,7 +2,7 @@
   "description": "Should extract publication time (Missing 008)",
   "feature": "publicationTime",
   "type": "extract",
-  "expectedFeatures": [],
+  "expectedFeatures": {"typeOfDate": "|", "date1": "    ", "date2": "    "},
   "inputRecord": {
     "leader": "02518cam a2200745zi 4500",
     "fields": [
