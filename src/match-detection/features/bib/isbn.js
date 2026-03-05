@@ -33,50 +33,69 @@ export default () => ({
 
     const [subfieldCodeForGoodValues, subfieldCodeForBadValues] = getSubfieldCodes(aa[0].tag);
 
-    const [goodValuesA, badValuesA] = getValues(aa);
-    if (goodValuesA.length) {
-      debug(`GOOD VALUES (A): ${goodValuesA.join(', ')}`);
-    }
-    if (badValuesA.length) {
-      debug(`BAD VALUES (A): ${badValuesA.join(', ')}`);
-    }
+    const [aValidValuesA, aInvalidValuesA, zValidValuesA, zInvalidValuesA] = getValuesWrapper(aa, 'AA'); // initial 'a' and 'z' refer to 020 subfields codes
+    const [aValidValuesB, aInvalidValuesB, zValidValuesB, zInvalidValuesB] = getValuesWrapper(bb, 'BB');
 
-    const [goodValuesB, badValuesB] = getValues(bb);
-    if (goodValuesB.length) {
-      debug(`GOOD VALUES (B): ${goodValuesB.join(', ')}`);
-    }
-    if (badValuesB.length) {
-      debug(`BAD VALUES (B): ${badValuesB.join(', ')}`);
-    }
-
-    const [sharedGoodValues, goodValuesAOnly, goodValuesBOnly] = getUnionData(goodValuesA, goodValuesB);
-
-    //debug(`GOOD\tBOTH: ${sharedGoodValues.length}, A only: ${goodValuesAOnly.length}, B only: ${goodValuesBOnly.length}`);
-
-    const hitScore = scoreHit();
-
-    function scoreHit() {
-      if (sharedGoodValues.length > 0) {
-        return MAX_SCORE;
+    function getValuesWrapper(data, prefix) {
+      const [aValidValues, aInvalidValues, zValidValues, zInvalidValues] = getValues(data);
+      if (aValidValues.length) {
+        debug(`${prefix}: ${aa[0].tag}$${subfieldCodeForGoodValues} VALID: ${aValidValues.join(', ')}`);
       }
+      if (aInvalidValues.length) {
+        debug(`${prefix}: ${aa[0].tag}$${subfieldCodeForGoodValues} INVALID: ${aInvalidValues.join(', ')}`);
+      }
+      if (zValidValues.length) {
+        debug(`${prefix}: ${aa[0].tag}$${subfieldCodeForBadValues} VALID: ${zValidValues.join(', ')}`);
+      }
+      if (zInvalidValues.length) {
+        debug(`${prefix}: ${aa[0].tag}$${subfieldCodeForBadValues} INVALID: ${zInvalidValues.join(', ')}`);
+      }
+      return [aValidValues, aInvalidValues, zValidValues, zInvalidValues];
+    }
+
+    const [sharedGoodValues, goodValuesAOnly, goodValuesBOnly] = getUnionData(aValidValuesA, aValidValuesB);
+
+    debug(`GOOD\tBOTH: ${sharedGoodValues.length}, A only: ${goodValuesAOnly.length}, B only: ${goodValuesBOnly.length}`);
+
+    if (sharedGoodValues.length > 0) {
+      // Third argument (aka 'N times') is >= 0
+      return scoreData(MAX_SCORE, 0.8, goodValuesAOnly.length + goodValuesBOnly.length);
+    }
+
+    const hitScore = scoreSuboptimalHit();
+
+    function scoreSuboptimalHit() {
       // One record consider ISBN good and the other record considered it's canceled:
-      if (goodValuesA.some(valA => badValuesB.includes(valA)) || goodValuesB.some(valB => badValuesA.includes(valB))) {
+      if (aValidValuesA.some(valA => zValidValuesB.includes(valA)) || aValidValuesB.some(valB => zValidValuesA.includes(valB))) {
         return MAX_SCORE;
       }
 
-      // Value is bad, but looks isbn-ish to a human eye (not validating the isbn again, note than invalid isbns in 020$a are considered bad):
+      // Subfield is for cancelled/whatever values, but the value is syntactically valid:
       // Could happen for two canceled ISBNs for example. I'll give this two thirds of the full score
-      if (badValuesA.some(valA => looksGood(valA) && badValuesB.includes(valA)) || badValuesB.some(valB => looksGood(valB) && badValuesA.includes(valB))) {
+      const zzValid = zValidValuesA.find(valA => zValidValuesB.includes(valA));
+      if (zzValid) {
+        debug(`Both contain a valid value in 020$z: ${zzValid}`);
         return MAX_SCORE * 2 / 3;
       }
+      // Shared invalid identifiers:
+      const aaInvalid = aInvalidValuesA.find(valA => aInvalidValuesB.includes(valA) || zInvalidValuesB.includes(valA)) || aInvalidValuesB.find(valB => zInvalidValuesA.includes(valB));
+      if (aaInvalid) {
+        debug(`Shared invalid value in 020$a and 020$a-or-$z subfields: ${aaInvalid}`);
+        return MAX_SCORE * 2 / 3;
+      }
+
+      /* // Currently I think that paired invalid idenfiers in 020$z are meaningless...
+      const zzInvalid = zInvalidValuesB.find(valB => zInvalidValuesA.includes(valB)) || zInvalidValuesA.find(valA => zInvalidValuesB.includes(valA));
+      if (zzInvalid) {
+        debug(`Shared invalid value in 020$z subfields: ${zzInvalid}`);
+        return MAX_SCORE / 3;
+      }
+      */
 
       return 0;
     }
 
-    if (sharedGoodValues.length > 0) {
-      // Third argument (aka 'N times') is >= 0
-      return scoreData(hitScore, 0.8, goodValuesAOnly.length + goodValuesBOnly.length);
-    }
+
 
     if (hitScore === MAX_SCORE) {
       // -1 is needed to make the third argument >= 0 (otherwise min val would be 0)
@@ -90,10 +109,19 @@ export default () => ({
 
     // No match:
 
-    if (goodValuesA.length === 0 || goodValuesB.length === 0) { // At least one record did not have any good ISBNs, so not penalizing here! (Invalid 020$as are counted a bad.)
+    if (aValidValuesA.length + aInvalidValuesA.length === 0 || aValidValuesB.length + aInvalidValuesB.length === 0) { // At least one record did not have any good ISBNs, so not penalizing here! (Invalid 020$as are counted a bad.)
       return 0.0;
     }
+    // We have same matching invalid identifiers. Don't penalize:
+    const allA = [...aValidValuesA, ...aInvalidValuesA, ...zValidValuesA, ...zInvalidValuesA];
+    const allB = [...aValidValuesB, ...aInvalidValuesB, ...zValidValuesB, ...zInvalidValuesB];
+    const [sharedValues, tmp1, tmp2] = getUnionData(allA, allB);
+    debug(`WHATEVER\tBOTH: ${sharedGoodValues.length}, A only: ${tmp1.length}, B only: ${tmp2.length}`);
 
+    if (sharedValues.length > 0) {
+      return 0;
+    }
+    // We have values but they disagree:
     return -0.75; // Has good ISBNs on both records, but they did not match
 
 
@@ -104,28 +132,19 @@ export default () => ({
       return ['a', 'z'];
     }
 
-    function looksGood(val) {
-      // isbn10 can end in X:
-      if (/^([0-9]-?){9}[0-9X]$/u.test(val)) {
-        return true;
-      }
-      // isbn13 can not:
-      if (/^([0-9]-?){12}[0-9]$/u.test(val)) {
-        return true;
-      }
-      return false;
-    }
-
     function getValues(fields) {
       // Valid values are notmalized to their isbn-13 form. Invalid values get their '-'s removed.
       const goodValues = fields.flatMap(f => f.subfields.filter(sf => sf.code === subfieldCodeForGoodValues)).map(sf => validatorAndNormalizer(sf.value));
       const trueGoodValues = goodValues.filter(val => val.valid).map(val => val.value);
       const wannabeGoodValues = goodValues.filter(val => !val.valid).map(val => val.value);
       if (!subfieldCodeForBadValues) { // 773
-        return [trueGoodValues, wannabeGoodValues];
+        return [trueGoodValues, wannabeGoodValues, [], []];
       }
-      const badValues = fields.flatMap(f => f.subfields.filter(sf => sf.code === subfieldCodeForBadValues)).map(sf => validatorAndNormalizer(sf.value).value);
-      return [uniqArray(trueGoodValues), uniqArray([...wannabeGoodValues, ...badValues])];
+      const badValues = fields.flatMap(f => f.subfields.filter(sf => sf.code === subfieldCodeForBadValues)).map(sf => validatorAndNormalizer(sf.value));
+      const validBadValues = badValues.filter(val => val.valid).map(val => val.value);
+      const invalidBadValues = badValues.filter(val => !val.valid).map(val => val.value);
+      //const badValues = fields.flatMap(f => f.subfields.filter(sf => sf.code === subfieldCodeForBadValues)).map(sf => validatorAndNormalizer(sf.value).value);
+      return [uniqArray(trueGoodValues), uniqArray(wannabeGoodValues), uniqArray(validBadValues), uniqArray(invalidBadValues)];
     }
 
     function validatorAndNormalizer(string) {
