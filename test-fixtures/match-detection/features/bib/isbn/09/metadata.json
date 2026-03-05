@@ -1,11 +1,13 @@
 {
-  "description": "Invalid ISBNs and canceled ISBN are meaningless here",
+  "description": "Matching invalid 020$a-020$z pair is ok-ish",
+  "comment": "Match with invalid indentifiers scores 0.5. Since there noise from the other 020$a, there's a 20% score reduction. 020$z does not increase penalty.",
   "feature": "isbn",
   "type": "compare",
-  "expectedPoints": 0.0,
+  "expectedPoints": 0.4,
   "featuresA": [
     { "tag": "020", "ind1": " ", "ind2": " ", "subfields": [
-      { "code": "a", "value": "978952622477X" }
+      { "code": "a", "value": "978952622477X" },
+      { "code": "a", "value": "978952622478X" }
     ]}
   ],
   "featuresB": [

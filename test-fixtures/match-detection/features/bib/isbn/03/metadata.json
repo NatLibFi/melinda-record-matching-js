@@ -1,8 +1,9 @@
 {
-  "description": "Comparison should return points for matching invalid ISBN identifiers (not as high as for valid identifiers though)",
+  "description": "Matching invalid indentifiers in cancelled/invalid subfield don't really mean anything (no bonus nor penalty)",
+  "comment": "If crappiness of the identifier is common knowledge, one would expect a valid 020$a as well.",
   "feature": "isbn",
   "type": "compare",
-  "expectedPoints": 0.5,
+  "expectedPoints": 0.0,
   "featuresA": [
     { "tag": "020", "ind1": " ", "ind2": " ", "subfields": [
       { "code": "z", "value": "952622477X" }
