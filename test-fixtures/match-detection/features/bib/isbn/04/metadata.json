@@ -1,8 +1,8 @@
 {
-  "description": "One value is invalid, so it is not used when comparing valid ISBNs. As there's only one valid ISBN no score is given.",
+  "description": "Both 020$a isbn subfields contain data (though the other one is invalid), so the pair is considered invalid",
   "feature": "isbn",
   "type": "compare",
-  "expectedPoints": 0.0,
+  "expectedPoints": -0.75,
   "featuresA": [
     { "tag": "020", "ind1": " ", "ind2": " ", "subfields": [
       { "code": "a", "value": "9789526224771" }
