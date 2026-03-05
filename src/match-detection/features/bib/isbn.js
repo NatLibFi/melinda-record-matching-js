@@ -133,7 +133,7 @@ export default () => ({
     }
 
     function getValues(fields) {
-      // Valid values are notmalized to their isbn-13 form. Invalid values get their '-'s removed.
+      // Valid values are normalized to their isbn-13 form. Invalid values get their '-'s removed.
       const goodValues = fields.flatMap(f => f.subfields.filter(sf => sf.code === subfieldCodeForGoodValues)).map(sf => validatorAndNormalizer(sf.value));
       const trueGoodValues = goodValues.filter(val => val.valid).map(val => val.value);
       const wannabeGoodValues = goodValues.filter(val => !val.valid).map(val => val.value);
