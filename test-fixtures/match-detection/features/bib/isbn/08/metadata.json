@@ -1,5 +1,5 @@
 {
-  "description": "Invalid isbn's don't count: score is 0",
+  "description": "Identical invalid ISBNs in cancelled/invalid subfield are neither good or bad: score is 0",
   "feature": "isbn",
   "type": "compare",
   "expectedPoints": 0.0,
@@ -10,7 +10,7 @@
   ],
   "featuresB": [
     { "tag": "020", "ind1": " ", "ind2": " ", "subfields": [
-      { "code": "a", "value": "978952622477X" }
+      { "code": "z", "value": "978952622477X" }
     ]}
   ],
   "skip": false,
