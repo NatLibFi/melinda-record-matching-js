@@ -31,10 +31,11 @@ export default () => ({
 
     FixSami041().fix(clonedRecord); // Handle 'smi' adding if needed
     Remove041zxx().fix(clonedRecord); // Remove 'zxx' from f041s
+    clonedRecord.fields = clonedRecord.fields.filter(f => ['008', '041'].includes(f.tag));
     // Add other language code normalizations?
 
     // Should we return all the fields, or just the relevant fields?
-    return [{leader: clonedRecord.leader, fields: clonedRecord.fields}, label];
+    return [clonedRecord.fields, label];
   },
   // eslint-disable-next-line max-statements
   compare: (aa, bb) => {
@@ -100,11 +101,11 @@ export default () => ({
       // Things are already complicated (likely to pe penalized, so no nedd to worrty about language code sources, I daresay.
       return compareLanguageCodeLists(getLanguageCodesFrom041Fields(a), getLanguageCodesFrom041Fields(b));
 
-      function getFields041(record) {
-        if (!record.fields) {
+      function getFields041(fields) {
+        if (!fields) {
           return [];
         }
-        return record.fields.filter(f => f.tag === '041');
+        return fields.filter(f => f.tag === '041');
       }
 
     }
@@ -218,11 +219,11 @@ export default () => ({
 
 });
 
-function get008Value(record, label = 'record') {
-  if (!record || !record.fields) {
+function get008Value(fields, label = 'record') {
+  if (!fields) {
     return;
   }
-  const f008 = record.fields.find(f => f.tag === '008');
+  const f008 = fields.find(f => f.tag === '008');
   if (!f008) {
     return undefined;
   }
@@ -269,12 +270,12 @@ function isLangCodeForALanguage(code, label = 'record', encoding = undefined) {
 
 
 
-function getLanguageCodesFrom041Fields(record) {
+function getLanguageCodesFrom041Fields(fields) {
   // NB! We brutally don't check $2 (language code source) as marc's language codes is practically a subset of ISO 639-2,
   // and also ISO 639-2 and ISO 639-3 overlap to a degree. If we ever run into a trouble with some ISO 639-2 vs 639-3 mismatch, then we'll work it out.
   // Also we could write a validator that converts ISO 639-2 to marc if applicable and maybe even partial support for ISO-639-3.
   // Note that ISO 639-2-B values correspond with marc beteer that ISO 639-2-T. Eg. code for Chinese 'zho' should/code be normalized to 'chi'!
-  const values = record.fields.filter(f => f.tag === '041').flatMap(f => getFieldsLanguageCodes(f));
+  const values = fields.filter(f => f.tag === '041').flatMap(f => getFieldsLanguageCodes(f));
   /*
         // .filter(({ind2}) => ind2 === ' ')
         .map(({subfields}) => subfields)

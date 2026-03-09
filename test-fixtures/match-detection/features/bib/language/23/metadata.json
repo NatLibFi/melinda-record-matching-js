@@ -4,16 +4,13 @@
   "type": "compare",
   "expectedPoints": 0.0,
 
-    "featuresA": [{
-    "fields": [
-      {"tag": "041", "ind1": " ", "ind2": " ", "subfields": [
-        {"code": "a", "value": "mul"}
-      ]}
-    ]
-  }, "A"],
-  "featuresB": [{
-    "fields": [
-      {"tag": "041", "ind1": " ", "ind2": " ", "subfields": [
+  "featuresA": [
+    [ {"tag": "041", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "mul"} ]} ],
+    "A"
+  ],
+  "featuresB": [
+    [
+      { "tag": "041", "ind1": " ", "ind2": " ", "subfields": [
         {"code": "a", "value": "eng"},
         {"code": "a", "value": "fin"},
         {"code": "a", "value": "swe"},
@@ -23,9 +20,8 @@
         {"code": "a", "value": "ara"},
         {"code": "a", "value": "spa"}
       ]}
-
-    ]
-  }, "B"],
+    ],
+    "B"],
   "skip": false,
   "only": false
 }
