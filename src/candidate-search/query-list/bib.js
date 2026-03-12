@@ -133,7 +133,7 @@ export function bibHostComponents(record) {
   return testStringOrNumber(id) ? [`melinda.partsofhost=${id}`] : [];
 
   function getHostId() {
-    const [field] = record.get(/^773$/u);
+    const [field] = record.get(/^773$/u); // NB! Uses only the first 773 field
 
     if (field) {
       const {value} = field.subfields.find(({code}) => code === 'w') || {};
@@ -147,7 +147,6 @@ export function bibHostComponents(record) {
       }
     }
   }
-  return false;
 }
 
 // SRU search dc.title with a search phrase starting with ^ maps currently in Melinda to (probably) to *headings* index TIT
@@ -289,8 +288,8 @@ export function bibTitleAuthorPublisher({record, onlyTitleLength, addYear = fals
   function addYearToSearch({query, queryIsOkAlone = false, alternates = false, alternateQueries = []}) {
     const [yearQuery] = bibYear(record);
     if (yearQuery !== undefined) {
-      const newAlternateQueries = alternates ? [...alternateQueries, `${yearQuery} AND ${query}`] : alternateQueries;
-      return alternates ? newAlternateQueries : [`${yearQuery} AND ${query}`];
+      const yearAndOtherQueries = `${yearQuery} AND ${query}`;
+      return alternates ? [...alternateQueries, yearAndOtherQueries] : [yearAndOtherQueries];
     }
     if (queryIsOkAlone) {
       return alternates ? alternateQueries : [`${query}`];
@@ -376,7 +375,7 @@ export function bibPublishers(record) {
 
   function getPublisher(record) {
     //debugData(record);
-    const [field] = record.get(/^(?:260)|(?:264)$/u).filter(f => f.subfields.some(sf => sf.code === 'b')); // Filter removes copyright-only fields
+    const [field] = record.get(/^26[04]$/u).filter(f => f.subfields.some(sf => sf.code === 'b')); // Filter removes copyright-only fields
     //debugData(field);
 
     if (field) {
@@ -385,7 +384,8 @@ export function bibPublishers(record) {
         .map(({value}) => testStringOrNumber(value) ? String(value) : '')
         .filter(value => value)
         // In Melinda's index subfield separators are indexed as ' '
-        .join(' ');
+        .join(' ')
+        .trim();
       return publisherString;
     }
     return false;
