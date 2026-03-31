@@ -112,3 +112,20 @@ export function getMatchCounts(aValues, bValues) {
     return aToB < bToA ? aToB : bToA;
   }
 }
+
+
+export function stringAfter(string, substring) {
+  const pos = string.indexOf(substring);
+  if (pos === -1) {
+    return string;
+  }
+  return string.substring(pos+substring.length);
+}
+
+export function stringBefore(string, substring) {
+  const pos = string.indexOf(substring);
+  if (pos === -1) {
+    return string;
+  }
+  return string.substring(0, pos);
+}
