@@ -1,7 +1,7 @@
 {
   "description": "Should generate host record query (FIN01)",
   "type": "bibHostComponents",
-  "expectedQuery": ["melinda.partsofhost=12345"],
+  "expectedQuery": ["melinda.partsofhost=000012345"],
   "inputRecord": {
     "leader": "02518cam a2200745zi 4500",
     "fields": [
@@ -20,7 +20,7 @@
           },
           {
             "code": "w",
-            "value": "(FIN01)12345"
+            "value": "(FIN01)000012345"
           }
         ]
       }
