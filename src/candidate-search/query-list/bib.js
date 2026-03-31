@@ -1,6 +1,8 @@
 import createDebugLogger from 'debug';
 import {toQueries} from '../candidate-search-utils.js';
 import {getMelindaIdsF035, validateSidFieldSubfieldCounts, getSubfieldValues, testStringOrNumber} from '../../matching-utils.js';
+import { extractHostMelindaIdsFromField, extractPublicationYearFrom773, getHostMelindaFields } from './component.js';
+import { fieldToString } from '@natlibfi/marc-record-validators-melinda';
 
 const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:query');
 
@@ -126,28 +128,27 @@ export function bibHostComponents(record) {
   const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:query:bibHostComponents');
   const debugData = debug.extend('data');
   debug(`Creating queries for hostIds`);
-
-  const id = getHostId();
-  debugData(`Found id: ${JSON.stringify(id)}`);
-
-  return testStringOrNumber(id) ? [`melinda.partsofhost=${id}`] : [];
-
-  function getHostId() {
-    const [field] = record.get(/^773$/u); // NB! Uses only the first 773 field
-
-    if (field) {
-      const {value} = field.subfields.find(({code}) => code === 'w') || {};
-
-      if (testStringOrNumber(value) && (/^\(FI-MELINDA\)/u).test(String(value))) {
-        return String(value).replace(/^\(FI-MELINDA\)/u, '');
-      }
-
-      if (testStringOrNumber(value) && (/^\(FIN01\)/u).test(String(value))) {
-        return String(value).replace(/^\(FIN01\)/u, '');
-      }
-    }
+  const f773s = getHostMelindaFields(record);
+  if (f773s.length !== 1) { // This needs some thinking...
+    return [];
   }
+
+  const [id] = extractHostMelindaIdsFromField(f773s[0]);
+  debug(`Found id: ${JSON.stringify(id)}`);
+
+  // NB! record.isCR() does not work if LDR/07=a, so we get year from 773$g!
+  const year = extractPublicationYearFrom773(f773s[0]);
+  debug(`${fieldToString(f773s[0])} => ${year ? year : 'N/A'}`);
+  if (year) {
+    return [`dc.date=${year} AND melinda.partsofhost=${id}`];
+  }
+
+  return [`melinda.partsofhost=${id}`];
+
 }
+
+
+
 
 // SRU search dc.title with a search phrase starting with ^ maps currently in Melinda to (probably) to *headings* index TIT
 // - Aleph cannot currently handle headings searches starting with a boolean - in these cases use word search
