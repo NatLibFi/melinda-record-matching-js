@@ -1,40 +1,68 @@
 import createDebugLogger from 'debug';
 import {promisify} from 'util';
 import {toQueries} from '../candidate-search-utils.js';
-import {getSubfieldValues, testStringOrNumber, toMelindaIds} from '../../matching-utils.js';
+import {getSubfieldValues, stringAfter, stringBefore, testStringOrNumber, toMelindaIds} from '../../matching-utils.js';
+import {subfieldToString, uniqArray} from '@natlibfi/marc-record-validators-melinda/dist/utils.js';
 
 const setTimeoutPromise = promisify(setTimeout); // eslint-disable-line
 
-export function hostIdMelinda(record) {
-  const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:query:hostIdMelinda');
-  const debugData = debug.extend('data'); // eslint-disable-line
-  debug(`Creating query for the Melinda Id host`);
+const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:query:component');
+const debugData = debug.extend('data'); // eslint-disable-line
 
-  const ids = hostId(record);
-  if (ids.length > 0) {
-    return toQueries(ids, 'melinda.partsofhost');
+export function extractPublicationYearFrom773(field) {
+  const g = field.subfields.find(sf => sf.code === 'g');
+
+  if (g) {
+    debugData(subfieldToString(g));
+    return gToYear(g.value);
   }
+  return undefined;
 
-  debug(`No valid Melinda Id host found`);
-  return [];
-
-  function hostId(record) {
-    // Multi 773 handling
-    const f773s = record.get(/^773$/u)
-      .filter(f773 => f773.subfields.some(sub => sub.code === 'w' && (/\(FI-MELINDA\).*/ui).test(sub.value)));
-
-    if (f773s.length === 0) {
-      return false;
+  function gToYear(value) {
+    // extract volume as yeat
+    //if ( value.match(/^[1-9][0-9]?[0-9]? ?\((?:20[012][0-9]|19[0-9][0-9])\)/u)) {
+    if (   value.match(/^[1-9][0-9]?[0-9]? ?\((?:20[012][0-9]|19[0-9][0-9])\)/u)) {
+      return stringBefore(stringAfter(value, '('), ')');
+    }
+    if ( value.match(/^(?:20[012][0-9]|19[0-9][0-9]) :/u)) {
+      return stringBefore(value, ' ');
     }
 
-    // Multi $w handling
-    // $w (prefix)<id> handling
-    // $w <id> & $w (prefix)<id> Match
-    const melindaIds = f773s.map(f773 => toMelindaIds(f773, ['w'])).flat()
-      .filter(value => testStringOrNumber(value)) // drop invalid values
-      .filter((value, index, array) => array.indexOf(value) === index); // unique values;
-    return melindaIds;
+    return undefined;
   }
+}
+
+function isMelindaSubfieldW(subfield) {
+  if (subfield.code !== 'w') {
+    return false;
+  }
+  return (/^\((?:FI-MELINDA|FIN01)\)0[0-9]{8}$/ui).test(subfield.value);
+}
+
+function removeMelindaPrefixFromValue(value) {
+  return value.replace(/^(?:\(FI-MELINDA\)|\(FIN01\))/, '');
+}
+
+export function getHostMelindaFields(record) {
+  return record.get(/^773$/u).filter(f => f.subfields.some(sf => isMelindaSubfieldW(sf)));
+}
+
+export function extractHostMelindaIdsFromField(field) {
+  return field.subfields.filter(sf => isMelindaSubfieldW(sf)).map(sf => removeMelindaPrefixFromValue(sf.value));
+}
+
+export function getHostMelindaIds(record) {
+  return uniqArray(getHostMelindaFields(record).map(f => extractHostMelindaIdsFromField(f)).flat());
+}
+
+export function hostIdMelinda(record) { // old function with replaced code
+  debug(`Creating query for the Melinda Id host`);
+  const ids = getHostMelindaIds(record);
+  if (ids.length === 0) {
+    debug(`No valid Melinda Id host found`);
+    return [];
+  }
+  return toQueries(getHostMelindaIds(record), 'melinda.partsofhost');
 }
 
 export async function hostIdOtherSource(record, client) {
