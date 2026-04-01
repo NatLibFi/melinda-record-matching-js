@@ -15,3 +15,4 @@ export {default as bibliographicLevel} from './bibliographic-level.js';
 export {default as melindaId} from './melinda-id.js';
 export {default as allSourceIds} from './all-source-ids.js';
 export {default as mediaType} from './media-type.js';
+export {default as f773} from './f773.js';
