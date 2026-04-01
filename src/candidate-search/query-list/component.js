@@ -19,11 +19,11 @@ export function extractPublicationYearFrom773(field) {
   return undefined;
 
   function gToYear(value) {
-    // extract volume as yeat
-    //if ( value.match(/^[1-9][0-9]?[0-9]? ?\((?:20[012][0-9]|19[0-9][0-9])\)/u)) {
-    if (   value.match(/^[1-9][0-9]?[0-9]? ?\((?:20[012][0-9]|19[0-9][0-9])\)/u)) {
+    // extract year from within parentheses:
+    if (value.match(/^[1-9][0-9]?[0-9]? ?\((?:20[012][0-9]|19[0-9][0-9])\)/u) || value.match(/^\((?:20[012][0-9]|19[0-9][0-9])\)/u) ) {
       return stringBefore(stringAfter(value, '('), ')');
     }
+    // If volume is missing, the year often seems qto come without them parentheses:
     if ( value.match(/^(?:20[012][0-9]|19[0-9][0-9]) :/u)) {
       return stringBefore(value, ' ');
     }
