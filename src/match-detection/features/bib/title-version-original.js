@@ -1,29 +1,19 @@
 
 import createDebugLogger from 'debug';
 import naturalPkg from 'natural';
+import {getTitle} from './title.js';
 const {LevenshteinDistance: leven} = naturalPkg;
 
 export default ({threshold = 10} = {}) => ({
   name: 'titleVersionOriginal',
   extract: ({record}) => {
-    const title = getTitle();
+    const title = getTitle(record, 'NO LABEL');
 
     if (title) {
       return [title.replace(/[^\p{Letter}\p{Number}]/gu, '').toLowerCase()];
     }
 
     return [];
-
-    function getTitle() {
-      const [field] = record.get(/^245$/u);
-
-      if (field) {
-        return field.subfields
-          .filter(({code}) => ['a', 'b'].includes(code))
-          .map(({value}) => value)
-          .join('');
-      }
-    }
   },
   compare: (a, b) => {
     const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection:features/bib/title-version-original');
