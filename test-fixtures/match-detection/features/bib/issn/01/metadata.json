@@ -1,17 +1,14 @@
 {
-  "description": "Should extract ISSN identifiers from 773 (since melinda UI commons isComponentRecord() function",
+  "description": "Should extract ISSN identifiers from 020 (component part is no longer relevant for this test)",
   "feature": "issn",
   "type": "extract",
   "expectedFeatures": [
-    "1234-5678"
+    "2049-3630"
   ],
   "inputRecord": {
     "leader": "02518cam a2200745zi 4500",
     "fields": [
-      {
-        "tag": "001",
-        "value": "000019643"
-      },
+      { "tag": "001", "value": "000019643" },
       {
         "tag": "022",
         "ind1": " ",
