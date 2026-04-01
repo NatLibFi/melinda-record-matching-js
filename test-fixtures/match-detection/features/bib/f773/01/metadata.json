@@ -1,0 +1,22 @@
+{
+  "description": "Should extract ISSN identifiers from 020 (component part is no longer relevant for this test)",
+  "feature": "f773",
+  "type": "extract",
+  "expectedFeatures": [
+    ["(FI-ARTO)001234567", "12345678"],
+    ["24 (2022) : 15, s. 13-14"]
+  ],
+  "inputRecord": {
+    "leader": "02518cam a2200745zi 4500",
+    "fields": [
+      { "tag": "001", "value": "000019643" },
+      { "tag": "773", "ind1": " ", "ind2": " ", "subfields": [
+          { "code": "w", "value": "(FI-ARTO)001234567"},
+          { "code": "t", "value": "Tuttelintiire." },
+          { "code": "o", "value": "12345678. -"},
+          { "code": "g", "value": "24 (2022) : 15, s. 13-14"}
+        ]
+      }
+    ]
+  }
+}

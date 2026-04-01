@@ -1,0 +1,16 @@
+{
+  "description": "Compare host information from f773",
+  "feature": "f773",
+  "type": "compare",
+  "expectedPoints": -0.5,
+  "featuresA": [
+    ["FOO", "VAR"],
+    ["1 (2020) : 4, s. 12-34"]
+  ],
+  "featuresB": [
+    ["LORUM", "IPSUM"],
+    ["1 (2020) : 4, s. 12-34"]
+  ],
+  "skip": false,
+  "only": false
+}
