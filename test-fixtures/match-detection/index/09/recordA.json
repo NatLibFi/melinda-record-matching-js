@@ -1,14 +1,8 @@
 {
   "leader": "02315nam a22005414i 4500",
   "fields": [
-    {
-      "tag": "003",
-      "value": "FI-MELINDA"
-    },
-    {
-      "tag": "008",
-      "value": "201007t20202020fi ||||       |0| f fin c"
-    },
+    { "tag": "003", "value": "FI-MELINDA" },
+    { "tag": "008", "value": "201007t20202020fi ||||       |0| f fin c" },
     {
       "tag": "020",
       "ind1": " ",
@@ -133,21 +127,7 @@
         }
       ]
     },
-    {
-      "tag": "245",
-      "ind1": "1",
-      "ind2": "0",
-      "subfields": [
-        {
-          "code": "a",
-          "value": "Elämänlanka /"
-        },
-        {
-          "code": "c",
-          "value": "Eppu Nuotio."
-        }
-      ]
-    },
+    { "tag": "245", "ind1": "1", "ind2": "0", "subfields": [ { "code": "a", "value": "Elämänlanka /" }, { "code": "c", "value": "Eppu Nuotio." } ] },
     {
       "tag": "264",
       "ind1": " ",
