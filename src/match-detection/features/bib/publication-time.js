@@ -81,6 +81,12 @@ export default () => ({
       return MAX;
     }
 
+    if (isValidYear(aa.date1) && bb.date1) {
+      const difference = Math.abs(aa.date1 - bb.date1);
+      if (difference === 1) {
+        return MIN/8;
+      }
+    }
 
     return MIN;
   }
