@@ -69,7 +69,7 @@ export function getTitle(record, label = 'MISSING LABEL') {
       .map(({value}) => testStringOrNumber(value) ? String(value) : '')
       .join(' ')
       .replace(/ [=\/:](?:$| )/ug, ' ')
-      .replace(/đ/ug, '') // Hack. Saamelaisbibliografia has often dropped this character
+      .replace(/(?:đ|ȧ)/ug, '') // Hack. Saamelaisbibliografia has often dropped this character
       // trim:
       .replace(/ +/ug, ' ')
       .replace(/^ +/u, '')
