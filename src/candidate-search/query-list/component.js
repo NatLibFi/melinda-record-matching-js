@@ -2,7 +2,7 @@ import createDebugLogger from 'debug';
 import {promisify} from 'util';
 import {toQueries} from '../candidate-search-utils.js';
 import {getSubfieldValues, stringAfter, stringBefore, testStringOrNumber, toMelindaIds} from '../../matching-utils.js';
-import {subfieldToString, uniqArray} from '@natlibfi/marc-record-validators-melinda/dist/utils.js';
+import {fieldToString, uniqArray} from '@natlibfi/marc-record-validators-melinda/dist/utils.js';
 
 const setTimeoutPromise = promisify(setTimeout); // eslint-disable-line
 
@@ -58,8 +58,12 @@ export function parse773g(field) {
       return stringBefore(stringAfter(value, '('), ')');
     }
     // If volume is missing, the year often seems qto come without them parentheses:
-    if ( value.match(/^(?:20[012][0-9]|19[0-9][0-9]) :/u)) {
+    if (value.match(/^(?:20[012][0-9]|19[0-9][0-9]) :/u)) {
       return stringBefore(value, ' ');
+    }
+    // Seen in SB $g (vsk)year joulukuu
+    if (value.match(/^\([0-9][0-9]?\) ?(?:20[012][0-9]|19[0-9][0-9]) /)) {
+      return value.replace(/^\([0-9]+\) ?/u, '').replace(/ .*$/u, '');
     }
     return undefined;
   }
@@ -67,28 +71,8 @@ export function parse773g(field) {
 
 export function extractPublicationYearFrom773(field) {
   const data = parse773g(field);
+  debug(`Extracted year ${data.year} from f773$g ${fieldToString(field)}`);
   return data.year;
-
-  const g = field.subfields.find(sf => sf.code === 'g');
-
-  if (g) {
-    debugData(subfieldToString(g));
-    return gToYear(g.value);
-  }
-  return undefined;
-
-  function gToYear(value) {
-    // extract year from within parentheses:
-    if (value.match(/^[1-9][0-9]?[0-9]? ?\((?:20[012][0-9]|19[0-9][0-9])\)/u) || value.match(/^\((?:20[012][0-9]|19[0-9][0-9])\)/u) ) {
-      return stringBefore(stringAfter(value, '('), ')');
-    }
-    // If volume is missing, the year often seems qto come without them parentheses:
-    if ( value.match(/^(?:20[012][0-9]|19[0-9][0-9]) :/u)) {
-      return stringBefore(value, ' ');
-    }
-
-    return undefined;
-  }
 }
 
 function isMelindaSubfieldW(subfield) {
