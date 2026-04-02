@@ -140,7 +140,7 @@ export default () => ({
     }
 
     function compareLanguageCodeLists(a, b) {
-      if (a.length === 0 || b.length === 0) {
+      if (a.length === 0 || b.length === 0 || a.every(val => containsNoData(val)) || b.every(val => containsNoData)) {
         debugData(`No language to compare`);
         return 0;
       }
@@ -177,19 +177,9 @@ export default () => ({
 
 
       // Damage control:
-
-      // Not using the generic solution here as eg. 'und' needs a special treatment
-      const sharedValues = getSharedValues(a, b);
-      const aOnly = a.filter(val => !sharedValues.includes(val));
-      const bOnly = b.filter(val => !sharedValues.includes(val));
-      const hasUnd = [...aOnly, ...bOnly].includes('und');
+      const sharedValues = getSharedValues(a, b).filter(val => !containsNoData(val));
 
       if (sharedValues.length < 1) {
-        console.info(`NV: ${sharedValues.join(", ")}`);
-        if (aOnly.length === 1 && bOnly.length === 1 && hasUnd) {
-          debug(`Both have languages, but none of these match. However, the benefit of doubt is given: '${aOnly[0]}' and '${bOnly[0]}' might mean the same}`);
-          return 0;
-        }
         debug(`Both have languages, but none of these match.`); // includes 'mul' vs a single language code
         return -1.0;
       }
