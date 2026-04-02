@@ -9,7 +9,66 @@ const setTimeoutPromise = promisify(setTimeout); // eslint-disable-line
 const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:query:component');
 const debugData = debug.extend('data'); // eslint-disable-line
 
+
+
+export function parse773g(field) {
+  const g = field?.subfields?.find(sf => sf.code === 'g'); // NB! returns the first $g
+
+  if (!g) {
+    return {};
+  }
+
+  const value = normalizeValue(g.value);
+
+  return {
+    // NB! We are not currently interested in volume (vuosikerta)
+    year: gToYear(value),
+    number: gToNumber(value),
+    pages: gToPages(value) // Might also be eg. Raita 5. However, return only the number part
+  }
+
+  function normalizeValue(value) {
+    return value.replace(/(?:\. -|\.)$/u, '');
+  }
+
+  function gToNumber(value) {
+    // Allow up to 3-digit numbers
+    const extract1 = value.replace(/^.*: ([1-9][0-9]?[0-9]), (?:p\.|page|pp\.|s\.|Seite|sida|sidor|sivu).*$/ui, '$1');
+    if (extract1 !== value) {
+      return extract1;
+    }
+    return undefined;
+  }
+
+  function gToPages(value) {
+    if (value.match(/^[0-9]+(?:-[0-9]+)?(?:, [0-9]+(?:-[0-9]+)?)*$/u)) {
+      return value;
+    }
+    const numberPartOnly = value.replace(/^.*(?:p\.|raidat|raita|s\.|Seite|sivut?|pages?) /ui, '');
+    if (numberPartOnly !== value) {
+      return gToPages(numberPartOnly);
+    }
+    return undefined;
+  }
+
+
+  function gToYear(value) {
+    // extract year from within parentheses:
+    if (value.match(/^[1-9][0-9]?[0-9]? ?\((?:20[012][0-9]|19[0-9][0-9])\)/u) || value.match(/^\((?:20[012][0-9]|19[0-9][0-9])\)/u) ) {
+      return stringBefore(stringAfter(value, '('), ')');
+    }
+    // If volume is missing, the year often seems qto come without them parentheses:
+    if ( value.match(/^(?:20[012][0-9]|19[0-9][0-9]) :/u)) {
+      return stringBefore(value, ' ');
+    }
+    return undefined;
+  }
+}
+
 export function extractPublicationYearFrom773(field) {
+  const data = parse773g(field);
+  return data.year;
+
   const g = field.subfields.find(sf => sf.code === 'g');
 
   if (g) {
