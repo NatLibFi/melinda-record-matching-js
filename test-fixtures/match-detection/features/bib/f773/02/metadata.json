@@ -1,10 +1,10 @@
 {
-  "description": "Should extract ISSN identifiers from 020 (component part is no longer relevant for this test)",
+  "description": "Should extract Melinda-ID and ISSN identifier from 773 (component part is no longer relevant for this test)",
   "feature": "f773",
   "type": "extract",
   "expectedFeatures": [
     ["(FI-MELINDA)001234567", "1234-5678"],
-    []
+    {}
   ],
   "inputRecord": {
     "leader": "02518cam a2200745zi 4500",
