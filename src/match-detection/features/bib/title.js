@@ -11,11 +11,20 @@ export default ({threshold = 10} = {}) => ({
   name: 'Title',
   extract: ({record, recordExternal}) => {
     const label = recordExternal && recordExternal.label ? recordExternal.label : 'record';
-    const title = getTitle(record, label);
+    const title = getTitle(record);
     debug(`${label}: title: ${title}`);
 
-    if (testStringOrNumber(title)) {
-      const titleAsNormalizedString = String(title)
+    if (title) {
+      const mainTitle = normalizeTitle(getTitle(record, ['a'])); // TODO: Return main title
+      const titleAsNormalizedString = normalizeTitle(String(title));
+      debug(`${label}: titleString: ${titleAsNormalizedString}`);
+      return [titleAsNormalizedString];
+    }
+
+    return [];
+
+    function normalizeTitle(title) {
+      return title
         // decompose unicode diacritics
         .normalize('NFD')
         // strip non-letters/numbers
@@ -24,11 +33,7 @@ export default ({threshold = 10} = {}) => ({
         // - see validator normalize-utf8-diacritics for details
         .replace(/[^\p{Letter}\p{Number}]/gu, '')
         .toLowerCase();
-      debug(`${label}: titleString: ${titleAsNormalizedString}`);
-      return [titleAsNormalizedString];
     }
-
-    return [];
 
   },
   compare: (a, b) => {
@@ -57,14 +62,14 @@ export default ({threshold = 10} = {}) => ({
   }
 });
 
-export function getTitle(record, label = 'MISSING LABEL') {
+export function getTitle(record, targetSubfieldCodes = ['a', 'b', 'n', 'p']) {
   const [field] = record.get(/^245$/u);
-  debugData(`${label}: titleField: ${JSON.stringify(field)}`);
+  debugData(`titleField: ${JSON.stringify(field)}`);
 
   if (field) {
-    return field.subfields
+    const title = field.subfields
       // get also $n:s and $p:s here
-      .filter(({code}) => ['a', 'b', 'n', 'p'].includes(code))
+      .filter(({code}) => targetSubfieldCodes.includes(code))
       // Would be nice to normalize $n values...
       .map(({value}) => testStringOrNumber(value) ? String(value) : '')
       .join(' ')
@@ -74,6 +79,13 @@ export function getTitle(record, label = 'MISSING LABEL') {
       .replace(/ +/ug, ' ')
       .replace(/^ +/u, '')
       .replace(/ +$/u, '');
+
+    // Skip non-filing indicator (note that '9' is a magic indicator value, so we don't do it):
+    if (/^[1-8]$/u.test(field.ind2)) { // Skip non-filing characters
+      return title.slice(parseInt(field.ind2));
+    }
+    return title;
+
   }
   return false;
 }
