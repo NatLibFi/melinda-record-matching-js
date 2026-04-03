@@ -1,8 +1,9 @@
 import createDebugLogger from 'debug';
 import {toQueries} from '../candidate-search-utils.js';
 import {getMelindaIdsF035, validateSidFieldSubfieldCounts, getSubfieldValues, testStringOrNumber} from '../../matching-utils.js';
-import { extractHostMelindaIdsFromField, extractPublicationYearFrom773, getHostMelindaFields } from './component.js';
-import { fieldToString } from '@natlibfi/marc-record-validators-melinda';
+import {extractHostMelindaIdsFromField, extractPublicationYearFrom773, getHostMelindaFields} from './component.js';
+import {fieldToString} from '@natlibfi/marc-record-validators-melinda';
+import {getTitle} from '../../match-detection/features/bib/title.js';
 
 const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:query');
 
@@ -182,8 +183,21 @@ export function bibTitleAuthorYearAlternates(record) {
   return {queryList: Array.from(origQueryList).reverse(), queryListType: 'alternates'};
 }
 
+function getTitleForQuery(record) {
+  const title = getTitle(record, ['a']);
+  if (title) {
+    const nWords = title.split(' ');
+    // If lone $a is deemed too short, fetch $b as well:
+    // (NV: I've seen pairs with 245$a-only vs 245$a$b, so I'd like to use $a only if it is long enough)
+    if (nWords < 3 || title.length < 12) {
+      return getTitle(record, ['a', 'b']); // Try to get a longer title
+    }
+  }
+  return title;
+}
+
 function dcTitle(record, onlyTitleLength, alternates = false) {
-  const title = getTitle(record);
+  const title = getTitleForQuery(record);
   if (!testStringOrNumber(title)) {
     return [];
   }
@@ -202,27 +216,6 @@ function dcTitle(record, onlyTitleLength, alternates = false) {
 
   // use word search without ending * also in combination searches to avoid SRU-server crashes [MRA-189]
   return [`dc.title="${useWordSearch || !queryIsOkAlone ? '' : '^'}${formatted}${queryIsOkAlone ? '*' : ''}"`, formatted, queryIsOkAlone];
-
-  function getTitle(record) {
-    const [field] = record.get(/^245$/u);
-
-    if (field) {
-      const titleString = field.subfields
-        //.filter(({code}) => ['a', 'b', 'n', 'p'].includes(code))
-        .filter(({code}) => ['a', 'b'].includes(code))
-        //.filter(({code}) => ['a'].includes(code))
-        .map(({value}) => testStringOrNumber(value) ? String(value) : '')
-        .filter(value => value)
-        // In Melinda's index subfield separators are indexed as ' '
-        .join(' ');
-
-      if (/^[1-9]$/u.test(field.ind2)) { // Skip non-filing characters
-        return titleString.slice(parseInt(field.ind2));
-      }
-      return titleString;
-    }
-    return false;
-  }
 
   function getFormattedTitle(title) {
     const formatted = String(title)
