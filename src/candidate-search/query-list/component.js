@@ -22,9 +22,9 @@ export function parse773g(field) {
 
   return {
     // NB! We are not currently interested in volume (vuosikerta)
-    year: gToYear(value),
-    number: gToNumber(value),
-    pages: gToPages(value) // Might also be eg. Raita 5. However, return only the number part
+    year: gToYear(value) || null,
+    number: gToNumber(value) || null,
+    pages: gToPages(value) || null // Might also be eg. Raita 5. However, returns only the number part
   }
 
   function normalizeValue(value) {
@@ -53,7 +53,8 @@ export function parse773g(field) {
 
 
   function gToYear(value) {
-    // extract year from within parentheses:
+    debug(`EXTRACT YEAR FROM '${value}`);
+    // extract year from within parentheses: $g vsk (yyyy) AND $g (YYYY)
     if (value.match(/^[1-9][0-9]?[0-9]? ?\((?:20[012][0-9]|19[0-9][0-9])\)/u) || value.match(/^\((?:20[012][0-9]|19[0-9][0-9])\)/u) ) {
       return stringBefore(stringAfter(value, '('), ')');
     }
@@ -62,9 +63,14 @@ export function parse773g(field) {
       return stringBefore(value, ' ');
     }
     // Seen in SB $g (vsk)year joulukuu
-    if (value.match(/^\([0-9][0-9]?\) ?(?:20[012][0-9]|19[0-9][0-9]) /)) {
-      return value.replace(/^\([0-9]+\) ?/u, '').replace(/ .*$/u, '');
+    if (value.match(/^\([1-9][0-9]?\) ?(?:20[012][0-9]|19[0-9][0-9])[^0-9]/)) {
+      return value.replace(/^\([0-9]+\) ?/u, '').replace(/[^0-9].*$/u, '');
     }
+    // Some magazines use DD.MM.YYYY
+    if (value.match(/^(?:[^0-9]*[1-9]|[12][0-9]|30|31)\.(?:1[012]|[1-9])\. ?(?:20[012][0-9]|19[0-9][0-9])[^0-9]/u)) {
+      return value.replace(/^[^0-9]*[0-9]\.[0-9]\. ?/u, '').replace(/[^0-9].*$/u, '');
+    }
+
     return undefined;
   }
 }
