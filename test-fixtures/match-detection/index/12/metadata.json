@@ -1,5 +1,5 @@
 {
-  "description": "Should not detect a match, SID mismatch (All features for both ID and content match)",
+  "description": "Should not detect a match, SID mismatch makes other tests meaningless (All features for both ID and content match)",
   "options": {
     "strategy": {
       "type": "bib",
@@ -10,6 +10,7 @@
         "isbn",
         "issn",
         "otherStandardIdentifier",
+        "f773",
         "title",
         "authors",
         "recordType",
@@ -21,6 +22,6 @@
   },
   "expectedResults": {
     "match": false,
-    "probability": 0.85
+    "probability": 0.0
   }
 }

@@ -1,5 +1,5 @@
 {
-  "description": "Should not detect a match (All features for content match)",
+  "description": "Should not detect a match (All features for content match). Crappy publication year blocks this.",
   "options": {
     "strategy": {
       "type": "bib",
@@ -19,6 +19,6 @@
   },
   "expectedResults": {
     "match": false,
-    "probability": 0.75
+    "probability": 0.0
   }
 }

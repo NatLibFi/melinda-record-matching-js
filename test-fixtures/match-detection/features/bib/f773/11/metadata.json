@@ -1,15 +1,19 @@
 {
-  "description": "Compare host information from f773",
+  "description": "Compare host information from f773: identiefier miss (-0.5) and page match (0.1)",
   "feature": "f773",
   "type": "compare",
-  "expectedPoints": -0.5,
+  "expectedPoints": -0.4,
   "featuresA": [
     ["FOO", "VAR"],
-    ["1 (2020) : 4, s. 12-34"]
+    {
+      "pages": "6"
+    }
   ],
   "featuresB": [
     ["LORUM", "IPSUM"],
-    ["1 (2020) : 4, s. 12-34"]
+    {
+      "pages": "6"
+    }
   ],
   "skip": false,
   "only": false
