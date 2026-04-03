@@ -7,7 +7,7 @@ const {LevenshteinDistance: leven} = naturalPkg;
 export default ({threshold = 10} = {}) => ({
   name: 'titleVersionOriginal',
   extract: ({record}) => {
-    const title = getTitle(record, 'NO LABEL');
+    const title = getTitle(record);
 
     if (title) {
       return [title.replace(/[^\p{Letter}\p{Number}]/gu, '').toLowerCase()];
