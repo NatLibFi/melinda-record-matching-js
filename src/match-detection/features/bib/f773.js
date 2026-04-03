@@ -15,6 +15,9 @@ import {parse773g} from '../../../candidate-search/query-list/component.js';
 const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection:features:issn');
 const debugData = debug.extend('data');
 
+const MAX_IDENTIFIER = 0.1; // This should be pretty low: it only says something about the host
+const MAX_G = 0.5; // $g is about the comp itself, so score can be high here
+
 export default () => ({
   name: 'f773 ',
   extract: ({record/*, recordExternal*/}) => {
@@ -50,20 +53,25 @@ export default () => ({
     const identifierScore = scoreIdentifiers();
     const gScore = scoreG();
 
+    if (identifierScore === MAX_IDENTIFIER && gScore === MAX_G) { // Pretty impressive hit, even if title matches not
+      return 1.0;
+    }
+
     return identifierScore + gScore;
 
     function scoreG() {
-      return 0;
+      // NB! $g contents are very noise, so wrong values may be extracted. Thus do not overpenalize.
+
       // All exist match: things must be pretty good:
       if (ag.number && ag.number === bg.number && ag.pages && ag.pages === bg.pages && ag.year && ag.year === bg.year) {
-        return 0.2;
+        return MAX_G;
       }
       // Not comparing volume. It correlates with year.
       return scoreYear() + scoreNumber() + scorePages();
     }
 
-    function scoreNumber() { // publication-time.js also uses this, so don't socre heavily here
-      if (ag.number || bg.number) { 
+    function scoreNumber() {
+      if (!ag.number || !bg.number) {
         return 0.0;
       }
       if (ag.number === bg.number) {
@@ -72,8 +80,8 @@ export default () => ({
       return -0.02;
     }
 
-    function scorePages() { // publication-time.js also uses this, so don't socre heavily here
-      if (ag.pages || bg.pages) {
+    function scorePages() {
+      if (!ag.pages || !bg.pages) {
         return 0.0;
       }
       if (ag.pages === bg.pages) { // If pages match, things must be pretty good
@@ -82,18 +90,8 @@ export default () => ({
       return -0.05;
     }
 
-    function scoreYear() { // publication-time.js also uses this, so don't socre heavily here
-      if (ag.year || bg.year) { 
-        return 0.0;
-      }
-      if (ag.year === bg.year) {
-        return 0.02;
-      }
-      return -0.02;
-    }
-
-    function scoreYear() { // publication-time.js also uses this, so don't socre heavily here
-      if (ag.year || bg.year) { 
+    function scoreYear() { // publication-time.js also uses this, so don't score heavily here
+      if (!ag.year || !bg.year) {
         return 0.0;
       }
       if (ag.year === bg.year) {
@@ -111,7 +109,7 @@ export default () => ({
       const firstSharedIdentifier = aIdentifiers.find(val => bIdentifiers.includes(val));
       if (firstSharedIdentifier) {
         debug(`\t Shared identifier found: '${firstSharedIdentifier}'`);
-        return 0.2;
+        return MAX_IDENTIFIER;
       }
       return -0.5;
     }
