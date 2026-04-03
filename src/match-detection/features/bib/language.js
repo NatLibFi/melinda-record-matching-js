@@ -51,9 +51,6 @@ export default () => ({
       if (score > 0.1) { // Keeps the original max, we might have 0.10 (041) + 0.05 (008/35-37) = 0.15 now
         return 0.1;
       }
-      if (score < -1) {
-        return -1.0;
-      }
       return score;
     }
 
@@ -74,7 +71,7 @@ export default () => ({
         return 0.05;
       }
 
-      if (a008 === 'mul' || b008 === 'mul') {
+      if (a008 === 'mul' || b008 === 'mul') { // We'll let 041 decide
         return 0.0;
       }
 
@@ -88,6 +85,7 @@ export default () => ({
     function compare041() {
       const a041s = getFields041(a);
       const b041s = getFields041(b);
+
       if (a041s.length === 0 || b041s.length === 0) {
         return 0.0; // Should we punish these for badness?
       }
@@ -98,7 +96,7 @@ export default () => ({
         const scoreInd1 = mainPenalty === 0.0 ? 0.0 : indicator1Penalty(a041s[0], b041s[0]);
         return mainPenalty + sourcePenalty + scoreInd1;
       }
-      // Things are already complicated (likely to pe penalized, so no nedd to worrty about language code sources, I daresay.
+      // Things are already complicated (likely to pe penalized, so no nedd to worry about language code sources, I daresay.
       return compareLanguageCodeLists(getLanguageCodesFrom041Fields(a), getLanguageCodesFrom041Fields(b));
 
       function getFields041(fields) {
@@ -140,7 +138,7 @@ export default () => ({
     }
 
     function compareLanguageCodeLists(a, b) {
-      if (a.length === 0 || b.length === 0 || a.every(val => containsNoData(val)) || b.every(val => containsNoData)) {
+      if (a.length === 0 || b.length === 0 || a.every(val => containsNoData(val)) || b.every(val => containsNoData(val))) {
         debugData(`No language to compare`);
         return 0;
       }
