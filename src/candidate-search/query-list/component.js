@@ -58,7 +58,7 @@ export function parse773g(field) {
     if (value.match(/^[1-9][0-9]?[0-9]? ?\((?:20[012][0-9]|19[0-9][0-9])\)/u) || value.match(/^\((?:20[012][0-9]|19[0-9][0-9])\)/u) ) {
       return stringBefore(stringAfter(value, '('), ')');
     }
-    // If volume is missing, the year often seems qto come without them parentheses:
+    // If volume is missing, the year often seems to come without them parentheses:
     if (value.match(/^(?:20[012][0-9]|19[0-9][0-9]) :/u)) {
       return stringBefore(value, ' ');
     }
@@ -67,8 +67,8 @@ export function parse773g(field) {
       return value.replace(/^\([0-9]+\) ?/u, '').replace(/[^0-9].*$/u, '');
     }
     // Some magazines use DD.MM.YYYY
-    if (value.match(/^(?:[^0-9]*[1-9]|[12][0-9]|30|31)\.(?:1[012]|[1-9])\. ?(?:20[012][0-9]|19[0-9][0-9])[^0-9]/u)) {
-      return value.replace(/^[^0-9]*[0-9]\.[0-9]\. ?/u, '').replace(/[^0-9].*$/u, '');
+    if (value.match(/^[^0-9]*(?:[1-9]|[12][0-9]|30|31)\.(?:1[012]|[1-9])\. ?(?:20[012][0-9]|19[0-9][0-9])[^0-9]/u)) {
+      return value.replace(/^[^0-9]*[0-9]+\.[0-9]+\. ?/u, '').replace(/[^0-9].*$/u, '');
     }
 
     return undefined;
