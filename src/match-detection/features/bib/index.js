@@ -4,7 +4,6 @@ export {default as isbn} from './isbn.js';
 export {default as issn} from './issn.js';
 export {default as otherStandardIdentifier} from './other-standard-identifier.js';
 export {default as title} from './title.js';
-export {default as titleVersionOriginal} from './title-version-original.js';
 export {default as authors} from './authors.js';
 export {default as recordType} from './record-type.js';
 export {default as publicationTime} from './publication-time.js';
