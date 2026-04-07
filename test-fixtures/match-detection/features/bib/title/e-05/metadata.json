@@ -2,14 +2,11 @@
   "description": "Should extract titles in all lower case",
   "feature": "title",
   "type": "extract",
-  "expectedFeatures": ["foofaabazbar"],
+  "expectedFeatures": ["foofaabaz", "bar", "", ""],
   "inputRecord": {
     "leader": "02518cam a2200745zi 4500",
     "fields": [
-      {
-        "tag": "001",
-        "value": "000019643"
-      },
+      { "tag": "001", "value": "000019643" },
       {
         "tag": "245",
         "ind1": "1",

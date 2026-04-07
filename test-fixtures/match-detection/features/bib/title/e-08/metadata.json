@@ -3,7 +3,7 @@
   "comment": "Testing different subfield combinations",
   "feature": "title",
   "type": "extract",
-  "expectedFeatures": ["aarre5opettajanmateriaali"],
+  "expectedFeatures": ["aarre", "", "5", "opettajanmateriaali"],
   "inputRecord": {
     "leader": "02518cam a2200745zi 4500",
     "fields": [

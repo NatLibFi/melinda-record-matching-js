@@ -2,7 +2,7 @@
   "description": "Should extract titles",
   "feature": "title",
   "type": "extract",
-  "expectedFeatures": ["foobar"],
+  "expectedFeatures": ["foo", "bar", "", ""],
   "inputRecord": {
     "leader": "02518cam a2200745zi 4500",
     "fields": [
