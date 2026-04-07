@@ -7,18 +7,18 @@ const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detecti
 const debugData = debug.extend('data');
 
 
-export default ({threshold = 10} = {}) => ({
+export default ({threshold = 0.9} = {}) => ({
   name: 'Title',
   extract: ({record, recordExternal}) => {
     const label = recordExternal && recordExternal.label ? recordExternal.label : 'record';
-    const title = getTitle(record);
-    debug(`${label}: title: ${title}`);
+    const a = getTitle(record, ['a']);
+    debug(`${label}: title: ${a}`);
 
-    if (title) {
-      const mainTitle = normalizeTitle(getTitle(record, ['a'])); // TODO: Return main title
-      const titleAsNormalizedString = normalizeTitle(String(title));
-      debug(`${label}: titleString: ${titleAsNormalizedString}`);
-      return [titleAsNormalizedString];
+    if (a) {
+      const b = normalizeTitle(getTitle(record, ['b']));
+      const n = normalizeTitle(getTitle(record, ['n']));
+      const p = normalizeTitle(getTitle(record, ['p']));
+      return [normalizeTitle(a), b, n, p];
     }
 
     return [];
@@ -38,25 +38,39 @@ export default ({threshold = 10} = {}) => ({
   },
   compare: (a, b) => {
     const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection:features/bib/title');
-    const distance = leven(a[0], b[0]);
+    const [aa, ab, an, ap] = a;
+    const [ba, bb, bn, bp] = b;
+    const aFull = toFullTitle(a);
+    const bFull = toFullTitle(b);
+
+    if (an && bn && an !== bn) { // If these exists, they must be the same (we might convert Roman numbers to Arabic numbers though)
+      return -1.0;
+    }
+
+    const distance = leven(aFull, bFull);
 
     if (distance === 0) {
       return 0.5;
     }
 
     const maxLength = getMaxLength();
-    const percentage = distance / maxLength * 100;
+    const correctness = 1.0 - (distance / maxLength);
 
-    debug(`'${a}' vs '${b}': Max length = ${maxLength}, distance = ${distance}, percentage = ${percentage}`);
+    debug(`'${aFull}' vs '${bFull}': Max length = ${maxLength}, distance = ${distance}, correctness = ${correctness}`);
 
-    if (percentage <= threshold) {
+    if (correctness >= threshold) {
       return 0.3;
     }
 
     return -0.5;
 
+    function toFullTitle(arr) {
+      const relevant = arr.filter(val => typeof val === 'string' && val.length);
+      return relevant.join(' ');
+    }
+
     function getMaxLength() {
-      return a[0].length > b[0].length ? a[0].length : b[0].length;
+      return aFull.length > bFull.length ? aFull.length : bFull.length;
     }
 
   }
@@ -74,7 +88,7 @@ export function getTitle(record, targetSubfieldCodes = ['a', 'b', 'n', 'p']) {
       .map(({value}) => testStringOrNumber(value) ? String(value) : '')
       .join(' ')
       .replace(/ [=\/:](?:$| )/ug, ' ')
-      .replace(/(?:đ|ȧ)/ug, '') // Hack. Saamelaisbibliografia has often dropped this character
+      .replace(/(?:đ|ȧ|t̄)/ug, '') // Hack. Saamelaisbibliografia has often dropped this wierod characters (oft old articles, no longer used in sami either)
       // trim:
       .replace(/ +/ug, ' ')
       .replace(/^ +/u, '')
