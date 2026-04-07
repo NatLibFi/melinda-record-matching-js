@@ -7,6 +7,8 @@ import {getTitle} from '../../match-detection/features/bib/title.js';
 
 const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:query');
 
+const IS_OK_ALONE_THRESHOLD = 5;
+
 export function bibSourceIds(record) {
 
   /* Melinda's SRU-index melinda.sourceid includes source IDs from SID fields in Melinda records
@@ -189,7 +191,14 @@ function getTitleForQuery(record) {
     const nWords = title.split(' ');
     // If lone $a is deemed too short, fetch $b as well:
     // (NV: I've seen pairs with 245$a-only vs 245$a$b, so I'd like to use $a only if it is long enough)
+
     if (nWords < 3 || title.length < 12) {
+      const [f245] = record.get('245');
+      // If punctuation is ' =' I think that f245$a is good enough despite shortness. Trying to balance between two bad situations...
+      // "Suo (= short title) siellä, vetelä (= missing $b name in another language) täällä..."
+      if (f245 && f245.subfields.find(sf => sf.code === 'a' && sf.value.match(/ =$/u)) && title.length >= IS_OK_ALONE_THRESHOLD) {
+        return title;
+      }
       return getTitle(record, ['a', 'b']); // Try to get a longer title
     }
   }
@@ -212,7 +221,7 @@ function dcTitle(record, onlyTitleLength, alternates = false) {
     return [`dc.title="${useWordSearch ? '' : '^'}${formatted}*"`, formatted, true];
   }
 
-  const queryIsOkAlone = formatted.length >= 5;
+  const queryIsOkAlone = formatted.length >= IS_OK_ALONE_THRESHOLD;
 
   // use word search without ending * also in combination searches to avoid SRU-server crashes [MRA-189]
   return [`dc.title="${useWordSearch || !queryIsOkAlone ? '' : '^'}${formatted}${queryIsOkAlone ? '*' : ''}"`, formatted, queryIsOkAlone];
@@ -220,9 +229,8 @@ function dcTitle(record, onlyTitleLength, alternates = false) {
   function getFormattedTitle(title) {
     const formatted = String(title)
       .replace(/[\-+ !"(){}\[\]<>;:.?/@*%=^_`~]/gu, ' ')
-      .replace(/[^\w\s\p{Alphabetic}]/gu, '')
-      // Clean up concurrent spaces from eg. subfield changes
-      .replace(/  +/gu, ' ')
+      .replace(/[^\w\s\p{Alphabetic}]/gu, '') // Apparently matches to/works with non-aplhabetic scripts such as Chinese as well
+      .replace(/  +/gu, ' ') // Clean up concurrent spaces from eg. subfield changes
       .trim()
       .replace(/^(.{30}\S*) .*$/, "$1")
       .trim();
