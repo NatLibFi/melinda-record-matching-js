@@ -5,7 +5,7 @@ import * as features from './features/index.js';
 export {features};
 
 export default ({strategy, threshold = 0.8999}, returnStrategy = false, localSettings = {}) => ({recordA, recordB, recordAExternal = {}, recordBExternal = {}}) => {
-  const MIN_PROPABILITY_QUALIFIER = 0.5;
+  const MIN_PROPABILITY_QUALIFIER = 0.4; // Title perfect match: 0.5
   const FORCE_FAIL = -1.0;
 
   const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection');
