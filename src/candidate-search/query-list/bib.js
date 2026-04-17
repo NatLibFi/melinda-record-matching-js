@@ -221,7 +221,7 @@ function dcTitle(record, onlyTitleLength, alternates = false) {
     return [`dc.title="${useWordSearch ? '' : '^'}${formatted}*"`, formatted, true];
   }
 
-  const queryIsOkAlone = formatted.length >= IS_OK_ALONE_THRESHOLD;
+  const queryIsOkAlone = !useWordSearch && formatted.length >= IS_OK_ALONE_THRESHOLD;
 
   // use word search without ending * also in combination searches to avoid SRU-server crashes [MRA-189]
   return [`dc.title="${useWordSearch || !queryIsOkAlone ? '' : '^'}${formatted}${queryIsOkAlone ? '*' : ''}"`, formatted, queryIsOkAlone];
