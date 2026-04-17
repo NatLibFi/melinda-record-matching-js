@@ -2,7 +2,7 @@
   "description": "Comparison should return plus points for matching titles (Different values, distance under threshold)",
   "feature": "title",
   "type": "compare",
-  "expectedPoints": 0.3,
+  "expectedPoints": 0.4,
   "featuresA": ["foobarbarfoo", "", "", ""],
   "featuresB": ["foobarbarfo", "", "", ""]
 }
