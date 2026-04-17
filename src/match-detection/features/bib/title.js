@@ -37,13 +37,13 @@ export default ({threshold = 0.9} = {}) => ({
 
   },
   compare: (a, b) => {
-
     const [aa, ab, an, ap] = a;
     const [ba, bb, bn, bp] = b;
+
     if (isEmpty(aa) || isEmpty(ba)) {
       return -1.0;
     }
-    // F245$n information can not mismatch:
+    // F245$n information is critical; it can not mismatch at all:
     if (an.length && bn.length && an !== bn) { // If these exists, they must be the same (we might convert Roman numbers to Arabic numbers though)
       return -1.0;
     }
@@ -60,14 +60,25 @@ export default ({threshold = 0.9} = {}) => ({
     }
 
     if (correctness >= threshold) {
-      return 0.3;
+      return 0.4;
     }
 
-    // Try the same without $p
+    if (an && bn) {
+      // There seems to be some wobble between $b and $p, for example:
+      if (ab && isEmpty(ap) && bp && isEmpty(bb)) {
+        return compare([aa, ap, an, ab], [ba, bb, bn, bp]);
+      }
+      if (ap && isEmpty(ab) && bb && isEmpty(bp)) {
+        return compare([aa, ab, an, ap], [ba, bp, bn, bb]);
+      }
+    }
+
+    // Try the same without $p:
     if (localXor(ap, bp)) {
       const result = compare([aa, ab, an, ''], [ba, bb, bn, '']);
       return result > 0.0 ? result * 0.8 : result;
     }
+
     if (isEmpty(ap) && isEmpty(bp) && localXor(ab, bb)) {
       // Try the same without $b ($p is not here)
       const result = compare([aa, '', an, ''], [ba, '', bn, '']);
@@ -118,8 +129,10 @@ export function getTitle(record, targetSubfieldCodes = ['a', 'b', 'n', 'p']) {
       // Would be nice to normalize $n values...
       .map(({value}) => testStringOrNumber(value) ? String(value) : '')
       .join(' ')
-      .replace(/ [=\/:](?:$| )/ug, ' ')
-      .replace(/(?:đ|ȧ|t̄)/ug, '') // Hack. Saamelaisbibliografia has often dropped this wierod characters (oft old articles, no longer used in sami either)
+      .replace(/\[[^\]]*\]/ug, ' ') // Remove [whatever] stuff. ADD TEST FOR THIS
+      .replace(/ [=\/:](?:$| )/ug, ' ') // Strip punctuation
+      // Also đ vs d pairs seen:
+      //.replace(/(?:đ|ȧ|t̄|ǩ|ǧ|s̆|c̆)/ug, '') // Hack. Saamelaisbibliografia has often dropped this wierd characters (oft old articles, no longer used in sami either)
       // trim:
       .replace(/ +/ug, ' ')
       .replace(/^ +/u, '')
