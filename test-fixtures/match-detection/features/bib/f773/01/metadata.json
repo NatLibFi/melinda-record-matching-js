@@ -1,5 +1,5 @@
 {
-  "description": "Should extract record identifier $w and other identifier $o from 020 (component part is no longer relevant for this test)",
+  "description": "Should extract record identifiers from f773: $w melinda-ID and $o other identifier",
   "feature": "f773",
   "type": "extract",
   "expectedFeatures": [
