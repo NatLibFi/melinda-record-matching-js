@@ -1,5 +1,5 @@
 {
-  "description": "Compare host information from f773: identiefier miss (-0.5) and page match (0.1)",
+  "description": "Compare host information from f773: identifier miss (-0.5) plus page match (0.1) = -0.4",
   "feature": "f773",
   "type": "compare",
   "expectedPoints": -0.4,

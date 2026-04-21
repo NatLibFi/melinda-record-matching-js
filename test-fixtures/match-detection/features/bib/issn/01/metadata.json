@@ -1,5 +1,5 @@
 {
-  "description": "Should extract ISSN identifiers from 020 (component part is no longer relevant for this test)",
+  "description": "Should extract ISSN identifiers from 022 (component part is no longer relevant for this test)",
   "feature": "issn",
   "type": "extract",
   "expectedFeatures": [
