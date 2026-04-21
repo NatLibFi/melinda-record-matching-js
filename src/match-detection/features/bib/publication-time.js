@@ -1,18 +1,23 @@
-
-
-import {testStringOrNumber} from '../../../matching-utils.js';
-
 // We should also get copyright time and copyright/publication times from 26x
 // see publication-time-allow-cons-years for a version allowing consequent years to match
+
+import {extractPublicationYearFrom773} from '../../../candidate-search/query-list/component.js';
+
+const MAX = 0.1;
+const MIN = -1.0;
+
+
 
 export default () => ({
   name: 'Publication time',
   extract: ({record}) => {
-    return getDateData();
-    //const value = record.get(/^008$/u)?.[0]?.value || undefined;
-    //return testStringOrNumber(value) ? [String(value).slice(6, 15)] : [];
+    let dateData = getDataFrom008();
+    const [f773] = record.get(/^773$/u);
+    const hostYear = f773 && extractPublicationYearFrom773(f773) || null;
+    dateData.hostYear = hostYear;
+    return dateData;
 
-    function getDateData() {
+    function getDataFrom008() {
       const [f008] = record.get(/^008$/u);
       if (!f008 || f008.value.length < 16) {
         return splitDateData('|        ');
@@ -29,14 +34,42 @@ export default () => ({
   },
 
   compare: (aa, bb) => {
-    if (aa.typeOfDate === 'b') { // Berfore Christ. No really makes sense in our domain, though.
+    // Be happy with a f773$g match:
+    if (aa.hostYear && bb.hostYear && aa.hostYear === bb.hostYear) {
+      return MAX;
+    }
+    // Check 008
+    if (aa.typeOfDate === 'b') { // 008/06: Before Christ. No really makes sense in our domain, though.
       if (bb.typeOfDate === 'b') {
         return 0;
       }
-      return -1.0;
+      return MIN;
     }
     if (aa.typeOfDate === 'n' || bb.typeOfDate === 'n') { // n=unknown
       return 0;
+    }
+
+    // Try to handle questionable dates:
+    if (aa.typeOfDate === 'q') { // questionable data
+      if (bb.typeOfDate !== 'q') {
+        if (yearInBetween(aa.date1, bb.date1, aa.date2)) {
+          return MAX;
+        }
+        return MIN;
+      }
+
+      // What if there are questionable dates on both sides?
+      if (aa.date1 === bb.date1 && bb.date1 === bb.date2) {
+        return MAX;
+      }
+      // Lazily return 0. (We could check for overlap etc. but not really worth the effort)
+      return 0.0;
+    }
+    if (bb.typeOfDate === 'q') {
+      if (yearInBetween(bb.date1, aa.date1, bb.date2)) {
+        return MAX;
+      }
+      return MIN;
     }
 
     const skipList = ['    ', '||||', 'uuuu'];
@@ -45,34 +78,47 @@ export default () => ({
     }
 
     if (matchingYears(aa.date1, bb.date1)) { // 'u' support
-      return 0.1;
+      return MAX;
     }
 
-    // TODO: add $q support here
-
-    return -1.0;
-
-    function matchingYears(yyyy1, yyyy2) {
-      if (yyyy1.length === 0) { // All digits have been succesfully consumed -> success
-        return true;
+    if (isValidYear(aa.date1) && bb.date1) {
+      const difference = Math.abs(aa.date1 - bb.date1);
+      if (difference === 1) {
+        return MIN/8;
       }
-      if (yyyy1[0] === 'u' || yyyy2[0] === 'u') { // Ignore 'u' (it refers to unknown millenia, century, decade or year)
-        return matchingYears(yyyy1.slice(1), yyyy2.slice(1));
-      }
-      if (yyyy1[0] !== yyyy2[0]) {
-        return false;
-      }
-      // Should we require that yyyy[0] is a digit at this point?
-      return matchingYears(yyyy1.slice(1), yyyy2.slice(1));
     }
 
-    /*
-    function hasFourDigits(yyyy) { // Will be needed by 'q' support
-      return yyyy.match(/^[0-9]{4}$/u);
-    }
-      */
+    return MIN;
   }
 
 });
 
+function yearInBetween(start, curr, end) {
+  if (!isValidYear(start) || !isValidYear(curr) || !isValidYear(end)) {
+    return false;
+  }
+  return start <= curr && curr <= end;
+}
 
+export function matchingYears(yyyy1, yyyy2) {
+  if (yyyy1.length === 0) { // All digits have been succesfully consumed -> success
+    return true;
+  }
+  if (yyyy1[0] === 'u' || yyyy2[0] === 'u') { // Ignore 'u' (it refers to unknown millenia, century, decade or year)
+    return matchingYears(yyyy1.slice(1), yyyy2.slice(1));
+  }
+  if (yyyy1[0] !== yyyy2[0]) {
+    return false;
+  }
+  if (yyyy1[0] >= '0' && yyyy1[0] <= '9') { // Require that yyyy[0] is a digit at this point? (What if year is 983?)
+    return matchingYears(yyyy1.slice(1), yyyy2.slice(1));
+  }
+  return false;
+}
+
+
+const validYearRegexp = /^(?:1[89][0-9][0-9]|20[012][0-9])$/u;
+
+function isValidYear(yyyy) {
+  return validYearRegexp.test(yyyy); // Currently supports 1800-2029
+}

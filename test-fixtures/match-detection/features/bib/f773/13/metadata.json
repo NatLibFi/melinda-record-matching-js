@@ -1,0 +1,25 @@
+{
+  "description": "Compare host information from f773: shared identifier, identical $g data",
+  "comment": "0.1 (shared identifier) + 0.02 ($g year) + 0.05 ($g number) - 0.05 ($g pages, *miss*)",
+  "feature": "f773",
+  "type": "compare",
+  "expectedPoints": 0.12,
+  "featuresA": [
+    ["FOO", "VAR"],
+    {
+      "year": "2020",
+      "number": "3",
+      "pages": "13-34"
+    }
+  ],
+  "featuresB": [
+    ["LORUM", "VAR"],
+    {
+      "year": "2020",
+      "number": "3",
+      "pages": "12-34"
+    }
+  ],
+  "skip": false,
+  "only": true
+}

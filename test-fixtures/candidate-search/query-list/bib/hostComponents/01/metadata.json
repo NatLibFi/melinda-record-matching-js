@@ -3,7 +3,7 @@
   "only": false,
   "skip": false,
   "type": "bibHostComponents",
-  "expectedQuery": ["melinda.partsofhost=12345"],
+  "expectedQuery": ["melinda.partsofhost=000012345"],
   "inputRecord": {
     "leader": "02518cam a2200745zi 4500",
     "fields": [
@@ -22,7 +22,7 @@
           },
           {
             "code": "w",
-            "value": "(FI-MELINDA)12345"
+            "value": "(FI-MELINDA)000012345"
           }
         ]
       }

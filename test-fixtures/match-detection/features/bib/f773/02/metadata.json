@@ -1,0 +1,26 @@
+{
+  "description": "Should extract Melinda-ID and ISSN identifier from 773 (component part is no longer relevant for this test)",
+  "feature": "f773",
+  "type": "extract",
+  "expectedFeatures": [
+    ["(FI-MELINDA)001234567", "1234-5678"],
+    {
+      "number": null,
+      "pages": null,
+      "year": null
+    }
+  ],
+  "inputRecord": {
+    "leader": "02518cam a2200745zi 4500",
+    "fields": [
+      { "tag": "001", "value": "000019643" },
+      { "tag": "773", "ind1": " ", "ind2": " ", "subfields": [
+          { "code": "w", "value": "(FI-MELINDA)001234567"},
+          { "code": "t", "value": "Tuttelintiire." },
+          { "code": "x", "value": "1234-5678"},
+          { "code": "g", "value": "some 123 random 321 noide 666"}
+        ]
+      }
+    ]
+  }
+}

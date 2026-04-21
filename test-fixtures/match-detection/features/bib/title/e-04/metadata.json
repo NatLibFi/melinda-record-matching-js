@@ -2,14 +2,11 @@
   "description": "Should extract titles - responsibility statement $c not included",
   "feature": "title",
   "type": "extract",
-  "expectedFeatures": ["foobar"],
+  "expectedFeatures": ["foo", "bar", "", ""],
   "inputRecord": {
     "leader": "02518cam a2200745zi 4500",
     "fields": [
-      {
-        "tag": "001",
-        "value": "000019643"
-      },
+      { "tag": "001", "value": "000019643" },
       {
         "tag": "245",
         "ind1": "1",

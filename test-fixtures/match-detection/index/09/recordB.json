@@ -1,22 +1,10 @@
 {
   "leader": "01131cam a22003618i 4500",
   "fields": [
-    {
-      "tag": "001",
-      "value": "015290020"
-    },
-    {
-      "tag": "003",
-      "value": "FI-MELINDA"
-    },
-    {
-      "tag": "005",
-      "value": "20190606070046.0"
-    },
-    {
-      "tag": "008",
-      "value": "190118s2019    fi                  fin  "
-    },
+    { "tag": "001", "value": "015290020" },
+    { "tag": "003", "value": "FI-MELINDA" },
+    { "tag": "005", "value": "20190606070046.0" },
+    { "tag": "008", "value": "190118s2015    fi                  fin  " },
     {
       "tag": "020",
       "ind1": " ",
@@ -111,17 +99,7 @@
         }
       ]
     },
-    {
-      "tag": "245",
-      "ind1": "1",
-      "ind2": "0",
-      "subfields": [
-        {
-          "code": "a",
-          "value": "Elämänlanka."
-        }
-      ]
-    },
+    { "tag": "245", "ind1": "1", "ind2": "0", "subfields": [ { "code": "a", "value": "Elämänlanka." } ] },
     {
       "tag": "263",
       "ind1": " ",

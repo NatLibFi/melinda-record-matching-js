@@ -1,27 +1,15 @@
 {
-  "description": "Should generate title query including the subtitle (punc: =)",
+  "description": "Should generate title query including the translated name in the $b subtitle (despite punc: =), since title is so short",
+  "only": true,
   "type": "bibTitle",
-  "expectedQuery": ["dc.title=\"^E 18 ruusut hehkuvat periferioissa*\""],
+  "expectedQuery": ["dc.title=\"^E 15 etanoita ja etanolia sinne*\""],
   "inputRecord": {
     "leader": "02518cam a2200745zi 4500",
     "fields": [
-      {
-        "tag": "001",
-        "value": "000019643"
-      },
-      {
-        "tag": "245",
-        "ind1": " ",
-        "ind2": " ",
-        "subfields": [
-          {
-            "code": "a",
-            "value": "E 18 ="
-          },
-          {
-            "code": "b",
-            "value": "ruusut hehkuvat periferioissa vuodesta toiseen."
-          }
+      { "tag": "001", "value": "000019643" },
+      { "tag": "245", "ind1": " ", "ind2": " ", "subfields": [
+          { "code": "a", "value": "E 15 =" },
+          { "code": "b", "value": "etanoita ja etanolia sinne ja tänne." }
         ]
       }
     ]

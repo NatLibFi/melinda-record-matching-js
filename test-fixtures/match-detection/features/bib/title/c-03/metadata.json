@@ -3,6 +3,6 @@
   "feature": "title",
   "type": "compare",
   "expectedPoints": -0.5,
-  "featuresA": ["foobarbarfoo"],
-  "featuresB": ["foobarbarfu"]
+  "featuresA": ["foobarbarfoo", "", "", ""],
+  "featuresB": ["foobarbarfu", "", "", ""]
 }

@@ -4,29 +4,20 @@
   "type": "compare",
   "expectedPoints": 0.1,
 
-    "featuresA": [{
-    "fields": [
-      {"tag": "041", "ind1": " ", "ind2": " ", "subfields": [
-        {"code": "a", "value": "eng"}
-      ]},
-      {"tag": "041", "ind1": " ", "ind2": " ", "subfields": [
-        {"code": "a", "value": "swe"}
-      ]},
-      {"tag": "041", "ind1": " ", "ind2": " ", "subfields": [
-        {"code": "a", "value": "fin"}
-      ]}
-    ]
-  }, "A"],
-  "featuresB": [{
-    "fields": [
+    "featuresA": [[
+      {"tag": "041", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "eng"} ]},
+      {"tag": "041", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "swe"} ]},
+      {"tag": "041", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "fin"} ]}
+    ],
+    "A"],
+  "featuresB": [[
       {"tag": "041", "ind1": " ", "ind2": " ", "subfields": [
         {"code": "a", "value": "eng"},
         {"code": "a", "value": "fin"},
         {"code": "a", "value": "swe"}
       ]}
-
-    ]
-  }, "B"],
+    ],
+    "B"],
   "skip": false,
   "only": false
 }

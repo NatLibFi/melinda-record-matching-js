@@ -3,7 +3,7 @@
   "only": false,
   "skip": false,
   "type": "bibTitleAuthor",
-  "expectedQuery": ["dc.author=\"^Bazam*\" AND dc.title=\"And foo bar*\""],
+  "expectedQuery": ["dc.author=\"^Bazam*\" AND dc.title=\"And foo bar\""],
   "inputRecord": {
     "leader": "02518cam a2200745zi 4500",
     "fields": [

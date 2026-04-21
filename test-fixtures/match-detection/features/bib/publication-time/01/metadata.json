@@ -2,7 +2,7 @@
   "description": "Should extract publication time",
   "feature": "publicationTime",
   "type": "extract",
-  "expectedFeatures": {"typeOfDate": "s", "date1": "1983", "date2": "    "},
+  "expectedFeatures": {"typeOfDate": "s", "date1": "1983", "date2": "    ", "hostYear": "2020"},
   "inputRecord": {
     "leader": "02518cam a2200745zi 4500",
     "fields": [
@@ -13,7 +13,8 @@
       {
         "tag": "008",
         "value": "831017s1983    fi ||||||||||||||||bfin||"
-      }
+      },
+      { "tag": "773", "subfields": [ {"code": "g", "value": "2020 : 14, s. 16-22"}]}
     ]
   }
 }

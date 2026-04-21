@@ -1,8 +1,8 @@
 {
-  "description": "Should extract titles (No 245)",
+  "description": "e-02: Should extract titles (No 245)",
   "feature": "title",
   "type": "extract",
-  "expectedFeatures": [],
+  "expectedFeatures": ["", "", "", ""],
   "inputRecord": {
     "leader": "02518cam a2200745zi 4500",
     "fields": [

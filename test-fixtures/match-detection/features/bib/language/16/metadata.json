@@ -4,22 +4,18 @@
   "type": "compare",
   "expectedPoints": 0.0,
 
-    "featuresA": [{
-    "fields": [
+    "featuresA": [[
       {"tag": "041", "ind1": "1", "ind2": " ", "subfields": [
         {"code": "a", "value": "eng"},
         {"code": "h", "value": "fin"}
       ]}
-    ]
-  }, "A"],
-  "featuresB": [{
-    "fields": [
+    ], "A"],
+  "featuresB": [[
       {"tag": "041", "ind1": "0", "ind2": " ", "subfields": [
         {"code": "a", "value": "eng"}
       ]}
 
-    ]
-  }, "B"],
+    ], "B"],
   "skip": false,
   "only": false
 }

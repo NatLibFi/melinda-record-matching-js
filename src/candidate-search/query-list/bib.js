@@ -1,8 +1,13 @@
 import createDebugLogger from 'debug';
 import {toQueries} from '../candidate-search-utils.js';
 import {getMelindaIdsF035, validateSidFieldSubfieldCounts, getSubfieldValues, testStringOrNumber} from '../../matching-utils.js';
+import {extractHostMelindaIdsFromField, extractPublicationYearFrom773, getHostMelindaFields} from './component.js';
+import {fieldToString} from '@natlibfi/marc-record-validators-melinda';
+import {getTitle} from '../../match-detection/features/bib/title.js';
 
 const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:query');
+
+const IS_OK_ALONE_THRESHOLD = 5;
 
 export function bibSourceIds(record) {
 
@@ -126,31 +131,27 @@ export function bibHostComponents(record) {
   const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:query:bibHostComponents');
   const debugData = debug.extend('data');
   debug(`Creating queries for hostIds`);
-
-  const id = getHostId();
-  debugData(`Found id: ${JSON.stringify(id)}`);
-
-  return testStringOrNumber(id) ? [`melinda.partsofhost=${id}`] : [];
-
-  function getHostId() {
-    const [field] = record.get(/^773$/u);
-
-    if (field) {
-      const {value} = field.subfields.find(({code}) => code === 'w') || {};
-
-      if (testStringOrNumber(value) && (/^\(FI-MELINDA\)/u).test(String(value))) {
-        return String(value).replace(/^\(FI-MELINDA\)/u, '');
-      }
-
-      if (testStringOrNumber(value) && (/^\(FIN01\)/u).test(String(value))) {
-        return String(value).replace(/^\(FIN01\)/u, '');
-      }
-
-      return false;
-    }
-    return false;
+  const f773s = getHostMelindaFields(record);
+  if (f773s.length !== 1) { // This needs some thinking...
+    return [];
   }
+
+  const [id] = extractHostMelindaIdsFromField(f773s[0]);
+  debug(`Found id: ${JSON.stringify(id)}`);
+
+  // NB! record.isCR() does not work if LDR/07=a, so we get year from 773$g!
+  const year = extractPublicationYearFrom773(f773s[0]);
+  debug(`${fieldToString(f773s[0])} => ${year ? year : 'N/A'}`);
+  if (year) {
+    return [`dc.date=${year} AND melinda.partsofhost=${id}`];
+  }
+
+  return [`melinda.partsofhost=${id}`];
+
 }
+
+
+
 
 // SRU search dc.title with a search phrase starting with ^ maps currently in Melinda to (probably) to *headings* index TIT
 // - Aleph cannot currently handle headings searches starting with a boolean - in these cases use word search
@@ -184,43 +185,78 @@ export function bibTitleAuthorYearAlternates(record) {
   return {queryList: Array.from(origQueryList).reverse(), queryListType: 'alternates'};
 }
 
-export function bibTitleAuthorPublisher({record, onlyTitleLength, addYear = false, alternates = false, alternateQueries = []}) {
-  debug(`bibTitleAuthorPublisher, onlyTitleLength: ${onlyTitleLength}, addYear: ${addYear}, alternates: ${alternates}`);
-  const title = getTitle();
-  if (testStringOrNumber(title)) {
-    const formatted = getFormatted(title);
+function getTitleForQuery(record) {
+  const title = getTitle(record, ['a']);
+  if (title) {
+    const nWords = title.split(' ');
+    // If lone $a is deemed too short, fetch $b as well:
+    // (NV: I've seen pairs with 245$a-only vs 245$a$b, so I'd like to use $a only if it is long enough)
 
-    // use word search for titles starting with a boolean
-    const useWordSearch = checkUseWordSearch(formatted);
-    // Prevent too many matches / SRU crashing by having a minimum length
-    // Note that currently this fails matching if there are no matches from previous matchers
-    if (formatted.length >= onlyTitleLength && !alternates) {
-      return [`dc.title="${useWordSearch ? '' : '^'}${formatted}*"`];
-    }
-    const queryIsOkAlone = formatted.length >= 5;
-
-    // use word search without ending * also in combination searches to avoid SRU-server crashes [MRA-189]
-    const query = `dc.title="${useWordSearch || !queryIsOkAlone ? '' : '^'}${formatted}${queryIsOkAlone ? '*' : ''}"`;
-    debug(`query: ${query}`);
-    const newAlternateQueries = alternates ? [...alternateQueries, query] : alternateQueries;
-
-    return addAuthorsToSearch({query, queryIsOkAlone, addYear, alternates, alternateQueries: newAlternateQueries});
-
-    function getFormatted(title) {
-      const formatted = String(title)
-        .replace(/[\-+ !"(){}\[\]<>;:.?/@*%=^_`~]/gu, ' ')
-        .replace(/[^\w\s\p{Alphabetic}]/gu, '')
-        // Clean up concurrent spaces from fe. subfield changes
-        .replace(/  +/gu, ' ')
-        .trim()
-        .replace(/^(.{30}\S*) .*$/, "$1")
-        .trim();
-
-      return formatted;
+    if (nWords < 3 || title.length < 12) {
+      const [f245] = record.get('245');
+      // If punctuation is ' =' I think that f245$a is good enough despite shortness. Trying to balance between two bad situations...
+      // "Suo (= short title) siellä, vetelä (= missing $b name in another language) täällä..."
+      if (f245 && f245.subfields.find(sf => sf.code === 'a' && sf.value.match(/ =$/u)) && title.length >= IS_OK_ALONE_THRESHOLD) {
+        return title;
+      }
+      return getTitle(record, ['a', 'b']); // Try to get a longer title
     }
   }
+  return title;
+}
 
-  return [];
+function dcTitle(record, onlyTitleLength, alternates = false) {
+  const title = getTitleForQuery(record);
+  if (!testStringOrNumber(title)) {
+    return [];
+  }
+
+  const formatted = getFormattedTitle(title);
+
+  // use word search for titles starting with a boolean
+  const useWordSearch = checkUseWordSearch(formatted);
+  // Prevent too many matches / SRU crashing by having a minimum length
+  // Note that currently this fails matching if there are no matches from previous matchers
+  if (formatted.length >= onlyTitleLength && !alternates) {
+    return [`dc.title="${useWordSearch ? '' : '^'}${formatted}*"`, formatted, true];
+  }
+
+  const queryIsOkAlone = !useWordSearch && formatted.length >= IS_OK_ALONE_THRESHOLD;
+
+  // use word search without ending * also in combination searches to avoid SRU-server crashes [MRA-189]
+  return [`dc.title="${useWordSearch || !queryIsOkAlone ? '' : '^'}${formatted}${queryIsOkAlone ? '*' : ''}"`, formatted, queryIsOkAlone];
+
+  function getFormattedTitle(title) {
+    const formatted = String(title)
+      .replace(/[\-+ !"(){}\[\]<>;:.?/@*%=^_`~]/gu, ' ')
+      .replace(/[^\w\s\p{Alphabetic}]/gu, '') // Apparently matches to/works with non-aplhabetic scripts such as Chinese as well
+      .replace(/  +/gu, ' ') // Clean up concurrent spaces from eg. subfield changes
+      .trim()
+      .replace(/^(.{30}\S*) .*$/, "$1")
+      .trim();
+
+    return formatted;
+  }
+}
+
+export function bibTitleAuthorPublisher({record, onlyTitleLength, addYear = false, alternates = false, alternateQueries = []}) {
+  debug(`bibTitleAuthorPublisher, onlyTitleLength: ${onlyTitleLength}, addYear: ${addYear}, alternates: ${alternates}`);
+  const [query, formatted, queryIsOkAlone] = dcTitle(record, onlyTitleLength, alternates);
+  if (query === undefined) {
+    return [];
+  }
+
+  debug(`query: ${query}`);
+
+  // Prevent too many matches / SRU crashing by having a minimum length
+  // Note that currently this fails matching if there are no matches from previous matchers
+  if (formatted.length >= onlyTitleLength && !alternates) {
+    return [query];
+  }
+
+  const newAlternateQueries = alternates ? [...alternateQueries, query] : alternateQueries;
+
+  return addAuthorsToSearch({query, queryIsOkAlone, addYear, alternates, alternateQueries: newAlternateQueries});
 
   function addAuthorsToSearch({query, queryIsOkAlone = false, addYear = false, alternates = false, alternateQueries = []}) {
     debug('addAuthorsToSearch');
@@ -254,8 +290,8 @@ export function bibTitleAuthorPublisher({record, onlyTitleLength, addYear = fals
   function addYearToSearch({query, queryIsOkAlone = false, alternates = false, alternateQueries = []}) {
     const [yearQuery] = bibYear(record);
     if (yearQuery !== undefined) {
-      const newAlternateQueries = alternates ? [...alternateQueries, `${yearQuery} AND ${query}`] : alternateQueries;
-      return alternates ? newAlternateQueries : [`${yearQuery} AND ${query}`];
+      const yearAndOtherQueries = `${yearQuery} AND ${query}`;
+      return alternates ? [...alternateQueries, yearAndOtherQueries] : [yearAndOtherQueries];
     }
     if (queryIsOkAlone) {
       return alternates ? alternateQueries : [`${query}`];
@@ -263,26 +299,6 @@ export function bibTitleAuthorPublisher({record, onlyTitleLength, addYear = fals
     return [];
   }
 
-  function getTitle() {
-    const [field] = record.get(/^245$/u);
-
-    if (field) {
-      const titleString = field.subfields
-        //.filter(({code}) => ['a', 'b', 'n', 'p'].includes(code))
-        .filter(({code}) => ['a', 'b'].includes(code))
-        //.filter(({code}) => ['a'].includes(code))
-        .map(({value}) => testStringOrNumber(value) ? String(value) : '')
-        .filter(value => value)
-        // In Melinda's index subfield separators are indexed as ' '
-        .join(' ');
-
-      if (/^[1-9]$/u.test(field.ind2)) { // Skip non-filing characters
-        return titleString.slice(parseInt(field.ind2));
-      }
-      return titleString;
-    }
-    return false;
-  }
 }
 
 export function bibAuthors(record) {
@@ -349,7 +365,10 @@ export function bibPublishers(record) {
       .slice(0, 30)
       .trim();
 
-    debugData(`Publisher string: ${formatted}`);
+    debugData(`Publisher string: '${formatted}'`);
+    if (formatted.length === 0) {
+      return [];
+    }
     // use non-wildcard word search from dc.publisher
     return [`dc.publisher="${formatted}"`];
   }
@@ -358,7 +377,7 @@ export function bibPublishers(record) {
 
   function getPublisher(record) {
     //debugData(record);
-    const [field] = record.get(/^(?:260)|(?:264)$/u);
+    const [field] = record.get(/^26[04]$/u).filter(f => f.subfields.some(sf => sf.code === 'b')); // Filter removes copyright-only fields
     //debugData(field);
 
     if (field) {
@@ -367,7 +386,8 @@ export function bibPublishers(record) {
         .map(({value}) => testStringOrNumber(value) ? String(value) : '')
         .filter(value => value)
         // In Melinda's index subfield separators are indexed as ' '
-        .join(' ');
+        .join(' ')
+        .trim();
       return publisherString;
     }
     return false;
@@ -387,14 +407,17 @@ export function bibYear(record) {
 
   function getYear(record) {
     const [f008] = record.get(/^008$/u);
-    if (f008 === undefined) {
-      debug('f008 missing');
+    if (!f008 || !f008.value || f008.value.length < 11) {
+      debug('f008 missing/crappy');
       return false;
     }
 
     debugData(`f008: ${JSON.stringify(f008)}`);
     const {value} = f008;
-    return testStringOrNumber(value) ? String(value).slice(7, 11) : undefined;
+    if (value === '||||' || value === '    ') { // Meaningless values
+      return false;
+    }
+    return value.slice(7, 11);
   }
 }
 

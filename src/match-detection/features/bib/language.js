@@ -31,10 +31,11 @@ export default () => ({
 
     FixSami041().fix(clonedRecord); // Handle 'smi' adding if needed
     Remove041zxx().fix(clonedRecord); // Remove 'zxx' from f041s
+    clonedRecord.fields = clonedRecord.fields.filter(f => ['008', '041'].includes(f.tag));
     // Add other language code normalizations?
 
     // Should we return all the fields, or just the relevant fields?
-    return [{leader: clonedRecord.leader, fields: clonedRecord.fields}, label];
+    return [clonedRecord.fields, label];
   },
   // eslint-disable-next-line max-statements
   compare: (aa, bb) => {
@@ -49,9 +50,6 @@ export default () => ({
     function applyLimits(score) {
       if (score > 0.1) { // Keeps the original max, we might have 0.10 (041) + 0.05 (008/35-37) = 0.15 now
         return 0.1;
-      }
-      if (score < -1) {
-        return -1.0;
       }
       return score;
     }
@@ -73,7 +71,7 @@ export default () => ({
         return 0.05;
       }
 
-      if (a008 === 'mul' || b008 === 'mul') {
+      if (a008 === 'mul' || b008 === 'mul') { // We'll let 041 decide
         return 0.0;
       }
 
@@ -87,6 +85,7 @@ export default () => ({
     function compare041() {
       const a041s = getFields041(a);
       const b041s = getFields041(b);
+
       if (a041s.length === 0 || b041s.length === 0) {
         return 0.0; // Should we punish these for badness?
       }
@@ -97,14 +96,14 @@ export default () => ({
         const scoreInd1 = mainPenalty === 0.0 ? 0.0 : indicator1Penalty(a041s[0], b041s[0]);
         return mainPenalty + sourcePenalty + scoreInd1;
       }
-      // Things are already complicated (likely to pe penalized, so no nedd to worrty about language code sources, I daresay.
+      // Things are already complicated (likely to pe penalized, so no nedd to worry about language code sources, I daresay.
       return compareLanguageCodeLists(getLanguageCodesFrom041Fields(a), getLanguageCodesFrom041Fields(b));
 
-      function getFields041(record) {
-        if (!record.fields) {
+      function getFields041(fields) {
+        if (!fields) {
           return [];
         }
-        return record.fields.filter(f => f.tag === '041');
+        return fields.filter(f => f.tag === '041');
       }
 
     }
@@ -139,7 +138,7 @@ export default () => ({
     }
 
     function compareLanguageCodeLists(a, b) {
-      if (a.length === 0 || b.length === 0) {
+      if (a.length === 0 || b.length === 0 || a.every(val => containsNoData(val)) || b.every(val => containsNoData(val))) {
         debugData(`No language to compare`);
         return 0;
       }
@@ -176,19 +175,9 @@ export default () => ({
 
 
       // Damage control:
-
-      // Not using the generic solution here as eg. 'und' needs a special treatment
-      const sharedValues = getSharedValues(a, b);
-      const aOnly = a.filter(val => !sharedValues.includes(val));
-      const bOnly = b.filter(val => !sharedValues.includes(val));
-      const hasUnd = [...aOnly, ...bOnly].includes('und');
+      const sharedValues = getSharedValues(a, b).filter(val => !containsNoData(val));
 
       if (sharedValues.length < 1) {
-        console.info(`NV: ${sharedValues.join(", ")}`);
-        if (aOnly.length === 1 && bOnly.length === 1 && hasUnd) {
-          debug(`Both have languages, but none of these match. However, the benefit of doubt is given: '${aOnly[0]}' and '${bOnly[0]}' might mean the same}`);
-          return 0;
-        }
         debug(`Both have languages, but none of these match.`); // includes 'mul' vs a single language code
         return -1.0;
       }
@@ -218,11 +207,11 @@ export default () => ({
 
 });
 
-function get008Value(record, label = 'record') {
-  if (!record || !record.fields) {
+function get008Value(fields, label = 'record') {
+  if (!fields) {
     return;
   }
-  const f008 = record.fields.find(f => f.tag === '008');
+  const f008 = fields.find(f => f.tag === '008');
   if (!f008) {
     return undefined;
   }
@@ -269,12 +258,12 @@ function isLangCodeForALanguage(code, label = 'record', encoding = undefined) {
 
 
 
-function getLanguageCodesFrom041Fields(record) {
+function getLanguageCodesFrom041Fields(fields) {
   // NB! We brutally don't check $2 (language code source) as marc's language codes is practically a subset of ISO 639-2,
   // and also ISO 639-2 and ISO 639-3 overlap to a degree. If we ever run into a trouble with some ISO 639-2 vs 639-3 mismatch, then we'll work it out.
   // Also we could write a validator that converts ISO 639-2 to marc if applicable and maybe even partial support for ISO-639-3.
   // Note that ISO 639-2-B values correspond with marc beteer that ISO 639-2-T. Eg. code for Chinese 'zho' should/code be normalized to 'chi'!
-  const values = record.fields.filter(f => f.tag === '041').flatMap(f => getFieldsLanguageCodes(f));
+  const values = fields.filter(f => f.tag === '041').flatMap(f => getFieldsLanguageCodes(f));
   /*
         // .filter(({ind2}) => ind2 === ' ')
         .map(({subfields}) => subfields)
