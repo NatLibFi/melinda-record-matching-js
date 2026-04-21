@@ -1,5 +1,5 @@
 {
-  "description": "Should create a combined year, publisher and title query if both author and title are shorter than five",
+  "description": "Should create a combined year, publisher and title query if both author and title are shorter than five. Skips f264 that does not have a $b.",
   "only": false,
   "skip": false,
   "type": "bibTitleAuthorYear",
