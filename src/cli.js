@@ -76,7 +76,8 @@ async function cli() {
     if (['IDS'].includes(searchType)) {
       return [
         matchDetection.features.bib.melindaId(),
-        matchDetection.features.bib.allSourceIds()
+        matchDetection.features.bib.allSourceIds(),
+        matchDetection.features.bib.f773() // Host data
       ];
     }
 
@@ -101,7 +102,8 @@ async function cli() {
         //       normal publicationTime and a reprintPublication time
         matchDetection.features.bib.publicationTimeAllowConsYearsMulti(),
         matchDetection.features.bib.language(),
-        matchDetection.features.bib.bibliographicLevel()
+        matchDetection.features.bib.bibliographicLevel(),
+        matchDetection.features.bib.f773() // Host data
       ];
     }
 
@@ -113,7 +115,8 @@ async function cli() {
         matchDetection.features.bib.title(),
         matchDetection.features.bib.language(),
         matchDetection.features.bib.authors(),
-        matchDetection.features.bib.bibliographicLevel()
+        matchDetection.features.bib.bibliographicLevel(),
+        matchDetection.features.bib.f773() // Host data
       ];
     }
 
@@ -128,7 +131,8 @@ async function cli() {
         matchDetection.features.bib.recordType(),
         matchDetection.features.bib.publicationTime(),
         matchDetection.features.bib.language(),
-        matchDetection.features.bib.bibliographicLevel()
+        matchDetection.features.bib.bibliographicLevel(),
+        matchDetection.features.bib.f773() // Host data
       ];
     }
 

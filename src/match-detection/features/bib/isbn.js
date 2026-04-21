@@ -3,8 +3,6 @@ import createDebugLogger from 'debug';
 import {parse as isbnParse} from 'isbn3';
 
 import {uniqArray} from './issn.js';
-import {isComponentRecord} from '@natlibfi/melinda-commons';
-
 
 const debug = createDebugLogger(`@natlibfi/melinda-record-matching:match-detection:features:standard-identifiers:ISBN`);
 const debugData = debug.extend('data');
@@ -16,12 +14,7 @@ export default () => ({
   extract: ({record/*, recordExternal*/}) => {
     //const label = recordExternal && recordExternal.label ? recordExternal.label : 'record';
 
-    const host = !isComponentRecord(record, false, []);
-
-    if (host) {
-      return record.get('020').filter(f => f.subfields?.some(sf => ['a', 'z'].includes(sf.code) && sf.value));
-    }
-    return record.get('773').filter(f => f.subfields?.some(sf => ['z'].includes(sf.code) && sf.value));
+    return record.get('020').filter(f => f.subfields?.some(sf => ['a', 'z'].includes(sf.code) && sf.value));
   },
   // eslint-disable-next-line max-statements
   compare: (aa, bb) => {
@@ -31,7 +24,8 @@ export default () => ({
       return 0;
     }
 
-    const [subfieldCodeForGoodValues, subfieldCodeForBadValues] = getSubfieldCodes(aa[0].tag);
+    const subfieldCodeForGoodValues = 'a';
+    const subfieldCodeForBadValues = 'z';
 
     const [aValidValuesA, aInvalidValuesA, zValidValuesA, zInvalidValuesA] = getValuesWrapper(aa, 'AA'); // initial 'a' and 'z' refer to 020 subfields codes
     const [aValidValuesB, aInvalidValuesB, zValidValuesB, zInvalidValuesB] = getValuesWrapper(bb, 'BB');
@@ -123,14 +117,6 @@ export default () => ({
     }
     // We have values but they disagree:
     return -0.75; // Has good ISBNs on both records, but they did not match
-
-
-    function getSubfieldCodes(tag) {
-      if (tag === '773') {
-        return ['z', undefined];
-      }
-      return ['a', 'z'];
-    }
 
     function getValues(fields) {
       // Valid values are normalized to their isbn-13 form. Invalid values get their '-'s removed.

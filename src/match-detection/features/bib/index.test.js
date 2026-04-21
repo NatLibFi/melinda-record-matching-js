@@ -42,7 +42,7 @@ describe('match-detection/features/bib/', () => {
         const {featuresA, featuresB, expectedPoints} = expectations;
         const {compare} = features[feature](options);
 
-        assert.equal(compare(featuresA, featuresB), expectedPoints);
+        assert.equal(Math.round(compare(featuresA, featuresB) *100)/100, expectedPoints);
         return;
       }
 

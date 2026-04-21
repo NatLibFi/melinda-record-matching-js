@@ -3,12 +3,6 @@
   "feature": "language",
   "type": "compare",
   "expectedPoints": 0,
-  "featuresA": [{
-    "fields": [
-    ]
-  }, "A"],
-  "featuresB": [{
-    "fields": [
-    ]
-  }, "B"]
+  "featuresA": [[], "A"],
+  "featuresB": [[], "B"]
 }

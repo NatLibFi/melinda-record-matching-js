@@ -10,11 +10,11 @@
       { "tag": "041", "ind1": "0", "ind2": " ", "subfields": [ { "code": "a", "value": "sma" }] }
     ]
   },
-  "expectedFeatures": [ {
-    "leader": "02518cam a2200745zi 4500",
-    "fields": [
+  "expectedFeatures": [
+    [
       { "tag": "008", "value": "831017s1983    fi |||||||||||||||||smi||" },
       { "tag": "041", "ind1": "0", "ind2": " ", "subfields": [ { "code": "a", "value": "smi" }, { "code": "a", "value": "sma" }] }
-    ]
-  }, "record" ]
+    ],
+    "record"
+  ]
 }

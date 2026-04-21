@@ -3,14 +3,10 @@
   "feature": "language",
   "type": "compare",
   "expectedPoints": 0,
-  "featuresA": [{
-    "fields": [
+  "featuresA": [[
       {"tag": "040", "ind1": " ", "ind2": " ", "subfields": [{"code": "b", "value": "fin"}]}
-    ]
-  }, "A"],
-  "featuresB": [{
-    "fields": [
+    ], "A"],
+  "featuresB": [[
       {"tag": "040", "ind1": " ", "ind2": " ", "subfields": [{"code": "b", "value": "fin"}]}
-    ]
-  }, "B"]
+    ], "B"]
 }

@@ -1,6 +1,7 @@
 
 import createDebugLogger from 'debug';
 import {testStringOrNumber} from '../../../matching-utils.js';
+import {matchingYears} from './publication-time.js';
 
 // We should also get copyright time and copyright/publication times from 26x
 
@@ -16,14 +17,16 @@ export default () => ({
 
     const [firstA] = a;
     const [firstB] = b;
+    // Sanity check: If either of years is a non string/number, values are not comparable
+    if (!testStringOrNumber(firstA) || !testStringOrNumber(firstB)) {
+      return 0.0;
+    }
 
     if (firstA === firstB) {
       return 0.1;
     }
-
-    // If either of years is a non string/number, values are not comparable
-    if (!testStringOrNumber(firstA) || !testStringOrNumber(firstB)) {
-      return 0;
+    if (matchingYears(firstA, firstB)) { // Handle 'u' Eg. '18uu' vs '1812'
+      return 0.05;
     }
 
     const firstANumber = parseInt(firstA, 10);

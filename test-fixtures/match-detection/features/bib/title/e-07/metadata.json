@@ -3,27 +3,16 @@
   "comment": "Is this dangerous? Should we ascertain that scandic diacritics are not decomposed and stripped? ",
   "feature": "title",
   "type": "extract",
-  "expectedFeatures": ["aakkosetkuntoon"],
+  "expectedFeatures": ["aakkoset", "kuntoon", "", ""],
   "inputRecord": {
     "leader": "02518cam a2200745zi 4500",
     "fields": [
-      {
-        "tag": "001",
-        "value": "000019643"
-      },
-      {
-        "tag": "245",
-        "ind1": "1",
-        "ind2": " ",
+      { "tag": "001", "value": "000019643" },
+      { "tag": "245", "ind1": "1", "ind2": " ",
         "subfields": [
-          {
-            "code": "a",
-            "value": "Ääkköset"
-          },
-          {
-            "code": "b",
-            "value": "kuntoon /"
-          }
+          { "code": "a", "value": "Ääkköset" },
+          { "code": "b", "value": "kuntoon /"},
+          { "code": "c", "value": "Tekijä."}
         ]
       }
     ]

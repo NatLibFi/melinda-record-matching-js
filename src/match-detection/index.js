@@ -5,7 +5,8 @@ import * as features from './features/index.js';
 export {features};
 
 export default ({strategy, threshold = 0.8999}, returnStrategy = false, localSettings = {}) => ({recordA, recordB, recordAExternal = {}, recordBExternal = {}}) => {
-  const minProbabilityQuantifier = 0.5;
+  const MIN_PROPABILITY_QUALIFIER = 0.4; // Title perfect match: 0.5
+  const FORCE_FAIL = -1.0;
 
   const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection');
   const debugData = debug.extend('data');
@@ -41,13 +42,18 @@ export default ({strategy, threshold = 0.8999}, returnStrategy = false, localSet
     const featurePairs = generateFeaturePairs(featuresA, featuresB);
     const similarityVector = generateSimilarityVector(featurePairs);
 
-    if (similarityVector.some(v => v >= minProbabilityQuantifier)) {
+    if (similarityVector.some(v => v >= MIN_PROPABILITY_QUALIFIER)) {
       const probability = calculateProbability(similarityVector);
       debug(`probability: ${probability} (Threshold: ${threshold})`);
+      if (similarityVector.some(v => v <= FORCE_FAIL)) {
+        debug(`Some feature resulted in utter failure (${FORCE_FAIL} or less)`);
+        return returnResult({match: false, probability: 0.0});
+      }
+
       return returnResult({match: probability >= threshold, probability});
     }
 
-    debugData(`No feature yielded minimum probability amount of points (${minProbabilityQuantifier})`);
+    debugData(`No feature yielded minimum probability amount of points (${MIN_PROPABILITY_QUALIFIER})`);
     return returnResult({match: false, probability: 0.0});
   }
 

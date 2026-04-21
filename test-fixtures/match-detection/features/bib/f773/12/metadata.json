@@ -1,0 +1,24 @@
+{
+  "description": "Compare host information from f773: no identifiers (0.0), but a perfect $g year-number-pages match (0.5)",
+  "feature": "f773",
+  "type": "compare",
+  "expectedPoints": 0.5,
+  "featuresA": [
+    ["FOO", "VAR"],
+    {
+      "year": "2020",
+      "number": "3",
+      "pages": "12-34"
+    }
+  ],
+  "featuresB": [
+    [],
+    {
+      "year": "2020",
+      "number": "3",
+      "pages": "12-34"
+    }
+  ],
+  "skip": false,
+  "only": false
+}
