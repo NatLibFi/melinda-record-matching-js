@@ -58,6 +58,5 @@
 		"cross-env": "^10.1.0",
 		"esbuild": "^0.28.0",
 		"eslint": "^10.2.1"
-	},
-	"nvolkComment": "cld3-asm 4.0.0 uses emscripten-wasm-loader ^3.0.3 which uses problematic, non-secure nanoid version 2.X.X."
+	}
 }
