@@ -1,5 +1,6 @@
 import * as bib from './bib.js';
 import * as component from './component.js';
+import * as auth from './auth.js';
 import createDebugLogger from 'debug';
 
 const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:index');
@@ -21,11 +22,16 @@ export const searchTypes = {
     hostIdMelinda: 'hostIdMelinda', // 773 $w (FI-MELINDA)
     hostIdOtherSource: 'hostIdOtherSource', // 773 $w !(FI-MELINDA)
     hostIsbn: 'hostIsbn' // 773 $z
+  },
+  auth: {
+    //catalogingRules: 'authCatalogingRules', // 008/10 and 040$f
+    //term: 'authTermComparison' // 1XX
+    authStandardIdentifiers: 'authStandardIdentifiers' // 024$a
   }
 };
 
 export default async (record, searchSpec, client) => {
-  const extractors = {...bib, ...component};
+  const extractors = {...auth, ...bib, ...component};
   debugData(`extractors: ${JSON.stringify(extractors)}`);
   debugData(`searchSpec: ${JSON.stringify(searchSpec)}`);
 

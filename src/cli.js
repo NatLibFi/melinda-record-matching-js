@@ -42,7 +42,7 @@ async function cli() {
         throw new Error('Setup sru url');
       }
 
-      if (!['IDS', 'STANDARD_IDS', 'COMPONENT', 'CONTENT', 'CONTENTALT'].includes(args.searchType)) {
+      if (!['IDS', 'STANDARD_IDS', 'COMPONENT', 'CONTENT', 'CONTENTALT', 'YSO'].includes(args.searchType)) {
         throw new Error('Invalid search type');
       }
 
@@ -136,6 +136,12 @@ async function cli() {
       ];
     }
 
+    if (['YSO']) {
+      return [
+        matchDetection.features.auth.yso()
+      ];
+    }
+
     throw new Error('Unsupported match validation package');
   }
 
@@ -173,6 +179,12 @@ async function cli() {
         // titleAuthorYearAlternates searches for matchCandidates
         // with alternate queries, starting from more tight searches
         candidateSearch.searchTypes.bib.titleAuthorYearAlternates
+      ];
+    }
+
+    if (searchType === 'YSO') {
+      return [
+        candidateSearch.searchTypes.auth.authStandardIdentifiers
       ];
     }
 
