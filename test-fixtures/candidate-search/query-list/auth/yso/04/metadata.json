@@ -1,0 +1,17 @@
+{
+  "description": "Should generate query with both f024$a identifiers",
+  "comment": "Note that f024$a is actually a non-repeatable subfield, but we tolerate that error here",
+  "type": "authStandardIdentifiers",
+  "expectedQuery": ["melinda.urx=\"http://urn.fi/urn:nbn:fi:au:seko:00445\" or melinda.urx=\"http://urn.fi/urn:nbn:fi:au:seko:00666\""],
+  "inputRecord": {
+    "leader": "02518cam a2200745zi 4500",
+    "fields": [
+      { "tag": "001", "value": "000019643" },
+      { "tag": "024", "ind1": " ", "ind2": " ", "subfields": [
+        { "code": "a", "value": "http://urn.fi/urn:nbn:fi:au:seko:00445" },
+        { "code": "a", "value": "http://urn.fi/urn:nbn:fi:au:seko:00666" },
+        { "code": "2", "value": "urn" }
+      ]}
+    ]
+  }
+}

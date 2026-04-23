@@ -1,0 +1,15 @@
+{
+  "description": "Should generate auth id query (note that 024$a is actually a seko id, not an yso one",
+  "type": "authStandardIdentifiers",
+  "expectedQuery": ["melinda.urx=\"http://urn.fi/urn:nbn:fi:au:seko:00445\""],
+  "inputRecord": {
+    "leader": "02518cam a2200745zi 4500",
+    "fields": [
+      { "tag": "001", "value": "000019643" },
+      { "tag": "024", "ind1": " ", "ind2": " ", "subfields": [
+        { "code": "a", "value": "http://urn.fi/urn:nbn:fi:au:seko:00445" },
+        { "code": "2", "value": "urn" }
+      ]}
+    ]
+  }
+}

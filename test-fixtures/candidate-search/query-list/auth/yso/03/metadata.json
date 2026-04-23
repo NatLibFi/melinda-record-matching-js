@@ -1,0 +1,19 @@
+{
+  "description": "Should accept both f024 contents",
+  "type": "authStandardIdentifiers",
+  "expectedQuery": ["melinda.urx=\"http://urn.fi/urn:nbn:fi:au:seko:00445\" or melinda.urx=\"http://urn.fi/urn:nbn:fi:au:seko:00456\""],
+  "inputRecord": {
+    "leader": "02518cam a2200745zi 4500",
+    "fields": [
+      { "tag": "001", "value": "000019643" },
+      { "tag": "024", "ind1": " ", "ind2": " ", "subfields": [
+        { "code": "a", "value": "http://urn.fi/urn:nbn:fi:au:seko:00445" },
+        { "code": "2", "value": "urn" }
+      ]},
+      { "tag": "024", "ind1": " ", "ind2": " ", "subfields": [
+        { "code": "a", "value": "http://urn.fi/urn:nbn:fi:au:seko:00456" },
+        { "code": "2", "value": "urn" }
+      ]}
+    ]
+  }
+}

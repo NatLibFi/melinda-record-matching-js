@@ -1,0 +1,11 @@
+{
+  "description": "Should generate auth id query (note that 024$a is actually a seko id, not an yso one",
+  "type": "authStandardIdentifiers",
+  "expectedQuery": [],
+  "inputRecord": {
+    "leader": "02518cam a2200745zi 4500",
+    "fields": [
+      { "tag": "001", "value": "000019643" }
+    ]
+  }
+}
