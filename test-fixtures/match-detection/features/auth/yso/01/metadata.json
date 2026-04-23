@@ -1,0 +1,27 @@
+{
+    "description": "Extracts multiple IDs from f024$as, and extracts thesaurus from 040$f",
+    "feature": "yso",
+    "type": "extract",
+    "expectedFeatures":
+      {
+        "identifiers": ["id1", "id2"],
+        "thesaurus": "yso/fin"
+      }
+    ,
+    "inputRecord": {
+      "leader": "02518cam a2200745zi 4500",
+      "fields": [
+        { "tag": "001", "value": "record-id" },
+        { "tag": "024", "subfields": [
+          {"code": "a", "value": "id1"}
+        ]},
+        { "tag": "024", "subfields": [
+          {"code": "a", "value": "id2"}
+        ]},
+        { "tag": "040", "subfields": [
+          {"code": "a", "value": "FI-NL"},
+          {"code": "f", "value": "yso/fin"}
+        ]}
+      ]
+    }
+  }

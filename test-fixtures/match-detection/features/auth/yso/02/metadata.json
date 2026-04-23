@@ -1,0 +1,17 @@
+{
+    "description": "Tries to extract an ID from f024$as and thesaurus from 041$f, but there is none",
+    "feature": "yso",
+    "type": "extract",
+    "expectedFeatures":
+      {
+        "identifiers": [],
+        "thesaurus": null
+      }
+    ,
+    "inputRecord": {
+      "leader": "02518cam a2200745zi 4500",
+      "fields": [
+        { "tag": "001", "value": "record-id" }
+      ]
+    }
+  }
