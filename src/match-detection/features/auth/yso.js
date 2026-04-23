@@ -22,7 +22,7 @@ function getSubjectHeadingThesaurus(record) {
       return sf.value;
     }
   }
-  return undefined;
+  return null;
 }
 
 export default () => ({
