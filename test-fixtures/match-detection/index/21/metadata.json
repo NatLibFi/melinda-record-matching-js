@@ -1,0 +1,17 @@
+{
+  "description": "YSO: Should fail (identical IDs found, but no thesaurus)",
+  "options": {
+    "strategy": {
+      "type": "auth",
+      "features": [
+        "yso"
+      ]
+    }
+  },
+  "expectedResults": {
+    "match": false,
+    "probability": 0
+  },
+  "skip": false,
+  "only": true
+}

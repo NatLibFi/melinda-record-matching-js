@@ -1,0 +1,12 @@
+{
+  "leader": "01005czm a22003138i 4500",
+  "fields": [
+    { "tag": "001", "value": "recordA" },
+    { "tag": "024", "subfields": [
+      {"code": "a", "value": "id321"}
+    ]},
+    { "tag": "040", "subfields": [
+      {"code": "f", "value": "yso/fin"}
+    ]}
+  ]
+}
