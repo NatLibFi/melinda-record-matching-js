@@ -1,6 +1,6 @@
 {
   "description": "Should generate title query including the translated name in the $b subtitle (despite punc: =), since title is so short",
-  "only": true,
+  "only": false,
   "type": "bibTitle",
   "expectedQuery": ["dc.title=\"^E 15 etanoita ja etanolia sinne*\""],
   "inputRecord": {

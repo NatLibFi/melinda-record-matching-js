@@ -1,6 +1,6 @@
 {
   "description": "Should generate title query *excluding* the translated name in the $b subtitle (since punc: =)",
-  "only": true,
+  "only": false,
   "type": "bibTitle",
   "expectedQuery": ["dc.title=\"^Eurooppa 15*\""],
   "inputRecord": {
