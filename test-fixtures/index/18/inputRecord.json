@@ -1,0 +1,26 @@
+{
+  "leader": "02518czm a2200745zi 4500",
+  "fields": [
+    {
+      "tag": "001",
+      "value": "000019640"
+    },
+    { "tag": "024", "ind1": " ", "ind2": "7", "subfields": [
+        { "code": "a", "value": "http://www.yso.fi/onto/yso/p13299" },
+        { "code": "2", "value": "uri" }
+      ]
+    },
+    { "tag": "040", "ind1": " ", "ind2": "7", "subfields": [
+        { "code": "a", "value": "FI-NL" },
+        { "code": "b", "value": "fin" },
+        { "code": "f", "value": "yso/fin" }
+      ]
+    },
+    { "tag": "150", "ind1": " ", "ind2": "7", "subfields": [
+        { "code": "a", "value": "laiturit" },
+        { "code": "2", "value": "yso/fin" },
+        { "code": "a", "value": "http://www.yso.fi/onto/yso/p13299" }
+      ]
+    }
+  ]
+}

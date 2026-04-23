@@ -1,0 +1,37 @@
+{
+  "description": "Should find matches for AUTH. NOT WORKING YET! DISABLED!",
+  "options": {
+    "search": {
+      "searchSpec": ["authStandardIdentifiers"],
+      "url": "http://foo.bar",
+      "maxRecordsPerRequest": 1
+    },
+    "detection": {
+      "strategy": {
+        "type": "auth",
+        "features": [
+          "yso"
+        ]
+      }
+    },
+    "maxMatches": 2,
+    "maxCandidates": 1
+  },
+  "expectedMatchStatus": false,
+  "expectedStopReason": "maxCandidates",
+  "expectedCandidateCount": 1,
+  "requests": [
+    {
+      "method": "get",
+      "url": "/?operation=searchRetrieve&query=melinda.urx%3Dhttp://www.yso.fi/onto/yso/p13299&startRecord=1&version=2.0&maximumRecords=1",
+      "status": 200
+    },
+    {
+      "method": "get",
+      "url": "/?operation=searchRetrieve&query=melinda.urx%3Dhttp://www.yso.fi/onto/yso/p13299&startRecord=2&version=2.0&maximumRecords=1",
+      "status": 200
+    }
+  ],
+  "skip": true,
+  "only": false
+}
