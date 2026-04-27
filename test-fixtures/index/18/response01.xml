@@ -7,14 +7,21 @@
       <zs:recordXMLEscaping>xml</zs:recordXMLEscaping>
       <zs:recordData>
         <record xmlns="http://www.loc.gov/MARC21/slim">
-          <leader>02518cam a2200745zi 4500</leader>
-          <controlfield tag="001">000019641</controlfield>>
-          <datafield tag="020" ind1=" " ind2=" ">
-            <subfield code="a">978-952-62-2477-0</subfield>
+          <leader>02518czm a2200745zi 4500</leader>
+          <controlfield tag="001">000223401</controlfield>
+          <datafield tag="024" ind1=" " ind2="7">
+            <subfield code="a">p13299</subfield>
+            <subfield code="2">uri</subfield>
           </datafield>
-          <datafield tag="245" ind1="1" ind2=" ">
-            <subfield code="a">foo  .</subfield>
-            <subfield code="b">bar</subfield>
+          <datafield tag="040" ind1=" " ind2="7">
+            <subfield code="a">FI-NL</subfield>
+            <subfield code="b">fin</subfield>
+            <subfield code="f">yso/fin</subfield>
+          </datafield>
+          <datafield tag="150" ind1=" " ind2="7">
+            <subfield code="a">laiturit</subfield>
+            <subfield code="2">yso/fin</subfield>
+            <subfield code="0">http://www.yso.fi/onto/yso/p13299</subfield>
           </datafield>
         </record>
       </zs:recordData>

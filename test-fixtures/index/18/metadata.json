@@ -23,15 +23,15 @@
   "requests": [
     {
       "method": "get",
-      "url": "/?operation=searchRetrieve&query=melinda.urx%3Dhttp://www.yso.fi/onto/yso/p13299&startRecord=1&version=2.0&maximumRecords=1",
+      "url": "/?operation=searchRetrieve&query=melinda.urx%3Dp13299&startRecord=1&version=2.0&maximumRecords=1",
       "status": 200
     },
     {
       "method": "get",
-      "url": "/?operation=searchRetrieve&query=melinda.urx%3Dhttp://www.yso.fi/onto/yso/p13299&startRecord=2&version=2.0&maximumRecords=1",
+      "url": "/?operation=searchRetrieve&query=melinda.urx%3Dp13299&startRecord=2&version=2.0&maximumRecords=1",
       "status": 200
     }
   ],
-  "skip": true,
+  "skip": false,
   "only": false
 }

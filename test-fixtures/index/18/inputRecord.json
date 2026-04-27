@@ -3,10 +3,11 @@
   "fields": [
     {
       "tag": "001",
-      "value": "000019640"
+      "value": "000000666"
     },
     { "tag": "024", "ind1": " ", "ind2": "7", "subfields": [
-        { "code": "a", "value": "http://www.yso.fi/onto/yso/p13299" },
+        { "code": "a", "value": "p13299" },
+        { "code": "q", "value": "$a should actually be http://www.yso.fi/onto/yso/p13299 but it gets url-encoded, and then url-encoding breaks mock"},
         { "code": "2", "value": "uri" }
       ]
     },
@@ -19,7 +20,7 @@
     { "tag": "150", "ind1": " ", "ind2": "7", "subfields": [
         { "code": "a", "value": "laiturit" },
         { "code": "2", "value": "yso/fin" },
-        { "code": "a", "value": "http://www.yso.fi/onto/yso/p13299" }
+        { "code": "0", "value": "http://www.yso.fi/onto/yso/p13299" }
       ]
     }
   ]
