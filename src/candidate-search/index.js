@@ -73,7 +73,6 @@ export default async ({record, searchSpec, url, maxCandidates, maxRecordsPerRequ
 
   return {search};
 
-  // eslint-disable-next-line max-statements
   async function search({queryOffset = 0, resultSetOffset = 1, totalRecords = 0, searchCounter = 0, queryCandidateCounter = 0, queryCounter = 0, maxedQueries = []}) {
     const query = chosenQueryList[queryOffset];
     debug(`Running query ${JSON.stringify(query)} (${queryOffset})`);
@@ -124,7 +123,6 @@ export default async ({record, searchSpec, url, maxCandidates, maxRecordsPerRequ
 
 export function retrieveRecords(client, query, resultSetOffset) {
   const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:retrieveRecords');
-  // eslint-disable-next-line no-unused-vars
   const debugData = debug.extend('data');
 
   return new Promise((resolve, reject) => {

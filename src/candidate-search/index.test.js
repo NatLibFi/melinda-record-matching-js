@@ -19,7 +19,6 @@ describe('candidate-search', () => {
     }
   });
 
-  // eslint-disable-next-line max-statements
   async function callback({getFixture, factoryOptions, searchOptions, expectedFactoryError = false, expectedSearchError = false, enabled = true}) {
     const url = 'http://foo.bar';
 

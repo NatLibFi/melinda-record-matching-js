@@ -19,7 +19,6 @@ describe('INDEX', () => {
     }
   });
 
-  // eslint-disable-next-line max-statements
   async function callback({getFixture, options, expectedMatchStatus, expectedStopReason, expectedFailures, expectedCandidateCount}) {
 
     const record = new MarcRecord(getFixture('inputRecord.json'), {subfieldValues: false});
