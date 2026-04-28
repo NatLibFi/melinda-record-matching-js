@@ -1,16 +1,9 @@
 
 import createDebugLogger from 'debug';
 import {recordGetAuthIdentifiers} from '../../../candidate-search/query-list/auth.js';
-//import {fieldToString} from '@natlibfi/marc-record-validators-melinda';
-
-//import {isComponentRecord} from '@natlibfi/melinda-commons';
-//import {uniqArray} from './issn.js';
-//import {parse773g} from '../../../candidate-search/query-list/component.js';
 
 const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection:features:auth:yso');
 const debugData = debug.extend('data');
-
-
 
 function getSubjectHeadingThesaurus(record) {
   // Quick'n'dirty: we could/should check 008/11 first. Now we just assume it is 'z'
@@ -32,7 +25,6 @@ export default () => ({
 
     const thesaurus = getSubjectHeadingThesaurus(record);
 
-
     debug(`EXTRACT ${thesaurus}: ${identifiers.join(', ')}`);
     return {identifiers, thesaurus};
   },
@@ -49,9 +41,6 @@ export default () => ({
     }
     debugData(`Shared thesaurus: ${aThesaurus}`)
 
-    //// Check that identifiers match:
-    // debug(aIdentifiers.join(' -- '));
-    // debug(bIdentifiers.join(' -- '));
     const sharedIdentifier = aIdentifiers.find(id => bIdentifiers.includes(id));
     if (!sharedIdentifier) {
       return -1.0;
