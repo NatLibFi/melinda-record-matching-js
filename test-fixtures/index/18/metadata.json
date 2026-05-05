@@ -2,7 +2,7 @@
   "description": "Should find matches for AUTH. NOT WORKING YET! DISABLED!",
   "options": {
     "search": {
-      "searchSpec": ["authStandardIdentifiers"],
+      "searchSpec": ["authURX"],
       "url": "http://foo.bar",
       "maxRecordsPerRequest": 1
     },

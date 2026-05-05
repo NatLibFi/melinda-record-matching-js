@@ -26,7 +26,7 @@ export const searchTypes = {
   auth: {
     //catalogingRules: 'authCatalogingRules', // 008/10 and 040$f
     //term: 'authTermComparison' // 1XX
-    authStandardIdentifiers: 'authStandardIdentifiers' // 024$a
+    authURX: 'authURX' // 024$a
   }
 };
 

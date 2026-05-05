@@ -1,6 +1,6 @@
 {
   "description": "Should accept both f024 contents",
-  "type": "authStandardIdentifiers",
+  "type": "authURX",
   "expectedQuery": ["melinda.urx=\"http://urn.fi/urn:nbn:fi:au:seko:00445\" or melinda.urx=\"http://urn.fi/urn:nbn:fi:au:seko:00456\""],
   "inputRecord": {
     "leader": "02518cam a2200745zi 4500",

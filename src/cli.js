@@ -184,7 +184,7 @@ async function cli() {
 
     if (searchType === 'YSO') {
       return [
-        candidateSearch.searchTypes.auth.authStandardIdentifiers
+        candidateSearch.searchTypes.auth.authURX
       ];
     }
 

@@ -1,6 +1,6 @@
 
 import createDebugLogger from 'debug';
-import {recordGetAuthIdentifiers} from '../../../candidate-search/query-list/auth.js';
+import {recordGetAuthURX} from '../../../candidate-search/query-list/auth.js';
 
 const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection:features:auth:yso');
 const debugData = debug.extend('data');
@@ -21,7 +21,7 @@ function getSubjectHeadingThesaurus(record) {
 export default () => ({
   name: 'yso',
   extract: ({record/*, recordExternal*/}) => {
-    const identifiers = recordGetAuthIdentifiers(record);
+    const identifiers = recordGetAuthURX(record);
 
     const thesaurus = getSubjectHeadingThesaurus(record);
 
