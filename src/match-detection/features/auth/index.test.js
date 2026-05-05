@@ -20,12 +20,7 @@ describe('match-detection/features/auth/', () => {
       reader: READERS.JSON
     },
 
-    callback: ({enabled = true, feature, options, type, ...expectations}) => {
-
-      if (!enabled) {
-        return;
-      }
-
+    callback: ({feature, options, type, ...expectations}) => {
       debug(`Testing: ${feature} ${type}`);
 
       if (type === 'extract') {
