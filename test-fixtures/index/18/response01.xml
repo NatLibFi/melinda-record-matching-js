@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<zs:searchRetrieveResponse xmlns:zs="http://docs.oasis-open.org/ns/search-ws/sruResponse">
+  <zs:numberOfRecords>2</zs:numberOfRecords>
+  <zs:records>
+    <zs:record>
+      <zs:recordSchema>info:srw/schema/1/foo</zs:recordSchema>
+      <zs:recordXMLEscaping>xml</zs:recordXMLEscaping>
+      <zs:recordData>
+        <record xmlns="http://www.loc.gov/MARC21/slim">
+          <leader>02518czm a2200745zi 4500</leader>
+          <controlfield tag="001">000223401</controlfield>
+          <datafield tag="024" ind1=" " ind2="7">
+            <subfield code="a">p13299</subfield>
+            <subfield code="2">uri</subfield>
+          </datafield>
+          <datafield tag="040" ind1=" " ind2="7">
+            <subfield code="a">FI-NL</subfield>
+            <subfield code="b">fin</subfield>
+            <subfield code="f">yso/fin</subfield>
+          </datafield>
+          <datafield tag="150" ind1=" " ind2="7">
+            <subfield code="a">laiturit</subfield>
+            <subfield code="2">yso/fin</subfield>
+            <subfield code="0">http://www.yso.fi/onto/yso/p13299</subfield>
+          </datafield>
+        </record>
+      </zs:recordData>
+      <zs:recordPosition>1</zs:recordPosition>
+    </zs:record>
+  </zs:records>
+</zs:searchRetrieveResponse>

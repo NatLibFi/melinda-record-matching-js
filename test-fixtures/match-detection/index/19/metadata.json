@@ -1,0 +1,17 @@
+{
+  "description": "YSO: Should not detect a match (no ids)",
+  "options": {
+    "strategy": {
+      "type": "auth",
+      "features": [
+        "yso"
+      ]
+    }
+  },
+  "expectedResults": {
+    "match": false,
+    "probability": 0
+  },
+  "skip": false,
+  "only": false
+}

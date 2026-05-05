@@ -1,0 +1,27 @@
+{
+  "leader": "02518czm a2200745zi 4500",
+  "fields": [
+    {
+      "tag": "001",
+      "value": "000000666"
+    },
+    { "tag": "024", "ind1": " ", "ind2": "7", "subfields": [
+        { "code": "a", "value": "p13299" },
+        { "code": "q", "value": "$a should actually be http://www.yso.fi/onto/yso/p13299 but it gets url-encoded, and then url-encoding breaks mock"},
+        { "code": "2", "value": "uri" }
+      ]
+    },
+    { "tag": "040", "ind1": " ", "ind2": "7", "subfields": [
+        { "code": "a", "value": "FI-NL" },
+        { "code": "b", "value": "fin" },
+        { "code": "f", "value": "yso/fin" }
+      ]
+    },
+    { "tag": "150", "ind1": " ", "ind2": "7", "subfields": [
+        { "code": "a", "value": "laiturit" },
+        { "code": "2", "value": "yso/fin" },
+        { "code": "0", "value": "http://www.yso.fi/onto/yso/p13299" }
+      ]
+    }
+  ]
+}

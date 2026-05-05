@@ -16,7 +16,6 @@ export default () => ({
 
     return record.get('020').filter(f => f.subfields?.some(sf => ['a', 'z'].includes(sf.code) && sf.value));
   },
-  // eslint-disable-next-line max-statements
   compare: (aa, bb) => {
     debugData(`Comparing ISBN sets ${JSON.stringify(aa)} and ${JSON.stringify(bb)}`);
     if (aa.length === 0 || bb.length === 0) {

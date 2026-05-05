@@ -20,13 +20,7 @@ describe('match-detection', () => {
     fixura: {
       reader: READERS.JSON
     },
-    callback: ({getFixture, options, expectedResults, array, enabled = true}) => {
-
-      if (!enabled) {
-        debug(`*** DISABLED TEST! ***`);
-        return;
-      }
-
+    callback: ({getFixture, options, expectedResults, array}) => {
       const detect = createDetectionInterface(formatOptions());
       const recordA = new MarcRecord(getFixture('recordA.json'), {subfieldValues: false});
       debugData(inspect(recordA));

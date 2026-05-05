@@ -1,6 +1,6 @@
 {
   "description": "Should normalize hyphens out of source string (fSID $b)",
-  "enabled": true,
+  "skip": false,
   "type": "bibSourceIds",
   "expectedQuery": ["melinda.sourceid=VER999999FIKV"],
   "inputRecord": {

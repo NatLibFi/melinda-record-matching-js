@@ -16,13 +16,9 @@ describe('candidate-search/query-list/bib/', () => {
     fixura: {
       reader: READERS.JSON
     },
-    callback: ({type, inputRecord, expectedQuery, expectedQueryListType, enabled = true}) => {
+    callback: ({type, inputRecord, expectedQuery, expectedQueryListType}) => {
       const generate = generators[type];
       const record = new MarcRecord(inputRecord, {subfieldValues: false});
-
-      if (!enabled) {
-        return;
-      }
 
       const result = generate(record);
       debugData(`Result: ${JSON.stringify(result)}`);

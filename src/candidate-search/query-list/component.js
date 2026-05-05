@@ -4,10 +4,10 @@ import {toQueries} from '../candidate-search-utils.js';
 import {getSubfieldValues, stringAfter, stringBefore, testStringOrNumber, toMelindaIds} from '../../matching-utils.js';
 import {fieldToString, uniqArray} from '@natlibfi/marc-record-validators-melinda/dist/utils.js';
 
-const setTimeoutPromise = promisify(setTimeout); // eslint-disable-line
+const setTimeoutPromise = promisify(setTimeout);
 
 const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:query:component');
-const debugData = debug.extend('data'); // eslint-disable-line
+const debugData = debug.extend('data');
 
 
 
@@ -44,7 +44,7 @@ export function parse773g(field) {
     if (value.match(/^[0-9]+(?:-[0-9]+)?(?:, [0-9]+(?:-[0-9]+)?)*$/u)) {
       return value;
     }
-    const numberPartOnly = value.replace(/^.*(?:p\.|raidat|raita|s\.|Seite|sivut?|pages?) /ui, '');
+    const numberPartOnly = value.replace(/^.*(?:p\.|raidat|raita|\bs\.|Seite|sivut?|pages?) /ui, '');
     if (numberPartOnly !== value) {
       return gToPages(numberPartOnly);
     }
@@ -116,7 +116,7 @@ export function hostIdMelinda(record) { // old function with replaced code
 
 export async function hostIdOtherSource(record, client) {
   const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:query:hostIdOtherSource');
-  const debugData = debug.extend('data'); // eslint-disable-line
+  const debugData = debug.extend('data');
   debug(`Creating query for the Other source Id host`);
 
   const ids = getHostIds(record);

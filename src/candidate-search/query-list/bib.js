@@ -332,8 +332,7 @@ export function bibAuthors(record) {
 
   function getAuthor(record) {
     //debugData(record);
-    // eslint-disable-next-line prefer-named-capture-group
-    const [field] = record.get(/^(100)|(110)|(111)|(700)|(710)|(711)$/u);
+    const [field] = record.get(/^(?:100|110|111|700|710|711)$/u);
     //debugData(field);
 
     if (field) {
