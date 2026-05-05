@@ -1,5 +1,5 @@
 {
-  "description": "YSO: Should succeed (identical IDs found, but no thesaurus)",
+  "description": "YSO: Should succeed (identical IDs and thesaurus found)",
   "options": {
     "strategy": {
       "type": "auth",

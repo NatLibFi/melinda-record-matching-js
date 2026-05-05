@@ -3,7 +3,8 @@
   "fields": [
     { "tag": "001", "value": "recordB" },
     { "tag": "024", "subfields": [
-      {"code": "a", "value": "id321"}
+      {"code": "a", "value": "id321"},
+      {"code": "2", "value": "urn"}
     ]},
     { "tag": "040", "subfields": [
       {"code": "f", "value": "yso/fin"}
