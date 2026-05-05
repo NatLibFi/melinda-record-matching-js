@@ -13,10 +13,19 @@
       "fields": [
         { "tag": "001", "value": "record-id" },
         { "tag": "024", "subfields": [
-          {"code": "a", "value": "id1"}
+          {"code": "a", "value": "id0"}
         ]},
         { "tag": "024", "subfields": [
-          {"code": "a", "value": "id2"}
+          {"code": "a", "value": "id1"},
+          {"code": "2", "value": "urn"}
+        ]},
+        { "tag": "024", "subfields": [
+          {"code": "a", "value": "id2"},
+          {"code": "2", "value": "urn"}
+        ]},
+        { "tag": "024", "subfields": [
+          {"code": "a", "value": "id2"},
+          {"code": "2", "value": "finaf"}
         ]},
         { "tag": "040", "subfields": [
           {"code": "a", "value": "FI-NL"},
