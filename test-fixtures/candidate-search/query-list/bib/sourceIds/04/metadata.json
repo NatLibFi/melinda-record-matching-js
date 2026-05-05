@@ -1,6 +1,6 @@
 {
   "description": "Do not create sourceId query if there's no valid SID (wrong subfield)",
-  "enabled": true,
+  "skip": false,
   "type": "bibSourceIds",
   "expectedQuery": [],
   "inputRecord": {

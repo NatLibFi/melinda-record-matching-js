@@ -1,6 +1,5 @@
 {
   "description": "DISABLED: Should generate titleAuthor query from field using a filing indicator",
-  "enabled": false,
   "only": false,
   "skip": true,
   "type": "bibTitleAuthor",
