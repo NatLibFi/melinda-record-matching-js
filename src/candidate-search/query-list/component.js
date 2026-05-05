@@ -44,7 +44,7 @@ export function parse773g(field) {
     if (value.match(/^[0-9]+(?:-[0-9]+)?(?:, [0-9]+(?:-[0-9]+)?)*$/u)) {
       return value;
     }
-    const numberPartOnly = value.replace(/^.*(?:p\.|raidat|raita|s\.|Seite|sivut?|pages?) /ui, '');
+    const numberPartOnly = value.replace(/^.*(?:p\.|raidat|raita|\bs\.|Seite|sivut?|pages?) /ui, '');
     if (numberPartOnly !== value) {
       return gToPages(numberPartOnly);
     }
