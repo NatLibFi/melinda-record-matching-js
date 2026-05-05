@@ -1,5 +1,5 @@
 {
-    "description": "Tries to extract an ID from f024$as and thesaurus from 041$f, but there is none",
+    "description": "Tries to extract an ID from f024$as and thesaurus from 040$f, but there is none",
     "feature": "yso",
     "type": "extract",
     "expectedFeatures":
