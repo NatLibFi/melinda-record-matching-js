@@ -19,13 +19,8 @@ describe('candidate-search', () => {
     }
   });
 
-  // eslint-disable-next-line max-statements
-  async function callback({getFixture, factoryOptions, searchOptions, expectedFactoryError = false, expectedSearchError = false, enabled = true}) {
+  async function callback({getFixture, factoryOptions, searchOptions, expectedFactoryError = false, expectedSearchError = false}) {
     const url = 'http://foo.bar';
-
-    if (!enabled) {
-      return;
-    }
 
     if (expectedFactoryError) {
       debug(`We're expecting an error`);

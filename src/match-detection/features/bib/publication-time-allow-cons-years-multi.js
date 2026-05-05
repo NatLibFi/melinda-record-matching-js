@@ -147,7 +147,6 @@ export default () => ({
     }
 
   },
-  // eslint-disable-next-line max-statements
   compare: (a, b) => {
     const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection:features/bib/publication-time-allow-cons-years-multi');
     debug(`Comparing ${JSON.stringify(a)} to ${JSON.stringify(b)}`);

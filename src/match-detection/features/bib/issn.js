@@ -37,7 +37,6 @@ export default () => ({
       return /^[0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9X]$/u.test(val);
     }
   },
-  // eslint-disable-next-line max-statements
   compare: (aa, bb) => {
     debugData(`Comparing ISSN sets ${JSON.stringify(aa)} and ${JSON.stringify(bb)}`);
     if (aa.length === 0 || bb.length === 0) {

@@ -161,7 +161,6 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
         return;
       }
 
-      // eslint-disable-next-line max-statements
       function getMatchState(state, stopReason, matchErrorCount) {
         debugData(`${JSON.stringify(state)}`);
         debug(`We had ${matchErrorCount} retrieved candidates that errored in matchDetection.`);

@@ -1,5 +1,3 @@
-/* eslint-disable max-statements */
-
 import createDebugLogger from 'debug';
 import {extractSubfieldsFromField, uniqueSubfields} from '../../../matching-utils.js';
 

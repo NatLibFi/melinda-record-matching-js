@@ -1,4 +1,3 @@
-
 import createDebugLogger from 'debug';
 
 import {MarcRecord} from '@natlibfi/marc-record';
@@ -37,7 +36,6 @@ export default () => ({
     // Should we return all the fields, or just the relevant fields?
     return [clonedRecord.fields, label];
   },
-  // eslint-disable-next-line max-statements
   compare: (aa, bb) => {
     const [a, aLabel] = aa;
     const [b, bLabel] = bb;

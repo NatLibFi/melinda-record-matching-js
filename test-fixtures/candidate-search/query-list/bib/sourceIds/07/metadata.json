@@ -1,6 +1,6 @@
 {
   "description": "Should quote SRU candidate search strings that include slashes",
-  "enabled": true,
+  "skip": false,
   "type": "bibSourceIds",
   "expectedQuery": ["melinda.sourceid=\"/10024/508126REPO_THESEUS\""],
   "inputRecord": {

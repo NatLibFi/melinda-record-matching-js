@@ -1,6 +1,6 @@
 {
   "description": "DISABLED: Should generate host record query (several sf $w)",
-  "enabled": false,
+  "skip": true,
   "type": "bibHostComponents",
   "expectedQuery": ["melinda.partsofhost=12345"],
   "inputRecord": {

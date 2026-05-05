@@ -1,6 +1,3 @@
-/* eslint-disable max-statements */
-
-
 import createDebugLogger from 'debug';
 
 const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection:features:media-type');

@@ -1,6 +1,6 @@
 {
   "description": "Should create query from two SIDs",
-  "enabled": true,
+  "skip": false,
   "type": "bibSourceIds",
   "expectedQuery": ["melinda.sourceid=9999999helka or melinda.sourceid=9999999testi"],
   "inputRecord": {
