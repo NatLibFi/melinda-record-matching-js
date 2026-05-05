@@ -13,5 +13,5 @@
     "probability": 0
   },
   "skip": false,
-  "only": true
+  "only": false
 }
