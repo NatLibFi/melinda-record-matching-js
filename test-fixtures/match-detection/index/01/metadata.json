@@ -5,7 +5,8 @@
       "type": "bib",
       "features": [
         "title",
-        "isbn"
+        "isbn",
+        "sid"
       ]
     }
   },
