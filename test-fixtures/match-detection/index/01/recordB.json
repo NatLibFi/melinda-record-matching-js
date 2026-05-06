@@ -11,6 +11,11 @@
         { "code": "a", "value": "foo." },
         { "code": "b", "value": "bar" }
       ]
+    },
+    { "tag": "SID", "ind1": " ", "ind2": " ", "subfields": [
+        { "code": "c", "value": "667" },
+        { "code": "b", "value": "ALAKERTA" }
+      ]
     }
   ]
 }
