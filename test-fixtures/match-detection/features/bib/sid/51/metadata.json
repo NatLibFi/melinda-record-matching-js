@@ -1,0 +1,71 @@
+{
+  "description": "Should extract SID field(s)",
+  "feature": "sid",
+  "type": "extract",
+  "expectedFeatures": [
+    { "tag": "SID", "ind1": " ", "ind2": " ", "subfields": [
+      { "code": "c", "value": "234" },
+      { "code": "b", "value": "BAR"}
+    ]}
+  ],
+  "inputRecord": {
+    "leader": "02518cam a2200745zi 4500",
+    "fields": [
+      {
+        "tag": "001",
+        "value": "000019643"
+      },
+      { "tag": "SID", "ind1": " ", "ind2": " ", "subfields": [
+        { "code": "c", "value": "234" },
+        { "code": "b", "value": "BAR"}
+      ]},
+      {
+        "tag": "020",
+        "ind1": " ",
+        "ind2": " ",
+        "subfields": [
+          {
+            "code": "a",
+            "value": "978-951-31-4836-2"
+          },
+          {
+            "code": "q",
+            "value": "PDF"
+          }
+        ]
+      },
+      {
+        "tag": "020",
+        "ind1": " ",
+        "ind2": " ",
+        "subfields": [
+          {
+            "code": "a",
+            "value": "978-952-62-2477-0"
+          },
+          {
+            "code": "q",
+            "value": "PDF"
+          }
+        ]
+      },
+      {
+        "tag": "020",
+        "ind1": " ",
+        "ind2": " ",
+        "subfields": [
+          {
+            "code": "a",
+            "value": "9789526224770"
+          },
+          {
+            "code": "q",
+            "value": "PDF"
+          }
+        ]
+      }
+    ]
+  },
+  "skip": false,
+  "only": false
+}

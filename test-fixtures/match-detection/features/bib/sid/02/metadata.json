@@ -1,0 +1,20 @@
+{
+  "description": "Non-matchings SIDs -> no penalty",
+  "feature": "sid",
+  "type": "compare",
+  "expectedPoints": 0.0,
+  "featuresA": [
+    { "tag": "SID", "ind1": " ", "ind2": " ", "subfields": [
+      { "code": "c", "value": "123" },
+      { "code": "b", "value": "FOO"}
+    ]}
+  ],
+  "featuresB": [
+    { "tag": "SID", "ind1": " ", "ind2": " ", "subfields": [
+      { "code": "c", "value": "123" },
+      { "code": "b", "value": "BAR"}
+    ]}
+  ],
+  "skip": false,
+  "only": false
+}

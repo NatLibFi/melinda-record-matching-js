@@ -13,7 +13,7 @@
 		"url": "https://github.com/NatLibFi/melinda-record-matching-js"
 	},
 	"license": "MIT",
-	"version": "5.1.0",
+	"version": "5.1.1-alpha.1",
 	"type": "module",
 	"main": "./dist/index.js",
 	"bin": "./dist/cli.js",
@@ -39,8 +39,8 @@
 		"dev:debug": "cross-env LOG_LEVEL=debug DEBUG=@natlibfi/* NODE_ENV=test npm run watch:test"
 	},
 	"dependencies": {
-		"@natlibfi/marc-record": "^10.0.1",
-		"@natlibfi/marc-record-serializers": "^11.0.2",
+		"@natlibfi/marc-record": "^10.0.2",
+		"@natlibfi/marc-record-serializers": "^11.0.3",
 		"@natlibfi/marc-record-validators-melinda": "^12.0.15",
 		"@natlibfi/melinda-commons": "^14.0.2",
 		"@natlibfi/sru-client": "^7.0.1",

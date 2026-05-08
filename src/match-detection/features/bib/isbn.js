@@ -9,12 +9,24 @@ const debugData = debug.extend('data');
 
 const MAX_SCORE = 0.75;
 
+const setRegexp = /(?:complete set|hela verket|helhet|koko kartasto|koko paketti|koko sarja|koko setti|koko teoksen isbn|koko teos|kokonaisuus|^set\b|\bset$|\bsetti\b|vol.*set)/ui;
+
 export default () => ({
   name: 'ISBN',
   extract: ({record/*, recordExternal*/}) => {
     //const label = recordExternal && recordExternal.label ? recordExternal.label : 'record';
 
-    return record.get('020').filter(f => f.subfields?.some(sf => ['a', 'z'].includes(sf.code) && sf.value));
+    const all = record.get('020').filter(f => f.subfields?.some(sf => ['a', 'z'].includes(sf.code) && sf.value));
+    const sets = all.filter(f => isSetIsbnField(f));
+    const noSets = all.filter(f => !isSetIsbnField(f));
+    if (sets.length > 0 && noSets.length > 0) {
+      return noSets;
+    }
+    return all;
+
+    function isSetIsbnField(field) {
+      return field.subfields.some(sf => sf.code === 'q' && setRegexp.test(sf.value));
+    }
   },
   compare: (aa, bb) => {
     debugData(`Comparing ISBN sets ${JSON.stringify(aa)} and ${JSON.stringify(bb)}`);

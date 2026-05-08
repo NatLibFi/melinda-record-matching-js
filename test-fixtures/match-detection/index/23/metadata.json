@@ -1,5 +1,5 @@
 {
-  "description": "Should detect a match",
+  "description": "Should fail to detect a match due to SID issues (otherwise same as test 01)",
   "options": {
     "strategy": {
       "type": "bib",
@@ -11,7 +11,7 @@
     }
   },
   "expectedResults": {
-    "match": true,
-    "probability": 1.0
+    "match": false,
+    "probability": 0.0
   }
 }

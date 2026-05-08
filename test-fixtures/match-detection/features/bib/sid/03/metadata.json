@@ -1,0 +1,24 @@
+{
+  "description": "Matching mismatching SIDs (and noise) -> penalty",
+  "feature": "sid",
+  "type": "compare",
+  "expectedPoints": -1.0,
+  "featuresA": [
+    { "tag": "SID", "ind1": " ", "ind2": " ", "subfields": [
+      { "code": "c", "value": "123" },
+      { "code": "b", "value": "FOO"}
+    ]}
+  ],
+  "featuresB": [
+    { "tag": "SID", "ind1": " ", "ind2": " ", "subfields": [
+      { "code": "c", "value": "234" },
+      { "code": "b", "value": "BAR"}
+    ]},
+    { "tag": "SID", "ind1": " ", "ind2": " ", "subfields": [
+      { "code": "c", "value": "234" },
+      { "code": "b", "value": "FOO"}
+    ]}
+  ],
+  "skip": false,
+  "only": false
+}
