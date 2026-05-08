@@ -89,6 +89,7 @@ async function cli() {
         matchDetection.features.bib.hostComponent(),
         matchDetection.features.bib.isbn(),
         matchDetection.features.bib.issn(),
+        // matchDetection.features.bib.sid(),
         matchDetection.features.bib.otherStandardIdentifier(),
         // Let's not use the same title matchDetection here
         //matchDetection.features.bib.title(),
@@ -125,6 +126,7 @@ async function cli() {
         matchDetection.features.bib.hostComponent(),
         matchDetection.features.bib.isbn(),
         matchDetection.features.bib.issn(),
+        // matchDetection.features.bib.sid(),
         matchDetection.features.bib.otherStandardIdentifier(),
         matchDetection.features.bib.title(),
         matchDetection.features.bib.authors(),
@@ -138,6 +140,7 @@ async function cli() {
 
     if (['YSO']) {
       return [
+        // matchDetection.features.bib.sid(), // SIDs might be relevant on the auth side as well?
         matchDetection.features.auth.yso()
       ];
     }
