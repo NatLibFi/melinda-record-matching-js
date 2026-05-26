@@ -1,0 +1,20 @@
+{
+  "leader": "02518cam a2200745zi 4500",
+  "fields": [
+    { "tag": "001", "value": "000019644" },
+    { "tag": "028", "ind1": "0", "ind2": "1", "subfields": [
+        { "code": "a", "value": "BAR234" },
+        { "code": "b", "value": "Baritoni" }
+      ]
+    },
+    { "tag": "028", "ind1": "0", "ind2": "1", "subfields": [
+        { "code": "b", "value": "RANDOM"},
+        { "code": "a", "value": "NOISE-666" }
+      ]
+    },
+    { "tag": "245", "ind1": "0", "ind2": "0", "subfields": [
+        { "code": "a", "value": "Title." }
+      ]
+    }
+  ]
+}

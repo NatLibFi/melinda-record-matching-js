@@ -1,6 +1,6 @@
 {
-  "description": "25: f028$b differences are considered meaningless => $a pair",
-  "comment": "title 0.5 + recordType 0.1 + 028$a-only match = 0.8",
+  "description": "26: f028 differences are considered meaningless",
+  "comment": "title 0.5 + recordType 0.1 + shared number in 028$a 0.0 = 0.6",
   "options": {
     "strategy": {
       "type": "bib",
@@ -13,7 +13,7 @@
   },
   "expectedResults": {
     "match": false,
-    "probability": 0.8
+    "probability": 0.6
   },
   "only": true
 }

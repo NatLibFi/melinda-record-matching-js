@@ -12,22 +12,29 @@ export default () => ({
     return getIdentifiers();
 
     function getIdentifiers() {
-      const values = record.get(/^028$/u).map(f => fieldToPublisherNumber(f)).filter(v => v);
+      const values = fieldsToPublisherNumber(record.get(/^028$/u));
 
       debug(`\t ${values.length} potential publisher identifiers: ${values.join(', ')}`);
 
       return uniqArray(values);
 
-      function fieldToPublisherNumber(field) {
+      function fieldsToPublisherNumber(fields, result = []) {
+        const [field, ...remainingFields] = fields;
+        if (!field) {
+          return result;
+        }
         const a = field.subfields.find(sf => sf.code === 'a');
         if (!a || !a.value) {
-          return undefined;
+          return fieldsToPublisherNumber(remainingFields, result);
         }
+        const aval = normalizePublisherNumber(`${a.value}`);
+
         const b = field.subfields.find(sf => sf.code === 'b');
         if (!b || !b.value) {
-          return normalizePublisherNumber(a.value);
+          return fieldsToPublisherNumber(remainingFields, [...result, aval]);
         }
-        return normalizePublisherNumber(`${b.value}${a.value}`);
+        const baval = normalizePublisherNumber(`${b.value}${a.value}`);
+        return fieldsToPublisherNumber(remainingFields, [...result, baval, aval]);
       }
 
       function normalizePublisherNumber(val) {
