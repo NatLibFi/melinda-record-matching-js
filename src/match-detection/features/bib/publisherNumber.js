@@ -14,7 +14,7 @@ export default () => ({
     function getIdentifiers() {
       const values = record.get(/^028$/u).map(f => fieldToPublisherNumber(f)).filter(v => v);
 
-      debug(`\t ${values.length} potential publisher identifier fields (${fields[0].tag}): ${values.join(', ')}`);
+      debug(`\t ${values.length} potential publisher identifiers: ${values.join(', ')}`);
 
       return uniqArray(values);
 
@@ -27,7 +27,7 @@ export default () => ({
         if (!b || !b.value) {
           return normalizePublisherNumber(a.value);
         }
-        return normalizePublisherNumber(`${b.value}{$a.value}`);
+        return normalizePublisherNumber(`${b.value}${a.value}`);
       }
 
       function normalizePublisherNumber(val) {
@@ -36,14 +36,14 @@ export default () => ({
     }
   },
   compare: (aa, bb) => {
-    debugData(`Comparing ISSN sets ${JSON.stringify(aa)} and ${JSON.stringify(bb)}`);
+    debugData(`Comparing identifier sets ${JSON.stringify(aa)} and ${JSON.stringify(bb)}`);
     if (aa.length === 0 || bb.length === 0) {
       // No data for decision
       return 0;
     }
-    const firstSharedIssn = aa.find(val => bb.includes(val));
-    if (firstSharedIssn) {
-      debug(`\t Shared ISSN found: '${firstSharedIssn}'`);
+    const firstSharedIdentifier = aa.find(val => bb.includes(val));
+    if (firstSharedIdentifier) {
+      debug(`\t Shared identifier found: '${firstSharedIdentifier}'`);
       // Maybe less for comps?
       return 0.2;
     }
@@ -53,7 +53,7 @@ export default () => ({
 
     // Numbers matches (aka don't penalize "Fazer F-123" vs "F-123")
     // Note that FOOLP-123 vs FOOCD-123 will now also return 0.0. Still nothing positive is returned, so no damage done.
-    if (aa2.find(val >= val !== '' && bb.includes(val))) {
+    if (aa2.find(val => val !== '' && bb2.includes(val))) {
       return 0.0;
     }
 

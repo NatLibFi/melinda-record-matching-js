@@ -259,7 +259,7 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
           debugData(`Strategy: ${JSON.stringify(detectionResult.strategy)}, Threshold: ${JSON.stringify(detectionResult.threshold)}`);
 
           const matchResult = {
-            probability: detectionResult.probability,
+            probability: Math.round(detectionResult.probability * 100)/100,
             candidate: {
               id: candidateId,
               record: candidateRecord
