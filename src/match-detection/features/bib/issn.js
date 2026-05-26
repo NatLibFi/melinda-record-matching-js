@@ -1,3 +1,4 @@
+import {uniqArray} from '@natlibfi/marc-record-validators-melinda/dist/utils.js';
 import createDebugLogger from 'debug';
 
 const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection:features:issn');
@@ -53,7 +54,3 @@ export default () => ({
 
   }
 });
-
-export function uniqArray(arr) {
-  return arr.filter((val, i) => arr.indexOf(val) === i);
-}
