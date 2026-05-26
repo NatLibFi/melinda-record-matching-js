@@ -1,0 +1,19 @@
+{
+  "description": "25: f028 differences are considered meaningless",
+  "comment": "title 0.5 + recordType 0.1 = 0.6",
+  "options": {
+    "strategy": {
+      "type": "bib",
+      "features": [
+        "publisherNumber",
+        "title",
+        "recordType"
+      ]
+    }
+  },
+  "expectedResults": {
+    "match": false,
+    "probability": 0.6
+  },
+  "only": true
+}

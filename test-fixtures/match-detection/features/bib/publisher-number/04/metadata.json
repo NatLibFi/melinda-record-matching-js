@@ -1,0 +1,12 @@
+{
+  "description": "04 Comparison should return 0.0 for matching number part",
+  "feature": "publisherNumber",
+  "type": "compare",
+  "expectedPoints": 0.0,
+  "featuresA": [
+    "FOO123"
+  ],
+  "featuresB": [
+    "BAR123"
+  ]
+}
