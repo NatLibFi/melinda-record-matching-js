@@ -2,6 +2,7 @@
 export {default as hostComponent} from './host-component.js';
 export {default as isbn} from './isbn.js';
 export {default as issn} from './issn.js';
+export {default as publisherNumber} from './publisherNumber.js'; // 028$b$a
 export {default as sid} from './sid.js';
 export {default as otherStandardIdentifier} from './other-standard-identifier.js';
 export {default as title} from './title.js';

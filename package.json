@@ -57,7 +57,7 @@
 		"@natlibfi/fixura": "^4.0.1",
 		"cross-env": "^10.1.0",
 		"esbuild": "^0.28.0",
-		"eslint": "^10.3.0"
+		"eslint": "^10.4.0"
 	},
 	"overrides": {
 		"uuid": "^14.0.0"

@@ -1,0 +1,11 @@
+{
+  "description": "05 Comparison should return 0.0 if neither side is missing publisher identifier",
+  "feature": "publisherNumber",
+  "type": "compare",
+  "expectedPoints": 0.0,
+  "featuresA": [
+  ],
+  "featuresB": [
+    "BAR123"
+  ]
+}
