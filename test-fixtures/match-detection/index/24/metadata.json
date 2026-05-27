@@ -1,6 +1,6 @@
 {
   "description": "24: f028 are considered equal)",
-  "comment": "recordType 0.1 + title 0.5 + publisherNumber 0.2",
+  "comment": "recordType 0.1 + title 0.5 + publisherNumber 0.5, rounded to 1",
   "options": {
     "strategy": {
       "type": "bib",
@@ -12,8 +12,8 @@
     }
   },
   "expectedResults": {
-    "match": false,
-    "probability": 0.8
+    "match": true,
+    "probability": 1.0
   },
   "only": false
 }

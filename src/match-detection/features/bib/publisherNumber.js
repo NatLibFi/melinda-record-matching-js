@@ -1,3 +1,4 @@
+// Compare publusher number (028$b$a or 028$a)
 import {uniqArray} from '@natlibfi/marc-record-validators-melinda/dist/utils.js';
 import createDebugLogger from 'debug';
 
@@ -48,10 +49,14 @@ export default () => ({
       // No data for decision
       return 0;
     }
-    const firstSharedIdentifier = aa.find(val => bb.includes(val));
-    if (firstSharedIdentifier) {
-      debug(`\t Shared identifier found: '${firstSharedIdentifier}'`);
-      // Maybe less for comps?
+    const sharedIdentifiers = aa.filter(val => bb.includes(val));
+    if (sharedIdentifiers.length > 0) {
+      const goodMatch = sharedIdentifiers.find(identifier => identifier.match(/[^0-9]/u));
+      if (goodMatch) {
+        debug(`\tShared identifier found: '${goodMatch}'`);
+        return 0.5;
+      }
+      debug(`\tShared identifier (numbers only) found: '${sharedIdentifiers[0]}'`);
       return 0.2;
     }
 

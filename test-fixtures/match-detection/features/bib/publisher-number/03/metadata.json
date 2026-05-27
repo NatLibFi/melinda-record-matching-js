@@ -1,8 +1,8 @@
 {
-  "description": "Comparison should return points for matching publisher identifiers",
+  "description": "Comparison should return points for matching publisher numbers (containing non-numbers)",
   "feature": "publisherNumber",
   "type": "compare",
-  "expectedPoints": 0.2,
+  "expectedPoints": 0.5,
   "featuresA": [
     "FOO123"
   ],
