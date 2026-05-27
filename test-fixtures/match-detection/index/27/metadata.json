@@ -15,5 +15,5 @@
     "match": false,
     "probability": 0.4
   },
-  "only": true
+  "only": false
 }
