@@ -9,10 +9,10 @@
 import createDebugLogger from 'debug';
 
 import {isComponentRecord} from '@natlibfi/melinda-commons';
-import {uniqArray} from './issn.js';
 import {parse773g} from '../../../candidate-search/query-list/component.js';
+import {uniqArray} from '@natlibfi/marc-record-validators-melinda/dist/utils.js';
 
-const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection:features:issn');
+const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection:features:f773');
 const debugData = debug.extend('data');
 
 const MAX_IDENTIFIER = 0.1; // This should be pretty low: it only says something about the host

@@ -43,7 +43,7 @@ export default ({strategy, threshold = 0.8999}, returnStrategy = false, localSet
     const similarityVector = generateSimilarityVector(featurePairs);
 
     if (similarityVector.some(v => v >= MIN_PROPABILITY_QUALIFIER)) {
-      const probability = calculateProbability(similarityVector);
+      const probability = Math.round(calculateProbability(similarityVector) * 100)/100;
       debug(`probability: ${probability} (Threshold: ${threshold})`);
       if (similarityVector.some(v => v <= FORCE_FAIL)) {
         debug(`Some feature resulted in utter failure (${FORCE_FAIL} or less)`);

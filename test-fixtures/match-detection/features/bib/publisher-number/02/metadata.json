@@ -1,0 +1,12 @@
+{
+  "description": "02 Comparison should return penalty points for non-matching standard identifiers",
+  "feature": "publisherNumber",
+  "type": "compare",
+  "expectedPoints": -0.2,
+  "featuresA": [
+    "FOO-123"
+  ],
+  "featuresB": [
+    "FOO-321"
+  ]
+}

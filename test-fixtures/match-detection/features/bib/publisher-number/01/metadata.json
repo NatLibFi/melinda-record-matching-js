@@ -1,0 +1,12 @@
+{
+  "description": "01: Should extract (no) publisher numbers from 028$b$a",
+  "feature": "publisherNumber",
+  "type": "extract",
+  "expectedFeatures": [],
+  "inputRecord": {
+    "leader": "02518cam a2200745zi 4500",
+    "fields": [
+      { "tag": "001", "value": "000019643" }
+    ]
+  }
+}

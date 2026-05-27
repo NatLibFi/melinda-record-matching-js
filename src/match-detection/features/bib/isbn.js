@@ -1,8 +1,6 @@
-
 import createDebugLogger from 'debug';
 import {parse as isbnParse} from 'isbn3';
-
-import {uniqArray} from './issn.js';
+import {uniqArray} from '@natlibfi/marc-record-validators-melinda/dist/utils.js';
 
 const debug = createDebugLogger(`@natlibfi/melinda-record-matching:match-detection:features:standard-identifiers:ISBN`);
 const debugData = debug.extend('data');
