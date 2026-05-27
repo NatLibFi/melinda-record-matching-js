@@ -1,0 +1,15 @@
+{
+  "description": "01: Should extract (no) publisher numbers from 028$b$a",
+  "feature": "publisherNumber",
+  "type": "extract",
+  "expectedFeatures": ["FOO123", "BAR321", "321"],
+  "inputRecord": {
+    "leader": "02518cam a2200745zi 4500",
+    "fields": [
+      {"tag": "001", "value": "000019643"},
+      {"tag": "028", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "FOO-123"}]},
+      {"tag": "028", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "FOO"}]},
+      {"tag": "028", "ind1": " ", "ind2": " ", "subfields": [ {"code": "b", "value": "BAR"}, {"code": "a", "value": "321"}]}
+    ]
+  }
+}
