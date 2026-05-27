@@ -25,7 +25,8 @@ export default () => ({
           return result;
         }
         const a = field.subfields.find(sf => sf.code === 'a');
-        if (!a || !a.value) {
+        // NB! Publisher number must contain a digit! :-)
+        if (!a || !a.value || !a.value.match(/[0-9]/u)) {
           return fieldsToPublisherNumber(remainingFields, result);
         }
         const aval = normalizePublisherNumber(`${a.value}`);
