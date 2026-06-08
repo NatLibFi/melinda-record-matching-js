@@ -2,14 +2,14 @@
   "description": "Should extract record type",
   "feature": "recordType",
   "type": "extract",
-  "expectedFeatures": ["a"],
+  "expectedFeatures": ["a", false],
   "inputRecord": {
     "leader": "02518cam a2200745zi 4500",
     "fields": [
-      {
-        "tag": "001",
-        "value": "000019643"
-      }
+      { "tag": "001", "value": "000019643" },
+      { "tag": "300", "ind1": " ", "ind2": " ", "subfields": [
+        {"code": "a", "value": "1 soitonopas (123 sivua)"}
+      ]}
     ]
   }
 }
