@@ -10,5 +10,5 @@
       {"tag": "041", "ind1": " ", "ind2": " ", "subfields": [{"code": "a", "value": "eng"}]}
     ], "B"],
   "skip": false,
-  "only": true
+  "only": false
 }
