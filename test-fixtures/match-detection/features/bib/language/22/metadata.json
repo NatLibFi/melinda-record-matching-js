@@ -1,16 +1,24 @@
 {
-  "description": "Comparison should return minimal amount of points for partially matching languages (1 missing)",
+  "description": "Fail totally since too many mismatches on both sides",
   "feature": "language",
   "type": "compare",
-  "expectedPoints": 0.08,
+  "expectedPoints": -1.0,
   "featuresA": [
     [
-      {"tag": "041", "ind1": " ", "ind2": " ", "subfields": [{"code": "a", "value": "rum"}]}
+      {"tag": "041", "ind1": " ", "ind2": " ", "subfields": [
+        {"code": "a", "value": "rum"},
+        {"code": "a", "value": "rus"},
+        {"code": "a", "value": "nor"},
+        {"code": "a", "value": "hrv"},
+        {"code": "a", "value": "yyz"},
+        {"code": "a", "value": "foo"},
+        {"code": "a", "value": "bar"}
+      ]}
     ],
     "A"],
   "featuresB": [
     [
-      {"tag": "041", "ind1": " ", "ind2": " ", "subfields": [{"code": "a", "value": "rum"}, {"code": "a", "value": "fin"}]}
+      {"tag": "041", "ind1": " ", "ind2": " ", "subfields": [{"code": "a", "value": "rum"}, {"code": "a", "value": "fin"}, {"code": "a", "value": "est"}]}
     ],
     "B"],
   "skip": false,
