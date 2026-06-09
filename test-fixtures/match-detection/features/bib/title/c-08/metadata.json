@@ -1,0 +1,10 @@
+{
+  "description": "MELKEHITYS-3498 plus shared $n",
+  "feature": "title",
+  "comment": "shared part of $b aka [1] is removed and since A is $b-less we have a match...",
+  "type": "compare",
+  "expectedPoints": 0.25,
+  "featuresA": ["soundsofwestafrica", "thecoraandthexylophone", "3", ""],
+  "featuresB": ["soundsofwestafrica", "thecoraandthexylophonemusicofthelobianddagartitribesofnorthernghanaandthegriotsofgambiaandsenegal", "3", ""],
+  "only": true
+}
