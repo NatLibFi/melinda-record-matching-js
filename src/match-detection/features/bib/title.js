@@ -8,6 +8,7 @@ import { subfieldToString } from '@natlibfi/marc-record-validators-melinda/dist/
 const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection:features/bib/title');
 const debugData = debug.extend('data');
 
+const TITLE_MAX = 0.5;
 export default ({threshold = 0.9} = {}) => ({
   name: 'Title',
   extract: ({record, recordExternal}) => {
@@ -28,16 +29,18 @@ export default ({threshold = 0.9} = {}) => ({
       return title
         // decompose unicode diacritics
         .normalize('NFD')
-        .replace(/\b(?:ett|I|one|uno|yksi)\b/ui, '1')
-        .replace(/\b(?:dos|kaksi|II|två|two|zwei)\b/ui, '2')
-        .replace(/\b(?:drei|III|kolme|three|tre|tres)\b/ui, '3')
-        .replace(/\b(?:four|fyra|IV|neljä|quat+ro|vier)\b/ui, '4')
-        .replace(/\b(?:five|fünf|fyra|viisi|V)\b/ui, '5')
+        .replace(/\b(?:ein|ett|I|one|uno|yksi)\b/uig, '1')
+        .replace(/\b(?:dos|kaksi|II|två|two|zwei)\b/uig, '2')
+        .replace(/\b(?:drei|III|kolme|three|tre|tres)\b/uig, '3')
+        .replace(/\b(?:four|fyra|IV|neljä|quat+ro|vier)\b/uig, '4')
+        .replace(/\b(?:five|fünf|fyra|viisi|V)\b/uig, '5')
+        .replace(/\b(?:kuusi|sechts|sex|six|VI)\b/uig, '6')
+        .replace(/\b(and|ja|och|und)\b/uig, '&')
         // strip non-letters/numbers
         // - note: combined with decomposing unicode diacritics this normalizes both 'saa' and 'sää' as 'saa'
         // - we could precompose the Finnish letters back to avoid this
         // - see validator normalize-utf8-diacritics for details
-        .replace(/[^\p{Letter}\p{Number}]/gu, '')
+        .replace(/[^\p{Letter}\p{Number}&]/gu, '')
         .toLowerCase();
     }
 
@@ -58,17 +61,18 @@ export default ({threshold = 0.9} = {}) => ({
       if (isEmpty(aa) || isEmpty(ba)) {
         return -1.0;
       }
-      // F245$n information is critical; it can not mismatch at all (however, we should heavily normalize three->3, II->2 etc):
-      if (an.length && bn.length && an !== bn) { // If these exists, they must be the same (we might convert Roman numbers to Arabic numbers though)
-        return -1.0;
+
+      if (aFull === bFull) {
+        return TITLE_MAX;
       }
+
 
       if (ab && ab !== '' && ab === bb) { // Remove $b from equation (MELKEHITYS-3494)
         debug(`Ignore \$b ${ab}`);
         return compare2([aa, '', an, ap], [ba, '', bn, bp]);
       }
       if (an && an !== '' && an === bn) { // Remove $n from equation
-        debug(`Ignore \$n ${ab}`);
+        debug(`Ignore \$n ${an}`);
         return compare2([aa, ab, '', ap], [ba, bb, '', bp]);
       }
       if (ap && ap !== '' && ap === bp) { // Remove $p from equation
@@ -79,20 +83,33 @@ export default ({threshold = 0.9} = {}) => ({
       if (!isEmpty(ab) && ab === bp) {
         return compare2([aa, '', an, ap], [ba, bb, bn, '']);
       }
-      if (!isEmpty(ap) && ap === bv) {
+      if (!isEmpty(ap) && ap === bp) {
         return compare2([aa, ab, an, ''], [ba, '', bn, bp]);
+      }
+
+      if (an && bn && an.match(/[0-9]/u)) {
+        debug(`NUMBER FOUND. Compare ${an} and ${bn}`);
+        const atmp = an.replace(/[^0-9]/ug, '');
+        const btmp = bn.replace(/[^0-9]/ug, '');
+        if (atmp === btmp) {
+          debug(`Ignore \$n '${an}' vs '${bn}'`);
+          return compare2([aa, ab, '', ap], [ba, bb, '', bp]);
+        }
+      }
+
+
+      // f245$n information is critical; it can not mismatch at all  (exceptions have already been handled above):
+      if (an && an !== bn) {
+        return -1.0;
       }
 
       const [distance, maxLength, correctness] = doLevenshtein(aFull, bFull);
 
       debug(`'${aFull}' vs '${bFull}': Max length = ${maxLength}, distance = ${distance}, correctness = ${correctness}`);
 
-      if (distance === 0) {
-        return 0.5;
-      }
 
       if (correctness >= threshold) {
-        return 0.4;
+        return TITLE_MAX * 0.8;
       }
 
       // Subset removal (MELKEHITYS-3498-ish)
@@ -114,7 +131,7 @@ export default ({threshold = 0.9} = {}) => ({
     
       if (aa === ba && an === bn) {
         // No $n: Don't score $a vs $ab. Return 0, and let other match detectors decide
-        const candScore = 0.25;
+        const candScore = TITLE_MAX/2;
         if (ap === bp && localXor(ab, bb)) {
           debug(`Handle omitted \$b using x ${candScore}`);
           return candScore;
