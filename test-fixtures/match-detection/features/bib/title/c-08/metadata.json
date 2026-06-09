@@ -6,5 +6,5 @@
   "expectedPoints": 0.25,
   "featuresA": ["soundsofwestafrica", "thecoraandthexylophone", "3", ""],
   "featuresB": ["soundsofwestafrica", "thecoraandthexylophonemusicofthelobianddagartitribesofnorthernghanaandthegriotsofgambiaandsenegal", "3", ""],
-  "only": true
+  "only": false
 }
