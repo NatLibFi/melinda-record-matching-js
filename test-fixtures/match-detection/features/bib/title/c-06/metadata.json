@@ -5,5 +5,5 @@
   "expectedPoints": 0.5,
   "featuresA": ["songsofthespanishcivilwarvol1", "songsofthelincolnbrigadesixsongsfordemocracy", "", ""],
   "featuresB": ["songsofthespanishcivilwar", "songsofthelincolnbrigadesixsongsfordemocracy", "vol1", ""],
-  "only": true
+  "only": false
 }
