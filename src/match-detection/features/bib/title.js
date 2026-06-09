@@ -28,6 +28,11 @@ export default ({threshold = 0.9} = {}) => ({
       return title
         // decompose unicode diacritics
         .normalize('NFD')
+        .replace(/\b(?:ett|I|one|uno|yksi)\b/ui, '1')
+        .replace(/\b(?:dos|kaksi|II|två|two|zwei)\b/ui, '2')
+        .replace(/\b(?:drei|III|kolme|three|tre|tres)\b/ui, '3')
+        .replace(/\b(?:four|fyra|IV|neljä|quat+ro|vier)\b/ui, '4')
+        .replace(/\b(?:five|fünf|fyra|viisi|V)\b/ui, '5')
         // strip non-letters/numbers
         // - note: combined with decomposing unicode diacritics this normalizes both 'saa' and 'sää' as 'saa'
         // - we could precompose the Finnish letters back to avoid this
@@ -48,12 +53,12 @@ export default ({threshold = 0.9} = {}) => ({
       const aFull = toFullTitle(a);
       const bFull = toFullTitle(b);
 
-      debug(`COMPARE:\n  '${aFull}' vs  \n  '${bFull}`);
+      debug(`COMPARE:\n  '${aFull}' vs  \n  '${bFull}'`);
 
       if (isEmpty(aa) || isEmpty(ba)) {
         return -1.0;
       }
-      // F245$n information is critical; it can not mismatch at all:
+      // F245$n information is critical; it can not mismatch at all (however, we should heavily normalize three->3, II->2 etc):
       if (an.length && bn.length && an !== bn) { // If these exists, they must be the same (we might convert Roman numbers to Arabic numbers though)
         return -1.0;
       }
@@ -61,6 +66,21 @@ export default ({threshold = 0.9} = {}) => ({
       if (ab && ab !== '' && ab === bb) { // Remove $b from equation (MELKEHITYS-3494)
         debug(`Ignore \$b ${ab}`);
         return compare2([aa, '', an, ap], [ba, '', bn, bp]);
+      }
+      if (an && an !== '' && an === bn) { // Remove $n from equation
+        debug(`Ignore \$n ${ab}`);
+        return compare2([aa, ab, '', ap], [ba, bb, '', bp]);
+      }
+      if (ap && ap !== '' && ap === bp) { // Remove $p from equation
+        debug(`Ignore \$p ${ap}`);
+        return compare2([aa, ab, an, ''], [ba, bb, bn, '']);
+      }
+      // There seems to be wobble between $b and $p
+      if (!isEmpty(ab) && ab === bp) {
+        return compare2([aa, '', an, ap], [ba, bb, bn, '']);
+      }
+      if (!isEmpty(ap) && ap === bv) {
+        return compare2([aa, ab, an, ''], [ba, '', bn, bp]);
       }
 
       const [distance, maxLength, correctness] = doLevenshtein(aFull, bFull);
@@ -75,32 +95,34 @@ export default ({threshold = 0.9} = {}) => ({
         return 0.4;
       }
 
-      if (an && bn) {
-        // There seems to be some wobble between $b and $p, for example:
-        if (ab && isEmpty(ap) && bp && isEmpty(bb)) {
-          const tmp = compare2([aa, ap, an, ab], [ba, bb, bn, bp]);
-          if (tmp >= 0.4) {
-            return 0.4;
-          }
+      // Subset removal (MELKEHITYS-3498-ish)
+      if (ab && bb) { // At this point ab and bb are never equal...
+        // If X is a subset of Y, then remove X and shorten Y (= remove the shared content)
+        if (ab.indexOf(bb) === 0) {
+          return compare2([aa, ab.substring(bb.length), an, ap], [ba, '', bn, bp]);
         }
-        if (ap && isEmpty(ab) && bb && isEmpty(bp)) {
-          const tmp = compare2([aa, ab, an, ap], [ba, bp, bn, bb]);
-          if (tmp >= 0.4) {
-            return 0.4;
-          }
+        if (bb.indexOf(ab) === 0) {
+          return compare2([aa, '', an, ap], [ba, bb.substring(ab.length), bn, bp]);
         }
       }
-
+  
       // Try the same without $p:
       if (localXor(ap, bp)) {
         const result = compare2([aa, ab, an, ''], [ba, bb, bn, '']);
         return result > 0.0 ? result * 0.8 : result;
       }
-
-      if (isEmpty(ap) && isEmpty(bp) && localXor(ab, bb)) {
-        // Try the same without $b ($p is not here)
-        const result = compare2([aa, '', an, ''], [ba, '', bn, '']);
-        return result > 0.0 ? result * 0.8 : result;
+    
+      if (aa === ba && an === bn) {
+        // No $n: Don't score $a vs $ab. Return 0, and let other match detectors decide
+        const candScore = 0.25;
+        if (ap === bp && localXor(ab, bb)) {
+          debug(`Handle omitted \$b using x ${candScore}`);
+          return candScore;
+        }
+        if (ab === bb && localXor(ap, bp)) {
+          debug(`Handle omitted \$p using x ${candScore}`);
+          return candScore;
+        }
       }
 
       return -0.5; // Not likely
