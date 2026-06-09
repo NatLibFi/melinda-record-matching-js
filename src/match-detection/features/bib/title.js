@@ -2,6 +2,7 @@ import createDebugLogger from 'debug';
 import naturalPkg from 'natural';
 const {LevenshteinDistance: leven} = naturalPkg;
 import {testStringOrNumber} from '../../../matching-utils.js';
+import { subfieldToString } from '@natlibfi/marc-record-validators-melinda/dist/utils.js';
 
 
 const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection:features/bib/title');
@@ -36,56 +37,74 @@ export default ({threshold = 0.9} = {}) => ({
     }
 
   },
-  compare: (a, b) => {
-    const [aa, ab, an, ap] = a;
-    const [ba, bb, bn, bp] = b;
+  compare: (origA, origB) => {
+    return compare2(origA, origB);
 
-    if (isEmpty(aa) || isEmpty(ba)) {
-      return -1.0;
-    }
-    // F245$n information is critical; it can not mismatch at all:
-    if (an.length && bn.length && an !== bn) { // If these exists, they must be the same (we might convert Roman numbers to Arabic numbers though)
-      return -1.0;
-    }
+    function compare2(a, b) { // Added this wrapper function as I had issues with recursion
 
-    const aFull = toFullTitle(a);
-    const bFull = toFullTitle(b);
+      const [aa, ab, an, ap] = a;
+      const [ba, bb, bn, bp] = b;
 
-    const [distance, maxLength, correctness] = doLevenshtein(aFull, bFull);
+      const aFull = toFullTitle(a);
+      const bFull = toFullTitle(b);
 
-    debug(`'${aFull}' vs '${bFull}': Max length = ${maxLength}, distance = ${distance}, correctness = ${correctness}`);
+      debug(`COMPARE:\n  '${aFull}' vs  \n  '${bFull}`);
 
-    if (distance === 0) {
-      return 0.5;
-    }
-
-    if (correctness >= threshold) {
-      return 0.4;
-    }
-
-    if (an && bn) {
-      // There seems to be some wobble between $b and $p, for example:
-      if (ab && isEmpty(ap) && bp && isEmpty(bb)) {
-        return compare([aa, ap, an, ab], [ba, bb, bn, bp]);
+      if (isEmpty(aa) || isEmpty(ba)) {
+        return -1.0;
       }
-      if (ap && isEmpty(ab) && bb && isEmpty(bp)) {
-        return compare([aa, ab, an, ap], [ba, bp, bn, bb]);
+      // F245$n information is critical; it can not mismatch at all:
+      if (an.length && bn.length && an !== bn) { // If these exists, they must be the same (we might convert Roman numbers to Arabic numbers though)
+        return -1.0;
       }
-    }
 
-    // Try the same without $p:
-    if (localXor(ap, bp)) {
-      const result = compare([aa, ab, an, ''], [ba, bb, bn, '']);
-      return result > 0.0 ? result * 0.8 : result;
-    }
+      if (ab && ab !== '' && ab === bb) { // Remove $b from equation (MELKEHITYS-3494)
+        debug(`Ignore \$b ${ab}`);
+        return compare2([aa, '', an, ap], [ba, '', bn, bp]);
+      }
 
-    if (isEmpty(ap) && isEmpty(bp) && localXor(ab, bb)) {
-      // Try the same without $b ($p is not here)
-      const result = compare([aa, '', an, ''], [ba, '', bn, '']);
-      return result > 0.0 ? result * 0.8 : result;
-    }
+      const [distance, maxLength, correctness] = doLevenshtein(aFull, bFull);
 
-    return -0.5; // Not likely
+      debug(`'${aFull}' vs '${bFull}': Max length = ${maxLength}, distance = ${distance}, correctness = ${correctness}`);
+
+      if (distance === 0) {
+        return 0.5;
+      }
+
+      if (correctness >= threshold) {
+        return 0.4;
+      }
+
+      if (an && bn) {
+        // There seems to be some wobble between $b and $p, for example:
+        if (ab && isEmpty(ap) && bp && isEmpty(bb)) {
+          const tmp = compare2([aa, ap, an, ab], [ba, bb, bn, bp]);
+          if (tmp >= 0.4) {
+            return 0.4;
+          }
+        }
+        if (ap && isEmpty(ab) && bb && isEmpty(bp)) {
+          const tmp = compare2([aa, ab, an, ap], [ba, bp, bn, bb]);
+          if (tmp >= 0.4) {
+            return 0.4;
+          }
+        }
+      }
+
+      // Try the same without $p:
+      if (localXor(ap, bp)) {
+        const result = compare2([aa, ab, an, ''], [ba, bb, bn, '']);
+        return result > 0.0 ? result * 0.8 : result;
+      }
+
+      if (isEmpty(ap) && isEmpty(bp) && localXor(ab, bb)) {
+        // Try the same without $b ($p is not here)
+        const result = compare2([aa, '', an, ''], [ba, '', bn, '']);
+        return result > 0.0 ? result * 0.8 : result;
+      }
+
+      return -0.5; // Not likely
+    }
 
     function isEmpty(x) {
       return !x || x.length === 0;
@@ -108,7 +127,8 @@ export default ({threshold = 0.9} = {}) => ({
 
     function toFullTitle(arr) {
       const relevant = arr.filter(val => typeof val === 'string' && val.length);
-      return relevant.join(' ');
+      // No longer add space between subfields. Due to heavy normalization there are no spaces left in array elements either!
+      return relevant.join('');
     }
 
     function getMaxLength(str1, str2) {

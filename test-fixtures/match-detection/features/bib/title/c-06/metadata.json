@@ -1,0 +1,9 @@
+{
+  "description": "MELKEHITYS-3494",
+  "feature": "title",
+  "type": "compare",
+  "expectedPoints": 0.5,
+  "featuresA": ["songsofthespanishcivilwarvol1", "songsofthelincolnbrigadesixsongsfordemocracy", "", ""],
+  "featuresB": ["songsofthespanishcivilwar", "songsofthelincolnbrigadesixsongsfordemocracy", "vol1", ""],
+  "only": true
+}
