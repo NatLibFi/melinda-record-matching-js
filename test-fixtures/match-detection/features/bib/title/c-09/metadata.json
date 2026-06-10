@@ -1,0 +1,10 @@
+{
+  "description": "features[2]: ignore non-numeric part if there's a matching number",
+  "feature": "title",
+  "comment": "shared part of $b aka [1] is removed and since A is $b-less we have a match...",
+  "type": "compare",
+  "expectedPoints": 0.5,
+  "featuresA": ["soundsofwestafrica", "", "volume3", ""],
+  "featuresB": ["soundsofwestafrica", "", "del3", ""],
+  "only": false
+}

@@ -1,13 +1,13 @@
 {
-  "description": "Comparison should return small penalty (1 match + 1 mismatch one both sides)",
+  "description": "Comparison should return no points nor penalty (1 match + 1 additional on the other side)",
   "feature": "language",
   "type": "compare",
-  "expectedPoints": -0.1,
+  "expectedPoints": 0.0,
   "featuresA": [[
       {"tag": "041", "ind1": " ", "ind2": " ", "subfields": [{"code": "a", "value": "eng"}, {"code": "a", "value": "swe"}]}
     ], "A"],
   "featuresB": [[
-      {"tag": "041", "ind1": " ", "ind2": " ", "subfields": [{"code": "a", "value": "eng"}, {"code": "a", "value": "fin"}]}
+      {"tag": "041", "ind1": " ", "ind2": " ", "subfields": [{"code": "a", "value": "eng"}]}
     ], "B"],
   "skip": false,
   "only": false

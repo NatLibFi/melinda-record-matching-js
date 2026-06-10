@@ -129,12 +129,6 @@ export default () => ({
       return -0.1;
     }
 
-
-
-    function containsNoData(languageCode) {
-      return ['   ', '|||', 'und'].includes(languageCode);
-    }
-
     function compareLanguageCodeLists(a, b) {
       if (a.length === 0 || b.length === 0 || a.every(val => containsNoData(val)) || b.every(val => containsNoData(val))) {
         debugData(`No language to compare`);
@@ -170,36 +164,50 @@ export default () => ({
         return 0;
       }
 
-
-
       // Damage control:
-      const sharedValues = getSharedValues(a, b).filter(val => !containsNoData(val));
+      const sharedValues = getSharedValues(a, b); // NB! excludes meaningless values
 
       if (sharedValues.length < 1) {
-        debug(`Both have languages, but none of these match.`); // includes 'mul' vs a single language code
+        debug(`Both have languages, but none of these match.`);
         return -1.0;
       }
 
-      const {matchingValues, possibleMatchValues, maxValues} = getMatchCounts(a, b);
+      const aOnly = getUniqueInFirst(a, b); // NB! excludes meaningless values
+      const bOnly = getUniqueInFirst(b, a);
 
-      debug(`Both have languages, ${matchingValues}/${possibleMatchValues} valid languages match.`);
-      // ignore non-matches if there is mismatching amount of values
-      debug(`Possible matches: ${possibleMatchValues}/${maxValues}`);
-      // we give some kind of penalty for mismatching amount of values instead of simple divide?
-      const missingCount = maxValues - possibleMatchValues;
-      const misMatchCount = possibleMatchValues - matchingValues;
-      debug(`\t missing: ${missingCount}`);
-      debug(`\t mismatches: ${misMatchCount}`);
+      debug(`A only: ${aOnly.join(', ')}`);
+      debug(`B only: ${bOnly.join(', ')}`);
 
-      const penaltyForMissing = 0.02 * (maxValues - possibleMatchValues);
-      const penaltyForMisMatch = 0.05 * (possibleMatchValues - matchingValues);
-      debug(`\t points: penaltyForMissing: ${penaltyForMissing}`);
-      debug(`\t points: penaltyForMisMatch: ${penaltyForMisMatch}`);
+      return calculatePenalty();
 
-      const points = Number(Number(0.1 - penaltyForMisMatch - penaltyForMissing).toFixed(2));
-      debug(`Total points: ${points}`);
-
-      return points;
+      function calculatePenalty() {
+        const basePenalty = calculatePenalty2() / sharedValues.length;
+        if (basePenalty < -1.0) {
+          return -1.0;
+        }
+        return basePenalty;
+      }
+      
+      function calculatePenalty2() {
+        const n = aOnly.length + bOnly.length;
+        // It's reasonably ok for one to have more languages than the other (max penalty -0.3 for that):
+        if (aOnly.length === 0 || bOnly.length === 0) {
+          if (n > 3) {
+            return -0.3;
+          }
+          return 0.1 - (n * 0.1);
+        }
+        // Possible typo (should we calculate levenshtein distance for the value?):
+        if (aOnly.length === 1 && bOnly.length === 1) {
+          return -0.1; // Not too big a penalty
+        }
+        debug(` ${n} differences altogether`);
+        // However, it's worse to have different languages on both sides
+        if (n > 3) {
+          return -1.0;
+        }
+        return n * -0.2;
+      }
     }
   }
 
@@ -282,5 +290,13 @@ function getFieldsLanguageCodes(field) {
 }
 
 function getSharedValues(list1, list2) {
-  return list1.filter(val => list2.includes(val));
+  return list1.filter(val => list2.includes(val) && !containsNoData(val));
+}
+
+function getUniqueInFirst(list1, list2){
+  return list1.filter(val => !list2.includes(val) && !containsNoData(val));
+}
+
+function containsNoData(languageCode) {
+  return ['   ', '|||', 'und'].includes(languageCode);
 }
