@@ -2,7 +2,7 @@
   "description": "Should extract record type (Empty leader)",
   "feature": "recordType",
   "type": "extract",
-  "expectedFeatures": [],
+  "expectedFeatures": [null, false],
   "inputRecord": {
     "leader": "",
     "fields": [

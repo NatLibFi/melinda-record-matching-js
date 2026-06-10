@@ -2,11 +2,13 @@ import createDebugLogger from 'debug';
 import naturalPkg from 'natural';
 const {LevenshteinDistance: leven} = naturalPkg;
 import {testStringOrNumber} from '../../../matching-utils.js';
+import { subfieldToString } from '@natlibfi/marc-record-validators-melinda/dist/utils.js';
 
 
 const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection:features/bib/title');
 const debugData = debug.extend('data');
 
+const TITLE_MAX = 0.5;
 export default ({threshold = 0.9} = {}) => ({
   name: 'Title',
   extract: ({record, recordExternal}) => {
@@ -27,65 +29,121 @@ export default ({threshold = 0.9} = {}) => ({
       return title
         // decompose unicode diacritics
         .normalize('NFD')
+        .replace(/\b(?:ein|ett|I|one|uno|yksi)\b/uig, '1')
+        .replace(/\b(?:dos|kaksi|II|två|two|zwei)\b/uig, '2')
+        .replace(/\b(?:drei|III|kolme|three|tre|tres)\b/uig, '3')
+        .replace(/\b(?:four|fyra|IV|neljä|quat+ro|vier)\b/uig, '4')
+        .replace(/\b(?:five|fünf|fyra|viisi|V)\b/uig, '5')
+        .replace(/\b(?:kuusi|sechts|sex|six|VI)\b/uig, '6')
+        .replace(/\b(and|ja|och|und)\b/uig, '&')
         // strip non-letters/numbers
         // - note: combined with decomposing unicode diacritics this normalizes both 'saa' and 'sää' as 'saa'
         // - we could precompose the Finnish letters back to avoid this
         // - see validator normalize-utf8-diacritics for details
-        .replace(/[^\p{Letter}\p{Number}]/gu, '')
+        .replace(/[^\p{Letter}\p{Number}&]/gu, '')
         .toLowerCase();
     }
 
   },
-  compare: (a, b) => {
-    const [aa, ab, an, ap] = a;
-    const [ba, bb, bn, bp] = b;
+  compare: (origA, origB) => {
+    return compare2(origA, origB);
 
-    if (isEmpty(aa) || isEmpty(ba)) {
-      return -1.0;
-    }
-    // F245$n information is critical; it can not mismatch at all:
-    if (an.length && bn.length && an !== bn) { // If these exists, they must be the same (we might convert Roman numbers to Arabic numbers though)
-      return -1.0;
-    }
+    function compare2(a, b) { // Added this wrapper function as I had issues with recursion
 
-    const aFull = toFullTitle(a);
-    const bFull = toFullTitle(b);
+      const [aa, ab, an, ap] = a;
+      const [ba, bb, bn, bp] = b;
 
-    const [distance, maxLength, correctness] = doLevenshtein(aFull, bFull);
+      const aFull = toFullTitle(a);
+      const bFull = toFullTitle(b);
 
-    debug(`'${aFull}' vs '${bFull}': Max length = ${maxLength}, distance = ${distance}, correctness = ${correctness}`);
+      debug(`COMPARE:\n  '${aFull}' vs  \n  '${bFull}'`);
 
-    if (distance === 0) {
-      return 0.5;
-    }
-
-    if (correctness >= threshold) {
-      return 0.4;
-    }
-
-    if (an && bn) {
-      // There seems to be some wobble between $b and $p, for example:
-      if (ab && isEmpty(ap) && bp && isEmpty(bb)) {
-        return compare([aa, ap, an, ab], [ba, bb, bn, bp]);
+      if (isEmpty(aa) || isEmpty(ba)) {
+        return -1.0;
       }
-      if (ap && isEmpty(ab) && bb && isEmpty(bp)) {
-        return compare([aa, ab, an, ap], [ba, bp, bn, bb]);
+
+      if (aFull === bFull) {
+        return TITLE_MAX;
       }
-    }
 
-    // Try the same without $p:
-    if (localXor(ap, bp)) {
-      const result = compare([aa, ab, an, ''], [ba, bb, bn, '']);
-      return result > 0.0 ? result * 0.8 : result;
-    }
 
-    if (isEmpty(ap) && isEmpty(bp) && localXor(ab, bb)) {
-      // Try the same without $b ($p is not here)
-      const result = compare([aa, '', an, ''], [ba, '', bn, '']);
-      return result > 0.0 ? result * 0.8 : result;
-    }
+      if (ab && ab !== '' && ab === bb) { // Remove $b from equation (MELKEHITYS-3494)
+        debug(`Ignore \$b ${ab}`);
+        return compare2([aa, '', an, ap], [ba, '', bn, bp]);
+      }
+      if (an && an !== '' && an === bn) { // Remove $n from equation
+        debug(`Ignore \$n ${an}`);
+        return compare2([aa, ab, '', ap], [ba, bb, '', bp]);
+      }
+      if (ap && ap !== '' && ap === bp) { // Remove $p from equation
+        debug(`Ignore \$p ${ap}`);
+        return compare2([aa, ab, an, ''], [ba, bb, bn, '']);
+      }
+      // There seems to be wobble between $b and $p
+      if (!isEmpty(ab) && ab === bp) {
+        return compare2([aa, '', an, ap], [ba, bb, bn, '']);
+      }
+      if (!isEmpty(ap) && ap === bp) {
+        return compare2([aa, ab, an, ''], [ba, '', bn, bp]);
+      }
 
-    return -0.5; // Not likely
+      if (an && bn && an.match(/[0-9]/u)) {
+        debug(`NUMBER FOUND. Compare ${an} and ${bn}`);
+        const atmp = an.replace(/[^0-9]/ug, '');
+        const btmp = bn.replace(/[^0-9]/ug, '');
+        if (atmp === btmp) {
+          debug(`Ignore \$n '${an}' vs '${bn}'`);
+          return compare2([aa, ab, '', ap], [ba, bb, '', bp]);
+        }
+      }
+
+
+      // f245$n information is critical; it can not mismatch at all  (exceptions have already been handled above):
+      if (an && an !== bn) {
+        return -1.0;
+      }
+
+      const [distance, maxLength, correctness] = doLevenshtein(aFull, bFull);
+
+      debug(`'${aFull}' vs '${bFull}': Max length = ${maxLength}, distance = ${distance}, correctness = ${correctness}`);
+
+
+      if (correctness >= threshold) {
+        return TITLE_MAX * 0.8;
+      }
+
+      // Subset removal (MELKEHITYS-3498-ish)
+      if (ab && bb) { // At this point ab and bb are never equal...
+        // If X is a subset of Y, then remove X and shorten Y (= remove the shared content)
+        if (ab.indexOf(bb) === 0) {
+          return compare2([aa, ab.substring(bb.length), an, ap], [ba, '', bn, bp]);
+        }
+        if (bb.indexOf(ab) === 0) {
+          return compare2([aa, '', an, ap], [ba, bb.substring(ab.length), bn, bp]);
+        }
+      }
+  
+      // Try the same without $p:
+      if (localXor(ap, bp)) {
+        const result = compare2([aa, ab, an, ''], [ba, bb, bn, '']);
+        return result > 0.0 ? result * 0.8 : result;
+      }
+    
+      if (aa === ba && an === bn) {
+        // No $n: Don't score $a vs $ab. Return 0, and let other match detectors decide
+        const candScore = TITLE_MAX/2;
+        if (ap === bp && localXor(ab, bb)) {
+          debug(`Handle omitted \$b using x ${candScore}`);
+          return candScore;
+        }
+        if (ab === bb && localXor(ap, bp)) {
+          debug(`Handle omitted \$p using x ${candScore}`);
+          return candScore;
+        }
+      }
+
+      return -0.5; // Not likely
+    }
 
     function isEmpty(x) {
       return !x || x.length === 0;
@@ -108,7 +166,8 @@ export default ({threshold = 0.9} = {}) => ({
 
     function toFullTitle(arr) {
       const relevant = arr.filter(val => typeof val === 'string' && val.length);
-      return relevant.join(' ');
+      // No longer add space between subfields. Due to heavy normalization there are no spaces left in array elements either!
+      return relevant.join('');
     }
 
     function getMaxLength(str1, str2) {

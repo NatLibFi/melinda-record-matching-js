@@ -1,8 +1,8 @@
 {
-  "description": "Should extract titles with punctuation normalized away",
+  "description": "Should extract titles with most punctuation normalized away",
   "feature": "title",
   "type": "extract",
-  "expectedFeatures": ["foofaa", "bar", "", ""],
+  "expectedFeatures": ["foo&faa", "bar", "", ""],
   "inputRecord": {
     "leader": "02518cam a2200745zi 4500",
     "fields": [
