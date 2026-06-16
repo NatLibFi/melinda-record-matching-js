@@ -53,8 +53,8 @@
 		"@natlibfi/fixugen-http-client": "^4.0.3",
 		"@natlibfi/fixura": "^4.0.1",
 		"cross-env": "^10.1.0",
-		"esbuild": "^0.28.0",
-		"eslint": "^10.4.1"
+		"esbuild": "^0.28.1",
+		"eslint": "^10.5.0"
 	},
 	"overrides": {
 		"uuid": "^14.0.0"
