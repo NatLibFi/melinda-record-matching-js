@@ -41,13 +41,8 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
     // state.maxedQueries : queries that resulted in more than serverMaxResults hits
 
     async function iterate({initialState = {}, matches = [], candidateCount = 0, nonMatches = [], duplicateCount = 0, nonMatchCount = 0, matchErrors = []}) {
-      debugData(`Starting next matcher iteration.`);
+      debug(`Starting next matcher iteration.`);
       const {records, ...state} = await search(initialState);
-
-      sortRecords(records);
-      // TODO: We could sort records here (put FIKKA and low-cased records first, ref MELINDA-3492)
-      // However, this only works if good stuff come in the same set as the bad stuff...
-      // Still this would alleviate the issue when maxMatches === 1...
 
       debugData(`Current state: ${JSON.stringify(state)}, matches: ${matches.length}, candidateCount: ${candidateCount}, nonMatches: ${nonMatches.length}, nonMatchCount: ${nonMatchCount}, matchErrors: ${matchErrors.length}`);
       const recordSetSize = records.length;
@@ -328,43 +323,7 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
         return true;
       }
     }
-
-
-    function hasLow(record, lowTag) {
-      return record.fields?.some(f => f.tag === 'LOW' && f.subfields?.some(sf => sf.code === 'a' && sf.value === lowTag));
-    }
-
-    function hasAllCapsTitle(record) {
-      // This is an oversimplication (for example control subfields can contain lowercased chars which should be ignored), but I think this still covers > 99,99%
-      return !record.fields?.some(f => f.tag === '245' && f.subfields?.some(sf => sf.value(/[a-z]/u)));
-    }
-
-    function sortRecords(records) {
-      
-
-      return records.sort(function(x, y) {
-        // Prefer the record with a FIKKA LOW tag:
-        const xFikka = hasLow(x, 'FIKKA');
-        const yFikka = hasLow(y, 'FIKKA');
-        if (xFikka && !yFikka) {
-          return -1;
-        }
-        if (yFikka && !xFikka) {
-          return 1
-        }
-
-        // Prefer downcased:
-        const xAllCaps = hasAllCapsTitle(x);
-        const yAllCaps = hasAllCapsTitle(y);
-        if (xAllCaps && !yAllCaps) {
-          return 1; // y is better
-        }
-        if (yAllCaps && !xAllCaps) {
-          return -1;
-        }
-        // Default:
-        return 0;
-      });
-    }
   }
 }
+
+
