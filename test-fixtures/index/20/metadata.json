@@ -1,0 +1,33 @@
+{
+  "description": "Should prefer FIKKA LOW record",
+  "options": {
+    "search": {
+      "searchSpec": ["bibStandardIdentifiers"],
+      "url": "http://foo.bar",
+      "maxRecordsPerRequest": 3
+    },
+    "detection": {
+      "strategy": {
+        "type": "bib",
+        "features": [
+          "title",
+          "isbn"
+        ]
+      }
+    },
+    "maxMatches": 1,
+    "maxCandidates": 1
+  },
+  "expectedMatchStatus": true,
+  "expectedStopReason": "maxMatches",
+  "expectedCandidateCount": 3,
+  "requests": [
+    {
+      "method": "get",
+      "url": "/?operation=searchRetrieve&query=dc.identifier%3D978-952-62-2477-0&startRecord=1&version=2.0&maximumRecords=1",
+      "status": 200
+    }
+  ],
+  "skip": false,
+  "only": false
+}
