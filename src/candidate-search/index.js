@@ -4,6 +4,7 @@ import {MarcRecord} from '@natlibfi/marc-record';
 
 import generateQueryList from './query-list/index.js';
 import chooseQueries from './choose-queries.js';
+import {preferenceSortRecords} from '../matching-utils.js';
 
 export {searchTypes} from './query-list/index.js';
 
@@ -96,6 +97,8 @@ export default async ({record, searchSpec, url, maxCandidates, maxRecordsPerRequ
       }
       debug(`Query ${queryOffset} ${query} done.`);
       debug(`There are (${queryList.length - (queryOffset + 1)} queries left)`);
+
+      records.sort(preferenceSortRecords);
       return {records, queryOffset: queryOffset + 1, queriesLeft: queryList.length - (queryOffset + 1), totalRecords: newTotalRecords, query, searchCounter: newSearchCounter, queryCandidateCounter: newQueryCandidateCounter, queryCounter: newQueryCounter, maxedQueries: newMaxedQueries};
     }
 
