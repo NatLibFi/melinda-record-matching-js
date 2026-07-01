@@ -4,7 +4,7 @@
   "comment": "shared part of $b aka [1] is removed and since A is $b-less we have a match...",
   "type": "compare",
   "expectedPoints": 0.25,
-  "featuresA": ["soundsofwestafrica", "thecoraandthexylophone", "3", ""],
-  "featuresB": ["soundsofwestafrica", "thecoraandthexylophonemusicofthelobianddagartitribesofnorthernghanaandthegriotsofgambiaandsenegal", "3", ""],
+  "featuresA": ["sounds of west africa", "the cora & thexylophone", "3", ""],
+  "featuresB": ["sounds of west africa", "the cora & thexylophone music of the lobi & dagarti tribes of northern ghana & the griots of gambia & senegal", "3", ""],
   "only": false
 }
