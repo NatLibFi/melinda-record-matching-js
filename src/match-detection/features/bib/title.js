@@ -40,7 +40,10 @@ export default ({threshold = 0.9} = {}) => ({
         // - note: combined with decomposing unicode diacritics this normalizes both 'saa' and 'sää' as 'saa'
         // - we could precompose the Finnish letters back to avoid this
         // - see validator normalize-utf8-diacritics for details
-        .replace(/[^\p{Letter}\p{Number}&]/gu, '')
+        .replace(/[^\p{Letter}\p{Number}& ]/gu, '') // 2026-07-01: keep ' '. We need it for splitToBaseAndNumber()
+        .replace(/\s+/ug, ' ')
+        .replace(/ $/u, '')
+        .replace(/^ /u, '')
         .toLowerCase();
     }
 
@@ -52,11 +55,12 @@ export default ({threshold = 0.9} = {}) => ({
 
       const [aa, ab, an, ap] = a;
       const [ba, bb, bn, bp] = b;
+      debugData(`COMPARE:\n['${aa}', '${ab}', '${an}', '${ap}'] VS\n['${ba}', '${bb}', '${bn}', '${bp}']`);
 
       const aFull = toFullTitle(a);
       const bFull = toFullTitle(b);
 
-      debug(`COMPARE:\n  '${aFull}' vs  \n  '${bFull}'`);
+      // debugData(`JOINED COMPARE:\n  '${aFull}' vs  \n  '${bFull}'`);
 
       if (isEmpty(aa) || isEmpty(ba)) {
         return -1.0;
@@ -66,6 +70,11 @@ export default ({threshold = 0.9} = {}) => ({
         return TITLE_MAX;
       }
 
+      // MELKEHITYS-3496-ish: move part of $a to $n:
+      const [altAa, altAn, altBa, altBn] = reconstructTitleAndNumber(aa, an, ba, bn);
+      if (altAa) {
+        return compare2([altAa, ab, altAn, ap], [altBa, bb, altBn, bp]);
+      }
 
       if (ab && ab !== '' && ab === bb) { // Remove $b from equation (MELKEHITYS-3494)
         debug(`Ignore \$b ${ab}`);
@@ -79,7 +88,7 @@ export default ({threshold = 0.9} = {}) => ({
         debug(`Ignore \$p ${ap}`);
         return compare2([aa, ab, an, ''], [ba, bb, bn, '']);
       }
-      // There seems to be wobble between $b and $p
+      // There seems to be wobble between $b and $p:
       if (!isEmpty(ab) && ab === bp) {
         return compare2([aa, '', an, ap], [ba, bb, bn, '']);
       }
@@ -103,7 +112,7 @@ export default ({threshold = 0.9} = {}) => ({
         return -1.0;
       }
 
-      const [distance, maxLength, correctness] = doLevenshtein(aFull, bFull);
+      const [distance, maxLength, correctness] = doLevenshtein(aFull.replace(/ /ug, ''), bFull.replace(/ /ug, ''));
 
       debug(`'${aFull}' vs '${bFull}': Max length = ${maxLength}, distance = ${distance}, correctness = ${correctness}`);
 
@@ -122,22 +131,33 @@ export default ({threshold = 0.9} = {}) => ({
           return compare2([aa, '', an, ap], [ba, bb.substring(ab.length), bn, bp]);
         }
       }
-  
+
       // Try the same without $p:
       if (localXor(ap, bp)) {
         const result = compare2([aa, ab, an, ''], [ba, bb, bn, '']);
         return result > 0.0 ? result * 0.8 : result;
       }
-    
+
       if (aa === ba && an === bn) {
-        // No $n: Don't score $a vs $ab. Return 0, and let other match detectors decide
         const candScore = TITLE_MAX/2;
+        // $b is missing from one:
         if (ap === bp && localXor(ab, bb)) {
           debug(`Handle omitted \$b using x ${candScore}`);
           return candScore;
         }
         if (ab === bb && localXor(ap, bp)) {
           debug(`Handle omitted \$p using x ${candScore}`);
+          return candScore;
+        }
+      }
+
+      if (an === bn && ap === bp ) {
+        // $b-less $a is other record's $b, see MELKEHITYS-3485 for motivation (though we skip 246 and 490 here):
+        const candScore = TITLE_MAX/2;
+        if (aa === bb && !ab) {
+          return candScore;
+        }
+        if (ba === ab && !bb) {
           return candScore;
         }
       }
@@ -172,6 +192,41 @@ export default ({threshold = 0.9} = {}) => ({
 
     function getMaxLength(str1, str2) {
       return str1.length > str2.length ? str1.length : str2.length;
+    }
+
+    function reconstructTitleAndNumber(a1, n1, a2, n2) {
+      if (!n1 && n2) {
+        const [altA1, altN1] = splitToBaseAndNumber(a1);
+        if (altN1) {
+          debugData(`A: Reconstruct:\n $a '${a1}' =>\n $a '${altA1}' +\n $n '${altN1}`);
+          return [altA1, altN1, a2, n2];
+        }
+      }
+      if (n1 && !n2) {
+        const [altA2, altN2] = splitToBaseAndNumber(a2);
+        if (altN2) {
+          debugData(`B: Reconstruct $a '${a2}' as $a '${altA2}' and $n '${altN2}`);
+          return [a1, n1, altA2, altN2];
+        }
+
+      }
+      return [null, null, null, null]; // Fail
+    }
+
+
+    function splitToBaseAndNumber(val) {
+      const words = val.split(' ');
+      const len = words.length;
+      if (len < 2 || !words[len-1].match(/^[1-9][0-9]*$/)) {
+        return [val, null];
+      }
+      if (len > 2 && words[len-2].match(/^(del|osa|vol|volume)$/u)) { // NB! "vol." has lost it's '.' during normalization!
+        const number = `${words[len-2]} ${words[len-1]}`;
+        return [words.slice(0, len-2).join(' '), number];
+      }
+
+      const number = words.pop();
+      return [words.join(' '), number];
     }
 
   }
