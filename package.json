@@ -42,7 +42,7 @@
 		"@natlibfi/marc-record": "^10.0.2",
 		"@natlibfi/marc-record-validators-melinda": "^12.0.15",
 		"@natlibfi/melinda-commons": "^14.0.2",
-		"@natlibfi/sru-client": "^7.0.1",
+		"@natlibfi/sru-client": "^7.0.2",
 		"debug": "^4.4.3",
 		"isbn3": "^2.0.8",
 		"natural": "^8.1.1",
@@ -54,9 +54,6 @@
 		"@natlibfi/fixura": "^4.0.1",
 		"cross-env": "^10.1.0",
 		"esbuild": "^0.28.1",
-		"eslint": "^10.5.0"
-	},
-	"overrides": {
-		"uuid": "^14.0.0"
+		"eslint": "^10.6.0"
 	}
 }
