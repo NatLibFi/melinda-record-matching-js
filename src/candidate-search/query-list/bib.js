@@ -435,7 +435,8 @@ export function bibStandardIdentifiers(record) {
 
   // DEVELOP: should we query also f015 and f028?
 
-  const fields = record.get(/^(?<def>020|022|024)$/u);
+  // const fields = record.get(/^(?<def>020|022|024)$/u);
+  const fields = record.get(/^(?<def>015|020|022|024|028)$/u);
   const identifiers = [].concat(...fields.map(toIdentifiers));
   const uniqueIdentifiers = [...new Set(identifiers)];
 
@@ -454,10 +455,10 @@ export function bibStandardIdentifiers(record) {
     const issnIsbnReqExp = (/^[A-Za-z0-9-]+$/u);
     const otherIdReqExp = (/^[A-Za-z0-9-:]+$/u);
 
-    if (tag === '022') {
+    if (tag === '015') { // TODO: test (does this use the right index etc.)
       return subfields
-        .filter(sub => ['a', 'z', 'y'].includes(sub.code) && testStringOrNumber(sub.value) && issnIsbnReqExp.test(String(sub.value)))
-        .map(({value}) => String(value));
+        .filter(sf => sf.code === 'a' && sf.value.match(/^[^ ]+$/u))
+        .map(sf => sf.value)
     }
 
     if (tag === '020') {
@@ -465,7 +466,21 @@ export function bibStandardIdentifiers(record) {
         .filter(sub => ['a', 'z'].includes(sub.code) && testStringOrNumber(sub.value) && issnIsbnReqExp.test(String(sub.value)))
         .map(({value}) => String(value));
     }
+    
+    if (tag === '022') {
+      return subfields
+        .filter(sub => ['a', 'z', 'y'].includes(sub.code) && testStringOrNumber(sub.value) && issnIsbnReqExp.test(String(sub.value)))
+        .map(({value}) => String(value));
+    }
 
+    if (tag === '028') { // TODO: test
+      const [a] = subfields.find(sf => sf.code === 'a');
+      const [b] = subfields.find(sf => sf.code === 'b');
+      // TODO: normalize
+      return [a.value, `${b.value} ${a.value}`];
+    }
+
+    // Default seems to be 024:
     return subfields
       .filter(sub => ['a', 'z'].includes(sub.code) && testStringOrNumber(sub.value) && otherIdReqExp.test(String(sub.value)))
       .map(({value}) => String(value));
