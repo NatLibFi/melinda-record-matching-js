@@ -466,7 +466,7 @@ export function bibStandardIdentifiers(record) {
         .filter(sub => ['a', 'z'].includes(sub.code) && testStringOrNumber(sub.value) && issnIsbnReqExp.test(String(sub.value)))
         .map(({value}) => String(value));
     }
-    
+
     if (tag === '022') {
       return subfields
         .filter(sub => ['a', 'z', 'y'].includes(sub.code) && testStringOrNumber(sub.value) && issnIsbnReqExp.test(String(sub.value)))
@@ -474,8 +474,8 @@ export function bibStandardIdentifiers(record) {
     }
 
     if (tag === '028') { // TODO: test
-      const [a] = subfields.find(sf => sf.code === 'a');
-      const [b] = subfields.find(sf => sf.code === 'b');
+      const a = subfields.find(sf => sf.code === 'a');
+      const b = subfields.find(sf => sf.code === 'b');
       // TODO: normalize
       return [a.value, `${b.value} ${a.value}`];
     }
