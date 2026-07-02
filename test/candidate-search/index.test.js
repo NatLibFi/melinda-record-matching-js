@@ -9,6 +9,8 @@ import createDebugLogger from 'debug';
 
 const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:test');
 
+// NOTE: it seems that "only" does not work when using generateTests from @natlibfi/fixugen-http-client'
+
 describe('candidate-search', () => {
   generateTests({
     callback,

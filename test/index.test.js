@@ -9,6 +9,8 @@ import createMatchInterface, {matchDetection} from '../src/index.js';
 const debug = createDebugLogger('@natlibfi/melinda-record-matching:index:test');
 const debugData = debug.extend('data');
 
+// NOTE: it seems that "only" does not work when using generateTests from @natlibfi/fixugen-http-client'
+
 describe('INDEX-FOO', () => {
   generateTests({
     callback,
