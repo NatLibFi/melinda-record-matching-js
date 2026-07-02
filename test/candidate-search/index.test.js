@@ -4,7 +4,7 @@ import {READERS} from '@natlibfi/fixura';
 import generateTests from '@natlibfi/fixugen-http-client';
 import {MarcRecord} from '@natlibfi/marc-record';
 import {Error as MatchingError} from '@natlibfi/melinda-commons';
-import createSearchInterface, {CandidateSearchError} from './index.js';
+import createSearchInterface, {CandidateSearchError} from '../../src/candidate-search/index.js';
 import createDebugLogger from 'debug';
 
 const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:test');
