@@ -6,8 +6,8 @@ import generateTests from '@natlibfi/fixugen';
 import {READERS} from '@natlibfi/fixura';
 import {MarcRecord} from '@natlibfi/marc-record';
 
-import createDetectionInterface from './index.js';
-import * as features from './features/index.js';
+import createDetectionInterface from '../../src/match-detection/index.js';
+import * as features from '../../src/match-detection/features/index.js';
 
 const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection:test');
 const debugData = debug.extend('data');

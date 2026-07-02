@@ -1,5 +1,7 @@
 {
   "description": "Should prefer non-all CAPS match",
+  "skip": false,
+  "only": false,
   "options": {
     "search": {
       "searchSpec": ["bibStandardIdentifiers"],
@@ -16,7 +18,7 @@
       }
     },
     "maxMatches": 1,
-    "maxCandidates": 1
+    "maxCandidates": 100
   },
   "expectedMatchStatus": true,
   "expectedStopReason": "maxMatches",
@@ -24,10 +26,8 @@
   "requests": [
     {
       "method": "get",
-      "url": "/?operation=searchRetrieve&query=dc.identifier%3D978-952-62-2477-0&startRecord=1&version=2.0&maximumRecords=1",
+      "url": "/?operation=searchRetrieve&query=dc.identifier%3D978-952-62-2477-0&startRecord=1&version=2.0&maximumRecords=3",
       "status": 200
     }
-  ],
-  "skip": false,
-  "only": false
+  ]
 }
