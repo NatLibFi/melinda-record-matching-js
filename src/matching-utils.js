@@ -129,3 +129,53 @@ export function stringBefore(string, substring) {
   }
   return string.substring(0, pos);
 }
+
+// We sort records here (put FIKKA and low-cased records first, ref MELINDA-3492)
+// NB! this only sorts the records the current set. If the best stuff would come in a later set and this set contains good enough record, we'll never reach the best...
+// Still this would alleviate the issue when maxMatches === 1...
+export function preferenceSortRecords(x, y) {
+  debug(`sortRecords: RECORD COMPARISON\n${JSON.stringify(x)} vs\n${JSON.stringify(y)}`);
+  // Prefer the record with a FIKKA LOW tag:
+  const xFikka = hasLow(x.record, 'FIKKA');
+  const yFikka = hasLow(y.record, 'FIKKA');
+
+  if (xFikka && !yFikka) {
+    debug('sortRecords: prefer FIKKA');
+    return -1;
+  }
+  if (yFikka && !xFikka) {
+    return 1;
+  }
+
+  // Prefer downcased:
+  const xAllCaps = hasAllCapsTitle(x.record);
+  const yAllCaps = hasAllCapsTitle(y.record);
+
+  if (!xAllCaps && yAllCaps) {
+    debug('sortRecords: prefer non-all caps');
+    return -1; // x is better
+  }
+  if (!yAllCaps && xAllCaps) {
+    return 1; // y is better
+  }
+  // Default:
+  return 0;
+
+  function hasLow(record, lowTag) {
+    return record.fields?.some(f => f.tag === 'LOW' && f.subfields?.some(sf => sf.code === 'a' && sf.value === lowTag));
+  }
+
+  function hasAllCapsTitle(record) {
+    const f245 = record.fields?.find(f => f.tag === '245');
+    if (!f245) {
+      debugData(`WARNING: No f245 found for ALL CAPS check`);
+      return false;
+    }
+
+    const title = f245.subfields.filter(sf => ['a', 'b', 'c'].includes(sf.code)).map(sf => sf.value).join(' ');
+    if (title.match(/[A-Z]/u) && !title.match(/[a-z]/u)) {
+      return true;
+    }
+    return false;
+  }
+}

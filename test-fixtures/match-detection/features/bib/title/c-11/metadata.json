@@ -1,0 +1,10 @@
+{
+  "description": "c-11: MELKEHITYS-3485 (simplified)",
+  "feature": "title",
+  "comment": "does not check f246 nor f490. If these match, small positive score is awarded, but good hits elsewhere are need for the records to pair",
+  "type": "compare",
+  "expectedPoints": 0.25,
+  "featuresA": ["uuden rakkauden laulu", "", "", ""],
+  "featuresB": ["love college 3", "uuden rakkauden laulu", "", ""],
+  "only": false
+}

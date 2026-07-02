@@ -1,9 +1,9 @@
 {
-  "description": "Should extract titles ($a + $b)",
+  "description": "e-09: Should extract titles ($a + $b)",
   "comment": "Testing different subfield combinations",
   "feature": "title",
   "type": "extract",
-  "expectedFeatures": ["aarre5", "opettajanmateriaali", "", ""],
+  "expectedFeatures": ["aarre 5", "opettajan materiaali", "", ""],
   "inputRecord": {
     "leader": "02518cam a2200745zi 4500",
     "fields": [

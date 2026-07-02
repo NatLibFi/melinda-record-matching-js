@@ -1,9 +1,9 @@
 {
-  "description": "MELKEHITYS-3494",
+  "description": "c-06: MELKEHITYS-3494",
   "feature": "title",
   "type": "compare",
   "expectedPoints": 0.5,
-  "featuresA": ["songsofthespanishcivilwarvol1", "songsofthelincolnbrigadesixsongsfordemocracy", "", ""],
-  "featuresB": ["songsofthespanishcivilwar", "songsofthelincolnbrigadesixsongsfordemocracy", "vol1", ""],
+  "featuresA": ["songs of the spanish civil war vol 1", "songs of the lincoln brigade 6 songs for democracy", "", ""],
+  "featuresB": ["songs of the spanish civil war",       "songs of the lincoln brigade 6 songs for democracy", "vol 1", ""],
   "only": false
 }

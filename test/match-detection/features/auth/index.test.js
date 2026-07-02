@@ -5,16 +5,16 @@ import createDebugLogger from 'debug';
 import generateTests from '@natlibfi/fixugen';
 import {READERS} from '@natlibfi/fixura';
 import {MarcRecord} from '@natlibfi/marc-record';
-import * as features from './index.js';
+import * as features from '../../../../src/match-detection/features/auth/index.js';
 
 
-const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection:features/bib:test');
+const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection:features/auth:test');
 const debugData = debug.extend('data');
 
 
-describe('match-detection/features/bib/', () => {
+describe('match-detection/features/auth/', () => {
   generateTests({
-    path: [import.meta.dirname, '..', '..', '..', '..', 'test-fixtures', 'match-detection', 'features', 'bib'],
+    path: [import.meta.dirname, '..', '..', '..', '..', 'test-fixtures', 'match-detection', 'features', 'auth'],
     useMetadataFile: true,
     fixura: {
       reader: READERS.JSON

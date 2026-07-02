@@ -1,10 +1,10 @@
 {
-  "description": "MELKEHITYS-3498",
+  "description": "c-07: MELKEHITYS-3498",
   "feature": "title",
   "comment": "shared part of $b aka [1] is removed and since A is $b-less we have a match...",
   "type": "compare",
   "expectedPoints": 0.25,
-  "featuresA": ["soundsofwestafrica", "thecoraandthexylophone", "", ""],
-  "featuresB": ["soundsofwestafrica", "thecoraandthexylophonemusicofthelobianddagartitribesofnorthernghanaandthegriotsofgambiaandsenegal", "", ""],
+  "featuresA": ["sounds of west africa", "the cora & the xylophone", "", ""],
+  "featuresB": ["sounds of west africa", "the cora & the xylophone music of the lobi and dagarti tribes of northern ghana & the griots of gambia & senegal", "", ""],
   "only": false
 }

@@ -2,7 +2,7 @@
   "description": "MELKEHITYS-3496: check 245$a normalizations",
   "feature": "title",
   "type": "extract",
-  "expectedFeatures": ["songsofthewestvolume3geneautry&royrogers", "", "", ""],
+  "expectedFeatures": ["songs of the west volume 3 gene autry & roy rogers", "", "", ""],
   "inputRecord": {
     "leader": "02518cam a2200745zi 4500",
     "fields": [
