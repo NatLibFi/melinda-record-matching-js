@@ -1,0 +1,35 @@
+{
+  "description": "Test MELKEHITYS-3476",
+  "type": "bibStandardIdentifiers",
+  "expectedQuery": [
+    "dc.identifier=f451 or dc.identifier=BLESSCD-123",
+    "dc.identifier=OCH-321 or dc.identifier=BÅDE OCH-321"
+  ],
+  "inputRecord": {
+    "leader": "02518cam a2200745zi 4500",
+    "fields": [
+      {
+        "tag": "001",
+        "value": "000019643"
+      },
+      {
+        "tag": "015",
+        "ind1": " ",
+        "ind2": " ",
+        "subfields": [
+          {
+            "code": "a",
+            "value": "f451"
+          },
+          {
+            "code": "q",
+            "value": "whatever"
+          }
+        ]
+      },
+      { "tag": "028", "ind1": " ", "ind2": " ", "subfields": [ { "code": "b", "value": "aless records" } ] },
+      { "tag": "028", "ind1": " ", "ind2": " ", "subfields": [ { "code": "a", "value": "BLESSCD-123" } ] },
+      { "tag": "028", "ind1": " ", "ind2": " ", "subfields": [ { "code": "b", "value": "BÅDE"}, { "code": "a", "value": "OCH-321" } ] }
+    ]
+  }
+}
