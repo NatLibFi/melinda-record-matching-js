@@ -457,7 +457,7 @@ export function bibStandardIdentifiers(record) {
 
     if (tag === '015') { // TODO: test (does this use the right index etc.)
       return subfields
-        .filter(sf => sf.code === 'a' && sf.value.match(/^[^ ]+$/u))
+        .filter(sf => sf.code === 'a' && sf.value.match(/^[A-Z0-9\-]+$/ui))
         .map(sf => sf.value)
     }
 
@@ -475,9 +475,14 @@ export function bibStandardIdentifiers(record) {
 
     if (tag === '028') { // TODO: test
       const a = subfields.find(sf => sf.code === 'a');
-      const b = subfields.find(sf => sf.code === 'b');
-      // TODO: normalize
-      return [a.value, `${b.value} ${a.value}`];
+      if (a) {
+        const b = subfields.find(sf => sf.code === 'b');
+        // TODO: normalize?
+        if (b) {
+          return [a.value, `${b.value} ${a.value}`];
+        }
+        return [a.value];
+      }
     }
 
     // Default seems to be 024:
