@@ -6,6 +6,7 @@ import {MarcRecord} from '@natlibfi/marc-record';
 
 cli();
 
+// eslint-disable-next-line max-lines-per-function
 async function cli() {
   const debug = createDebugLogger('@natlibfi/melinda-record-matching:cli');
   const args = yargs(process.argv.slice(2))
