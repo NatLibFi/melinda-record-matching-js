@@ -197,6 +197,20 @@ export default () => ({
       return 0;
     }
 
+    // Do not give minus points if a normal publishing year is found in copyright years
+    const bNormalInACopyright = a.copyrightYears.filter(aValue => b.normalYears.some(bValue => aValue === bValue));
+    const aNormalInBCopyright= b.copyrightYears.filter(bValue => a.normalYears.some(aValue => bValue === aValue));
+    debug(`BNorm in ACopyright: ${JSON.stringify(bNormalInACopyright)}`);
+    debug(`ANorm in BCopyright: ${JSON.stringify(aNormalInBCopyright)}`);
+
+    if (bNormalInACopyright > 0 || aNormalInBCopyright > 0) {
+      return 0;
+    }
+
+
+
+
+
     return -1;
 
   }
