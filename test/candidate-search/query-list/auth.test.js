@@ -4,7 +4,7 @@ import createDebugLogger from 'debug';
 import generateTests from '@natlibfi/fixugen';
 import {READERS} from '@natlibfi/fixura';
 import {MarcRecord} from '@natlibfi/marc-record';
-import * as generators from './auth.js';
+import * as generators from '../../../src/candidate-search/query-list/auth.js';
 
 const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:query-list:auth-test');
 const debugData = debug.extend('data');

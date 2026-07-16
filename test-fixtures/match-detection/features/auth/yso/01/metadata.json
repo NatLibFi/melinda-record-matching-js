@@ -1,5 +1,7 @@
 {
     "description": "Extracts multiple IDs from f024$as, and extracts thesaurus from 040$f",
+    "only": false,
+    "skip": false,
     "feature": "yso",
     "type": "extract",
     "expectedFeatures":

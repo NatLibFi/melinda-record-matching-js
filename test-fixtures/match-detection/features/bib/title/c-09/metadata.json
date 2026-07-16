@@ -4,7 +4,7 @@
   "comment": "shared part of $b aka [1] is removed and since A is $b-less we have a match...",
   "type": "compare",
   "expectedPoints": 0.5,
-  "featuresA": ["soundsofwestafrica", "", "volume3", ""],
-  "featuresB": ["soundsofwestafrica", "", "del3", ""],
+  "featuresA": ["sounds of west africa", "", "volume 3", ""],
+  "featuresB": ["sounds of west africa", "", "del 3", ""],
   "only": false
 }

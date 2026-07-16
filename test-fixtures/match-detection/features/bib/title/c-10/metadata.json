@@ -1,0 +1,10 @@
+{
+  "description": "c-10: MELKEHITYS-3496 comment",
+  "feature": "title",
+  "comment": "split featuresA $a (same as [0]) to $a$n if featuresB has $n (aka [2]), and recurse (and succeed). FeaturesA is converted into ['nimeke', 'alanimeke', 'volume 2', ''] before recursion.",
+  "type": "compare",
+  "expectedPoints": 0.5,
+  "featuresA": ["nimeke volume 2", "alanimeke", "", ""],
+  "featuresB": ["nimeke", "alanimeke", "2", ""],
+  "only": false
+}

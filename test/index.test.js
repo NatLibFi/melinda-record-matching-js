@@ -4,12 +4,14 @@ import createDebugLogger from 'debug';
 import {READERS} from '@natlibfi/fixura';
 import generateTests from '@natlibfi/fixugen-http-client';
 import {MarcRecord} from '@natlibfi/marc-record';
-import createMatchInterface, {matchDetection} from './index.js';
+import createMatchInterface, {matchDetection} from '../src/index.js';
 
 const debug = createDebugLogger('@natlibfi/melinda-record-matching:index:test');
 const debugData = debug.extend('data');
 
-describe('INDEX', () => {
+// NOTE: it seems that "only" does not work when using generateTests from @natlibfi/fixugen-http-client'
+
+describe('INDEX-FOO', () => {
   generateTests({
     callback,
     path: [import.meta.dirname, '..', 'test-fixtures', 'index'],
@@ -21,12 +23,15 @@ describe('INDEX', () => {
 
   async function callback({getFixture, options, expectedMatchStatus, expectedStopReason, expectedFailures, expectedCandidateCount}) {
 
+    debug(`Running tests from indezx.test.js`);
+
     const record = new MarcRecord(getFixture('inputRecord.json'), {subfieldValues: false});
     const expectedMatches = getFixture('expectedMatches.json');
     const expectedNonMatches = getFixture('expectedNonMatches.json') || [];
 
-
-    const match = createMatchInterface(formatOptions());
+    debugData(`Options: ${JSON.stringify(options)}`);
+    debugData(`Formatted options: ${JSON.stringify(formatOptions(options))}`);
+    const match = await createMatchInterface(formatOptions(options));
     const {matches, matchStatus, nonMatches, conversionFailures, candidateCount} = await match({record});
     debugData(`Matches: ${matches.length}, Status: ${matchStatus.status}/${matchStatus.stopReason}, NonMatches: ${nonMatches ? nonMatches.length : 'not returned'}, ConversionFailures: ${conversionFailures ? conversionFailures.length : 'not returned'}`);
 
@@ -44,7 +49,7 @@ describe('INDEX', () => {
       assert.deepStrictEqual(conversionFailures, expectedFailures);
     }
 
-    function formatOptions() {
+    function formatOptions(options) {
       const contextFeatures = matchDetection.features[options.detection.strategy.type];
 
       return {
