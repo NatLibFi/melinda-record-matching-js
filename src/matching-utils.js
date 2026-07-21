@@ -134,7 +134,8 @@ export function stringBefore(string, substring) {
 // NB! this only sorts the records the current set. If the best stuff would come in a later set and this set contains good enough record, we'll never reach the best...
 // Still this would alleviate the issue when maxMatches === 1...
 export function preferenceSortRecords(x, y) {
-  debug(`sortRecords: RECORD COMPARISON\n${JSON.stringify(x)} vs\n${JSON.stringify(y)}`);
+  debug(`sortRecords: RECORD COMPARISON`);
+  debugData(`{JSON.stringify(x)} vs\n${JSON.stringify(y)}`);
   // Prefer the record with a FIKKA LOW tag:
   const xFikka = hasLow(x.record, 'FIKKA');
   const yFikka = hasLow(y.record, 'FIKKA');

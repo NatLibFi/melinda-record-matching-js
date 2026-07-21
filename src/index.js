@@ -8,6 +8,8 @@ export {candidateSearch, matchDetection};
 export default ({detection: detectionOptions, search: searchOptions, maxMatches = 1, maxCandidates = 25, returnStrategy = false, returnQuery = false, returnNonMatches = false}) => {
   const debug = createDebugLogger('@natlibfi/melinda-record-matching:index');
   const debugData = debug.extend('data');
+  const debugDev = debug.extend('dev');
+
 
   debugData(`DetectionOptions: ${JSON.stringify(detectionOptions)}`);
   debugData(`SearchOptions: ${JSON.stringify(searchOptions)}`);
@@ -31,6 +33,7 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
     // matches : candidates that have been detected as matches by current matcher job
     // nonMatches : candidates that have been detected as non-matches by current matcher job (only if returnNonMatches is 'true')
     // duplicateCount : amount of candidate records that were retrieved from the SRU but not handled further because they were already found in the matches/nonMatches
+    // nonMatchCount : amount of candidate records that were detexted as nonMatches by current mathcer job
 
     // state.totalRecords : amount of candidate records available to the current query (undefined, if there was no queries left)
     // state.query : current query (undefined if there was no queries left)
@@ -44,10 +47,9 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
       debugData(`Starting next matcher iteration.`);
       const {records, ...state} = await search(initialState);
 
-      debugData(`Current state: ${JSON.stringify(state)}, matches: ${matches.length}, candidateCount: ${candidateCount}, nonMatches: ${nonMatches.length}, nonMatchCount: ${nonMatchCount}, matchErrors: ${matchErrors.length}`);
+      debugDev(`Current state: ${JSON.stringify(state)}, matches: ${matches.length}, candidateCount: ${candidateCount}, nonMatches: ${nonMatches.length}, duplicateCount: ${duplicateCount}, nonMatchCount: ${nonMatchCount}, matchErrors: ${matchErrors.length}`);
       const recordSetSize = records.length;
       const newCandidateCount = candidateCount + recordSetSize;
-
 
       if (recordSetSize > 0) {
         return handleRecordSet();
@@ -64,7 +66,7 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
       function handleRecordSet() {
         debug(`Checking record set of ${recordSetSize} candidate records for possible matches, found by ${state.searchCounter} search for ${state.query}`);
 
-        const matchResult = iterateRecords({records, recordSetSize, maxMatches, matches, nonMatches, nonMatchCount});
+        const matchResult = iterateRecords({records, recordSetSize, maxMatches, matches, nonMatches, nonMatchCount, duplicateCount});
 
         const newDuplicateCount = duplicateCount + matchResult.duplicateCount;
         const newNonMatchCount = nonMatchCount + matchResult.nonMatchCount;
@@ -154,6 +156,7 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
         const totalHandled = matchCount + chosenNonMatchCount + duplicateCount;
         debug(`candidateCount: ${candidateCount}, matches: ${matchCount}, nonMatches: ${chosenNonMatchCount}, duplicateCount: ${duplicateCount}, matchErrorCount: ${matchErrorCount}`);
         debug(`We got result for ${totalHandled} / ${candidateCount} retrieved candidates`);
+        // NOTE: this counts something wrong!
         if (totalHandled !== candidateCount) {
           debug(`WARNING: Missing results for ${candidateCount - totalHandled} candidates`);
           return;
@@ -206,6 +209,7 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
 
       // records : non-handled records in the current record set
       // matches : found matches in the current matcher job
+      // nonMatches: found nonMatches in the current matcher job
       // recordMatches : found matches in the current record set
       // recordNonMatches : found nonMatches in the current record set (only if returnNonMatches setting is true)
       // recordMatchErrors: errored matchDetection in the current record set
@@ -227,8 +231,9 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
       */
 
       if (candidate) {
-        if (candidateNotInMatches(matches.concat(nonMatches), candidate)) {
-          const {record: candidateRecord, id: candidateId} = candidate;
+        const {record: candidateRecord, id: candidateId} = candidate;
+        const allMatches = matches.concat(nonMatches);
+        if (candidateNotInMatches(allMatches, candidate)) {
           const recordBExternal = {id: candidate.id, recordSource: 'databaseRecord', label: `db-${candidate.id}`};
           try {
             debug(`Running matchDetection for record ${candidateId} (${newRecordCount}/${recordSetSize})`);
@@ -244,8 +249,9 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
             return iterateRecords({records: records.slice(1), recordSetSize, maxMatches, matches, recordMatches, recordCount: newRecordCount, recordNonMatches, recordDuplicateCount, recordNonMatchCount, recordMatchErrors: newRecordMatchErrors});
           }
         }
-
-        return iterateRecords({records: records.slice(1), recordSetSize, maxMatches, matches, recordMatches, recordCount: newRecordCount, recordNonMatches, recordDuplicateCount: recordDuplicateCount + 1, recordNonMatchCount, recordMatchErrors});
+        debug(`Matching for ${candidateId} already done (${recordDuplicateCount} before)`);
+        const newRecordDuplicateCount = recordDuplicateCount + 1;
+        return iterateRecords({records: records.slice(1), recordSetSize, maxMatches, matches, recordMatches, recordCount: newRecordCount, recordNonMatches, recordDuplicateCount: newRecordDuplicateCount, recordNonMatchCount, recordMatchErrors});
       }
 
       debug(`No more candidates, record set (${recordCount}/${recordSetSize}) done, ${recordMatches.length} matches found, ${recordDuplicateCount} candidates already handled, ${returnNonMatches ? `${recordNonMatches.length}` : `${recordNonMatchCount}`} nonMatches found.`);
@@ -287,32 +293,32 @@ export default ({detection: detectionOptions, search: searchOptions, maxMatches 
         const newRecordNonMatches = isMatch ? recordNonMatches : recordNonMatches.concat(newMatch);
         const newRecordNonMatchCount = isMatch ? recordNonMatchCount : recordNonMatchCount + 1;
 
-        debugData(`- Total matches after this detection: ${matches.concat(newRecordMatches).length} (max: ${maxMatches})`);
+        debugDev(`- Total matches after this detection: ${matches.concat(newRecordMatches).length} (max: ${maxMatches})`);
 
         if (returnNonMatches) {
-          debugData(`- Total nonMatches after this detection: ${nonMatches.concat(newRecordNonMatches).length}`);
+          debugDev(`- Total nonMatches after this detection: ${nonMatches.concat(newRecordNonMatches).length}`);
         }
-        debugData(`- Total nonMatchCount after this detection: ${recordNonMatchCount}`);
+        debugDev(`- Total nonMatchCount after this detection: ${recordNonMatchCount}`);
 
         if (maxMatchesFound({matches: matches.concat(newRecordMatches), maxMatches})) {
           debug(`MaxMatches (${maxMatches}) reached, handled candidates in record set: ${newRecordCount} non-handled candidates in record set ${recordSetSize - newRecordCount}`);
           return {matches: newRecordMatches, nonMatches: returnNonMatches ? newRecordNonMatches : [], duplicateCount: recordDuplicateCount, nonMatchCount: newRecordNonMatchCount, matchErrors: recordMatchErrors};
         }
 
-        return iterateRecords({records: records.slice(1), recordSetSize, maxMatches, matches, recordMatches: newRecordMatches, recordCount: newRecordCount, recordNonMatches: returnNonMatches ? newRecordNonMatches : [], duplicateCount: recordDuplicateCount, recordNonMatchCount: newRecordNonMatchCount, matchErrors: recordMatchErrors});
+        return iterateRecords({records: records.slice(1), recordSetSize, maxMatches, matches, recordMatches: newRecordMatches, recordCount: newRecordCount, recordNonMatches: returnNonMatches ? newRecordNonMatches : [], recordDuplicateCount, recordNonMatchCount: newRecordNonMatchCount, matchErrors: recordMatchErrors});
       }
 
-      function candidateNotInMatches(matches, candidate) {
-        debug(`Checking that record ${candidate.id} is not already included in ${matches.length} matches/nonMatches`);
+      function candidateNotInMatches(allMatches, candidate) {
+        debug(`Checking that record ${candidate.id} is not already included in ${allMatches.length} matches/nonMatches`);
         const newCandidateId = candidate.id;
-        debugData(`newCandidateId: ${newCandidateId}`);
-        const result = matches.find(({candidate}) => candidate.id === newCandidateId);
-        debugData(`Result: ${result}`);
+        debugData(`-- newCandidateId: ${newCandidateId}`);
+        const result = allMatches.find(({candidate}) => candidate.id === newCandidateId);
+        //debugData(`Result: ${JSON.stringify(result)}`);
         if (result) {
-          debug(`${candidate.id} was already handled.`);
+          debug(`-- ${newCandidateId} was already handled.`);
           return false;
         }
-        debug(`${candidate.id} not found in matches/nonMatches`);
+        debugDev(`-- ${newCandidateId} not found in ${allMatches.length} matches/nonMatches`);
         return true;
       }
     }

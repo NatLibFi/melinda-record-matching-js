@@ -3,6 +3,7 @@ import yargs from 'yargs';
 import createMatchOperator, {candidateSearch, matchDetection} from './index.js';
 import createDebugLogger from 'debug';
 import {MarcRecord} from '@natlibfi/marc-record';
+import {uniqArray} from '@natlibfi/marc-record-validators-melinda/dist/utils.js';
 
 cli();
 
@@ -70,8 +71,22 @@ async function cli() {
   const record = new MarcRecord(JSON.parse(fileRaw), {subfieldValues: false});
 
   const result = await matchOperator({record});
+  const matchCount = result.matches.length;
+  const matchIds = result.matches.map(matchA => matchA.candidate.id);
+  const nonMatchCount = result.nonMatches?.length || result.nonMatchCount;
+  const nonMatchIds = result.nonMatches?.map(matchA => matchA.candidate.id) || [];
+  const uniqueNonMatchIds = uniqArray(nonMatchIds);
+  const uniqueNonMatchCount = uniqueNonMatchIds.length;
+  const candidateCount = result.candidateCount;
+
+  debug(`Matches (${matchCount}) ${JSON.stringify(matchIds)}`);
+  debug(`NonMatches (${nonMatchCount}) ${JSON.stringify(nonMatchIds)}`);
+  debug(`Unique nonMatches (${uniqueNonMatchCount}) ${JSON.stringify(uniqueNonMatchIds)}`);
+  debug(`Candidates (${candidateCount})`);
+
   debug(JSON.stringify(result));
 
+  // DEVELOP: print results to output file
 
   function generateStrategy(searchType) {
     if (['IDS'].includes(searchType)) {
@@ -102,7 +117,9 @@ async function cli() {
         //  - ignore one year differences in publicationTime
         //  - extract publicationTimes from f008, f26x and reprint notes in f500
         //  - do not substract points for mismatching (normal) publicationTime, if there's a match between
-        //       normal publicationTime and a reprintPublication time
+        //       normal publicationTime and a reprintPublicationTime
+        //  - do not subract points for mismatchin (normal) publiscationTime if there's a match between 
+        //       normal publicationTime and a copyrightPublicationTime
         matchDetection.features.bib.publicationTimeAllowConsYearsMulti(),
         matchDetection.features.bib.language(),
         matchDetection.features.bib.bibliographicLevel(),

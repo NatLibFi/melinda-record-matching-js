@@ -479,9 +479,9 @@ export function bibStandardIdentifiers(record) {
         const b = subfields.find(sf => sf.code === 'b');
         // TODO: normalize?
         if (b) {
-          return [a.value, `${b.value} ${a.value}`];
+          return [`^${a.value}`, `^${b.value} ${a.value}`];
         }
-        return [a.value];
+        return [`^${a.value}`];
       }
     }
 
