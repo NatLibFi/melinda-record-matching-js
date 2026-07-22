@@ -187,6 +187,7 @@ export function bibTitleAuthorYearAlternates(record) {
 
 function getTitleForQuery(record) {
   const title = getTitle(record, ['a']);
+  debug(`getTitleForQuery: title ${title}`);
   if (title) {
     const nWords = title.split(' ');
     // If lone $a is deemed too short, fetch $b as well:
@@ -207,11 +208,14 @@ function getTitleForQuery(record) {
 
 function dcTitle(record, onlyTitleLength, alternates = false) {
   const title = getTitleForQuery(record);
+  debug(`dcTitle: title: ${title}`);
   if (!testStringOrNumber(title)) {
     return [];
   }
 
   const formatted = getFormattedTitle(title);
+  debug(`dcTitle: formatted: ${formatted}`);
+
 
   // use word search for titles starting with a boolean
   const useWordSearch = checkUseWordSearch(formatted);
@@ -242,6 +246,7 @@ function dcTitle(record, onlyTitleLength, alternates = false) {
 export function bibTitleAuthorPublisher({record, onlyTitleLength, addYear = false, alternates = false, alternateQueries = []}) {
   debug(`bibTitleAuthorPublisher, onlyTitleLength: ${onlyTitleLength}, addYear: ${addYear}, alternates: ${alternates}`);
   const [query, formatted, queryIsOkAlone] = dcTitle(record, onlyTitleLength, alternates);
+  debug(`query ${JSON.stringify(query)}, formatted: ${JSON.stringify(formatted)}, isOKAlone: ${JSON.stringify(queryIsOkAlone)}`);
   if (query === undefined) {
     return [];
   }
