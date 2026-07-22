@@ -413,10 +413,12 @@ export function bibYear(record) {
 
     debugData(`f008: ${JSON.stringify(f008)}`);
     const {value} = f008;
-    if (value === '||||' || value === '    ') { // Meaningless values
+    const year = value.slice(7, 11);
+    if (year === '||||' || year === '    ') { // Meaningless values
+      debug('Meaningless year in f008');
       return false;
     }
-    return value.slice(7, 11);
+    return year;
   }
 }
 
