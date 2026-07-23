@@ -4,6 +4,7 @@ import {getMelindaIdsF035, validateSidFieldSubfieldCounts, getSubfieldValues, te
 import {extractHostMelindaIdsFromField, extractPublicationYearFrom773, getHostMelindaFields} from './component.js';
 import {fieldToString} from '@natlibfi/marc-record-validators-melinda';
 import {getTitle} from '../../match-detection/features/bib/title.js';
+import {uniqArray} from '@natlibfi/marc-record-validators-melinda/dist/utils.js';
 
 const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:query');
 const debugDev = debug.extend('dev');
@@ -493,30 +494,54 @@ export function bibStandardIdentifiers(record) {
       const a = subfields.find(sf => sf.code === 'a');
       const b = subfields.find(sf => sf.code === 'b');
 
-      const normA = a !== undefined ? normalizeF028ForSearch(a.value) : "";
-      const normB = b !== undefined ? normalizeF028ForSearch(b.value) : "";
+      // Handle cases where there is a qualifier in brackets after value
+      const cleanAs = cleanQualifiers(a?.value);
+      const cleanBs = cleanQualifiers(b?.value);
+      debugDev(JSON.stringify(cleanAs));
+      debugDev(JSON.stringify(cleanBs));
 
-      debugDev(`sfa: ${JSON.stringify(a)} - normalized <${normA}>`);
-      debugDev(`sfb: ${JSON.stringify(b)} - normalized <${normB}>`);
+      // Handle cases where there are several values separated by a comma in subfield
+      const splitAs = cleanAs.map(elem => elem.split(',')).concat(cleanAs).flat();
+      const splitBs = cleanBs.map(elem => elem.split(',')).concat(cleanBs).flat();
+      debugDev(JSON.stringify(splitAs));
+      debugDev(JSON.stringify(splitBs));
 
-      if (normA.length > 0 || normB.length > 0) {
-        if (normA.length > 0 && normB.length > 0) {
-          return [`^${normA}`, `^${normB}`, `^${normB} ${normA}`, `^${normA} ${normB}`];
+      const normAs = splitAs.map(elem => normalizeF028ForSearch(elem));
+      const normBs = splitBs.map(elem => normalizeF028ForSearch(elem));
+      debugDev(JSON.stringify(normAs));
+      debugDev(JSON.stringify(normBs));
+
+      const identifiers = normAs.map((normA, index) => {
+        debugDev(`Handling ${normA} from index: ${index}`);
+        if (normA.length > 0 && normBs[index]?.length > 0) {
+          debugDev(`Found a (${normA}) + b (${normBs[index]})`);
+          // let's not return plain $b
+          return [`^${normBs[index]} ${normA}`, `^${normA} ${normBs[index]}`, `^${normA}`];
+          //return [`^${normA}`, `^${normBs[index]}`, `^${normBs[index]} ${normA}`, `^${normA} ${normBs[index]}`];
+
         }
         if (normA.length > 0) {
+          debugDev(`Found a (${normA}) but no b ${normBs[index]}`);
           return [`^${normA}`];
         }
-        if (normB.length > 0) {
-          return [`^${normB}`];
-        }
-      }
+        return [];
+      });
 
-      return [];
+      debugDev(`Current identifiers from f028: ${JSON.stringify(identifiers)}`);
+      return identifiers.flat();
+
+      function cleanQualifiers(val) {
+        if (val !== undefined) {
+        const cleanVal = val.replace(/ +\(.*\)/gu, '').replace(/ +/ug, ' ').replace(/^ +/ug, '').replace(/ +$/ug, '');
+        return uniqArray([val, cleanVal]);
+        }
+        return [];
+      }
 
       function normalizeF028ForSearch(val) {
         // see normalization routine 34 used for 028-index in Aleph
         const f028NormCharsRegex = /[-"<>;:%=~`!\(\)\{\}\.\?\/\@\*\^]/g;
-        const normVal = val.replace(f028NormCharsRegex, ' ').replace(/ +/ug, ' ').toLowerCase();
+        const normVal = val.replace(f028NormCharsRegex, ' ').replace(/ +/ug, ' ').replace(/^ +/ug, '').replace(/ +$/ug, '').toLowerCase();
         // Do not return a value normalized to just a space
         return normVal !== " " ? normVal : "";
       }

@@ -11,6 +11,7 @@ export function toQueries(identifiers, queryString) {
   // DEVELOP: check if the length crash is related to mapping the query to multiple Aleph indexes
   const useMaxLength = queryString === 'dc.identifier' ? true : false;
   const maxLength = 40;
+  debugData(`Adding ${queryString} to ${JSON.stringify(identifiers)}`)
   debugDev(`We are ${useMaxLength ? `using maxLength ${maxLength}, queryString ${queryString}` : `not using maxLength, queryString ${queryString}`}`);
   const croppedIdentifiers = uniqArray(useMaxLength ? identifiers.map((identifier) => identifier.substring(0, maxLength)) : identifiers);
 

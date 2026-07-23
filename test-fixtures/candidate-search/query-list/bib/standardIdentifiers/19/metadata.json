@@ -1,0 +1,25 @@
+{
+  "description": "19 [MRA-908] normalize several comma separated identifiers from same subfield ",
+  "only": false,
+  "skip": false,
+  "type": "bibStandardIdentifiers",
+  "expectedQuery": [
+     "dc.identifier=\"^record company rc456\"",
+     "dc.identifier=\"^rc456 record company\"",
+     "dc.identifier=\"^rc456\" or dc.identifier=\"^another firm cd123\"",
+     "dc.identifier=\"^cd123 another firm\" or dc.identifier=\"^cd123\"",
+     "dc.identifier=\"^record company, another firm rc456, cd1\"",
+     "dc.identifier=\"^rc456, cd123 record company, another fi\"",
+     "dc.identifier=\"^rc456, cd123\""
+  ],
+  "inputRecord": {
+    "leader": "02518cam a2200745zi 4500",
+    "fields": [
+      {
+        "tag": "001",
+        "value": "000019643"
+      },
+      { "tag": "028", "ind1": " ", "ind2": " ", "subfields": [ { "code": "b", "value": "Record company, Another firm" }, { "code": "a", "value": "RC456, CD123" } ] }
+    ]
+  }
+}

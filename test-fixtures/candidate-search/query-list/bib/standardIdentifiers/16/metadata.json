@@ -5,10 +5,10 @@
   "skip": false,
   "type": "bibStandardIdentifiers",
   "expectedQuery": [
-     "dc.identifier=\"^also long identifier here0001\"",
      "dc.identifier=\"^test record company with far too long n\"",
-     "dc.identifier=\"^also long identifier here0001 test reco\""
-  ],
+     "dc.identifier=\"^also long identifier here0001 test reco\"",
+     "dc.identifier=\"^also long identifier here0001\""
+    ],
   "inputRecord": {
     "leader": "02518cam a2200745zi 4500",
     "fields": [
