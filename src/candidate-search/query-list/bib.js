@@ -216,7 +216,6 @@ function dcTitle(record, onlyTitleLength, alternates = false) {
   const formatted = getFormattedTitle(title);
   debug(`dcTitle: formatted: ${formatted}`);
 
-
   // use word search for titles starting with a boolean
   const useWordSearch = checkUseWordSearch(formatted);
   // Prevent too many matches / SRU crashing by having a minimum length
@@ -226,6 +225,10 @@ function dcTitle(record, onlyTitleLength, alternates = false) {
   }
 
   const queryIsOkAlone = !useWordSearch && formatted.length >= IS_OK_ALONE_THRESHOLD;
+
+  if (formatted.length<1) {
+    return ["", formatted, queryIsOkAlone];
+  }
 
   // use word search without ending * also in combination searches to avoid SRU-server crashes [MRA-189]
   return [`dc.title="${useWordSearch || !queryIsOkAlone ? '' : '^'}${formatted}${queryIsOkAlone ? '*' : ''}"`, formatted, queryIsOkAlone];
@@ -267,11 +270,12 @@ export function bibTitleAuthorPublisher({record, onlyTitleLength, addYear = fals
     debug('addAuthorsToSearch');
     const [authorQuery] = bibAuthors(record);
     if (authorQuery !== undefined) {
+      const combinedQuery = query.length > 0 ? `${authorQuery} AND ${query}` : `${authorQuery}`;
       if (addYear) {
-        const newAlternateQueries = alternates ? [...alternateQueries, `${authorQuery} AND ${query}`] : alternateQueries;
-        return addYearToSearch({query: `${authorQuery} AND ${query}`, queryIsOkAlone: true, alternates, alternateQueries: newAlternateQueries});
+        const newAlternateQueries = alternates ? [...alternateQueries, combinedQuery] : alternateQueries;
+        return addYearToSearch({query: combinedQuery, queryIsOkAlone: true, alternates, alternateQueries: newAlternateQueries});
       }
-      return alternates ? alternateQueries : [`${authorQuery} AND ${query}`];
+      return alternates ? alternateQueries : [combinedQuery];
     }
     return addPublisherToSearch({query, queryIsOkAlone, addYear, alternates, alternateQueries});
     //return [];
@@ -280,11 +284,12 @@ export function bibTitleAuthorPublisher({record, onlyTitleLength, addYear = fals
   function addPublisherToSearch({query, queryIsOkAlone = false, addYear = false, alternates = false, alternateQueries = []}) {
     const [publisherQuery] = bibPublishers(record);
     if (publisherQuery !== undefined) {
+      const combinedQuery = query.length > 0 ? `${publisherQuery} AND ${query}` : `${publisherQuery}`;
       if (addYear) {
-        const newAlternateQueries = alternates ? [...alternateQueries, `${publisherQuery} AND ${query}`] : alternateQueries;
-        return addYearToSearch({query: `${publisherQuery} AND ${query}`, queryIsOkAlone: true, alternates, alternateQueries: newAlternateQueries});
+        const newAlternateQueries = alternates ? [...alternateQueries, combinedQuery] : alternateQueries;
+        return addYearToSearch({query: combinedQuery, queryIsOkAlone: true, alternates, alternateQueries: newAlternateQueries});
       }
-      return alternates ? alternateQueries : [`${publisherQuery} AND ${query}`];
+      return alternates ? alternateQueries : [combinedQuery];
     }
     if (queryIsOkAlone && !addYear) {
       return alternates ? alternateQueries : [`${query}`];
@@ -295,7 +300,7 @@ export function bibTitleAuthorPublisher({record, onlyTitleLength, addYear = fals
   function addYearToSearch({query, queryIsOkAlone = false, alternates = false, alternateQueries = []}) {
     const [yearQuery] = bibYear(record);
     if (yearQuery !== undefined) {
-      const yearAndOtherQueries = `${yearQuery} AND ${query}`;
+      const yearAndOtherQueries = query.length > 0 ? `${yearQuery} AND ${query}` : `${yearQuery}`;
       return alternates ? [...alternateQueries, yearAndOtherQueries] : [yearAndOtherQueries];
     }
     if (queryIsOkAlone) {

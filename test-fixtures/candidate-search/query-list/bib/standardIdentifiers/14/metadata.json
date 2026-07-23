@@ -1,6 +1,6 @@
 {
   "description": "14: Test MELKEHITYS-3476: Create quoted-and-careted queries from f028, do not pair careted and non-careted queries",
-  "only":  true,
+  "only": false,
   "skip": false,
   "type": "bibStandardIdentifiers",
   "expectedQuery": [

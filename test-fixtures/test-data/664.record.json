@@ -1,0 +1,524 @@
+{
+    "leader": "     njm a22004817a 4500",
+    "fields": [
+        {
+            "tag": "001",
+            "value": "000000664"
+        },
+        {
+            "tag": "007",
+            "value": "sd f||g|||m|||"
+        },
+        {
+            "tag": "008",
+            "value": "220906s2022    fi ||nn  ||||||   | fin|c"
+        },
+        {
+            "tag": "028",
+            "ind1": "0",
+            "ind2": "1",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "HELMI156"
+                },
+                {
+                    "code": "b",
+                    "value": "Helmi Levyt"
+                }
+            ]
+        },
+        {
+            "tag": "041",
+            "ind1": "0",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "fin"
+                },
+                {
+                    "code": "d",
+                    "value": "fin"
+                }
+            ]
+        },
+        {
+            "tag": "084",
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "78.891"
+                },
+                {
+                    "code": "2",
+                    "value": "ykl"
+                }
+            ]
+        },
+        {
+            "tag": "084",
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "78"
+                },
+                {
+                    "code": "2",
+                    "value": "ykl"
+                }
+            ]
+        },
+        {
+            "tag": "091",
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "77"
+                }
+            ]
+        },
+        {
+            "tag": "095",
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "788.33"
+                }
+            ]
+        },
+        {
+            "tag": "097",
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "78.8911"
+                }
+            ]
+        },
+        {
+            "tag": "100",
+            "ind1": "0",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "JLaine,"
+                },
+                {
+                    "code": "e",
+                    "value": "esittäjä"
+                }
+            ]
+        },
+        {
+            "tag": "245",
+            "ind1": "1",
+            "ind2": "0",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "! /"
+                },
+                {
+                    "code": "c",
+                    "value": "jlaine"
+                }
+            ]
+        },
+        {
+            "tag": "264",
+            "ind1": " ",
+            "ind2": "1",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "[Helsinki] :"
+                },
+                {
+                    "code": "b",
+                    "value": "Helmi Levyt,"
+                },
+                {
+                    "code": "c",
+                    "value": "p2022"
+                }
+            ]
+        },
+        {
+            "tag": "264",
+            "ind1": " ",
+            "ind2": "4",
+            "subfields": [
+                {
+                    "code": "c",
+                    "value": "℗2022"
+                }
+            ]
+        },
+        {
+            "tag": "300",
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "1 CD-äänilevy (36 min)"
+                }
+            ]
+        },
+        {
+            "tag": "505",
+            "ind1": "0",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "Vapaa ; Tuonelan puu ; Partisaani ; Mennyt ; Huuto ; Tuuli kääntyy ; Halleluja ; Kuolema ; Paratiisi / Janne Laine."
+                }
+            ]
+        },
+        {
+            "tag": "511",
+            "ind1": "0",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "Janne Laine (laulu, kitara), Teemu Elo (kitara), Piia Rinne (rummut, efektit), Juha Marila (kontrabasso, sousafoni). Lisäksi: Harri Sippola (syntetisaattori), Mika Rättö (kosketinsoittimet), Kai Johansson (äänimaisemointi), Tyko Tuulivaara (lyömäsoittimet)."
+                }
+            ]
+        },
+        {
+            "tag": "574",
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "btj + anssi.koskipuro@hel.fi"
+                }
+            ]
+        },
+        {
+            "tag": "655",
+            "ind1": " ",
+            "ind2": "7",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "popmusiikki"
+                }
+            ]
+        },
+        {
+            "tag": "655",
+            "ind1": " ",
+            "ind2": "7",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "laulaja-lauluntekijät"
+                }
+            ]
+        },
+        {
+            "tag": "651",
+            "ind1": " ",
+            "ind2": "7",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "Suomi"
+                }
+            ]
+        },
+        {
+            "tag": "648",
+            "ind1": " ",
+            "ind2": "7",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "2020-luku"
+                }
+            ]
+        },
+        {
+            "tag": "700",
+            "ind1": "1",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "Laine, Janne,"
+                },
+                {
+                    "code": "e",
+                    "value": "säveltäjä"
+                }
+            ]
+        },
+        {
+            "tag": "700",
+            "ind1": "1",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "Laine, Janne,"
+                },
+                {
+                    "code": "e",
+                    "value": "kitara"
+                }
+            ]
+        },
+        {
+            "tag": "700",
+            "ind1": "1",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "Laine, Janne,"
+                },
+                {
+                    "code": "e",
+                    "value": "laulaja"
+                }
+            ]
+        },
+        {
+            "tag": "700",
+            "ind1": "1",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "Elo, Teemu,"
+                },
+                {
+                    "code": "e",
+                    "value": "kitara"
+                }
+            ]
+        },
+        {
+            "tag": "700",
+            "ind1": "1",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "Rinne, Piia,"
+                },
+                {
+                    "code": "e",
+                    "value": "rummut"
+                }
+            ]
+        },
+        {
+            "tag": "700",
+            "ind1": "1",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "Marila, Juha,"
+                },
+                {
+                    "code": "e",
+                    "value": "kontrabasso"
+                }
+            ]
+        },
+        {
+            "tag": "700",
+            "ind1": "1",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "Marila, Juha,"
+                },
+                {
+                    "code": "e",
+                    "value": "sousafoni"
+                }
+            ]
+        },
+        {
+            "tag": "730",
+            "ind1": "0",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "Vapaa /"
+                },
+                {
+                    "code": "g",
+                    "value": "Laine, Janne"
+                }
+            ]
+        },
+        {
+            "tag": "730",
+            "ind1": "0",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "Tuonelan puu /"
+                },
+                {
+                    "code": "g",
+                    "value": "Laine, Janne"
+                }
+            ]
+        },
+        {
+            "tag": "730",
+            "ind1": "0",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "Partisaani /"
+                },
+                {
+                    "code": "g",
+                    "value": "Laine, Janne"
+                }
+            ]
+        },
+        {
+            "tag": "730",
+            "ind1": "0",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "Mennyt /"
+                },
+                {
+                    "code": "g",
+                    "value": "Laine, Janne"
+                }
+            ]
+        },
+        {
+            "tag": "730",
+            "ind1": "0",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "Huuto /"
+                },
+                {
+                    "code": "g",
+                    "value": "Laine, Janne"
+                }
+            ]
+        },
+        {
+            "tag": "730",
+            "ind1": "0",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "Tuuli kääntyy /"
+                },
+                {
+                    "code": "g",
+                    "value": "Laine, Janne"
+                }
+            ]
+        },
+        {
+            "tag": "730",
+            "ind1": "0",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "Halleluja /"
+                },
+                {
+                    "code": "g",
+                    "value": "Laine, Janne"
+                }
+            ]
+        },
+        {
+            "tag": "730",
+            "ind1": "0",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "Kuolema /"
+                },
+                {
+                    "code": "g",
+                    "value": "Laine, Janne"
+                }
+            ]
+        },
+        {
+            "tag": "730",
+            "ind1": "0",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "Paratiisi /"
+                },
+                {
+                    "code": "g",
+                    "value": "Laine, Janne"
+                }
+            ]
+        },
+        {
+            "tag": "907",
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": ".b25239442"
+                }
+            ]
+        },
+        {
+            "tag": "SID",
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "c",
+                    "value": "2523944"
+                },
+                {
+                    "code": "b",
+                    "value": "helme"
+                }
+            ]
+        }
+    ]
+}

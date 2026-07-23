@@ -1,6 +1,7 @@
 {
-  "description": "DISABLED: Should generate title query from field using a filing indicator",
-  "skip": true,
+  "description": "Should generate title query from field using a filing indicator",
+  "skip": false,
+  "only": false,
   "type": "bibTitle",
   "expectedQuery": ["dc.title=\"^hobbit or There and back again*\""],
   "inputRecord": {
