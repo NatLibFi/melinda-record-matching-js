@@ -1,0 +1,35 @@
+{
+  "description": "17: Do not pair careted and non-careted queries",
+  "only": false,
+  "skip": false,
+  "type": "bibStandardIdentifiers",
+  "expectedQuery": [
+    "dc.identifier=f451",
+    "dc.identifier=\"^blesscd123\""
+  ],
+  "inputRecord": {
+    "leader": "02518cam a2200745zi 4500",
+    "fields": [
+      {
+        "tag": "001",
+        "value": "000019643"
+      },
+      {
+        "tag": "015",
+        "ind1": " ",
+        "ind2": " ",
+        "subfields": [
+          {
+            "code": "a",
+            "value": "f451"
+          },
+          {
+            "code": "q",
+            "value": "whatever"
+          }
+        ]
+      },
+      { "tag": "028", "ind1": " ", "ind2": " ", "subfields": [ { "code": "a", "value": "BLESSCD123" } ] }
+    ]
+  }
+}

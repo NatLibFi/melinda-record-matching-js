@@ -4,8 +4,11 @@ import {getMelindaIdsF035, validateSidFieldSubfieldCounts, getSubfieldValues, te
 import {extractHostMelindaIdsFromField, extractPublicationYearFrom773, getHostMelindaFields} from './component.js';
 import {fieldToString} from '@natlibfi/marc-record-validators-melinda';
 import {getTitle} from '../../match-detection/features/bib/title.js';
+import {uniqArray} from '@natlibfi/marc-record-validators-melinda/dist/utils.js';
 
 const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:query');
+const debugDev = debug.extend('dev');
+
 
 const IS_OK_ALONE_THRESHOLD = 5;
 
@@ -187,6 +190,7 @@ export function bibTitleAuthorYearAlternates(record) {
 
 function getTitleForQuery(record) {
   const title = getTitle(record, ['a']);
+  debug(`getTitleForQuery: title ${title}`);
   if (title) {
     const nWords = title.split(' ');
     // If lone $a is deemed too short, fetch $b as well:
@@ -207,11 +211,13 @@ function getTitleForQuery(record) {
 
 function dcTitle(record, onlyTitleLength, alternates = false) {
   const title = getTitleForQuery(record);
+  debug(`dcTitle: title: ${title}`);
   if (!testStringOrNumber(title)) {
     return [];
   }
 
   const formatted = getFormattedTitle(title);
+  debug(`dcTitle: formatted: ${formatted}`);
 
   // use word search for titles starting with a boolean
   const useWordSearch = checkUseWordSearch(formatted);
@@ -222,6 +228,10 @@ function dcTitle(record, onlyTitleLength, alternates = false) {
   }
 
   const queryIsOkAlone = !useWordSearch && formatted.length >= IS_OK_ALONE_THRESHOLD;
+
+  if (formatted.length<1) {
+    return ["", formatted, queryIsOkAlone];
+  }
 
   // use word search without ending * also in combination searches to avoid SRU-server crashes [MRA-189]
   return [`dc.title="${useWordSearch || !queryIsOkAlone ? '' : '^'}${formatted}${queryIsOkAlone ? '*' : ''}"`, formatted, queryIsOkAlone];
@@ -242,6 +252,7 @@ function dcTitle(record, onlyTitleLength, alternates = false) {
 export function bibTitleAuthorPublisher({record, onlyTitleLength, addYear = false, alternates = false, alternateQueries = []}) {
   debug(`bibTitleAuthorPublisher, onlyTitleLength: ${onlyTitleLength}, addYear: ${addYear}, alternates: ${alternates}`);
   const [query, formatted, queryIsOkAlone] = dcTitle(record, onlyTitleLength, alternates);
+  debug(`query ${JSON.stringify(query)}, formatted: ${JSON.stringify(formatted)}, isOKAlone: ${JSON.stringify(queryIsOkAlone)}`);
   if (query === undefined) {
     return [];
   }
@@ -262,11 +273,12 @@ export function bibTitleAuthorPublisher({record, onlyTitleLength, addYear = fals
     debug('addAuthorsToSearch');
     const [authorQuery] = bibAuthors(record);
     if (authorQuery !== undefined) {
+      const combinedQuery = query.length > 0 ? `${authorQuery} AND ${query}` : `${authorQuery}`;
       if (addYear) {
-        const newAlternateQueries = alternates ? [...alternateQueries, `${authorQuery} AND ${query}`] : alternateQueries;
-        return addYearToSearch({query: `${authorQuery} AND ${query}`, queryIsOkAlone: true, alternates, alternateQueries: newAlternateQueries});
+        const newAlternateQueries = alternates ? [...alternateQueries, combinedQuery] : alternateQueries;
+        return addYearToSearch({query: combinedQuery, queryIsOkAlone: true, alternates, alternateQueries: newAlternateQueries});
       }
-      return alternates ? alternateQueries : [`${authorQuery} AND ${query}`];
+      return alternates ? alternateQueries : [combinedQuery];
     }
     return addPublisherToSearch({query, queryIsOkAlone, addYear, alternates, alternateQueries});
     //return [];
@@ -275,11 +287,12 @@ export function bibTitleAuthorPublisher({record, onlyTitleLength, addYear = fals
   function addPublisherToSearch({query, queryIsOkAlone = false, addYear = false, alternates = false, alternateQueries = []}) {
     const [publisherQuery] = bibPublishers(record);
     if (publisherQuery !== undefined) {
+      const combinedQuery = query.length > 0 ? `${publisherQuery} AND ${query}` : `${publisherQuery}`;
       if (addYear) {
-        const newAlternateQueries = alternates ? [...alternateQueries, `${publisherQuery} AND ${query}`] : alternateQueries;
-        return addYearToSearch({query: `${publisherQuery} AND ${query}`, queryIsOkAlone: true, alternates, alternateQueries: newAlternateQueries});
+        const newAlternateQueries = alternates ? [...alternateQueries, combinedQuery] : alternateQueries;
+        return addYearToSearch({query: combinedQuery, queryIsOkAlone: true, alternates, alternateQueries: newAlternateQueries});
       }
-      return alternates ? alternateQueries : [`${publisherQuery} AND ${query}`];
+      return alternates ? alternateQueries : [combinedQuery];
     }
     if (queryIsOkAlone && !addYear) {
       return alternates ? alternateQueries : [`${query}`];
@@ -290,7 +303,7 @@ export function bibTitleAuthorPublisher({record, onlyTitleLength, addYear = fals
   function addYearToSearch({query, queryIsOkAlone = false, alternates = false, alternateQueries = []}) {
     const [yearQuery] = bibYear(record);
     if (yearQuery !== undefined) {
-      const yearAndOtherQueries = `${yearQuery} AND ${query}`;
+      const yearAndOtherQueries = query.length > 0 ? `${yearQuery} AND ${query}` : `${yearQuery}`;
       return alternates ? [...alternateQueries, yearAndOtherQueries] : [yearAndOtherQueries];
     }
     if (queryIsOkAlone) {
@@ -413,10 +426,12 @@ export function bibYear(record) {
 
     debugData(`f008: ${JSON.stringify(f008)}`);
     const {value} = f008;
-    if (value === '||||' || value === '    ') { // Meaningless values
+    const year = value.slice(7, 11);
+    if (year === '||||' || year === '    ') { // Meaningless values
+      debug('Meaningless year in f008');
       return false;
     }
-    return value.slice(7, 11);
+    return year;
   }
 }
 
@@ -431,9 +446,11 @@ export function bibStandardIdentifiers(record) {
 
   const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:query:bibStandardIdentifiers');
   const debugData = debug.extend('data');
+  const debugDev = debug.extend('dev');
+
   debug(`Creating queries for standard identifiers`);
 
-  // DEVELOP: should we query also f015 and f028?
+  // DEVELOP: query identifiers from their own indexes (this needs some mapping work in SRU/Aleph)
 
   // const fields = record.get(/^(?<def>020|022|024)$/u);
   const fields = record.get(/^(?<def>015|020|022|024|028)$/u);
@@ -475,14 +492,71 @@ export function bibStandardIdentifiers(record) {
 
     if (tag === '028') { // TODO: test
       const a = subfields.find(sf => sf.code === 'a');
-      if (a) {
-        const b = subfields.find(sf => sf.code === 'b');
-        // TODO: normalize?
-        if (b) {
-          return [`^${a.value}`, `^${b.value} ${a.value}`];
+      const b = subfields.find(sf => sf.code === 'b');
+
+      // Handle cases where there is a qualifier in brackets after value
+      const cleanAs = cleanQualifiers(a?.value);
+      const cleanBs = cleanQualifiers(b?.value);
+      debugDev(JSON.stringify(cleanAs));
+      debugDev(JSON.stringify(cleanBs));
+
+      // Handle cases where there are several values separated by a comma in subfield
+      const splitAs = cleanAs.map(elem => elem.split(',')).concat(cleanAs).flat();
+      const splitBs = cleanBs.map(elem => elem.split(',')).concat(cleanBs).flat();
+      debugDev(JSON.stringify(splitAs));
+      debugDev(JSON.stringify(splitBs));
+
+      const normAs = splitAs.map(elem => normalizeF028ForSearch(elem));
+      const normBs = splitBs.map(elem => normalizeF028ForSearch(elem));
+      debugDev(JSON.stringify(normAs));
+      debugDev(JSON.stringify(normBs));
+
+      const identifiers = normAs.map((normA, index) => {
+        debugDev(`Handling ${normA} from index: ${index}`);
+        // Paired $a + $b
+        if (normA.length > 0 && normBs[index]?.length > 0) {
+          debugDev(`Found a (${normA}) + b (${normBs[index]})`);
+          // let's not return plain $b
+          return [`^${normBs[index]} ${normA}`, `^${normA} ${normBs[index]}`, `^${normA}`];
+          //return [`^${normA}`, `^${normBs[index]}`, `^${normBs[index]} ${normA}`, `^${normA} ${normBs[index]}`];
+
         }
-        return [`^${a.value}`];
+        // if there is no pair, get $a + first $b
+        // NOTE: we do not get all possible pairs
+        if (normA.length > 0 && normBs[0]?.length > 0) {
+          debugDev(`Found a (${normA}) + b (${normBs[0]})`);
+          // let's not return plain $b
+          return [`^${normBs[0]} ${normA}`, `^${normA} ${normBs[0]}`, `^${normA}`];
+          //return [`^${normA}`, `^${normBs[index]}`, `^${normBs[index]} ${normA}`, `^${normA} ${normBs[index]}`];
+
+        }
+        // Otherwise just $a
+        if (normA.length > 0) {
+          debugDev(`Found a (${normA}) but no b ${normBs[index]}`);
+          return [`^${normA}`];
+        }
+        return [];
+      });
+
+      debugDev(`Current identifiers from f028: ${JSON.stringify(identifiers)}`);
+      return uniqArray(identifiers.flat());
+
+      function cleanQualifiers(val) {
+        if (val !== undefined) {
+        const cleanVal = val.replace(/ +\(.*\)/gu, '').replace(/ +/ug, ' ').replace(/^ +/ug, '').replace(/ +$/ug, '');
+        return uniqArray([val, cleanVal]);
+        }
+        return [];
       }
+
+      function normalizeF028ForSearch(val) {
+        // see normalization routine 34 used for 028-index in Aleph
+        const f028NormCharsRegex = /[-"<>;:%=~`!\(\)\{\}\.\?\/\@\*\^]/g;
+        const normVal = val.replace(f028NormCharsRegex, ' ').replace(/ +/ug, ' ').replace(/^ +/ug, '').replace(/ +$/ug, '').toLowerCase();
+        // Do not return a value normalized to just a space
+        return normVal !== " " ? normVal : "";
+      }
+
     }
 
     // Default seems to be 024:
