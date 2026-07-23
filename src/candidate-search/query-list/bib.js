@@ -6,6 +6,8 @@ import {fieldToString} from '@natlibfi/marc-record-validators-melinda';
 import {getTitle} from '../../match-detection/features/bib/title.js';
 
 const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:query');
+const debugDev = debug.extend('dev');
+
 
 const IS_OK_ALONE_THRESHOLD = 5;
 
@@ -443,6 +445,8 @@ export function bibStandardIdentifiers(record) {
 
   const debug = createDebugLogger('@natlibfi/melinda-record-matching:candidate-search:query:bibStandardIdentifiers');
   const debugData = debug.extend('data');
+  const debugDev = debug.extend('dev');
+
   debug(`Creating queries for standard identifiers`);
 
   // DEVELOP: should we query also f015 and f028?
@@ -487,14 +491,36 @@ export function bibStandardIdentifiers(record) {
 
     if (tag === '028') { // TODO: test
       const a = subfields.find(sf => sf.code === 'a');
-      if (a) {
-        const b = subfields.find(sf => sf.code === 'b');
-        // TODO: normalize?
-        if (b) {
-          return [`^${a.value}`, `^${b.value} ${a.value}`];
+      const b = subfields.find(sf => sf.code === 'b');
+
+      const normA = a !== undefined ? normalizeF028ForSearch(a.value) : "";
+      const normB = b !== undefined ? normalizeF028ForSearch(b.value) : "";
+
+      debugDev(`sfa: ${JSON.stringify(a)} - normalized <${normA}>`);
+      debugDev(`sfb: ${JSON.stringify(b)} - normalized <${normB}>`);
+
+      if (normA.length > 0 || normB.length > 0) {
+        if (normA.length > 0 && normB.length > 0) {
+          return [`^${normA}`, `^${normB}`, `^${normB} ${normA}`, `^${normA} ${normB}`];
         }
-        return [`^${a.value}`];
+        if (normA.length > 0) {
+          return [`^${normA}`];
+        }
+        if (normB.length > 0) {
+          return [`^${normB}`];
+        }
       }
+
+      return [];
+
+      function normalizeF028ForSearch(val) {
+        // see normalization routine 34 used for 028-index in Aleph
+        const f028NormCharsRegex = /[-"<>;:%=~`!\(\)\{\}\.\?\/\@\*\^]/g;
+        const normVal = val.replace(f028NormCharsRegex, ' ').replace(/ +/ug, ' ').toLowerCase();
+        // Do not return a value normalized to just a space
+        return normVal !== " " ? normVal : "";
+      }
+
     }
 
     // Default seems to be 024:

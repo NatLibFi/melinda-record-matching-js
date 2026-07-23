@@ -1,0 +1,680 @@
+{
+    "leader": "     nam a2200661 a 4500",
+    "fields": [
+        {
+            "tag": "001",
+            "value": "000000668"
+        },
+        {
+            "tag": "008",
+            "value": "080410s2008    xx |||||||||||||||||eng||"
+        },
+        {
+            "tag": "041",
+            "ind1": "0",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "eng"
+                }
+            ]
+        },
+        {
+            "tag": "091",
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "77"
+                }
+            ]
+        },
+        {
+            "tag": "095",
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "788.21"
+                }
+            ]
+        },
+        {
+            "tag": "097",
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "78.8922"
+                }
+            ]
+        },
+        {
+            "tag": "100",
+            "ind1": "0",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": ","
+                },
+                {
+                    "code": "e",
+                    "value": "esittäjä"
+                }
+            ]
+        },
+        {
+            "tag": "100",
+            "ind1": "1",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": ","
+                },
+                {
+                    "code": "e",
+                    "value": "esittäjä"
+                }
+            ]
+        },
+        {
+            "tag": "110",
+            "ind1": "2",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": ","
+                },
+                {
+                    "code": "e",
+                    "value": "esittäjä"
+                }
+            ]
+        },
+        {
+            "tag": "245",
+            "ind1": "1",
+            "ind2": "0",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": ":"
+                },
+                {
+                    "code": "b",
+                    "value": " /"
+                }
+            ]
+        },
+        {
+            "tag": "260",
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "[S.l.] :"
+                },
+                {
+                    "code": "b",
+                    "value": ","
+                },
+                {
+                    "code": "c",
+                    "value": "p"
+                }
+            ]
+        },
+        {
+            "tag": "300",
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "1 CD-äänilevy ( min  sek) +"
+                },
+                {
+                    "code": "e",
+                    "value": "laulutekstiliite"
+                }
+            ]
+        },
+        {
+            "tag": "500",
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "Digitaalisesti uudelleenmasteroitu. -Kappaleiden sanat tekstiliitteessä."
+                }
+            ]
+        },
+        {
+            "tag": "518",
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "Äänitetty"
+                }
+            ]
+        },
+        {
+            "tag": "574",
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "lassi.kokkonen@hel.fi"
+                }
+            ]
+        },
+        {
+            "tag": "655",
+            "ind1": " ",
+            "ind2": "7",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "rock"
+                }
+            ]
+        },
+        {
+            "tag": "648",
+            "ind1": " ",
+            "ind2": "7",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "1990-luku"
+                }
+            ]
+        },
+        {
+            "tag": "651",
+            "ind1": " ",
+            "ind2": "7",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "Suomi"
+                }
+            ]
+        },
+        {
+            "tag": "700",
+            "ind1": "1",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": ","
+                }
+            ]
+        },
+        {
+            "tag": "700",
+            "ind1": "1",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": ","
+                }
+            ]
+        },
+        {
+            "tag": "700",
+            "ind1": "1",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": ","
+                }
+            ]
+        },
+        {
+            "tag": "700",
+            "ind1": "1",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": ","
+                }
+            ]
+        },
+        {
+            "tag": "700",
+            "ind1": "1",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": ","
+                }
+            ]
+        },
+        {
+            "tag": "700",
+            "ind1": "1",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": ","
+                }
+            ]
+        },
+        {
+            "tag": "700",
+            "ind1": "1",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": ","
+                }
+            ]
+        },
+        {
+            "tag": "700",
+            "ind1": "1",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": ","
+                }
+            ]
+        },
+        {
+            "tag": "700",
+            "ind1": "1",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": ","
+                }
+            ]
+        },
+        {
+            "tag": "700",
+            "ind1": "1",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": ","
+                }
+            ]
+        },
+        {
+            "tag": "700",
+            "ind1": "1",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": ","
+                }
+            ]
+        },
+        {
+            "tag": "700",
+            "ind1": "1",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": ","
+                }
+            ]
+        },
+        {
+            "tag": "700",
+            "ind1": "1",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": ","
+                }
+            ]
+        },
+        {
+            "tag": "700",
+            "ind1": "1",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": ","
+                }
+            ]
+        },
+        {
+            "tag": "700",
+            "ind1": "1",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": ","
+                }
+            ]
+        },
+        {
+            "tag": "700",
+            "ind1": "1",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": ","
+                }
+            ]
+        },
+        {
+            "tag": "710",
+            "ind1": "2",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": ","
+                },
+                {
+                    "code": "e",
+                    "value": "esittäjä"
+                }
+            ]
+        },
+        {
+            "tag": "710",
+            "ind1": "2",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": ","
+                },
+                {
+                    "code": "e",
+                    "value": "esittäjä"
+                }
+            ]
+        },
+        {
+            "tag": "710",
+            "ind1": "2",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": ","
+                },
+                {
+                    "code": "e",
+                    "value": "esittäjä"
+                }
+            ]
+        },
+        {
+            "tag": "710",
+            "ind1": "2",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": ","
+                },
+                {
+                    "code": "e",
+                    "value": "esittäjä"
+                }
+            ]
+        },
+        {
+            "tag": "710",
+            "ind1": "2",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": ","
+                },
+                {
+                    "code": "e",
+                    "value": "esittäjä"
+                }
+            ]
+        },
+        {
+            "tag": "710",
+            "ind1": "2",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": ","
+                },
+                {
+                    "code": "e",
+                    "value": "esittäjä"
+                }
+            ]
+        },
+        {
+            "tag": "710",
+            "ind1": "2",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": ","
+                },
+                {
+                    "code": "e",
+                    "value": "esittäjä"
+                }
+            ]
+        },
+        {
+            "tag": "710",
+            "ind1": "2",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": ","
+                },
+                {
+                    "code": "e",
+                    "value": "esittäjä"
+                }
+            ]
+        },
+        {
+            "tag": "710",
+            "ind1": "2",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": ","
+                },
+                {
+                    "code": "e",
+                    "value": "esittäjä"
+                }
+            ]
+        },
+        {
+            "tag": "710",
+            "ind1": "2",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": ","
+                },
+                {
+                    "code": "e",
+                    "value": "esittäjä"
+                }
+            ]
+        },
+        {
+            "tag": "710",
+            "ind1": "2",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": ","
+                },
+                {
+                    "code": "e",
+                    "value": "esittäjä"
+                }
+            ]
+        },
+        {
+            "tag": "710",
+            "ind1": "2",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": ","
+                },
+                {
+                    "code": "e",
+                    "value": "esittäjä"
+                }
+            ]
+        },
+        {
+            "tag": "730",
+            "ind1": "0",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "/"
+                }
+            ]
+        },
+        {
+            "tag": "730",
+            "ind1": "0",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "/"
+                }
+            ]
+        },
+        {
+            "tag": "730",
+            "ind1": "0",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "/"
+                }
+            ]
+        },
+        {
+            "tag": "730",
+            "ind1": "0",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "/"
+                }
+            ]
+        },
+        {
+            "tag": "730",
+            "ind1": "0",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "/"
+                }
+            ]
+        },
+        {
+            "tag": "730",
+            "ind1": "0",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "/"
+                }
+            ]
+        },
+        {
+            "tag": "730",
+            "ind1": "0",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "kappale,"
+                },
+                {
+                    "code": "l",
+                    "value": "kieli (suomeksi) /"
+                }
+            ]
+        },
+        {
+            "tag": "907",
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": ".b25812749"
+                }
+            ]
+        },
+        {
+            "tag": "SID",
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "c",
+                    "value": "2581274"
+                },
+                {
+                    "code": "b",
+                    "value": "helme"
+                }
+            ]
+        }
+    ]
+}

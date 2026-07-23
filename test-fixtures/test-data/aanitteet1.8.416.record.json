@@ -1,0 +1,287 @@
+{
+    "leader": "     njm a22003137  4500",
+    "fields": [
+        {
+            "tag": "001",
+            "value": "000000416"
+        },
+        {
+            "tag": "005",
+            "value": "20021114225659.0"
+        },
+        {
+            "tag": "008",
+            "value": "930401s1992    xx   u              eng  "
+        },
+        {
+            "tag": "028",
+            "ind1": "0",
+            "ind2": "1",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "---"
+                },
+                {
+                    "code": "b",
+                    "value": "01624 15407-2"
+                }
+            ]
+        },
+        {
+            "tag": "033",
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "b",
+                    "value": "Soundsational Studio"
+                }
+            ]
+        },
+        {
+            "tag": "041",
+            "ind1": "0",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "eng"
+                }
+            ]
+        },
+        {
+            "tag": "084",
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "78"
+                },
+                {
+                    "code": "2",
+                    "value": "ykl"
+                }
+            ]
+        },
+        {
+            "tag": "091",
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "78"
+                }
+            ]
+        },
+        {
+            "tag": "092",
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "78.891"
+                }
+            ]
+        },
+        {
+            "tag": "094",
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "78.8916"
+                }
+            ]
+        },
+        {
+            "tag": "095",
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "788.1"
+                }
+            ]
+        },
+        {
+            "tag": "097",
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "78.891"
+                }
+            ]
+        },
+        {
+            "tag": "110",
+            "ind1": "2",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "2 Unlimited"
+                }
+            ]
+        },
+        {
+            "tag": "245",
+            "ind1": "1",
+            "ind2": "0",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "Get ready /"
+                },
+                {
+                    "code": "c",
+                    "value": "2 Unlimited"
+                }
+            ]
+        },
+        {
+            "tag": "260",
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "Woburn :"
+                },
+                {
+                    "code": "b",
+                    "value": "Critique Records,"
+                },
+                {
+                    "code": "c",
+                    "value": "p1992"
+                }
+            ]
+        },
+        {
+            "tag": "300",
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "1 CD-äänilevy (59 min 15 s) +"
+                },
+                {
+                    "code": "e",
+                    "value": "esiteliite"
+                }
+            ]
+        },
+        {
+            "tag": "500",
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "Äänityspaikka Soundsational Studio. Asiasana: tekno."
+                }
+            ]
+        },
+        {
+            "tag": "505",
+            "ind1": "0",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "Get ready for this ; Contrast ; Pacific walk / tekijät P. Wilde, J. P. De Coster. Twilight zone / P. Wilde, C. Meire, J. Rollocks, J. P. De Coster. The magic friend / P. Neefs, R. L. Slijngaard. Desire / M. Leahy, P. Bauwens, P. Wilde. Workaholic / P. Sterman, P. Wilde, L. De Cock, R. L. Slijngaard. Rougher than the average / A. Doth, R. L. Slijngaard, P. Wilde, J. Voermans, J. P. De Coster. Delight / R. L. Slijngaard, J. P. De Coster. Eternally yours / P. Bauwens, P. Wilde, X. De Clayton. Twilight zone (rave version edit) / P. Wilde, C. Meire, J. P. De Coster. Get ready for this (vocal version) / P. Wilde, R. L. Slijngaard, J. P. De Coster. The magic friend (instr.) / P. Neefs. Workaholic (instr.) / P. Sterman, P. Wilde, L. De Cock."
+                }
+            ]
+        },
+        {
+            "tag": "511",
+            "ind1": "0",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "2 Unlimited: Kid Ray ja A', tuotanto Wilde ja Jean Paul De Coster."
+                }
+            ]
+        },
+        {
+            "tag": "650",
+            "ind1": " ",
+            "ind2": "7",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "popmusiikki"
+                }
+            ]
+        },
+        {
+            "tag": "648",
+            "ind1": " ",
+            "ind2": "7",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "1990-luku"
+                }
+            ]
+        },
+        {
+            "tag": "650",
+            "ind1": " ",
+            "ind2": "7",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "diskomusiikki"
+                }
+            ]
+        },
+        {
+            "tag": "651",
+            "ind1": " ",
+            "ind2": "7",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": "Alankomaat"
+                }
+            ]
+        },
+        {
+            "tag": "907",
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "a",
+                    "value": ".b11252807"
+                }
+            ]
+        },
+        {
+            "tag": "SID",
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+                {
+                    "code": "c",
+                    "value": "1125280"
+                },
+                {
+                    "code": "b",
+                    "value": "helme"
+                }
+            ]
+        }
+    ]
+}

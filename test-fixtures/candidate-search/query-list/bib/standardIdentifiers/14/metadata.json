@@ -1,12 +1,13 @@
 {
-  "description": "14: Test MELKEHITYS-3476: Create quoted-and-careted queries from f028, do not pair careted and non-careted queries",
+  "description": "14: Test MELKEHITYS-3476: Create quoted-and-careted normalized queries from all combinations of f028 $a + $b, do not pair careted and non-careted queries",
   "only": false,
   "skip": false,
   "type": "bibStandardIdentifiers",
   "expectedQuery": [
     "dc.identifier=f451",
-    "dc.identifier=\"^BLESSCD123\" or dc.identifier=\"^OCH321\"",
-    "dc.identifier=\"^BÅDE OCH321\""
+    "dc.identifier=\"^aless records\" or dc.identifier=\"^blesscd123\"",
+    "dc.identifier=\"^och321\" or dc.identifier=\"^både\"",
+    "dc.identifier=\"^både och321\" or dc.identifier=\"^och321 både\""
   ],
   "inputRecord": {
     "leader": "02518cam a2200745zi 4500",
