@@ -1,4 +1,5 @@
 import createDebugLogger from 'debug';
+import {uniqArray} from '@natlibfi/marc-record-validators-melinda/dist/utils.js';
 
 export function toQueries(identifiers, queryString) {
 
@@ -6,13 +7,16 @@ export function toQueries(identifiers, queryString) {
   const debugData = debug.extend('data');
   const debugDev = debug.extend('dev');
 
-  // For dc.identifier search use max length of 60 characters
+  // For dc.identifier search use max length of 40 characters to avoid dc.identifier -> 1007 mapped query from crashing
+  // DEVELOP: check if the length crash is related to mapping the query to multiple Aleph indexes
   const useMaxLength = queryString === 'dc.identifier' ? true : false;
-  const maxLength = 60;
+  const maxLength = 40;
+  debugDev(`We are ${useMaxLength ? `using maxLength ${maxLength}, queryString ${queryString}` : `not using maxLength, queryString ${queryString}`}`);
+  const croppedIdentifiers = uniqArray(useMaxLength ? identifiers.map((identifier) => identifier.substring(0, maxLength)) : identifiers);
 
   // We quote the identifier, if it contains a slash! (Slash in non-quoted SRU-search breaks search.)
   // We also quote the identifier, if it starts with caret (f028 searches fail without caret and quotes...)
-  const quotedIdentifiers = identifiers.map(identifier => identifier.match(/\//u) || identifier.match(/\^/u) ? `"${identifier}"` : `${identifier}`);
+  const quotedIdentifiers = croppedIdentifiers.map(identifier => identifier.match(/\//u) || identifier.match(/\^/u) ? `"${identifier}"` : `${identifier}`);
 
   // We can't pair queries with starting caret and without (ie. left anchored queries with non-left anchored queries)
   const caretPairs = toPairs(quotedIdentifiers.filter(identifier => identifier.match(/\^/u)));
@@ -24,11 +28,9 @@ export function toQueries(identifiers, queryString) {
   // Aleph supports only two queries with or -operator (This is not actually true)
   const queries = pairs.map(([a, b]) => {
     const lengths = a.length + (b ? b.length : 0);
-    debugDev(`Lengths: ${a} (${a.length}) + ${b} (${b ? b.length : 0}) = ${lengths}`);
+    debugDev(`Lengths: A: ${a} (${a.length}) + B: ${b} (${b ? b.length : 0}) = ${lengths}`);
 
     // Do not create a paired query if query length would be too long
-    // Note: single too long identifier will still crash the queries
-    // DEVELOP: check if the length crash is related to mapping the query to multiple Aleph indexes
     if (useMaxLength && lengths > maxLength && a && b) {
       return [`${queryString}=${a}`, `${queryString}=${b}`];
     }
