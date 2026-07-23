@@ -2,7 +2,7 @@
   "description": "01: Should extract (no) publisher numbers from 028$b$a",
   "feature": "publisherNumber",
   "type": "extract",
-  "expectedFeatures": ["FOO123", "BAR321", "321"],
+  "expectedFeatures": ["foo123", "bar321", "321"],
   "inputRecord": {
     "leader": "02518cam a2200745zi 4500",
     "fields": [
