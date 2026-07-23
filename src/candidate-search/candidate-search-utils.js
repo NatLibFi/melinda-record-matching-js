@@ -4,6 +4,11 @@ export function toQueries(identifiers, queryString) {
 
   const debug = createDebugLogger('@natlibfi/melinda-record-matching:toQueries');
   const debugData = debug.extend('data');
+  const debugDev = debug.extend('dev');
+
+  // For dc.identifier search use max length of 60 characters
+  const useMaxLength = queryString === 'dc.identifier' ? true : false;
+  const maxLength = 60;
 
   // We quote the identifier, if it contains a slash! (Slash in non-quoted SRU-search breaks search.)
   // We also quote the identifier, if it starts with caret (f028 searches fail without caret and quotes...)
@@ -17,10 +22,24 @@ export function toQueries(identifiers, queryString) {
   debugData(`Pairs (${pairs.length}): ${JSON.stringify(pairs)}`);
 
   // Aleph supports only two queries with or -operator (This is not actually true)
-  const queries = pairs.map(([a, b]) => b ? `${queryString}=${a} or ${queryString}=${b}` : `${queryString}=${a}`);
-  debugData(`Queries (${queries.length}): ${JSON.stringify(queries)}`);
+  const queries = pairs.map(([a, b]) => {
+    const lengths = a.length + (b ? b.length : 0);
+    debugDev(`Length a: ${a.length} ${a}`);
+    debugDev(`Length b: ${b ? b.length : 0} ${b}`);
+    debugDev(`Lengths: ${a} + ${b} = ${lengths}`);
 
-  return queries;
+    // Do not create a paired query if query length would be too long
+    if (useMaxLength && lengths > maxLength && a && b) {
+      return [`${queryString}=${a}`, `${queryString}=${b}`];
+    }
+    return b ? `${queryString}=${a} or ${queryString}=${b}` : `${queryString}=${a}`}
+  );
+
+  debugData(`Queries (${queries.length}): ${JSON.stringify(queries)}`);
+  const flatQueries = queries.flat();
+  debugData(`FlatQueries (${flatQueries.length}): ${JSON.stringify(flatQueries)}`);
+
+  return flatQueries;
 }
 
 function toPairs(array) {
@@ -29,3 +48,4 @@ function toPairs(array) {
   }
   return [array.slice(0, 2)].concat(toPairs(array.slice(2), 2));
 }
+
