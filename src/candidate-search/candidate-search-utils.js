@@ -24,11 +24,11 @@ export function toQueries(identifiers, queryString) {
   // Aleph supports only two queries with or -operator (This is not actually true)
   const queries = pairs.map(([a, b]) => {
     const lengths = a.length + (b ? b.length : 0);
-    debugDev(`Length a: ${a.length} ${a}`);
-    debugDev(`Length b: ${b ? b.length : 0} ${b}`);
-    debugDev(`Lengths: ${a} + ${b} = ${lengths}`);
+    debugDev(`Lengths: ${a} (${a.length}) + ${b} (${b ? b.length : 0}) = ${lengths}`);
 
     // Do not create a paired query if query length would be too long
+    // Note: single too long identifier will still crash the queries
+    // DEVELOP: check if the length crash is related to mapping the query to multiple Aleph indexes
     if (useMaxLength && lengths > maxLength && a && b) {
       return [`${queryString}=${a}`, `${queryString}=${b}`];
     }

@@ -449,7 +449,7 @@ export function bibStandardIdentifiers(record) {
 
   debug(`Creating queries for standard identifiers`);
 
-  // DEVELOP: should we query also f015 and f028?
+  // DEVELOP: query identifiers from their own indexes (this needs some mapping work in SRU/Aleph)
 
   // const fields = record.get(/^(?<def>020|022|024)$/u);
   const fields = record.get(/^(?<def>015|020|022|024|028)$/u);
