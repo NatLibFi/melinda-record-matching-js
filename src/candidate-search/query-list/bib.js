@@ -513,6 +513,7 @@ export function bibStandardIdentifiers(record) {
 
       const identifiers = normAs.map((normA, index) => {
         debugDev(`Handling ${normA} from index: ${index}`);
+        // Paired $a + $b
         if (normA.length > 0 && normBs[index]?.length > 0) {
           debugDev(`Found a (${normA}) + b (${normBs[index]})`);
           // let's not return plain $b
@@ -520,6 +521,16 @@ export function bibStandardIdentifiers(record) {
           //return [`^${normA}`, `^${normBs[index]}`, `^${normBs[index]} ${normA}`, `^${normA} ${normBs[index]}`];
 
         }
+        // if there is no pair, get $a + first $b
+        // NOTE: we do not get all possible pairs
+        if (normA.length > 0 && normBs[0]?.length > 0) {
+          debugDev(`Found a (${normA}) + b (${normBs[0]})`);
+          // let's not return plain $b
+          return [`^${normBs[0]} ${normA}`, `^${normA} ${normBs[0]}`, `^${normA}`];
+          //return [`^${normA}`, `^${normBs[index]}`, `^${normBs[index]} ${normA}`, `^${normA} ${normBs[index]}`];
+
+        }
+        // Otherwise just $a
         if (normA.length > 0) {
           debugDev(`Found a (${normA}) but no b ${normBs[index]}`);
           return [`^${normA}`];
@@ -528,7 +539,7 @@ export function bibStandardIdentifiers(record) {
       });
 
       debugDev(`Current identifiers from f028: ${JSON.stringify(identifiers)}`);
-      return identifiers.flat();
+      return uniqArray(identifiers.flat());
 
       function cleanQualifiers(val) {
         if (val !== undefined) {
