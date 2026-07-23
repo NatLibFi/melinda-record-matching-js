@@ -1,0 +1,21 @@
+{
+  "description": "20 Normalize masking character * out",
+  "only": false,
+  "skip": false,
+  "type": "bibStandardIdentifiers",
+  "expectedQuery": [
+     "dc.identifier=\"^record company rc 456\"",
+     "dc.identifier=\"^rc 456 record company\"",
+     "dc.identifier=\"^rc 456\""
+  ],
+  "inputRecord": {
+    "leader": "02518cam a2200745zi 4500",
+    "fields": [
+      {
+        "tag": "001",
+        "value": "000019643"
+      },
+      { "tag": "028", "ind1": " ", "ind2": " ", "subfields": [ { "code": "b", "value": "Record company" }, { "code": "a", "value": "RC*456" } ] }
+    ]
+  }
+}
