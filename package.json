@@ -13,7 +13,7 @@
 		"url": "https://github.com/NatLibFi/melinda-record-matching-js"
 	},
 	"license": "MIT",
-	"version": "6.0.0",
+	"version": "6.0.1-alpha.1",
 	"type": "module",
 	"main": "./dist/index.js",
 	"bin": "./dist/cli.js",
@@ -33,7 +33,7 @@
 		"test:base": "node --test --test-force-exit --experimental-test-coverage --test-reporter=spec 'test/**/*.test.js'",
 		"test": "npm run lint && npm run test:base",
 		"test:only": "npm run lint && npm run test:base:only",
-		"test:base:only": "cross-env DEBUG=@natlibfi/* NODE_ENV=test node --test --test-only --test-force-exit --experimental-test-coverage --test-reporter=spec 'test/**/*.test.js'",
+		"test:base:only": "cross-env DEBUG=@natlibfi/* NODE_ENV=test node --test --test-only --test-force-exit --experimental-test-coverage --test-reporter=spec 'test/*.test.js' 'test/**/*.test.js'",
 		"test:base:only:index": "cross-env DEBUG=@natlibfi/* NODE_ENV=test node --test --test-only --test-force-exit --experimental-test-coverage --test-reporter=spec './test/index.test.js'",
 		"watch:test": "cross-env DEBUG=@natlibfi/* NODE_ENV=test node --watch --test --experimental-test-coverage --test-reporter=spec 'test/**/*.test.js'",
 		"dev": "npm run watch:test",

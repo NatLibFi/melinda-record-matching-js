@@ -1,12 +1,11 @@
 {
-  "description": "14: Test MELKEHITYS-3476: Create quoted-and-careted queries from f028, do not pair careted and non-careted queries",
-  "only":  true,
+  "description": "14: Test MELKEHITYS-3476: Create quoted-and-careted normalized queries from all combinations of f028 $a + $b besides only $b",
+  "only": false,
   "skip": false,
   "type": "bibStandardIdentifiers",
   "expectedQuery": [
-    "dc.identifier=f451",
-    "dc.identifier=\"^BLESSCD123\" or dc.identifier=\"^OCH321\"",
-    "dc.identifier=\"^BÅDE OCH321\""
+    "dc.identifier=\"^blesscd123\" or dc.identifier=\"^både och321\"",
+    "dc.identifier=\"^och321 både\" or dc.identifier=\"^och321\""
   ],
   "inputRecord": {
     "leader": "02518cam a2200745zi 4500",
@@ -14,21 +13,6 @@
       {
         "tag": "001",
         "value": "000019643"
-      },
-      {
-        "tag": "015",
-        "ind1": " ",
-        "ind2": " ",
-        "subfields": [
-          {
-            "code": "a",
-            "value": "f451"
-          },
-          {
-            "code": "q",
-            "value": "whatever"
-          }
-        ]
       },
       { "tag": "028", "ind1": " ", "ind2": " ", "subfields": [ { "code": "b", "value": "aless records" } ] },
       { "tag": "028", "ind1": " ", "ind2": " ", "subfields": [ { "code": "a", "value": "BLESSCD123" } ] },

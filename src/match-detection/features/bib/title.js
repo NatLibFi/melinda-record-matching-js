@@ -7,6 +7,8 @@ import { subfieldToString } from '@natlibfi/marc-record-validators-melinda/dist/
 
 const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection:features/bib/title');
 const debugData = debug.extend('data');
+const debugDev = debug.extend('dev');
+
 
 const TITLE_MAX = 0.5;
 export default ({threshold = 0.9} = {}) => ({
@@ -235,6 +237,8 @@ export default ({threshold = 0.9} = {}) => ({
 export function getTitle(record, targetSubfieldCodes = ['a', 'b', 'n', 'p']) {
   const [field] = record.get(/^245$/u);
   debugData(`titleField: ${JSON.stringify(field)}`);
+  debugDev(`targetSubfieldCodes: ${JSON.stringify(targetSubfieldCodes)}`);
+
 
   if (field) {
     const title = field.subfields
@@ -243,7 +247,8 @@ export function getTitle(record, targetSubfieldCodes = ['a', 'b', 'n', 'p']) {
       // Would be nice to normalize $n values...
       .map(({value}) => testStringOrNumber(value) ? String(value) : '')
       .join(' ')
-      .replace(/\[[^\]]*\]/ug, ' ') // Remove [whatever] stuff. ADD TEST FOR THIS
+      // Note: we do not want to removed stuff in brackets if its the only stuff in field ... (245 $a [Psi] / ... )
+      //.replace(/\[[^\]]*\]/ug, ' ') // Remove [whatever] stuff. ADD TEST FOR THIS
       .replace(/ [=\/:](?:$| )/ug, ' ') // Strip punctuation
       // Also đ vs d pairs seen:
       //.replace(/(?:đ|ȧ|t̄|ǩ|ǧ|s̆|c̆)/ug, '') // Hack. Saamelaisbibliografia has often dropped this wierd characters (oft old articles, no longer used in sami either)
@@ -252,11 +257,24 @@ export function getTitle(record, targetSubfieldCodes = ['a', 'b', 'n', 'p']) {
       .replace(/^ +/u, '')
       .replace(/ +$/u, '');
 
+    debugDev(`getTitle: title: ${title}`)
+
+    const cleanTitle = title.replace(/\[[^\]]*\]/ug, ' ') // Remove [whatever] stuff. ADD TEST FOR THIS
+      .replace(/ +/ug, ' ')
+      .replace(/^ +/u, '')
+      .replace(/ +$/u, '');
+
+    debugDev(`getTitle: cleanTitle: ${cleanTitle} (${cleanTitle.length})`);
+    const usableTitle = cleanTitle.length > 0 ? cleanTitle : title;
+    debugDev(`getTitle: usableTitle: ${usableTitle} (${usableTitle.length})`);
+    
+
     // Skip non-filing indicator (note that '9' is a magic indicator value, so we don't do it):
     if (/^[1-8]$/u.test(field.ind2)) { // Skip non-filing characters
-      return title.slice(parseInt(field.ind2));
+      const nonFilingTitle = usableTitle.slice(parseInt(field.ind2));
+      if (nonFilingTitle.length > 0) return nonFilingTitle;
     }
-    return title;
+    return usableTitle;
 
   }
   return false;

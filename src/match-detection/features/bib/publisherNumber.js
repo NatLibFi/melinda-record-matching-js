@@ -26,6 +26,7 @@ export default () => ({
         }
         const a = field.subfields.find(sf => sf.code === 'a');
         // NB! Publisher number must contain a digit! :-)
+        // NOTE: we might have some rare cases with publisher numbers that do not have numbers...
         if (!a || !a.value || !a.value.match(/[0-9]/u)) {
           return fieldsToPublisherNumber(remainingFields, result);
         }
@@ -40,7 +41,7 @@ export default () => ({
       }
 
       function normalizePublisherNumber(val) {
-        return val.replace(/[- .,:;]/ug, '');
+        return val.replace(/[- .,:;]/ug, '').toLowerCase();
       }
     }
   },

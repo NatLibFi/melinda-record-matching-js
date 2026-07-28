@@ -1,0 +1,22 @@
+{
+  "description": "Should extract title content without filing characters",
+  "feature": "title",
+  "type": "extract",
+  "expectedFeatures": ["songs of the west volume 3 gene autry & roy rogers", "", "", ""],
+  "inputRecord": {
+    "leader": "02518cam a2200745zi 4500",
+    "fields": [
+      { "tag": "001", "value": "000019643" },
+      { "tag": "245", "ind1": "1",
+        "ind2": "4",
+        "subfields": [
+          {
+            "code": "a",
+            "value": "The Songs of the West. Volume three : Gene Autry and Roy Rogers"
+          }
+        ]
+      }
+    ]
+  },
+  "only": false
+}

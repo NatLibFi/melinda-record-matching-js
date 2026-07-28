@@ -1,0 +1,17 @@
+{
+  "description": "08: Should extract unique normalized publisher numbers from 028$b$a",
+  "feature": "publisherNumber",
+  "type": "extract",
+  "expectedFeatures": ["foo123", "bar321", "321"],
+  "inputRecord": {
+    "leader": "02518cam a2200745zi 4500",
+    "fields": [
+      {"tag": "001", "value": "000019643"},
+      {"tag": "028", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "FOO-123"}]},
+      {"tag": "028", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "FOO"}]},
+      {"tag": "028", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "foo 123"}]},
+      {"tag": "028", "ind1": " ", "ind2": " ", "subfields": [ {"code": "b", "value": "BAR"}, {"code": "a", "value": "321"}]},
+      {"tag": "028", "ind1": " ", "ind2": " ", "subfields": [ {"code": "b", "value": "B Ar"}, {"code": "a", "value": "3;21"}]}
+    ]
+  }
+}

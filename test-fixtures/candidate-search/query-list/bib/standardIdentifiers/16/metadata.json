@@ -1,0 +1,22 @@
+{
+  "description": "16: MRA-905: Do not create too long (=> 40 characters) dc.identifier queries",
+  "note": "Not sure if these searches would hit anything, but at least they won't error",
+  "only": false,
+  "skip": false,
+  "type": "bibStandardIdentifiers",
+  "expectedQuery": [
+     "dc.identifier=\"^test record company with far too long n\"",
+     "dc.identifier=\"^also long identifier here0001 test reco\"",
+     "dc.identifier=\"^also long identifier here0001\""
+    ],
+  "inputRecord": {
+    "leader": "02518cam a2200745zi 4500",
+    "fields": [
+      {
+        "tag": "001",
+        "value": "000019643"
+      },
+      { "tag": "028", "ind1": " ", "ind2": " ", "subfields": [ { "code": "b", "value": "Test Record company with far too long name" }, { "code": "a", "value": "Also long identifier-here0001" } ] }
+    ]
+  }
+}
