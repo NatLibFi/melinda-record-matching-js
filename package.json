@@ -41,9 +41,9 @@
 	},
 	"dependencies": {
 		"@natlibfi/marc-record": "^10.0.2",
-		"@natlibfi/marc-record-validators-melinda": "^13.0.0",
-		"@natlibfi/melinda-commons": "^14.0.2",
-		"@natlibfi/sru-client": "^7.0.2",
+		"@natlibfi/marc-record-validators-melinda": "^13.0.4",
+		"@natlibfi/melinda-commons": "^15.0.2",
+		"@natlibfi/sru-client": "^7.0.4",
 		"debug": "^4.4.3",
 		"isbn3": "^2.0.9",
 		"natural": "^8.1.1",
@@ -55,6 +55,6 @@
 		"@natlibfi/fixura": "^4.0.1",
 		"cross-env": "^10.1.0",
 		"esbuild": "^0.28.1",
-		"eslint": "^10.8.0"
+		"eslint": "^10.9.1"
 	}
 }
