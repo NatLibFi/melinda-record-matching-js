@@ -43,7 +43,7 @@
 		"@natlibfi/marc-record": "^10.0.2",
 		"@natlibfi/marc-record-validators-melinda": "^13.0.4",
 		"@natlibfi/melinda-commons": "^15.0.2",
-		"@natlibfi/sru-client": "^7.0.4",
+		"@natlibfi/sru-client": "^7.0.6",
 		"debug": "^4.4.3",
 		"isbn3": "^2.0.9",
 		"natural": "^8.1.1",
