@@ -1,0 +1,20 @@
+{
+  "description": "Compare: token-subset (A tokens subset of B, min-1 token) -> +0.1",
+  "feature": "publisher",
+  "type": "compare",
+  "expectedPoints": 0.1,
+  "featuresA": {
+    "serial": true,
+    "names": [
+      "sanoma"
+    ],
+    "text550": ""
+  },
+  "featuresB": {
+    "serial": true,
+    "names": [
+      "sanoma media"
+    ],
+    "text550": ""
+  }
+}

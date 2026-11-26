@@ -20,3 +20,4 @@ export {default as f773} from './f773.js';
 export {default as setVolumeLevel} from './set-volume-level.js';
 export {default as f338} from './f338.js';
 export {default as serialLevel} from './serial-level.js';
+export {default as publisher} from './publisher.js';

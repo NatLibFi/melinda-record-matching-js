@@ -1,0 +1,20 @@
+{
+  "description": "Compare: seriality precondition - non-serial x non-serial skips the feature even with equal names",
+  "feature": "publisher",
+  "type": "compare",
+  "expectedPoints": 0,
+  "featuresA": {
+    "serial": false,
+    "names": [
+      "tiede"
+    ],
+    "text550": ""
+  },
+  "featuresB": {
+    "serial": false,
+    "names": [
+      "tiede"
+    ],
+    "text550": ""
+  }
+}

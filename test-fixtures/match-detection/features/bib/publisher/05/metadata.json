@@ -1,0 +1,36 @@
+{
+  "description": "710: name = non-empty $a and $b, all occurrences, strict subfield order, space-joined; diacritics stripped",
+  "feature": "publisher",
+  "type": "extract",
+  "expectedFeatures": {
+    "serial": true,
+    "names": [
+      "helsingin yliopisto tietojenkasittelytieteen laitos"
+    ],
+    "text550": ""
+  },
+  "inputRecord": {
+    "leader": "02518cas a2200745zi 4500",
+    "fields": [
+      {
+        "tag": "001",
+        "value": "000019643"
+      },
+      {
+        "tag": "710",
+        "ind1": "1",
+        "ind2": " ",
+        "subfields": [
+          {
+            "code": "a",
+            "value": "Helsingin yliopisto."
+          },
+          {
+            "code": "b",
+            "value": "Tietojenkäsittelytieteen laitos."
+          }
+        ]
+      }
+    ]
+  }
+}

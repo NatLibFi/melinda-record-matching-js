@@ -1,0 +1,18 @@
+{
+  "description": "Compare: 550 containment with diacritics - B 550 text matches A name -> +0.1",
+  "feature": "publisher",
+  "type": "compare",
+  "expectedPoints": 0.1,
+  "featuresA": {
+    "serial": true,
+    "names": [
+      "werner soderstrom"
+    ],
+    "text550": ""
+  },
+  "featuresB": {
+    "serial": true,
+    "names": [],
+    "text550": "werner söderström osakeyhtiö"
+  }
+}
