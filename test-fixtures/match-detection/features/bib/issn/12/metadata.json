@@ -1,0 +1,9 @@
+{
+  "description": "positiveWeight factory option applies to the positive shared ISSN case only",
+  "feature": "issn",
+  "type": "compare",
+  "options": { "positiveWeight": 0.75 },
+  "expectedPoints": 0.75,
+  "featuresA": ["2049-363X"],
+  "featuresB": ["2049-363X"]
+}

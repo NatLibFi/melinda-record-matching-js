@@ -1,6 +1,7 @@
 
 import assert from 'node:assert';
 import {describe} from 'node:test';
+import test from 'node:test';
 import createDebugLogger from 'debug';
 import generateTests from '@natlibfi/fixugen';
 import {READERS} from '@natlibfi/fixura';
@@ -43,5 +44,26 @@ describe('match-detection/features/bib/', () => {
 
       throw new Error(`Invalid type ${type}`);
     }
+  });
+
+  describe('issn factory positiveWeight option guard', () => {
+    test('valid values construct without throwing', () => {
+      assert.doesNotThrow(() => features.issn());
+      assert.doesNotThrow(() => features.issn({}));
+      assert.doesNotThrow(() => features.issn({positiveWeight: undefined}));
+      assert.doesNotThrow(() => features.issn({positiveWeight: 0}));
+      assert.doesNotThrow(() => features.issn({positiveWeight: 0.75}));
+    });
+
+    test('invalid values throw a descriptive error', () => {
+      const invalidValues = ['0.75', NaN, Infinity, -Infinity, -0.1, null, true, {}];
+      for (const value of invalidValues) {
+        assert.throws(
+          () => features.issn({positiveWeight: value}),
+          /issn: positiveWeight must be a finite number >= 0/,
+          `expected factory to throw for positiveWeight ${String(value)}`
+        );
+      }
+    });
   });
 });
