@@ -1,0 +1,10 @@
+{
+  "description": "Year side vs no-year side returns neutral 0 (direction B no-year)",
+  "feature": "publicationTimeAllowConsYearsMulti",
+  "type": "compare",
+  "expectedPoints": 0,
+  "featuresA": {"normalYears": ["1998"], "copyrightYears": [], "reprintYears": []},
+  "featuresB": {"normalYears": ["uuuu"], "copyrightYears": [], "reprintYears": []},
+  "skip": false,
+  "only": false
+}

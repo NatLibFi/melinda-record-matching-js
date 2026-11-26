@@ -1,0 +1,11 @@
+{
+  "description": "Identical open-code years return neutral 0 in graded mode (flag does not apply)",
+  "feature": "publicationTimeAllowConsYearsMulti",
+  "type": "compare",
+  "options": { "gradablePenalty": true },
+  "expectedPoints": 0,
+  "featuresA": {"normalYears": ["uuuu"], "copyrightYears": [], "reprintYears": []},
+  "featuresB": {"normalYears": ["uuuu"], "copyrightYears": [], "reprintYears": []},
+  "skip": false,
+  "only": false
+}

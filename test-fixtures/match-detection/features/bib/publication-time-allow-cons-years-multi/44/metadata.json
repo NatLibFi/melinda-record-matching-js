@@ -1,0 +1,22 @@
+{
+  "description": "Identical sentinel years 9999 vs 9999 return neutral 0 (sentinel years are not years, was 0.1)",
+  "feature": "publicationTimeAllowConsYearsMulti",
+  "type": "compare",
+  "expectedPoints": 0,
+  "featuresA": {
+    "copyrightYears": [],
+    "normalYears": [
+      "9999"
+    ],
+    "reprintYears": []
+  },
+  "featuresB": {
+    "copyrightYears": [],
+    "normalYears": [
+      "9999"
+    ],
+    "reprintYears": []
+  },
+  "skip": false,
+  "only": false
+}

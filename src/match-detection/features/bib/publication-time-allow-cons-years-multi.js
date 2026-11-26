@@ -6,7 +6,7 @@ import {testStringOrNumber} from '../../../matching-utils.js';
 // We should also get publishing time type from f008
 // We should get reprint times from f500 $a "Lisäpainos/Lisäpainokset:"
 
-export default () => ({
+export default (options) => ({
   name: 'Publication time, allow consequent years, years from multiple sources',
   extract: ({record, recordExternal}) => {
     const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection:features/bib/publication-time-allow-cons-years-multi');
@@ -26,7 +26,11 @@ export default () => ({
     // We should handle unknown years (here or comparison?)
     // We should handle year ranges for continuing resources / collections
 
-    const normalYears = [...new Set(f26xValues.normalYears.concat(f008Values.f008Date1).filter(value => value && value !== '    ' && value !== '||||'))].sort();
+    // normalYears holds only real years: exactly 4 digits, excluding sentinel
+    // values 0000/9999. Positions beyond a short 008 (space-padded slices),
+    // open codes like 'uuuu'/'9999', and partial years like '199u' are not
+    // years — unknown data must not become a score input.
+    const normalYears = [...new Set(f26xValues.normalYears.concat(f008Values.f008Date1).filter(value => /^\d{4}$/u.test(String(value)) && value !== '0000' && value !== '9999'))].sort();
     const copyrightYears = [...new Set(f26xValues.copyrightYears)].sort();
     const reprintYears = [...new Set(f500Values)].sort();
 
@@ -82,7 +86,7 @@ export default () => ({
           .filter(({code}) => code && code === 'c')
           .filter(({value}) => value && !copyrightRegex.test(value))
           .map(({value}) => value)
-          .map((value) => removeNonAlphaNumeric(value));
+          .flatMap((value) => cleanYearValue(value));
       }
 
       function extractPubF264CopySubfieldValues(record, copyrightRegex) {
@@ -94,7 +98,7 @@ export default () => ({
           .filter(({value}) => value)
           .map(({value}) => value)
           .map((value) => value.replace(copyrightRegex, ''))
-          .map((value) => removeNonAlphaNumeric(value));
+          .flatMap((value) => cleanYearValue(value));
       }
 
       function extractPubF260CopySubfieldValues(record, copyrightRegex) {
@@ -105,13 +109,23 @@ export default () => ({
           .filter(({value}) => value && copyrightRegex.test(value))
           .map(({value}) => value)
           .map((value) => value.replace(copyrightRegex, ''))
-          .map((value) => removeNonAlphaNumeric(value));
+          .flatMap((value) => cleanYearValue(value));
       }
 
-      function removeNonAlphaNumeric(value) {
+      function cleanYearValue(value) {
         debug(`Cleaning: ${JSON.stringify(value)}`);
+        if (!value) {
+          return [value];
+        }
+        // A YYYY-YYYY range (hyphen, en dash, or em dash) is two edition years,
+        // not one flattened 6-digit token: keep the endpoints as separate years
+        const yearRangeRegex = /(\d{4})\s*[-\u2013\u2014]\s*(\d{4})/u;
+        const yearRangeMatch = value.match(yearRangeRegex);
+        if (yearRangeMatch) {
+          return [yearRangeMatch[1], yearRangeMatch[2]];
+        }
         const nonAlphaNumericRegex = /[^A-Za-z0-9]/ug;
-        return value ? value.replace(nonAlphaNumericRegex, '') : value;
+        return [value.replace(nonAlphaNumericRegex, '')];
       }
     }
 
@@ -156,6 +170,15 @@ export default () => ({
 
     debug(`Comparing ${JSON.stringify(firstA)} to ${JSON.stringify(firstB)}`);
 
+    // No-year shape: when one side has no normal years (no 4-digit year, open codes
+    // like 'uuuu'/'9999' do not count) the comparison is neutral (0), not a
+    // force-fail, in both directions (unknown-data neutralization). Identical
+    // unknowns (e.g. 'uuuu' vs 'uuuu', no year on either side) must not score a
+    // match either, so this check runs before the equality shortcut.
+    if (!hasNormalYear(a) || !hasNormalYear(b)) {
+      return 0;
+    }
+
     if (firstA === firstB) {
       return 0.1;
     }
@@ -183,7 +206,7 @@ export default () => ({
     debug(`BNorm in ANorm: ${JSON.stringify(bNormalInANormal)}`);
     debug(`ANorm in BNorm: ${JSON.stringify(aNormalInBNormal)}`);
 
-    if (bNormalInANormal > 0 || aNormalInBNormal > 0) {
+    if (bNormalInANormal.length > 0 || aNormalInBNormal.length > 0) {
       return 0;
     }
 
@@ -193,7 +216,7 @@ export default () => ({
     debug(`BNorm in AReprint: ${JSON.stringify(bNormalInAReprint)}`);
     debug(`ANorm in BReprint: ${JSON.stringify(aNormalInBReprint)}`);
 
-    if (bNormalInAReprint > 0 || aNormalInBReprint > 0) {
+    if (bNormalInAReprint.length > 0 || aNormalInBReprint.length > 0) {
       return 0;
     }
 
@@ -204,7 +227,7 @@ export default () => ({
     debug(`BNorm in ACopyright: ${JSON.stringify(bNormalInACopyright)}`);
     debug(`ANorm in BCopyright: ${JSON.stringify(aNormalInBCopyright)}`);
 
-    if (bNormalInACopyright > 0 || aNormalInBCopyright > 0) {
+    if (bNormalInACopyright.length > 0 || aNormalInBCopyright.length > 0) {
       return 0;
     }
 
@@ -212,8 +235,46 @@ export default () => ({
 
 
 
+    // A year falling inside the other side's edition year range (e.g. 1990 in
+    // 1988-1993) is compatible but not a very good match: same discounted
+    // score as consecutive (±1) years, symmetric in both directions
+    if (isYearInOtherSideYearRange(a, b) || isYearInOtherSideYearRange(b, a)) {
+      return 0.1;
+    }
+
+    // gradablePenalty is an explicit opt-in: without it (or with anything but
+    // exactly true) non-matching years keep the force-fail default of -1
+    if (options?.gradablePenalty === true) {
+      const gap = Math.abs(firstANumber - firstBNumber);
+      if (gap <= 3) { return -0.1; }
+      if (gap <= 7) { return -0.3; }
+      if (gap <= 15) { return -0.5; }
+      return -0.7;
+    }
+
     return -1;
 
+    function hasNormalYear(side) {
+      return (side.normalYears || []).some(value => { 
+        const str = String(value);
+        return /^\d{4}$/u.test(str) && str !== '0000' && str !== '9999';
+      });
+    }
+
+    function isYearInOtherSideYearRange(rangeSide, otherSide) {
+      const rangeSideYears = rangeSide.normalYears || [];
+      const otherSideYears = otherSide.normalYears || [];
+      const rangeSideNumbers = rangeSideYears.map(value => parseInt(value, 10)).filter(value => !isNaN(value));
+      if (new Set(rangeSideNumbers).size < 2) {
+        return false;
+      }
+      const rangeMin = Math.min(...rangeSideNumbers);
+      const rangeMax = Math.max(...rangeSideNumbers);
+      return otherSideYears.some(value => {
+        const number = parseInt(value, 10);
+        return !isNaN(number) && number >= rangeMin && number <= rangeMax;
+      });
+    }
   }
 });
 

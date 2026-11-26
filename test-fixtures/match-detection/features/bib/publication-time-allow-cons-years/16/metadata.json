@@ -1,0 +1,11 @@
+{
+  "description": "gradablePenalty:true gap=16 (boundary) returns -0.7",
+  "feature": "publicationTimeAllowConsYears",
+  "type": "compare",
+  "options": { "gradablePenalty": true },
+  "expectedPoints": -0.7,
+  "featuresA": ["2000"],
+  "featuresB": ["2016"],
+  "skip": false,
+  "only": false
+}

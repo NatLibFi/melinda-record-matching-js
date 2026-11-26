@@ -1,0 +1,11 @@
+{
+  "description": "No valid year on either side returns neutral 0 in graded mode (flag does not apply)",
+  "feature": "publicationTimeAllowConsYears",
+  "type": "compare",
+  "options": { "gradablePenalty": true },
+  "expectedPoints": 0,
+  "featuresA": ["uuuu"],
+  "featuresB": ["2010"],
+  "skip": false,
+  "only": false
+}

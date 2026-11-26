@@ -1,0 +1,10 @@
+{
+  "description": "Identical open-code placeholder years return neutral 0 (identical unknown data is not rewarded)",
+  "feature": "publicationTimeAllowConsYearsMulti",
+  "type": "compare",
+  "expectedPoints": 0,
+  "featuresA": {"normalYears": ["uuuu"], "copyrightYears": [], "reprintYears": []},
+  "featuresB": {"normalYears": ["uuuu"], "copyrightYears": [], "reprintYears": []},
+  "skip": false,
+  "only": false
+}
