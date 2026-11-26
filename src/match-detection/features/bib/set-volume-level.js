@@ -162,6 +162,8 @@ function s2(fields) {
           if (bm) { v += 2; if (vn === null) vn = +bm[1] }
         }
         if (code === 'a') {
+          // A year found in the title sets titleYear (used as a mismatch veto
+          // in compare) and additionally counts as a weak volume vote
           const ym = value.match(YEAR_RE)
           if (ym) { ty = +ym[1]; v += 1 }
         }

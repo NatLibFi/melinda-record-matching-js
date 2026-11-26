@@ -4,8 +4,7 @@ import isSerial from './is-serial.js';
 
 const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection:features/bib/publisher');
 
-// Publisher name-set feature (heili-quria serial matching, change 6; owner
-// rulings 2026-11-24 + 2026-11-25 source list).
+// Publisher name-set feature.
 //
 // Each record extracts a set of publisher names from:
 //   260 $b; 264 $b (indicator 2 = 1, function: publisher, only);
@@ -133,7 +132,7 @@ function roleName(subfields) {
     .join(' ');
 }
 
-// 245 $c personal-name guard (owner ruling 2026-11-25, F7): exclude when
+// 245 $c personal-name guard: exclude when
 // (a) 2-3 words, every word alphabetic (Finnish letters, '.' and '-' allowed),
 //     every word starts uppercase, no ';' or ','
 // (b) starts with a 'Firstname Lastname (toim...' editor pattern
@@ -150,13 +149,13 @@ function isPersonalNameLike(value) {
   if (/^[A-ZÄÖÅ][a-zäöå]+ [A-ZÄÖÅ][a-zäöå]+\s*\(toim/iu.test(text)) {
     return true;
   }
-  return /\(toim\.\)$|\(toimittaja\)\.$/.test(text);
+  return /\(toim\.\)$|\(toimittaja\)\.$/iu.test(text);
 }
 
 // 550 text: all subfields of all 550 occurrences, lowercased, diacritics stripped,
 // whitespace collapsed (no suffix/bracket stripping; single non-letter codes are
-// not content). The text must stay normalized symmetrically with names (see
-// normalizeName)
+// not content). At comparison time normalize550Text brings the text to the
+// same normalization as names (case, diacritics, non-alphanumerics -> space)
 function extract550Text(record) {
   return record.get(/^550$/u)
     .flatMap(field => field.subfields || [])
@@ -170,7 +169,7 @@ function extract550Text(record) {
     .trim();
 }
 
-// Normalization (F10 final): lowercase -> NFD diacritics stripped ->
+// Name normalization: lowercase -> NFD diacritics stripped ->
 // non-alphanumeric -> space -> whitespace collapse -> trailing suffix strip
 // (repeated, whole tokens). A name stripped to empty is dropped ('')
 function normalizeName(raw) {
@@ -229,13 +228,16 @@ function containsNamesIn550(names, text550) {
   return names.some(name => new RegExp(`\\b${escapeRegExp(name)}\\b`, 'u').test(normalized));
 }
 
-// 550 text normalization: lowercase -> NFD diacritics stripped -> whitespace
-// collapsed (the text half of the symmetric normalization with normalizeName)
+// 550 text normalization: lowercase -> NFD diacritics stripped ->
+// non-alphanumeric -> space -> whitespace collapse. Mirrors the per-step
+// normalization of normalizeName (suffix stripping is name-only, since 550
+// text is never parsed for names)
 function normalize550Text(text550) {
   return String(text550)
     .toLowerCase()
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/gu, '')
+    .replace(/[^a-z0-9]/gu, ' ')
     .replace(/\s+/gu, ' ')
     .trim();
 }

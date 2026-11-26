@@ -1,7 +1,6 @@
 
 import createDebugLogger from 'debug';
 import {testStringOrNumber} from '../../../matching-utils.js';
-import {matchingYears} from './publication-time.js';
 
 // We should also get copyright time and copyright/publication times from 26x
 
@@ -36,9 +35,6 @@ export default (options) => ({
 
     if (firstA === firstB) {
       return 0.1;
-    }
-    if (matchingYears(firstA, firstB)) { // Handle 'u' Eg. '18uu' vs '1812'
-      return 0.05;
     }
 
     const firstANumber = parseInt(firstA, 10);

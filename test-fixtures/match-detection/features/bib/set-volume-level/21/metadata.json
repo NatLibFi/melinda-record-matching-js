@@ -1,0 +1,25 @@
+{
+  "description": "Extract: 245 $a containing a 4-digit year → titleYear set and volume vote increased",
+  "feature": "setVolumeLevel",
+  "type": "extract",
+  "expectedFeatures": {
+    "type": "volume",
+    "confidence": "low",
+    "volumeNumber": null,
+    "titleYear": 1998,
+    "votes": {
+      "set": 0,
+      "volume": 1,
+      "component": 0
+    }
+  },
+  "inputRecord": {
+    "leader": "01234nam a2200345ui 4500",
+    "fields": [
+      { "tag": "001", "value": "000012345" },
+      { "tag": "245", "ind1": "0", "ind2": "0", "subfields": [
+        { "code": "a", "value": "Kirja 1998" }
+      ]}
+    ]
+  }
+}

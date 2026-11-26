@@ -133,6 +133,9 @@ function getContentStrategy() {
   ];
 }
 
+// A set-but-empty ISSN_POSITIVE_WEIGHT counts as unset (falls back to the
+// default); an explicit '0' is a valid value meaning "disable the weight"
 function getIssnPositiveWeight() {
-  return Number(process.env.ISSN_POSITIVE_WEIGHT ?? String(defaultIssnPositiveWeight));
+  const raw = process.env.ISSN_POSITIVE_WEIGHT;
+  return raw === undefined || raw === '' ? defaultIssnPositiveWeight : Number(raw);
 }

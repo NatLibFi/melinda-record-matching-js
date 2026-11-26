@@ -4,8 +4,7 @@ import isSerial from './is-serial.js';
 
 const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detection:features/bib/f338');
 
-// 338 $b disjoint-code gate (heili-quria serial matching, change 4; owner rulings
-// 2026-11-24 + 2026-11-25 generalization):
+// 338 $b disjoint-code gate:
 // - both sides carry at least one 338 $b and the code sets are disjoint ->
 //   -1.0 force-fail, in both directions
 // - the code sets share at least one code -> 0
@@ -15,7 +14,7 @@ const debug = createDebugLogger('@natlibfi/melinda-record-matching:match-detecti
 // one side is serial (see is-serial.js). Deliberately lenient: a monograph
 // carrying a conflicting 338 $b can still be force-failed against a serial --
 // accepted, since monographs with differing 338 should not match either -- in
-// exchange for covering mis-leadered serials (owner sign-off 2026-11-26).
+// exchange for covering mis-leadered serials.
 
 export default () => ({
   name: 'f338',

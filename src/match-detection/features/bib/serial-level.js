@@ -19,12 +19,12 @@ const YEAR_RE = /\b(1[6-9]\d{2}|20\d{2})\b/u;
 // matching on either side, and a single year WITHOUT a range never matches
 const RANGE_RE = /\b\d{1,4}[-–—]\d{1,4}\b/u;
 
-// 008 d2 "open" set (2026-11-25: unfilled/blank d2 counts as open, the dominant
+// 008 d2 "open" set (unfilled/blank d2 counts as open, the dominant
 // open coding). '' is the all-blank case after trimming
 const OPEN_D2 = new Set(['0000', '9999', 'uuuu', '^^^^', '||||', '????', '****', '']);
 
-// Serial level (whole vs component: issue/volume or article) discriminator,
-// v3 (owner re-rule 2026-11-25). A side is COMPONENT-level when ANY of its
+// Serial level (whole vs component: issue/volume or article) discriminator.
+// A side is COMPONENT-level when ANY of its
 // per-record signals fires:
 // (a) D2        -- 008 d1 is a valid year AND d2 is open AND d1 appears as a whole
 //                  word in the combined 245 $a text ($a-only equality)
@@ -37,7 +37,7 @@ const OPEN_D2 = new Set(['0000', '9999', 'uuuu', '^^^^', '||||', '????', '****',
 //                  versa (read raw, no padding/alignment)
 // (e) 773       -- a 773 field is present (kept despite hostComponent
 //                  shadowing it in every current strategy: safety net for
-//                  a strategy without hostComponent, owner 2026-11-26)
+//                  a strategy without hostComponent)
 // (f) singleYr  -- 008 d1 == d2, 4-digit, not 0000/9999
 // (g) range245  -- the combined 245 $a/$b/$n text contains a digit range
 //                  (RANGE_RE: 1-4 digits, dash, 1-4 digits)

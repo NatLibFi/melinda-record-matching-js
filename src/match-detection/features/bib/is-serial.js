@@ -1,4 +1,4 @@
-// Pair-level seriality precondition helper (owner ruling 2026-11-25).
+// Pair-level seriality precondition helper.
 //
 // S(r) := LDR/07 = s (bibliographic level: serial)
 //        OR 022 $a/$y/$z non-empty

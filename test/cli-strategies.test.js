@@ -143,6 +143,24 @@ describe('CLI-STRATEGIES', () => {
     }
   });
 
+  it('treats a set-but-empty ISSN_POSITIVE_WEIGHT as unset (default weight)', () => {
+    const issnFeature = searchType => generateStrategy(searchType).find(feature => feature.name === 'ISSN');
+    const sharedIssn = ['0001-2345'];
+
+    const previous = process.env.ISSN_POSITIVE_WEIGHT;
+    process.env.ISSN_POSITIVE_WEIGHT = '';
+    try {
+      assert.strictEqual(issnFeature('STANDARD_IDS').compare(sharedIssn, sharedIssn), 0.75);
+      assert.strictEqual(issnFeature('STANDARD_IDS_F773').compare(sharedIssn, sharedIssn), 0.75);
+    } finally {
+      if (previous === undefined) {
+        delete process.env.ISSN_POSITIVE_WEIGHT;
+      } else {
+        process.env.ISSN_POSITIVE_WEIGHT = previous;
+      }
+    }
+  });
+
   it('keeps the bare issn() weight in non-mirrored strategies', () => {
     // Bare issn() uses the factory default positiveWeight of 0.2
     const issnFeature = searchType => generateStrategy(searchType).find(feature => feature.name === 'ISSN');
