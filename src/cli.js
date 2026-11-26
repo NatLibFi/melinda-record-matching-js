@@ -1,6 +1,7 @@
 import fs from 'fs';
 import yargs from 'yargs';
-import createMatchOperator, {candidateSearch, matchDetection} from './index.js';
+import createMatchOperator, {candidateSearch} from './index.js';
+import generateStrategy, {allowedSearchTypes} from './cli-strategies.js';
 import createDebugLogger from 'debug';
 import {MarcRecord} from '@natlibfi/marc-record';
 import {uniqArray} from '@natlibfi/marc-record-validators-melinda/dist/utils.js';
@@ -23,7 +24,12 @@ async function cli() {
     .version()
     .positional('file', {type: 'string', describe: 'Json file of records to match'})
     .options({
-      t: {type: 'string', default: 'IDS', alias: 'searchType', describe: 'IDS, STANDARD_IDS, COMPONENT, CONTENT or CONTENTALT'},
+      t: {
+        type: 'string',
+        default: 'IDS',
+        alias: 'searchType',
+        describe: 'IDS, IDS_F773, STANDARD_IDS(_F773), COMPONENT, CONTENT(_F773), CONTENTALT(_F773) or YSO'
+      },
       m: {type: 'number', default: 1, alias: 'maxMatches', describe: ''},
       c: {type: 'number', default: 1000, alias: 'maxCandidates', describe: ''},
       s: {type: 'boolean', default: false, alias: 'returnStrategy', describe: ''},
@@ -44,7 +50,7 @@ async function cli() {
         throw new Error('Setup sru url');
       }
 
-      if (!['IDS', 'STANDARD_IDS', 'COMPONENT', 'CONTENT', 'CONTENTALT', 'YSO'].includes(args.searchType)) {
+      if (!allowedSearchTypes.includes(args.searchType)) {
         throw new Error('Invalid search type');
       }
 
@@ -88,96 +94,15 @@ async function cli() {
 
   // DEVELOP: print results to output file
 
-  function generateStrategy(searchType) {
-    if (['IDS'].includes(searchType)) {
-      return [
-        matchDetection.features.bib.melindaId(),
-        matchDetection.features.bib.allSourceIds(),
-        matchDetection.features.bib.f773() // Host data
-      ];
-    }
-
-    // We could have differing strategy for STANDARD_IDS
-    // Let's not run title in strategy when we found the candidates through standard_ids search
-
-    if (['STANDARD_IDS'].includes(searchType)) {
-      return [
-        matchDetection.features.bib.hostComponent(),
-        matchDetection.features.bib.isbn(),
-        matchDetection.features.bib.issn(),
-        matchDetection.features.bib.publisherNumber(),
-        // matchDetection.features.bib.sid(),
-        matchDetection.features.bib.otherStandardIdentifier(),
-        // Let's not use the same title matchDetection here
-        //matchDetection.features.bib.title(),
-        matchDetection.features.bib.authors(),
-        // We probably should have some leeway here for notated music as BK etc.
-        matchDetection.features.bib.recordType(),
-        // Use publicationTimeAllowConsYearsMulti to
-        //  - ignore one year differences in publicationTime
-        //  - extract publicationTimes from f008, f26x and reprint notes in f500
-        //  - do not substract points for mismatching (normal) publicationTime, if there's a match between
-        //       normal publicationTime and a reprintPublicationTime
-        //  - do not subract points for mismatchin (normal) publiscationTime if there's a match between 
-        //       normal publicationTime and a copyrightPublicationTime
-        matchDetection.features.bib.publicationTimeAllowConsYearsMulti(),
-        matchDetection.features.bib.language(),
-        matchDetection.features.bib.bibliographicLevel(),
-        matchDetection.features.bib.f773() // Host data
-      ];
-    }
-
-    if (['COMPONENT'].includes(searchType)) {
-      return [
-        matchDetection.features.bib.hostComponent(),
-        matchDetection.features.bib.otherStandardIdentifier(),
-        matchDetection.features.bib.recordType(),
-        matchDetection.features.bib.title(),
-        matchDetection.features.bib.language(),
-        matchDetection.features.bib.authors(),
-        matchDetection.features.bib.bibliographicLevel(),
-        matchDetection.features.bib.f773() // Host data
-      ];
-    }
-
-    if (['CONTENT', 'CONTENTALT'].includes(searchType)) {
-      return [
-        matchDetection.features.bib.hostComponent(),
-        matchDetection.features.bib.isbn(),
-        matchDetection.features.bib.issn(),
-        matchDetection.features.bib.publisherNumber(),
-        // matchDetection.features.bib.sid(),
-        matchDetection.features.bib.otherStandardIdentifier(),
-        matchDetection.features.bib.title(),
-        matchDetection.features.bib.authors(),
-        matchDetection.features.bib.recordType(),
-        matchDetection.features.bib.publicationTime(),
-        matchDetection.features.bib.language(),
-        matchDetection.features.bib.bibliographicLevel(),
-        matchDetection.features.bib.f773() // Host data
-      ];
-    }
-
-    if (['YSO']) {
-      return [
-        // matchDetection.features.bib.sid(), // SIDs might be relevant on the auth side as well?
-        matchDetection.features.auth.yso()
-      ];
-    }
-
-    throw new Error('Unsupported match validation package');
-  }
-
-
   function generateSearchSpec(searchType) {
-    if (['IDS'].includes(searchType)) {
+    if (['IDS', 'IDS_F773'].includes(searchType)) {
       return [
         candidateSearch.searchTypes.bib.melindaId,
         candidateSearch.searchTypes.bib.sourceIds
       ];
     }
 
-    if (['STANDARD_IDS'].includes(searchType)) {
+    if (['STANDARD_IDS', 'STANDARD_IDS_F773'].includes(searchType)) {
       return [candidateSearch.searchTypes.bib.standardIdentifiers];
     }
 
@@ -189,14 +114,14 @@ async function cli() {
       ];
     }
 
-    if (['CONTENT'].includes(searchType)) {
+    if (['CONTENT', 'CONTENT_F773'].includes(searchType)) {
       return [
         candidateSearch.searchTypes.bib.hostComponents,
         //candidateSearch.searchTypes.bib.titleAuthor,
         candidateSearch.searchTypes.bib.title
       ];
     }
-    if (['CONTENTALT'].includes(searchType)) {
+    if (['CONTENTALT', 'CONTENTALT_F773'].includes(searchType)) {
       return [
         candidateSearch.searchTypes.bib.hostComponents,
         // titleAuthorYearAlternates searches for matchCandidates
