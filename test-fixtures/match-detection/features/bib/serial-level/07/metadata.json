@@ -1,0 +1,14 @@
+{
+  "description": "keyTitle: a parenthesized group containing a 4-digit year is a same-name qualifier and is stripped before the year check",
+  "feature": "serialLevel",
+  "type": "extract",
+  "expectedFeatures": {"serial": true, "l7": "s", "component": true, "signals": ["keyTitle"]},
+  "inputRecord": {
+    "leader": "02518cas a2200745zi 4500",
+    "fields": [
+      { "tag": "001", "value": "000019643" },
+      { "tag": "245", "ind1": "0", "ind2": "0", "subfields": [ { "code": "a", "value": "Lehti 2000." } ] },
+      { "tag": "222", "ind1": " ", "ind2": " ", "subfields": [ { "code": "a", "value": "Lehti (1998-)." } ] }
+    ]
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "description": "D2: 008 d1 a valid year, d2 blank (open), d1 a whole word of the combined 245 $a -> component-level",
+  "feature": "serialLevel",
+  "type": "extract",
+  "expectedFeatures": {
+    "serial": true,
+    "l7": "s",
+    "component": true,
+    "signals": [
+      "D2"
+    ]
+  },
+  "inputRecord": {
+    "leader": "02518cas a2200745zi 4500",
+    "fields": [
+      {
+        "tag": "001",
+        "value": "000019643"
+      },
+      {
+        "tag": "008",
+        "value": "261106s2004    fi ||||||||||||||||bfin||"
+      },
+      {
+        "tag": "245",
+        "ind1": "0",
+        "ind2": "0",
+        "subfields": [
+          {
+            "code": "a",
+            "value": "Suuri kasityolehti 2004."
+          }
+        ]
+      }
+    ]
+  }
+}

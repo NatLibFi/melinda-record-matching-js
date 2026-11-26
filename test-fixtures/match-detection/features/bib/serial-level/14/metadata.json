@@ -1,0 +1,8 @@
+{
+  "description": "Compare: lvms, this side leader m vs other side leader s -> force-fail -1.0 (both directions, case A m)",
+  "feature": "serialLevel",
+  "type": "compare",
+  "expectedPoints": -1,
+  "featuresA": {"serial": true, "l7": "m", "component": false, "signals": []},
+  "featuresB": {"serial": true, "l7": "s", "component": false, "signals": []}
+}

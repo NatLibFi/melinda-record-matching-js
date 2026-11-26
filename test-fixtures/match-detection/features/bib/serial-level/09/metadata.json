@@ -1,0 +1,13 @@
+{
+  "description": "773 present -> component-level",
+  "feature": "serialLevel",
+  "type": "extract",
+  "expectedFeatures": {"serial": true, "l7": "s", "component": true, "signals": ["773"]},
+  "inputRecord": {
+    "leader": "02518cas a2200745zi 4500",
+    "fields": [
+      { "tag": "001", "value": "000019643" },
+      { "tag": "773", "ind1": " ", "ind2": " ", "subfields": [ { "code": "t", "value": "Tuttelintiire." }, { "code": "x", "value": "1234-5678" } ] }
+    ]
+  }
+}
