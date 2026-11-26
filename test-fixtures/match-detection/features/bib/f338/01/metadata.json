@@ -1,0 +1,16 @@
+{
+  "description": "Extracts 338 $b codes and the seriality flag (LDR/07 = s)",
+  "feature": "f338",
+  "type": "extract",
+  "expectedFeatures": {"serial": true, "codes": ["nc"]},
+  "inputRecord": {
+    "leader": "02518cas a2200745zi 4500",
+    "fields": [
+      { "tag": "001", "value": "000019643" },
+      {
+        "tag": "338", "ind1": " ", "ind2": " ",
+        "subfields": [ { "code": "a", "value": "nide" }, { "code": "b", "value": "nc" } ]
+      }
+    ]
+  }
+}

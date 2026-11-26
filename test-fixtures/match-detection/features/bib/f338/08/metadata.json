@@ -1,0 +1,8 @@
+{
+  "description": "Either side without any 338 $b: skipped (0)",
+  "feature": "f338",
+  "type": "compare",
+  "expectedPoints": 0,
+  "featuresA": {"serial": true, "codes": []},
+  "featuresB": {"serial": true, "codes": ["cr"]}
+}

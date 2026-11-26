@@ -1,0 +1,8 @@
+{
+  "description": "Seriality precondition: non-serial x non-serial pair skips the feature (0) even with disjoint codes",
+  "feature": "f338",
+  "type": "compare",
+  "expectedPoints": 0,
+  "featuresA": {"serial": false, "codes": ["nb"]},
+  "featuresB": {"serial": false, "codes": ["nc"]}
+}

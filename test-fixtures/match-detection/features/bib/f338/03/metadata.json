@@ -1,0 +1,13 @@
+{
+  "description": "022 $a non-empty makes the record serial even with a monograph leader",
+  "feature": "f338",
+  "type": "extract",
+  "expectedFeatures": {"serial": true, "codes": []},
+  "inputRecord": {
+    "leader": "02518cam a2200745zi 4500",
+    "fields": [
+      { "tag": "001", "value": "000019643" },
+      { "tag": "022", "ind1": " ", "ind2": " ", "subfields": [ { "code": "a", "value": "1234-5678" } ] }
+    ]
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "description": "Non-serial record without 338: empty codes, seriality false",
+  "feature": "f338",
+  "type": "extract",
+  "expectedFeatures": {"serial": false, "codes": []},
+  "inputRecord": {
+    "leader": "02518cam a2200745zi 4500",
+    "fields": [ { "tag": "001", "value": "000019643" } ]
+  }
+}
