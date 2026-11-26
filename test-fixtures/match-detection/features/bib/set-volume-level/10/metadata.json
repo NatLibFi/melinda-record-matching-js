@@ -1,0 +1,25 @@
+{
+  "description": "Extract 300$a extent (3 nidettä) → type: set, confidence: medium",
+  "feature": "setVolumeLevel",
+  "type": "extract",
+  "expectedFeatures": {
+    "type": "set",
+    "confidence": "medium",
+    "volumeNumber": null,
+    "titleYear": null,
+    "votes": {
+      "set": 2,
+      "volume": 0,
+      "component": 0
+    }
+  },
+  "inputRecord": {
+    "leader": "01234nam a2200345ui 4500",
+    "fields": [
+      { "tag": "001", "value": "000012349" },
+      { "tag": "300", "ind1": " ", "ind2": " ", "subfields": [
+        { "code": "a", "value": "3 nidettä" }
+      ]}
+    ]
+  }
+}

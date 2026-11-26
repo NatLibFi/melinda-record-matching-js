@@ -1,0 +1,31 @@
+{
+  "description": "Extract 33x audio-only → type: component, confidence: medium",
+  "feature": "setVolumeLevel",
+  "type": "extract",
+  "expectedFeatures": {
+    "type": "component",
+    "confidence": "medium",
+    "volumeNumber": null,
+    "titleYear": null,
+    "votes": {
+      "set": 0,
+      "volume": 0,
+      "component": 2
+    }
+  },
+  "inputRecord": {
+    "leader": "01234nam a2200345ui 4500",
+    "fields": [
+      { "tag": "001", "value": "000012350" },
+      { "tag": "336", "ind1": " ", "ind2": " ", "subfields": [
+        { "code": "a", "value": "puhe" }
+      ]},
+      { "tag": "337", "ind1": " ", "ind2": " ", "subfields": [
+        { "code": "a", "value": "audio" }
+      ]},
+      { "tag": "338", "ind1": " ", "ind2": " ", "subfields": [
+        { "code": "a", "value": "äänilevy" }
+      ]}
+    ]
+  }
+}

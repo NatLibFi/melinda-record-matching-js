@@ -1,0 +1,20 @@
+{
+  "description": "Compare both volume different volumeNumber → force-fail -1.0",
+  "feature": "setVolumeLevel",
+  "type": "compare",
+  "expectedPoints": -1.0,
+  "featuresA": {
+    "type": "volume",
+    "confidence": "medium",
+    "volumeNumber": 1,
+    "titleYear": null,
+    "votes": { "set": 0, "volume": 2, "component": 0 }
+  },
+  "featuresB": {
+    "type": "volume",
+    "confidence": "medium",
+    "volumeNumber": 2,
+    "titleYear": null,
+    "votes": { "set": 0, "volume": 2, "component": 0 }
+  }
+}

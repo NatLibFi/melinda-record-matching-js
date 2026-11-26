@@ -1,0 +1,34 @@
+{
+  "description": "Extract 020 dual ISBN (Q4 multi-part exception): set-qualifier line (kokonaisuus) + two part lines (osa 1 / osa 2) carrying 2 distinct part numbers → complete work, NOT a single volume → set vote, vn null, type: set, confidence: high (mirrors real record 005477473 shape)",
+  "feature": "setVolumeLevel",
+  "type": "extract",
+  "expectedFeatures": {
+    "type": "set",
+    "confidence": "high",
+    "volumeNumber": null,
+    "titleYear": null,
+    "votes": {
+      "set": 3,
+      "volume": 0,
+      "component": 0
+    }
+  },
+  "inputRecord": {
+    "leader": "01234nam a2200345ui 4500",
+    "fields": [
+      { "tag": "001", "value": "000012352" },
+      { "tag": "020", "ind1": " ", "ind2": " ", "subfields": [
+        { "code": "a", "value": "978-951-0-32652-7" },
+        { "code": "q", "value": "osa 1, kovakantinen" }
+      ]},
+      { "tag": "020", "ind1": " ", "ind2": " ", "subfields": [
+        { "code": "a", "value": "978-951-0-32653-4" },
+        { "code": "q", "value": "osa 2, kovakantinen" }
+      ]},
+      { "tag": "020", "ind1": " ", "ind2": " ", "subfields": [
+        { "code": "a", "value": "978-951-0-32654-1" },
+        { "code": "q", "value": "kokonaisuus, kovakantinen" }
+      ]}
+    ]
+  }
+}

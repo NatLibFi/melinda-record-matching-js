@@ -1,0 +1,26 @@
+{
+  "description": "Extract 245$n dotted keyword 'part. 3,' → volume vote + volumeNumber (dot after keyword is now optional in the shared grammar)",
+  "feature": "setVolumeLevel",
+  "type": "extract",
+  "expectedFeatures": {
+    "type": "volume",
+    "confidence": "medium",
+    "volumeNumber": 3,
+    "titleYear": null,
+    "votes": {
+      "set": 0,
+      "volume": 2,
+      "component": 0
+    }
+  },
+  "inputRecord": {
+    "leader": "01234nam a2200345ui 4500",
+    "fields": [
+      { "tag": "001", "value": "000012361" },
+      { "tag": "245", "ind1": "0", "ind2": "0", "subfields": [
+        { "code": "a", "value": "Esimerkki teos" },
+        { "code": "n", "value": "part. 3," }
+      ]}
+    ]
+  }
+}

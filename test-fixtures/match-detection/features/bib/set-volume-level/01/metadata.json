@@ -1,0 +1,26 @@
+{
+  "description": "Extract 020$q set qualifier (kokonaisuus) → type: set, confidence: high",
+  "feature": "setVolumeLevel",
+  "type": "extract",
+  "expectedFeatures": {
+    "type": "set",
+    "confidence": "high",
+    "volumeNumber": null,
+    "titleYear": null,
+    "votes": {
+      "set": 3,
+      "volume": 0,
+      "component": 0
+    }
+  },
+  "inputRecord": {
+    "leader": "01234nam a2200345ui 4500",
+    "fields": [
+      { "tag": "001", "value": "000012345" },
+      { "tag": "020", "ind1": " ", "ind2": " ", "subfields": [
+        { "code": "a", "value": "9789511234567" },
+        { "code": "q", "value": "kokonaisuus" }
+      ]}
+    ]
+  }
+}

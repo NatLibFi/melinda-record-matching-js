@@ -1,0 +1,30 @@
+{
+  "description": "Extract 020$q set qualifier (kokonaisuus) + 245$n bare number → own volume number beats set claim → type: volume, confidence: high, volumeNumber: 1",
+  "feature": "setVolumeLevel",
+  "type": "extract",
+  "expectedFeatures": {
+    "type": "volume",
+    "confidence": "high",
+    "volumeNumber": 1,
+    "titleYear": null,
+    "votes": {
+      "set": 3,
+      "volume": 2,
+      "component": 0
+    }
+  },
+  "inputRecord": {
+    "leader": "01234nam a2200345ui 4500",
+    "fields": [
+      { "tag": "001", "value": "000012348" },
+      { "tag": "020", "ind1": " ", "ind2": " ", "subfields": [
+        { "code": "a", "value": "9789511234569" },
+        { "code": "q", "value": "kokonaisuus" }
+      ]},
+      { "tag": "245", "ind1": "1", "ind2": "4", "subfields": [
+        { "code": "a", "value": "Language course," },
+        { "code": "n", "value": "1," }
+      ]}
+    ]
+  }
+}

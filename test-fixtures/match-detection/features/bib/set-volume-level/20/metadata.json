@@ -1,0 +1,25 @@
+{
+  "description": "Extract 245$a dotted keyword 'band. 2.' → volume vote + volumeNumber (dot after keyword is now optional in the shared grammar)",
+  "feature": "setVolumeLevel",
+  "type": "extract",
+  "expectedFeatures": {
+    "type": "volume",
+    "confidence": "medium",
+    "volumeNumber": 2,
+    "titleYear": null,
+    "votes": {
+      "set": 0,
+      "volume": 2,
+      "component": 0
+    }
+  },
+  "inputRecord": {
+    "leader": "01234nam a2200345ui 4500",
+    "fields": [
+      { "tag": "001", "value": "000012364" },
+      { "tag": "245", "ind1": "0", "ind2": "0", "subfields": [
+        { "code": "a", "value": "Esimerkki teos, band. 2." }
+      ]}
+    ]
+  }
+}

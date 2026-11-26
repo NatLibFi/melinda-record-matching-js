@@ -1,0 +1,25 @@
+{
+  "description": "Extract 245$a Cyrillic volume keyword (том) → type: volume, confidence: medium, volumeNumber: 3 (Unicode letter boundary must not block the match)",
+  "feature": "setVolumeLevel",
+  "type": "extract",
+  "expectedFeatures": {
+    "type": "volume",
+    "confidence": "medium",
+    "volumeNumber": 3,
+    "titleYear": null,
+    "votes": {
+      "set": 0,
+      "volume": 2,
+      "component": 0
+    }
+  },
+  "inputRecord": {
+    "leader": "01234nam a2200345ui 4500",
+    "fields": [
+      { "tag": "001", "value": "000012355" },
+      { "tag": "245", "ind1": "0", "ind2": "0", "subfields": [
+        { "code": "a", "value": "Maailman historia, том 3." }
+      ]}
+    ]
+  }
+}
