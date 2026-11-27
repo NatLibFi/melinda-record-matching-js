@@ -1,0 +1,43 @@
+{
+  "description": "Normalization: a name stripped to empty is dropped; repeated trailing suffixes are stripped",
+  "feature": "publisher",
+  "type": "extract",
+  "expectedFeatures": {
+    "serial": true,
+    "names": [
+      "oy j"
+    ],
+    "text550": ""
+  },
+  "inputRecord": {
+    "leader": "02518cas a2200745zi 4500",
+    "fields": [
+      {
+        "tag": "001",
+        "value": "000019643"
+      },
+      {
+        "tag": "260",
+        "ind1": " ",
+        "ind2": " ",
+        "subfields": [
+          {
+            "code": "b",
+            "value": "Oy"
+          }
+        ]
+      },
+      {
+        "tag": "260",
+        "ind1": " ",
+        "ind2": " ",
+        "subfields": [
+          {
+            "code": "b",
+            "value": "Oy J"
+          }
+        ]
+      }
+    ]
+  }
+}

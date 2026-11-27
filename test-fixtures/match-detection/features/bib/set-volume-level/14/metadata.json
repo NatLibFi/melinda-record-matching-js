@@ -1,0 +1,30 @@
+{
+  "description": "Extract 020 dual ISBN (Q4 single-part guard): set-qualifier line (kokonaisuus) + one part line (osa 1) → 1 distinct part number → still a volume, set vote suppressed, volume w3 → type: volume, confidence: high, volumeNumber: 1 (guards the 1-part direction)",
+  "feature": "setVolumeLevel",
+  "type": "extract",
+  "expectedFeatures": {
+    "type": "volume",
+    "confidence": "high",
+    "volumeNumber": 1,
+    "titleYear": null,
+    "votes": {
+      "set": 0,
+      "volume": 3,
+      "component": 0
+    }
+  },
+  "inputRecord": {
+    "leader": "01234nam a2200345ui 4500",
+    "fields": [
+      { "tag": "001", "value": "000012353" },
+      { "tag": "020", "ind1": " ", "ind2": " ", "subfields": [
+        { "code": "a", "value": "978-951-0-32652-7" },
+        { "code": "q", "value": "kokonaisuus" }
+      ]},
+      { "tag": "020", "ind1": " ", "ind2": " ", "subfields": [
+        { "code": "a", "value": "978-951-0-32653-4" },
+        { "code": "q", "value": "osa 1, kovakantinen" }
+      ]}
+    ]
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "description": "Extract 245$n bare number → type: volume, confidence: medium, volumeNumber: 1",
+  "feature": "setVolumeLevel",
+  "type": "extract",
+  "expectedFeatures": {
+    "type": "volume",
+    "confidence": "medium",
+    "volumeNumber": 1,
+    "titleYear": null,
+    "votes": {
+      "set": 0,
+      "volume": 2,
+      "component": 0
+    }
+  },
+  "inputRecord": {
+    "leader": "01234nam a2200345ui 4500",
+    "fields": [
+      { "tag": "001", "value": "000012347" },
+      { "tag": "245", "ind1": "1", "ind2": "4", "subfields": [
+        { "code": "a", "value": "Language course," },
+        { "code": "n", "value": "1," }
+      ]}
+    ]
+  }
+}

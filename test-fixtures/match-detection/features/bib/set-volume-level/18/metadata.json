@@ -1,0 +1,26 @@
+{
+  "description": "Extract 020$q mixed-script glued keyword 'гosa 3' → NO volume vote (Unicode letter lookbehind blocks a preceding Cyrillic letter; ASCII \\b would have admitted it)",
+  "feature": "setVolumeLevel",
+  "type": "extract",
+  "expectedFeatures": {
+    "type": "unknown",
+    "confidence": "none",
+    "volumeNumber": null,
+    "titleYear": null,
+    "votes": {
+      "set": 0,
+      "volume": 0,
+      "component": 0
+    }
+  },
+  "inputRecord": {
+    "leader": "01234nam a2200345ui 4500",
+    "fields": [
+      { "tag": "001", "value": "000012362" },
+      { "tag": "020", "subfields": [
+        { "code": "a", "value": "978-951-0-12345-6" },
+        { "code": "q", "value": "гosa 3" }
+      ]}
+    ]
+  }
+}

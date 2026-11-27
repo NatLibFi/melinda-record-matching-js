@@ -54,8 +54,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v7
-      - uses: mikaelvesavuori/license-compliance-action@v1
+      - uses: mikaelvesavuori/license-compliance-action@v1.0.5
         with:
+          # direct: true — depth-1 production dependencies are license-scanned
+          # only; transitive deps are out of scope (house direction, cf.
+          # melinda-rest-api-commons / melinda-rest-api-client-js)
+          direct: true
           exclude_pattern: /^@natlibfi/
 
   publish:

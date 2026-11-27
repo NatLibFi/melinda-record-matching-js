@@ -1,0 +1,8 @@
+{
+  "description": "Compare: same level on both sides -> 0",
+  "feature": "serialLevel",
+  "type": "compare",
+  "expectedPoints": 0,
+  "featuresA": {"serial": true, "l7": "s", "component": false, "signals": []},
+  "featuresB": {"serial": true, "l7": "s", "component": false, "signals": []}
+}

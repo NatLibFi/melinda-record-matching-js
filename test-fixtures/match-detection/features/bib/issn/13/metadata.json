@@ -1,0 +1,9 @@
+{
+  "description": "positiveWeight factory option does not change the negative case (stays -0.2)",
+  "feature": "issn",
+  "type": "compare",
+  "options": { "positiveWeight": 0.75 },
+  "expectedPoints": -0.2,
+  "featuresA": ["2049-3630"],
+  "featuresB": ["2049-363X"]
+}

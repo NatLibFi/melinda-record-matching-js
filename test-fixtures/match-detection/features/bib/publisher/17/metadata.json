@@ -1,0 +1,20 @@
+{
+  "description": "Compare: the other record name appears in this record 550 text as a whole phrase -> +0.1 (either direction: B names in A 550)",
+  "feature": "publisher",
+  "type": "compare",
+  "expectedPoints": 0.1,
+  "featuresA": {
+    "serial": true,
+    "names": [
+      "muu"
+    ],
+    "text550": "tiede kustannus 1990-2001"
+  },
+  "featuresB": {
+    "serial": true,
+    "names": [
+      "tiede"
+    ],
+    "text550": ""
+  }
+}

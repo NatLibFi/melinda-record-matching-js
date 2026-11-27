@@ -1,0 +1,14 @@
+{
+  "description": "keyTitle does NOT fire when the key-title fields contain a (non-parenthesized) valid year",
+  "feature": "serialLevel",
+  "type": "extract",
+  "expectedFeatures": {"serial": true, "l7": "s", "component": false, "signals": []},
+  "inputRecord": {
+    "leader": "02518cas a2200745zi 4500",
+    "fields": [
+      { "tag": "001", "value": "000019643" },
+      { "tag": "245", "ind1": "0", "ind2": "0", "subfields": [ { "code": "a", "value": "Lehti 2000." } ] },
+      { "tag": "210", "ind1": " ", "ind2": " ", "subfields": [ { "code": "a", "value": "Helsinki." }, { "code": "b", "value": "Otava. 2007." } ] }
+    ]
+  }
+}

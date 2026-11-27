@@ -1,0 +1,40 @@
+{
+  "description": "Should not extract sentinel year 9999 from 260$c as a year",
+  "feature": "publicationTimeAllowConsYearsMulti",
+  "type": "extract",
+  "expectedFeatures": {
+    "copyrightYears": [],
+    "normalYears": [],
+    "reprintYears": []
+  },
+  "inputRecord": {
+    "leader": "02518cam a2200745zi 4500",
+    "fields": [
+      {
+        "tag": "001",
+        "value": "000019643"
+      },
+      {
+        "tag": "260",
+        "ind1": " ",
+        "ind2": " ",
+        "subfields": [
+          {
+            "code": "a",
+            "value": "Helsinki :"
+          },
+          {
+            "code": "b",
+            "value": "Publisher,"
+          },
+          {
+            "code": "c",
+            "value": "9999"
+          }
+        ]
+      }
+    ]
+  },
+  "skip": false,
+  "only": false
+}

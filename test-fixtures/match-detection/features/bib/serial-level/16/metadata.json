@@ -1,0 +1,8 @@
+{
+  "description": "Compare: seriality precondition, non-serial x non-serial pair skips the feature (0) even with a level mismatch",
+  "feature": "serialLevel",
+  "type": "compare",
+  "expectedPoints": 0,
+  "featuresA": {"serial": false, "l7": "m", "component": true, "signals": ["773"]},
+  "featuresB": {"serial": false, "l7": "m", "component": false, "signals": []}
+}

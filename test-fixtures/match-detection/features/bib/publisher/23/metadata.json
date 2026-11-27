@@ -1,0 +1,18 @@
+{
+  "description": "Compare: 550 containment with internal punctuation - A name 'a a gustafsson' (from 'A. A. Gustafsson') in B 550 text 'a.a. gustafsson' -> +0.1",
+  "feature": "publisher",
+  "type": "compare",
+  "expectedPoints": 0.1,
+  "featuresA": {
+    "serial": true,
+    "names": [
+      "a a gustafsson"
+    ],
+    "text550": ""
+  },
+  "featuresB": {
+    "serial": true,
+    "names": [],
+    "text550": "a.a. gustafsson"
+  }
+}

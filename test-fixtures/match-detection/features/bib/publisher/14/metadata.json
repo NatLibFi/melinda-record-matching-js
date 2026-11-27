@@ -1,0 +1,20 @@
+{
+  "description": "Compare: both sets non-empty, no overlap -> 0 (neutral, no penalty)",
+  "feature": "publisher",
+  "type": "compare",
+  "expectedPoints": 0,
+  "featuresA": {
+    "serial": true,
+    "names": [
+      "sanoma"
+    ],
+    "text550": ""
+  },
+  "featuresB": {
+    "serial": true,
+    "names": [
+      "otava"
+    ],
+    "text550": ""
+  }
+}

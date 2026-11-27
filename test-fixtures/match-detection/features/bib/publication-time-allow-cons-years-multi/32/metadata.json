@@ -1,0 +1,11 @@
+{
+  "description": "No-year side returns neutral 0 even in graded mode (gradablePenalty:true)",
+  "feature": "publicationTimeAllowConsYearsMulti",
+  "type": "compare",
+  "options": { "gradablePenalty": true },
+  "expectedPoints": 0,
+  "featuresA": {"normalYears": ["uuuu"], "copyrightYears": [], "reprintYears": []},
+  "featuresB": {"normalYears": ["2010"], "copyrightYears": [], "reprintYears": []},
+  "skip": false,
+  "only": false
+}

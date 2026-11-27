@@ -1,0 +1,20 @@
+{
+  "description": "Compare: equal name sets after normalization -> +0.2",
+  "feature": "publisher",
+  "type": "compare",
+  "expectedPoints": 0.2,
+  "featuresA": {
+    "serial": true,
+    "names": [
+      "sanoma"
+    ],
+    "text550": ""
+  },
+  "featuresB": {
+    "serial": true,
+    "names": [
+      "sanoma"
+    ],
+    "text550": ""
+  }
+}

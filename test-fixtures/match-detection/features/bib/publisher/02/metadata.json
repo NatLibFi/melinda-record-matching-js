@@ -1,0 +1,43 @@
+{
+  "description": "264 $b is extracted only when indicator 2 = 1 (function: publisher)",
+  "feature": "publisher",
+  "type": "extract",
+  "expectedFeatures": {
+    "serial": true,
+    "names": [
+      "otava"
+    ],
+    "text550": ""
+  },
+  "inputRecord": {
+    "leader": "02518cas a2200745zi 4500",
+    "fields": [
+      {
+        "tag": "001",
+        "value": "000019643"
+      },
+      {
+        "tag": "264",
+        "ind1": " ",
+        "ind2": "1",
+        "subfields": [
+          {
+            "code": "b",
+            "value": "Otava"
+          }
+        ]
+      },
+      {
+        "tag": "264",
+        "ind1": " ",
+        "ind2": "3",
+        "subfields": [
+          {
+            "code": "b",
+            "value": "Karprint"
+          }
+        ]
+      }
+    ]
+  }
+}

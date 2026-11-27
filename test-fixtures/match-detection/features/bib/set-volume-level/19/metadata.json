@@ -1,0 +1,26 @@
+{
+  "description": "Extract 020$q number-first '2. osa' → volume vote AND volumeNumber 2 (a volume vote always carries its number)",
+  "feature": "setVolumeLevel",
+  "type": "extract",
+  "expectedFeatures": {
+    "type": "volume",
+    "confidence": "high",
+    "volumeNumber": 2,
+    "titleYear": null,
+    "votes": {
+      "set": 0,
+      "volume": 3,
+      "component": 0
+    }
+  },
+  "inputRecord": {
+    "leader": "01234nam a2200345ui 4500",
+    "fields": [
+      { "tag": "001", "value": "000012363" },
+      { "tag": "020", "subfields": [
+        { "code": "a", "value": "978-951-0-12345-6" },
+        { "code": "q", "value": "2. osa" }
+      ]}
+    ]
+  }
+}

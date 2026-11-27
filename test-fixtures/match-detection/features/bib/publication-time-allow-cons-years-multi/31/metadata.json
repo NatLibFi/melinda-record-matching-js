@@ -1,0 +1,10 @@
+{
+  "description": "A side whose only normal year is the open code 9999 has no normal years: neutral 0",
+  "feature": "publicationTimeAllowConsYearsMulti",
+  "type": "compare",
+  "expectedPoints": 0,
+  "featuresA": {"normalYears": ["9999"], "copyrightYears": [], "reprintYears": []},
+  "featuresB": {"normalYears": ["2010"], "copyrightYears": [], "reprintYears": []},
+  "skip": false,
+  "only": false
+}

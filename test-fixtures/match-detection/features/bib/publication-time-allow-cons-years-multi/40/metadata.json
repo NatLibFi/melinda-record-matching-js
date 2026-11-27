@@ -1,0 +1,25 @@
+{
+  "description": "Partial year 199u dropped at extract time, so consecutive 2005 vs 2006 scores a match in graded mode (was -0.7)",
+  "feature": "publicationTimeAllowConsYearsMulti",
+  "options": {
+    "gradablePenalty": true
+  },
+  "type": "compare",
+  "expectedPoints": 0.1,
+  "featuresA": {
+    "copyrightYears": [],
+    "normalYears": [
+      "2005"
+    ],
+    "reprintYears": []
+  },
+  "featuresB": {
+    "copyrightYears": [],
+    "normalYears": [
+      "2006"
+    ],
+    "reprintYears": []
+  },
+  "skip": false,
+  "only": false
+}

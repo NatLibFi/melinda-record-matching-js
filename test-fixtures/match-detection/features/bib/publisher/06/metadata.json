@@ -1,0 +1,48 @@
+{
+  "description": "110: no publisher-likeness gate and no $e gate - all non-empty 110 values are included",
+  "feature": "publisher",
+  "type": "extract",
+  "expectedFeatures": {
+    "serial": true,
+    "names": [
+      "kirjastot",
+      "tilastokeskus"
+    ],
+    "text550": ""
+  },
+  "inputRecord": {
+    "leader": "02518cas a2200745zi 4500",
+    "fields": [
+      {
+        "tag": "001",
+        "value": "000019643"
+      },
+      {
+        "tag": "110",
+        "ind1": "1",
+        "ind2": " ",
+        "subfields": [
+          {
+            "code": "a",
+            "value": "Tilastokeskus"
+          }
+        ]
+      },
+      {
+        "tag": "110",
+        "ind1": "1",
+        "ind2": " ",
+        "subfields": [
+          {
+            "code": "a",
+            "value": "Kirjastot"
+          },
+          {
+            "code": "e",
+            "value": "kirjoittaja"
+          }
+        ]
+      }
+    ]
+  }
+}

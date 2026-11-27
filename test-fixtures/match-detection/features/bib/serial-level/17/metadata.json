@@ -1,0 +1,8 @@
+{
+  "description": "Compare: seriality precondition, the feature applies when at least one side is serial",
+  "feature": "serialLevel",
+  "type": "compare",
+  "expectedPoints": -1,
+  "featuresA": {"serial": false, "l7": "m", "component": false, "signals": []},
+  "featuresB": {"serial": true, "l7": "s", "component": false, "signals": []}
+}

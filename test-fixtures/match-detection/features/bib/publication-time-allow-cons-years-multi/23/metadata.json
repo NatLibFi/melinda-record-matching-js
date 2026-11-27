@@ -1,0 +1,10 @@
+{
+  "description": "default behavior gap=5 returns -1.0 (backward compat)",
+  "feature": "publicationTimeAllowConsYearsMulti",
+  "type": "compare",
+  "expectedPoints": -1.0,
+  "featuresA": {"normalYears": ["2000"], "copyrightYears": [], "reprintYears": []},
+  "featuresB": {"normalYears": ["2005"], "copyrightYears": [], "reprintYears": []},
+  "skip": false,
+  "only": false
+}

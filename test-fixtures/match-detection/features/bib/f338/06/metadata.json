@@ -1,0 +1,8 @@
+{
+  "description": "Disjoint 338 $b code sets, both sides serial: force-fail -1.0",
+  "feature": "f338",
+  "type": "compare",
+  "expectedPoints": -1,
+  "featuresA": {"serial": true, "codes": ["nc"]},
+  "featuresB": {"serial": true, "codes": ["cr"]}
+}

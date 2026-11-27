@@ -1,0 +1,10 @@
+{
+  "description": "Comparison should return minus points when a year falls outside the other side's year range",
+  "feature": "publicationTimeAllowConsYearsMulti",
+  "type": "compare",
+  "expectedPoints": -1,
+  "featuresA": {"copyrightYears": [], "normalYears": ["2011"], "reprintYears": []},
+  "featuresB": {"copyrightYears": [], "normalYears": ["1997", "1998"], "reprintYears": []},
+  "skip": false,
+  "only": false
+}

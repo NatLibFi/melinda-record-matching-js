@@ -1,0 +1,26 @@
+{
+  "description": "Extract 020$q volume qualifier (osa 1) → type: volume, confidence: high, volumeNumber: 1",
+  "feature": "setVolumeLevel",
+  "type": "extract",
+  "expectedFeatures": {
+    "type": "volume",
+    "confidence": "high",
+    "volumeNumber": 1,
+    "titleYear": null,
+    "votes": {
+      "set": 0,
+      "volume": 3,
+      "component": 0
+    }
+  },
+  "inputRecord": {
+    "leader": "01234nam a2200345ui 4500",
+    "fields": [
+      { "tag": "001", "value": "000012346" },
+      { "tag": "020", "ind1": " ", "ind2": " ", "subfields": [
+        { "code": "a", "value": "9789511234568" },
+        { "code": "q", "value": "osa 1" }
+      ]}
+    ]
+  }
+}

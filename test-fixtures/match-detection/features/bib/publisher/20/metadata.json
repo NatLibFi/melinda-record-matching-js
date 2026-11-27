@@ -1,0 +1,20 @@
+{
+  "description": "Compare: multi-token name appears contiguously in the 550 text -> +0.1",
+  "feature": "publisher",
+  "type": "compare",
+  "expectedPoints": 0.1,
+  "featuresA": {
+    "serial": true,
+    "names": [
+      "helsingin yliopisto"
+    ],
+    "text550": ""
+  },
+  "featuresB": {
+    "serial": true,
+    "names": [
+      "muu"
+    ],
+    "text550": "julkaissut helsingin yliopisto 2001"
+  }
+}

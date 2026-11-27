@@ -1,0 +1,20 @@
+{
+  "description": "Compare both volume same volumeNumber → pass 0",
+  "feature": "setVolumeLevel",
+  "type": "compare",
+  "expectedPoints": 0,
+  "featuresA": {
+    "type": "volume",
+    "confidence": "medium",
+    "volumeNumber": 1,
+    "titleYear": null,
+    "votes": { "set": 0, "volume": 2, "component": 0 }
+  },
+  "featuresB": {
+    "type": "volume",
+    "confidence": "medium",
+    "volumeNumber": 1,
+    "titleYear": null,
+    "votes": { "set": 0, "volume": 2, "component": 0 }
+  }
+}

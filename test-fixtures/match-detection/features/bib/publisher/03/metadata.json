@@ -1,0 +1,63 @@
+{
+  "description": "710: bare (no $e) and publisher-role $e are included; music-role $e is never included",
+  "feature": "publisher",
+  "type": "extract",
+  "expectedFeatures": {
+    "serial": true,
+    "names": [
+      "kustannus x",
+      "yleisradio"
+    ],
+    "text550": ""
+  },
+  "inputRecord": {
+    "leader": "02518cas a2200745zi 4500",
+    "fields": [
+      {
+        "tag": "001",
+        "value": "000019643"
+      },
+      {
+        "tag": "710",
+        "ind1": "1",
+        "ind2": " ",
+        "subfields": [
+          {
+            "code": "a",
+            "value": "Yleisradio"
+          }
+        ]
+      },
+      {
+        "tag": "710",
+        "ind1": "1",
+        "ind2": " ",
+        "subfields": [
+          {
+            "code": "a",
+            "value": "Kustannus X"
+          },
+          {
+            "code": "e",
+            "value": "julkaisija"
+          }
+        ]
+      },
+      {
+        "tag": "710",
+        "ind1": "1",
+        "ind2": " ",
+        "subfields": [
+          {
+            "code": "a",
+            "value": "Juhani S"
+          },
+          {
+            "code": "e",
+            "value": "esittaja"
+          }
+        ]
+      }
+    ]
+  }
+}

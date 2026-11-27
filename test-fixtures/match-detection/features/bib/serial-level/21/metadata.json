@@ -1,0 +1,8 @@
+{
+  "description": "Compare: both sides component-level via range245 -> 0 (component x component does not veto)",
+  "feature": "serialLevel",
+  "type": "compare",
+  "expectedPoints": 0,
+  "featuresA": {"serial": true, "l7": "s", "component": true, "signals": ["range245"]},
+  "featuresB": {"serial": true, "l7": "s", "component": true, "signals": ["range245"]}
+}

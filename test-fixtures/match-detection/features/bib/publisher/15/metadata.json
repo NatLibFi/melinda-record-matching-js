@@ -1,0 +1,18 @@
+{
+  "description": "Compare: either name set empty (and no 550 containment) -> 0 (skipped)",
+  "feature": "publisher",
+  "type": "compare",
+  "expectedPoints": 0,
+  "featuresA": {
+    "serial": true,
+    "names": [
+      "sanoma"
+    ],
+    "text550": ""
+  },
+  "featuresB": {
+    "serial": true,
+    "names": [],
+    "text550": ""
+  }
+}

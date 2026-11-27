@@ -1,0 +1,8 @@
+{
+  "description": "Compare: exactly one side component-level -> force-fail -1.0",
+  "feature": "serialLevel",
+  "type": "compare",
+  "expectedPoints": -1,
+  "featuresA": {"serial": true, "l7": "s", "component": true, "signals": ["773"]},
+  "featuresB": {"serial": true, "l7": "s", "component": false, "signals": []}
+}

@@ -1,0 +1,20 @@
+{
+  "description": "Compare: 550 containment is word-bounded - tiede must not match tiedonjano",
+  "feature": "publisher",
+  "type": "compare",
+  "expectedPoints": 0,
+  "featuresA": {
+    "serial": true,
+    "names": [
+      "tiede"
+    ],
+    "text550": ""
+  },
+  "featuresB": {
+    "serial": true,
+    "names": [
+      "tiedonjano"
+    ],
+    "text550": "tiedonjano kustannus"
+  }
+}

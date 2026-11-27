@@ -1,0 +1,20 @@
+{
+  "description": "Compare: set (low) vs volume (low) → 0, no force-fail (both below medium confidence)",
+  "feature": "setVolumeLevel",
+  "type": "compare",
+  "expectedPoints": 0,
+  "featuresA": {
+    "type": "set",
+    "confidence": "low",
+    "volumeNumber": null,
+    "titleYear": null,
+    "votes": { "set": 1, "volume": 0, "component": 0 }
+  },
+  "featuresB": {
+    "type": "volume",
+    "confidence": "low",
+    "volumeNumber": null,
+    "titleYear": null,
+    "votes": { "set": 0, "volume": 1, "component": 0 }
+  }
+}

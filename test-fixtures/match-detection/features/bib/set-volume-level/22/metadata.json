@@ -1,0 +1,20 @@
+{
+  "description": "Compare: different 4-digit title years → mismatch veto -1.0",
+  "feature": "setVolumeLevel",
+  "type": "compare",
+  "expectedPoints": -1.0,
+  "featuresA": {
+    "type": "volume",
+    "confidence": "low",
+    "volumeNumber": null,
+    "titleYear": 1998,
+    "votes": { "set": 0, "volume": 1, "component": 0 }
+  },
+  "featuresB": {
+    "type": "volume",
+    "confidence": "low",
+    "volumeNumber": null,
+    "titleYear": 1999,
+    "votes": { "set": 0, "volume": 1, "component": 0 }
+  }
+}

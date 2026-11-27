@@ -1,0 +1,20 @@
+{
+  "description": "Compare set vs volume (both medium confidence) → force-fail -1.0",
+  "feature": "setVolumeLevel",
+  "type": "compare",
+  "expectedPoints": -1.0,
+  "featuresA": {
+    "type": "set",
+    "confidence": "medium",
+    "volumeNumber": null,
+    "titleYear": null,
+    "votes": { "set": 2, "volume": 0, "component": 0 }
+  },
+  "featuresB": {
+    "type": "volume",
+    "confidence": "medium",
+    "volumeNumber": 1,
+    "titleYear": null,
+    "votes": { "set": 0, "volume": 2, "component": 0 }
+  }
+}

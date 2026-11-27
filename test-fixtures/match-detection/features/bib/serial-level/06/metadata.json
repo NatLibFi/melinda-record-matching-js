@@ -1,0 +1,14 @@
+{
+  "description": "keyTitle: a year in the combined 245 $a, key-title fields (130/210/222/240) present but without a year -> component-level",
+  "feature": "serialLevel",
+  "type": "extract",
+  "expectedFeatures": {"serial": true, "l7": "s", "component": true, "signals": ["keyTitle"]},
+  "inputRecord": {
+    "leader": "02518cas a2200745zi 4500",
+    "fields": [
+      { "tag": "001", "value": "000019643" },
+      { "tag": "245", "ind1": "0", "ind2": "0", "subfields": [ { "code": "a", "value": "Lehti 2000." } ] },
+      { "tag": "210", "ind1": " ", "ind2": " ", "subfields": [ { "code": "a", "value": "Helsinki," }, { "code": "b", "value": "Otava." } ] }
+    ]
+  }
+}

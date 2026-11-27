@@ -1,0 +1,46 @@
+{
+  "description": "Should not extract partial year 199u; 260$c years keep only the real year",
+  "feature": "publicationTimeAllowConsYearsMulti",
+  "type": "extract",
+  "expectedFeatures": {
+    "copyrightYears": [],
+    "normalYears": [
+      "2005"
+    ],
+    "reprintYears": []
+  },
+  "inputRecord": {
+    "leader": "02518cam a2200745zi 4500",
+    "fields": [
+      {
+        "tag": "001",
+        "value": "000019643"
+      },
+      {
+        "tag": "260",
+        "ind1": " ",
+        "ind2": " ",
+        "subfields": [
+          {
+            "code": "a",
+            "value": "Helsinki :"
+          },
+          {
+            "code": "b",
+            "value": "Publisher,"
+          },
+          {
+            "code": "c",
+            "value": "199u"
+          },
+          {
+            "code": "c",
+            "value": "2005"
+          }
+        ]
+      }
+    ]
+  },
+  "skip": false,
+  "only": false
+}

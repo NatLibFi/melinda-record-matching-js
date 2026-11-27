@@ -1,0 +1,20 @@
+{
+  "description": "Compare both unknown → pass 0",
+  "feature": "setVolumeLevel",
+  "type": "compare",
+  "expectedPoints": 0,
+  "featuresA": {
+    "type": "unknown",
+    "confidence": "none",
+    "volumeNumber": null,
+    "titleYear": null,
+    "votes": { "set": 0, "volume": 0, "component": 0 }
+  },
+  "featuresB": {
+    "type": "unknown",
+    "confidence": "none",
+    "volumeNumber": null,
+    "titleYear": null,
+    "votes": { "set": 0, "volume": 0, "component": 0 }
+  }
+}

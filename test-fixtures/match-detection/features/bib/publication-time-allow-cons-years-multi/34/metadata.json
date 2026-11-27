@@ -1,0 +1,46 @@
+{
+  "description": "Should not extract space-padded slice from a short 008 (positions beyond a short value are not years); 260$c year still extracted",
+  "feature": "publicationTimeAllowConsYearsMulti",
+  "type": "extract",
+  "expectedFeatures": {
+    "copyrightYears": [],
+    "normalYears": [
+      "1990"
+    ],
+    "reprintYears": []
+  },
+  "inputRecord": {
+    "leader": "02518cam a2200745zi 4500",
+    "fields": [
+      {
+        "tag": "001",
+        "value": "000019643"
+      },
+      {
+        "tag": "008",
+        "value": "010101s   "
+      },
+      {
+        "tag": "260",
+        "ind1": " ",
+        "ind2": " ",
+        "subfields": [
+          {
+            "code": "a",
+            "value": "Helsinki :"
+          },
+          {
+            "code": "b",
+            "value": "Publisher,"
+          },
+          {
+            "code": "c",
+            "value": "1990"
+          }
+        ]
+      }
+    ]
+  },
+  "skip": false,
+  "only": false
+}

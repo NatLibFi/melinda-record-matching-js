@@ -1,0 +1,26 @@
+{
+  "description": "Extract 020$q undotted short keyword 't 3' → volume vote + volumeNumber (dot after keyword is now optional in the shared grammar)",
+  "feature": "setVolumeLevel",
+  "type": "extract",
+  "expectedFeatures": {
+    "type": "volume",
+    "confidence": "high",
+    "volumeNumber": 3,
+    "titleYear": null,
+    "votes": {
+      "set": 0,
+      "volume": 3,
+      "component": 0
+    }
+  },
+  "inputRecord": {
+    "leader": "01234nam a2200345ui 4500",
+    "fields": [
+      { "tag": "001", "value": "000012360" },
+      { "tag": "020", "subfields": [
+        { "code": "a", "value": "978-951-0-12345-6" },
+        { "code": "q", "value": "t 3" }
+      ]}
+    ]
+  }
+}
